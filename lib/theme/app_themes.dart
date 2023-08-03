@@ -19,6 +19,13 @@ class AppThemes {
       useMaterial3: true,
       colorScheme: colorScheme,
       appBarTheme: AppBarTheme(backgroundColor: colorScheme.inversePrimary),
+      badgeTheme: BadgeThemeData(
+        backgroundColor: colorScheme.primary.withOpacity(.375),
+        textStyle: const TextStyle(fontWeight: FontWeight.w400),
+        // padding: const EdgeInsets.all(5),
+        largeSize: 20,
+        // smallSize: 10,
+      ),
     );
 
     return themeData.copyWith(
