@@ -30,6 +30,7 @@ class HomeView extends StatelessWidget {
         ],
         body: ListView.builder(
           physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.all(5),
           itemCount: 10,
           itemBuilder: (context, index) {
             final thesis = Thesis(

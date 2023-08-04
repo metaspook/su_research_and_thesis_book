@@ -15,6 +15,12 @@ class ThesisCard extends StatelessWidget {
 
     return Card(
       child: ListTile(
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute<ThesisView>(
+            builder: (context) => ThesisView(thesis: thesis),
+          ),
+        ),
         title: Text(thesis.name),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
