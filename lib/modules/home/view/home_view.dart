@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
+import 'package:su_thesis_book/shared/shared.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -31,20 +32,13 @@ class HomeView extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           itemCount: 10,
           itemBuilder: (context, index) {
-            return const Card(
-              child: ListTile(
-                title: Text('Thesis Name'),
-                subtitle: Text('Author: Riad'),
-                trailing: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    CounterBadge(label: 'Views', count: 20),
-                    CounterBadge(label: 'Comments', count: 10),
-                  ],
-                ),
-              ),
+            final thesis = Thesis(
+              name: 'Thesis Name',
+              author: 'Riad',
+              createdAt: DateTime.now(),
             );
+
+            return ThesisCard(thesis);
           },
         ),
       ),

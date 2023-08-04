@@ -34,6 +34,7 @@ class AppThemes {
   }
 
   // Public APIs
+
   static ThemeData light({Color? seedColor}) =>
       _themeData(seedColor: seedColor);
   static ThemeData dark({Color? seedColor}) =>
