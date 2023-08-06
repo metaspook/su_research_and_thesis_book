@@ -23,8 +23,8 @@ class AppThemes {
       appBarTheme: AppBarTheme(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(15),
-            bottomRight: Radius.circular(15),
+            bottomLeft: radiusCircular,
+            bottomRight: radiusCircular,
           ),
         ),
         backgroundColor: colorScheme.inversePrimary,
@@ -48,6 +48,8 @@ class AppThemes {
   //     bottomRight: Radius.circular(15),
   //   ),
   // );
+
+  static const radiusCircular = Radius.circular(15);
 
   static ThemeData light({Color? seedColor}) =>
       _themeData(seedColor: seedColor);
