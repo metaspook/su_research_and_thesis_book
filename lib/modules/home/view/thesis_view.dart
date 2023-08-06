@@ -24,25 +24,26 @@ class _ThesisViewState extends State<ThesisView> {
     final text = '${pageIndex + 1} / $pageCount';
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(widget.thesis.name),
-        actions: [
-          IconButton(
-            visualDensity: VisualDensity.compact,
-            onPressed: () {
-              final page = pageIndex == 0 ? pageCount : pageIndex - 1;
-              pdfViewController.setPage(page);
-            },
-            icon: const Icon(Icons.chevron_left_rounded),
-          ),
-          Text(text),
-          IconButton(
-            visualDensity: VisualDensity.compact,
-            onPressed: () {
-              final page = pageIndex == pageCount - 1 ? 0 : pageIndex + 1;
-              pdfViewController.setPage(page);
-            },
-            icon: const Icon(Icons.chevron_right_rounded),
-          )
+        actions: const [
+          // IconButton(
+          //   visualDensity: VisualDensity.compact,
+          //   onPressed: () {
+          //     final page = pageIndex == 0 ? pageCount : pageIndex - 1;
+          //     pdfViewController.setPage(page);
+          //   },
+          //   icon: const Icon(Icons.chevron_left_rounded),
+          // ),
+          // Text(text),
+          // IconButton(
+          //   visualDensity: VisualDensity.compact,
+          //   onPressed: () {
+          //     final page = pageIndex == pageCount - 1 ? 0 : pageIndex + 1;
+          //     pdfViewController.setPage(page);
+          //   },
+          //   icon: const Icon(Icons.chevron_right_rounded),
+          // )
         ],
       ),
       body: Padding(
@@ -143,7 +144,12 @@ class _ThesisViewState extends State<ThesisView> {
                         ],
                       ),
                       TextButton.icon(
-                        onPressed: () {},
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute<CommentsPage>(
+                            builder: (context) => const CommentsPage(),
+                          ),
+                        ),
                         icon: const Icon(Icons.comment_outlined),
                         label: const Text('Comments'),
                       ),
