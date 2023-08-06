@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
-import 'package:su_thesis_book/shared/models/comment.dart';
 import 'package:su_thesis_book/shared/shared.dart';
 import 'package:su_thesis_book/utils/extensions.dart';
 
@@ -22,9 +21,6 @@ class _ThesisViewState extends State<ThesisView> {
 
   @override
   Widget build(BuildContext context) {
-    Comment(author: 'author', content: 'content', createdAt: DateTime.now())
-        .toJson()
-        .doPrint();
     final text = '${pageIndex + 1} / $pageCount';
     return Scaffold(
       appBar: AppBar(
