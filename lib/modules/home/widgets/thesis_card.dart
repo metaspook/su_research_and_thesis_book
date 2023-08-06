@@ -65,8 +65,8 @@ class ThesisCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            CounterBadge(label: 'Views', count: 20),
-            CounterBadge(label: 'Comments', count: 10),
+            CounterBadge(label: 'Views', count: 20, largeSize: 20),
+            CounterBadge(label: 'Comments', count: 10, largeSize: 20),
           ],
         ),
       ),

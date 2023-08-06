@@ -7,17 +7,28 @@ class CommentsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final comment = Comment(
-      author: 'author',
-      profileImagePath: 'profileImagePath',
-      content: 'content',
-      createdAt: DateTime.now(),
-    );
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(centerTitle: true, title: const Text('Comments')),
       body: Column(
         children: [
-          CommentCard(comment),
+          Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.all(5),
+              itemCount: 10,
+              itemBuilder: (context, index) {
+                final comment = Comment(
+                  author: 'author',
+                  profileImagePath: 'profileImagePath',
+                  content: 'content',
+                  createdAt: DateTime.now(),
+                );
+                return CommentCard(comment);
+              },
+            ),
+          ),
+          const TextField()
         ],
       ),
     );

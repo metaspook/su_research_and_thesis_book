@@ -18,13 +18,21 @@ class AppThemes {
     final themeData = ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
-      appBarTheme: AppBarTheme(backgroundColor: colorScheme.inversePrimary),
+      // AppBar Theme
+
+      appBarTheme: AppBarTheme(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15),
+          ),
+        ),
+        backgroundColor: colorScheme.inversePrimary,
+      ),
+      // Badge Theme
       badgeTheme: BadgeThemeData(
         backgroundColor: colorScheme.primary.withOpacity(.375),
         textStyle: const TextStyle(fontWeight: FontWeight.w400),
-        // padding: const EdgeInsets.all(5),
-        largeSize: 20,
-        // smallSize: 10,
       ),
     );
 
@@ -34,6 +42,12 @@ class AppThemes {
   }
 
   // Public APIs
+  // static const appBarBorder = RoundedRectangleBorder(
+  //   borderRadius: BorderRadius.only(
+  //     bottomLeft: Radius.circular(15),
+  //     bottomRight: Radius.circular(15),
+  //   ),
+  // );
 
   static ThemeData light({Color? seedColor}) =>
       _themeData(seedColor: seedColor);

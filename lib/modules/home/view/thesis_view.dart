@@ -24,6 +24,14 @@ class _ThesisViewState extends State<ThesisView> {
     final text = '${pageIndex + 1} / $pageCount';
     return Scaffold(
       appBar: AppBar(
+        leading: Navigator.canPop(context)
+            ? IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.arrow_back_ios_rounded),
+              )
+            : null,
         centerTitle: true,
         title: Text(widget.thesis.name),
         actions: const [
