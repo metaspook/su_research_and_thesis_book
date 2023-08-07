@@ -7,11 +7,9 @@ class Mod {
       ? IconButton(
           onPressed: () {
             final currentFocus = FocusScope.of(context);
-            if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
-            Future.delayed(
-              const Duration(milliseconds: 250),
-              () => Navigator.pop(context),
-            );
+            currentFocus.hasPrimaryFocus == currentFocus.hasFocus
+                ? Navigator.pop(context)
+                : currentFocus.unfocus();
           },
           icon: const Icon(Icons.arrow_back_ios_rounded),
         )

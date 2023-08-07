@@ -27,25 +27,6 @@ class _ThesisViewState extends State<ThesisView> {
         leading: Mod.backButton(context),
         centerTitle: true,
         title: Text(widget.thesis.name),
-        actions: const [
-          // IconButton(
-          //   visualDensity: VisualDensity.compact,
-          //   onPressed: () {
-          //     final page = pageIndex == 0 ? pageCount : pageIndex - 1;
-          //     pdfViewController.setPage(page);
-          //   },
-          //   icon: const Icon(Icons.chevron_left_rounded),
-          // ),
-          // Text(text),
-          // IconButton(
-          //   visualDensity: VisualDensity.compact,
-          //   onPressed: () {
-          //     final page = pageIndex == pageCount - 1 ? 0 : pageIndex + 1;
-          //     pdfViewController.setPage(page);
-          //   },
-          //   icon: const Icon(Icons.chevron_right_rounded),
-          // )
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
@@ -63,10 +44,6 @@ class _ThesisViewState extends State<ThesisView> {
                       children: [
                         PDF(
                           swipeHorizontal: true,
-                          // autoSpacing: false,
-                          // pageFling: false,
-                          fitEachPage: false,
-                          // onError: print,
                           onRender: (pages) => setState(() {
                             pageCount = pages!;
                           }),
@@ -75,12 +52,7 @@ class _ThesisViewState extends State<ThesisView> {
                           onPageChanged: (page, total) => setState(() {
                             pageIndex = page!;
                           }),
-                          // onPageError: (page, error) {
-                          //   print('$page: $error');
-                          // },
-                          // onPageChanged: (page, total) {
-                          //   print('page change: $page/$total');
-                          // },
+                          onLinkHandler: (uri) => print('object $uri'),
                         ).cachedFromUrl(
                           'https://css4.pub/2015/usenix/example.pdf',
                         ),
