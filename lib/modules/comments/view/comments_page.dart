@@ -38,6 +38,9 @@ class CommentsPage extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 12, left: 17.5, right: 17.5),
               child: TextField(
                 clipBehavior: Clip.none,
+                decoration: InputDecoration(
+                  hintText: 'comments here...',
+                ),
               ),
             ),
           ),

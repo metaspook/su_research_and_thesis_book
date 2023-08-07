@@ -1,0 +1,22 @@
+[
+    {
+        "_id": "973f9e98-c8be-4d80-990a-4e60604affb4",
+        "colId": "history",
+        "containerId": "",
+        "name": "https://dummyjson.com/comments?limit=10",
+        "url": "https://dummyjson.com/comments?limit=10",
+        "method": "GET",
+        "sortNum": 0,
+        "created": "2023-08-07T13:39:16.218Z",
+        "modified": "2023-08-07T13:39:16.218Z",
+        "headers": [],
+        "params": [
+            {
+                "name": "limit",
+                "value": "10",
+                "isPath": false
+            }
+        ],
+        "tests": []
+    }
+]
