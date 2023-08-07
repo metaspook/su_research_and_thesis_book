@@ -19,7 +19,6 @@ class HomeView extends StatelessWidget {
           SliverAppBar(
             floating: true,
             snap: true,
-            shape: context.theme.appBarTheme.shape,
             title: Text(l10n.homeAppBarTitle),
             actions: [
               Padding(
