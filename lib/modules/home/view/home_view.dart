@@ -26,7 +26,9 @@ class HomeView extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 4.5),
                 child: GestureDetector(
                   onTap: () {},
-                  child: const ProfileAvatar(),
+                  child: ProfileAvatar(
+                    haloAccent: context.theme.colorScheme.primary,
+                  ),
                 ),
               ),
             ],

@@ -27,7 +27,7 @@ class AppThemes {
             bottomRight: radiusCircular,
           ),
         ),
-        backgroundColor: colorScheme.inversePrimary,
+        backgroundColor: colorScheme.inversePrimary.withOpacity(.75),
       ),
       // Badge Theme
       badgeTheme: BadgeThemeData(
