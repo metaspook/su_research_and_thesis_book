@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/shared/shared.dart';
-import 'package:su_thesis_book/shared/widgets/halo_avatar.dart';
 import 'package:su_thesis_book/utils/extensions.dart';
 
 class HomeView extends StatelessWidget {
@@ -25,9 +24,8 @@ class HomeView extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 4.5),
                 child: GestureDetector(
                   onTap: () {},
-                  child: ProfileAvatar(
-                    haloAccent: context.theme.colorScheme.primary,
-                  ),
+                  child:
+                      HaloAvatar(haloAccent: context.theme.colorScheme.primary),
                 ),
               ),
             ],

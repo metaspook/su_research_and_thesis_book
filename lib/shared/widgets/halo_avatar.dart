@@ -7,8 +7,8 @@ import 'package:su_thesis_book/gen/assets.gen.dart';
 /// replaced with the given `size` (which ranges from 0.0 to 1.0).
 ///
 /// Out of range values will have unexpected effects.
-class ProfileAvatar extends StatelessWidget {
-  const ProfileAvatar({
+class HaloAvatar extends StatelessWidget {
+  const HaloAvatar({
     super.key,
     this.imagePath,
     this.size = .825,

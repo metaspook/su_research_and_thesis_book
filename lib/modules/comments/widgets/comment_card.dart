@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:su_thesis_book/shared/shared.dart';
+import 'package:su_thesis_book/utils/utils.dart';
 
 class CommentCard extends StatelessWidget {
   const CommentCard(this.comment, {super.key});
@@ -11,7 +12,7 @@ class CommentCard extends StatelessWidget {
     return Card(
       child: ListTile(
         titleAlignment: ListTileTitleAlignment.titleHeight,
-        leading: const CircleAvatar(),
+        leading: HaloAvatar(haloAccent: context.theme.colorScheme.primary),
         title: Text(comment.author),
         subtitle: Text(comment.content),
       ),
