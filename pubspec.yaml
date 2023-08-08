@@ -18,6 +18,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   google_fonts: ^5.1.0
+  http: ^1.1.0
   hydrated_bloc: ^9.1.2
   intl: ^0.18.0
   path_provider: ^2.0.15
