@@ -24,9 +24,10 @@ class CommentsPage extends StatelessWidget {
             itemCount: 10,
             itemBuilder: (context, index) {
               final comment = Comment(
-                author: 'author',
-                profileImagePath: 'profileImagePath',
-                content: 'content',
+                id: 'author',
+                userId: 'profileImagePath',
+                thesisId: 'profileImagePath',
+                body: 'content',
                 createdAt: DateTime.now(),
               );
               return CommentCard(comment);

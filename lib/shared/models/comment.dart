@@ -2,44 +2,50 @@ import 'package:equatable/equatable.dart';
 
 class Comment extends Equatable {
   const Comment({
-    required this.author,
-    required this.profileImagePath,
-    required this.content,
+    required this.id,
+    required this.userId,
+    required this.thesisId,
+    required this.body,
     required this.createdAt,
   });
+
   factory Comment.fromJson(Map<String, dynamic> json) {
     return Comment(
-      author: json['author'] as String,
-      profileImagePath: json['profileImagePath'] as String,
-      content: json['content'] as String,
+      id: json['id'] as String,
+      userId: json['userId'] as String,
+      thesisId: json['thesisId'] as String,
+      body: json['body'] as String,
       createdAt: DateTime.fromMillisecondsSinceEpoch(json['createdAt'] as int),
     );
   }
-
-  final String author;
-  final String profileImagePath;
-  final String content;
+  final String id;
+  final String userId;
+  final String thesisId;
+  final String body;
   final DateTime createdAt;
 
   Comment copyWith({
-    String? author,
-    String? profileImagePath,
-    String? content,
+    String? id,
+    String? userId,
+    String? thesisId,
+    String? body,
     DateTime? createdAt,
   }) {
     return Comment(
-      author: author ?? this.author,
-      profileImagePath: profileImagePath ?? this.profileImagePath,
-      content: content ?? this.content,
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      thesisId: thesisId ?? this.thesisId,
+      body: body ?? this.body,
       createdAt: createdAt ?? this.createdAt,
     );
   }
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'author': author,
-      'profileImagePath': profileImagePath,
-      'content': content,
+      'id': id,
+      'userId': userId,
+      'thesisId': thesisId,
+      'body': body,
       'createdAt': createdAt.millisecondsSinceEpoch,
     };
   }
@@ -48,5 +54,7 @@ class Comment extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object> get props => [author, profileImagePath, content, createdAt];
+  List<Object> get props {
+    return [id, userId, thesisId, body, createdAt];
+  }
 }

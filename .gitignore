@@ -40,6 +40,16 @@ version
 # packages file containing multi-root paths
 .packages.generated
 
+# FlutterFire related
+# Generate your own by following command.
+# flutterfire configure --project=<firebase-project-name>
+lib/firebase_options.dart
+ios/Runner/GoogleService-Info.plist
+ios/firebase_app_id_file.json
+macos/Runner/GoogleService-Info.plist
+macos/firebase_app_id_file.json
+android/app/google-services.json
+
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id

@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:http/http.dart';
 
-class ApiService {
-  const ApiService();
+class WebApiService {
+  const WebApiService();
 
   // Common headers
   Map<String, String> get _headers => const {
@@ -13,7 +13,7 @@ class ApiService {
   bool _success(int code) => code >= 200 && code < 300;
   String _errorMsg(String objName) => "[FAIL!] Couldn't fetch $objName";
 
-  Future<StreamedResponse?> fetchComments() async {
+  Future<StreamedResponse?> requestComments() async {
     final url = Uri.parse('https://dummyjson.com/comments?limit=10');
     final request = Request('GET', url);
     request.headers.addAll(_headers);

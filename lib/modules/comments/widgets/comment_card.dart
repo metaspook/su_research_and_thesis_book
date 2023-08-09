@@ -13,8 +13,8 @@ class CommentCard extends StatelessWidget {
       child: ListTile(
         titleAlignment: ListTileTitleAlignment.titleHeight,
         leading: HaloAvatar(haloAccent: context.theme.colorScheme.primary),
-        title: Text(comment.author),
-        subtitle: Text(comment.content),
+        title: const Text('author'),
+        subtitle: Text(comment.body),
       ),
     );
   }
