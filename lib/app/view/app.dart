@@ -14,7 +14,7 @@ class App extends StatelessWidget {
       darkTheme: AppThemes.dark(),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const HomePage(),
+      home: const AuthPage(),
     );
   }
 }
