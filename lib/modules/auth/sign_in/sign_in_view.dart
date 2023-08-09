@@ -5,16 +5,27 @@ class SignInView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const border = OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+    );
     return ListView(
       padding: const EdgeInsets.all(20),
       children: [
-        const TextField(decoration: InputDecoration(hintText: 'email...')),
-        const TextField(decoration: InputDecoration(hintText: 'password...')),
-        // Proceed button
-        Padding(
-          padding: const EdgeInsets.all(30),
-          child: ElevatedButton(onPressed: () {}, child: const Text('Proceed')),
+        const SizedBox(height: 20),
+        const TextField(
+          decoration: InputDecoration(
+            label: Text('Email'),
+            border: border,
+          ),
         ),
+        const SizedBox(height: 20),
+        const TextField(
+          decoration: InputDecoration(label: Text('Password'), border: border),
+        ),
+        const SizedBox(height: 30),
+
+        // Proceed button
+        ElevatedButton(onPressed: () {}, child: const Text('Proceed')),
       ],
     );
   }

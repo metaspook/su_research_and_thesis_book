@@ -14,9 +14,9 @@ class SignUpView extends StatelessWidget {
         const TextField(decoration: InputDecoration(hintText: 'phone...')),
         const SizedBox(height: 20),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const SizedBox(height: 200, width: 200, child: Card()),
+            const SizedBox(height: 200, width: 225, child: Card()),
             Column(
               children: [
                 ElevatedButton(onPressed: () {}, child: const Text('Gallery')),
@@ -26,12 +26,9 @@ class SignUpView extends StatelessWidget {
             )
           ],
         ),
-
+        const SizedBox(height: 30),
         // Proceed button
-        Padding(
-          padding: const EdgeInsets.all(30),
-          child: ElevatedButton(onPressed: () {}, child: const Text('Proceed')),
-        ),
+        ElevatedButton(onPressed: () {}, child: const Text('Proceed')),
       ],
     );
   }

@@ -21,12 +21,7 @@ class AppThemes {
       // AppBar Theme
 
       appBarTheme: AppBarTheme(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: radiusCircular,
-            bottomRight: radiusCircular,
-          ),
-        ),
+        shape: const RoundedRectangleBorder(borderRadius: appBarBorderRadius),
         backgroundColor: colorScheme.inversePrimary.withOpacity(.75),
       ),
       // Badge Theme
@@ -42,12 +37,10 @@ class AppThemes {
   }
 
   // Public APIs
-  // static const appBarBorder = RoundedRectangleBorder(
-  //   borderRadius: BorderRadius.only(
-  //     bottomLeft: Radius.circular(15),
-  //     bottomRight: Radius.circular(15),
-  //   ),
-  // );
+  static const appBarBorderRadius = BorderRadius.only(
+    bottomLeft: radiusCircular,
+    bottomRight: radiusCircular,
+  );
 
   static const radiusCircular = Radius.circular(15);
 
