@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:su_thesis_book/modules/modules.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -9,7 +10,8 @@ class AuthPage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Sign in'),
+          title: const Text('Authentication 🔐'),
+          // centerTitle: true,
           bottom: const TabBar(
             tabs: [
               Tab(text: 'Sign in'),
@@ -17,12 +19,8 @@ class AuthPage extends StatelessWidget {
             ],
           ),
         ),
-        body: ListView(
-          padding: const EdgeInsets.all(15),
-          children: const [
-            TextField(decoration: InputDecoration(hintText: 'email...')),
-            TextField(decoration: InputDecoration(hintText: 'password...')),
-          ],
+        body: const TabBarView(
+          children: [SignInView(), SignUpView()],
         ),
       ),
     );
