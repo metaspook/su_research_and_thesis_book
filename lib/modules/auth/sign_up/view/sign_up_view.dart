@@ -1,6 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:su_thesis_book/gen/assets.gen.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
+import 'package:su_thesis_book/theme/theme.dart';
+
+typedef SignUpBlocSelector<T> = BlocSelector<SignUpBloc, SignUpState, T>;
 
 class SignUpView extends StatelessWidget {
   const SignUpView({super.key});
@@ -22,12 +28,45 @@ class SignUpView extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const SizedBox(height: 200, width: 225, child: Card()),
+            // Image Card
+            SizedBox(
+              height: 200,
+              width: 225,
+              child: SignUpBlocSelector<String?>(
+                selector: (state) => state.imagePath,
+                builder: (context, imagePath) {
+                  return Card(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: AppThemes.borderRadius,
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: ClipRRect(
+                        borderRadius: AppThemes.borderRadius,
+                        child: imagePath == null
+                            ? Assets.images.placeholderUser01
+                                .image(fit: BoxFit.cover)
+                            : Image.file(File(imagePath)),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
             Column(
               children: [
-                ElevatedButton(onPressed: () {}, child: const Text('Gallery')),
+                // Camera Button
+                ElevatedButton(
+                  onPressed: () => bloc.add(SignUpCameraImagePicked()),
+                  child: const Text('Camera'),
+                ),
                 const SizedBox(height: 20),
-                ElevatedButton(onPressed: () {}, child: const Text('Camera')),
+                // Gallery Button
+                ElevatedButton(
+                  onPressed: () => bloc.add(SignUpGalleryImagePicked()),
+                  child: const Text('Gallery'),
+                ),
               ],
             )
           ],

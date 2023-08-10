@@ -41,8 +41,8 @@ class AppThemes {
     bottomLeft: radiusCircular,
     bottomRight: radiusCircular,
   );
-
   static const radiusCircular = Radius.circular(15);
+  static const borderRadius = BorderRadius.all(radiusCircular);
 
   static ThemeData light({Color? seedColor}) =>
       _themeData(seedColor: seedColor);

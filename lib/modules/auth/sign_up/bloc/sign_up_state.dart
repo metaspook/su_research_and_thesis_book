@@ -10,7 +10,7 @@ final class SignUpState extends Equatable {
     this.email = '',
     this.password = '',
     this.phone = '',
-    this.imagePath = '',
+    this.imagePath,
   });
 
   final SignUpStatus status;
@@ -19,7 +19,7 @@ final class SignUpState extends Equatable {
   final String email;
   final String password;
   final String phone;
-  final String imagePath;
+  final String? imagePath;
 
   SignUpState copyWith({
     SignUpStatus? status,
@@ -42,7 +42,7 @@ final class SignUpState extends Equatable {
   }
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [status, statusMsg, name, email, password, phone, imagePath];
   }
 }

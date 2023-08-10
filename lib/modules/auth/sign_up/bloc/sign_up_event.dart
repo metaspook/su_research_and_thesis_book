@@ -19,11 +19,6 @@ final class SignUpEdited extends SignUpEvent {
   List<Object?> get props => [name, email, password, phone];
 }
 
-final class SignUpImageUploaded extends SignUpEvent {
-  const SignUpImageUploaded({this.imagePath});
+final class SignUpCameraImagePicked extends SignUpEvent {}
 
-  final String? imagePath;
-
-  @override
-  List<Object?> get props => [imagePath];
-}
+final class SignUpGalleryImagePicked extends SignUpEvent {}

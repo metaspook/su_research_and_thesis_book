@@ -29,8 +29,9 @@ class AuthPage extends StatelessWidget {
           child: MultiBlocProvider(
             providers: [
               BlocProvider<SignUpBloc>(
-                create: (context) => SignUpBloc(),
-              )
+                create: (context) =>
+                    SignUpBloc(imageRepo: context.read<ImageRepo>()),
+              ),
             ],
             child: const TabBarView(
               children: [SignInView(), SignUpView()],
