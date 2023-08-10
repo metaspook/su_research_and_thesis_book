@@ -31,7 +31,10 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     Emitter<SignUpState> emit,
   ) async {
     final imagePath = await _imageRepo.cameraImagePath;
-    if (imagePath != null) emit(state.copyWith(imagePath: imagePath));
+    if (imagePath != null) {
+      final croppedImagePath = await _imageRepo.cropImagePath(imagePath);
+      emit(state.copyWith(imagePath: croppedImagePath));
+    }
   }
 
   Future<void> _onGalleryImagePicked(
@@ -39,6 +42,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     Emitter<SignUpState> emit,
   ) async {
     final imagePath = await _imageRepo.galleryImagePath;
-    if (imagePath != null) emit(state.copyWith(imagePath: imagePath));
+    if (imagePath != null) {
+      final croppedImagePath = await _imageRepo.cropImagePath(imagePath);
+      emit(state.copyWith(imagePath: croppedImagePath));
+    }
   }
 }

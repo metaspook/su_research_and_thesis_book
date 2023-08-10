@@ -25,7 +25,7 @@ class AuthPage extends StatelessWidget {
           ).toPreferredSize(tabBar.preferredSize),
         ),
         body: RepositoryProvider<ImageRepo>(
-          create: (context) => ImageRepo(),
+          create: (context) => const ImageRepo(),
           child: MultiBlocProvider(
             providers: [
               BlocProvider<SignUpBloc>(
