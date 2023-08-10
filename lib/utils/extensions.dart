@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 extension BuildContextExt on BuildContext {
   ThemeData get theme => Theme.of(this);
   MediaQueryData get mediaQuery => MediaQuery.of(this);
+  ScaffoldMessengerState get scaffoldMessenger => ScaffoldMessenger.of(this);
 }
 
 /// Widget Extensions.
@@ -23,6 +24,9 @@ extension WidgetExt on Widget {
 extension StringExt on String {
   int toInt() => int.parse(this);
   double toDouble() => double.parse(this);
+  String get first => this[0];
+  String get last => this[length - 1];
+  String get reversed => String.fromCharCodes(codeUnits.reversed);
 }
 
 /// Number Extensions.
