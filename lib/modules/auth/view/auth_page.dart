@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
 import 'package:su_thesis_book/shared/extensions/extensions.dart';
-import 'package:su_thesis_book/shared/repositories/repositories.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
+
+  static Route<void> route() {
+    return MaterialPageRoute<void>(builder: (_) => const AuthPage());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,19 +26,8 @@ class AuthPage extends StatelessWidget {
             child: tabBar,
           ).toPreferredSize(tabBar.preferredSize),
         ),
-        body: RepositoryProvider<ImageRepo>(
-          create: (context) => const ImageRepo(),
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider<SignUpBloc>(
-                create: (context) =>
-                    SignUpBloc(imageRepo: context.read<ImageRepo>()),
-              ),
-            ],
-            child: const TabBarView(
-              children: [SignInView(), SignUpView()],
-            ),
-          ),
+        body: const TabBarView(
+          children: [SignInView(), SignUpView()],
         ),
       ),
     );

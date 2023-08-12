@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:su_thesis_book/router/app_routes.dart';
 
 class SignInView extends StatelessWidget {
   const SignInView({super.key});
@@ -25,7 +26,10 @@ class SignInView extends StatelessWidget {
         const SizedBox(height: 30),
 
         // Proceed button
-        ElevatedButton(onPressed: () {}, child: const Text('Proceed')),
+        ElevatedButton(
+          onPressed: () => context.push(AppRoutes.home.path),
+          child: const Text('Proceed'),
+        ),
       ],
     );
   }
