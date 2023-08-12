@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:su_thesis_book/shared/shared.dart';
-import 'package:su_thesis_book/utils/utils.dart';
+import 'package:su_thesis_book/shared/extensions/extensions.dart';
+import 'package:su_thesis_book/shared/models/models.dart';
+import 'package:su_thesis_book/shared/widgets/widgets.dart';
 
 class CommentCard extends StatelessWidget {
   const CommentCard(this.comment, {super.key});

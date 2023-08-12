@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:su_thesis_book/modules/comments/comments.dart';
-import 'package:su_thesis_book/shared/shared.dart';
-import 'package:su_thesis_book/utils/utils.dart';
+import 'package:su_thesis_book/shared/extensions/extensions.dart';
+import 'package:su_thesis_book/shared/models/models.dart';
 
 class CommentsPage extends StatelessWidget {
   const CommentsPage({super.key});
@@ -10,7 +10,7 @@ class CommentsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Mod.backButton(context),
+        leading: context.backButton,
         centerTitle: true,
         title: const Text('Comments'),
       ),

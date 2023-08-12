@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class Thesis extends Equatable {
+final class Thesis extends Equatable {
   const Thesis({
     required this.name,
     required this.author,

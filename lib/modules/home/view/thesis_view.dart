@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
-import 'package:su_thesis_book/shared/shared.dart';
-import 'package:su_thesis_book/utils/extensions.dart';
+import 'package:su_thesis_book/shared/extensions/extensions.dart';
+import 'package:su_thesis_book/shared/models/models.dart';
 
 class ThesisView extends StatefulWidget {
   const ThesisView({required this.thesis, super.key});
@@ -24,7 +24,7 @@ class _ThesisViewState extends State<ThesisView> {
     final text = '${pageIndex + 1} / $pageCount';
     return Scaffold(
       appBar: AppBar(
-        leading: Mod.backButton(context),
+        leading: context.backButton,
         centerTitle: true,
         title: Text(widget.thesis.name),
       ),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:su_thesis_book/shared/shared.dart';
+import 'package:su_thesis_book/shared/models/models.dart';
+import 'package:su_thesis_book/shared/services/services.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
 class CommentsRepo {

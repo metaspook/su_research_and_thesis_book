@@ -1,12 +1,16 @@
-import 'dart:io';
+import 'dart:io' show File;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:su_thesis_book/gen/assets.gen.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
+import 'package:su_thesis_book/shared/extensions/extensions.dart';
+// import 'package:su_thesis_book/modules/auth/auth.dart';
+// import 'package:su_thesis_book/shared/shared.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
 typedef SignUpBlocSelector<T> = BlocSelector<SignUpBloc, SignUpState, T>;
+typedef SignUpBlocBlocListener = BlocListener<SignUpBloc, SignUpState>;
 
 class SignUpView extends StatelessWidget {
   const SignUpView({super.key});
@@ -32,9 +36,9 @@ class SignUpView extends StatelessWidget {
             SizedBox(
               height: 200,
               width: 225,
-              child: SignUpBlocSelector<String?>(
-                selector: (state) => state.imagePath,
-                builder: (context, imagePath) {
+              child: SignUpBlocSelector<String>(
+                selector: (state) => state.croppedImagePath,
+                builder: (context, croppedImagePath) {
                   return Card(
                     shape: const RoundedRectangleBorder(
                       borderRadius: AppThemes.borderRadius,
@@ -44,30 +48,42 @@ class SignUpView extends StatelessWidget {
                       padding: const EdgeInsets.all(8),
                       child: ClipRRect(
                         borderRadius: AppThemes.borderRadius,
-                        child: imagePath == null
+                        child: croppedImagePath.isEmpty
                             ? Assets.images.placeholderUser01
                                 .image(fit: BoxFit.cover)
-                            : Image.file(File(imagePath)),
+                            : Image.file(File(croppedImagePath)),
                       ),
                     ),
                   );
                 },
               ),
             ),
-            Column(
-              children: [
-                // Camera Button
-                ElevatedButton(
-                  onPressed: () => bloc.add(SignUpCameraImagePicked()),
-                  child: const Text('Camera'),
-                ),
-                const SizedBox(height: 20),
-                // Gallery Button
-                ElevatedButton(
-                  onPressed: () => bloc.add(SignUpGalleryImagePicked()),
-                  child: const Text('Gallery'),
-                ),
-              ],
+            SignUpBlocBlocListener(
+              listenWhen: (previous, current) =>
+                  previous.pickedImagePath != current.pickedImagePath,
+              listener: (context, state) async {
+                final croppedImagePath =
+                    await context.croppedImagePath(state.pickedImagePath);
+                bloc.add(SignUpImageCropped(croppedImagePath));
+              },
+              child: Column(
+                children: [
+                  // Camera Button
+                  ElevatedButton(
+                    onPressed: () =>
+                        bloc.add(const SignUpImagePicked(ImageSource.camera)),
+                    child: const Text('Camera'),
+                  ),
+                  const SizedBox(height: 20),
+                  // Gallery Button
+                  ElevatedButton(
+                    onPressed: () => bloc.add(
+                      const SignUpImagePicked(ImageSource.gallery),
+                    ),
+                    child: const Text('Gallery'),
+                  ),
+                ],
+              ),
             )
           ],
         ),

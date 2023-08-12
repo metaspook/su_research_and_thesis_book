@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class Comment extends Equatable {
+final class Comment extends Equatable {
   const Comment({
     required this.id,
     required this.userId,

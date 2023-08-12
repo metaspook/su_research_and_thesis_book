@@ -1,11 +1,11 @@
 import 'dart:typed_data';
 
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+
+export 'package:image_picker/image_picker.dart' show ImageSource;
 
 // defined outside to make repo const (experimental).
 final _imagePicker = ImagePicker();
-final _imageCropper = ImageCropper();
 late String? _errorMsg;
 
 class ImageRepo {
@@ -17,31 +17,13 @@ class ImageRepo {
     return file;
   }
 
-  Future<CroppedFile?> _cropImage(String sourcePath) async {
-    final file = await _imageCropper.cropImage(sourcePath: sourcePath);
-    if (file != null) _errorMsg = "Couldn't crop the image";
-    return file;
-  }
-
   // Public APIs
   String? get errorMsg => _errorMsg;
 
-  Future<String?> get cameraImagePath async =>
-      (await _pickImage(ImageSource.camera))?.path;
+  Future<String?> pickedImagePath(ImageSource source) async =>
+      (await _pickImage(source))?.path;
 
-  Future<String?> get galleryImagePath async =>
-      (await _pickImage(ImageSource.gallery))?.path;
-
-  Future<String?> cropImagePath(String sourcePath) async =>
-      (await _cropImage(sourcePath))?.path;
-
-  //- useful for web
-  Future<Uint8List?> get cameraImageAsBytes async =>
-      (await _pickImage(ImageSource.camera))?.readAsBytes();
-
-  Future<Uint8List?> get galleryImageAsBytes async =>
-      (await _pickImage(ImageSource.gallery))?.readAsBytes();
-
-  Future<Uint8List?> cropImageAsBytes(String sourcePath) async =>
-      (await _cropImage(sourcePath))?.readAsBytes();
+  //- useful for web and Image.memory widget.
+  Future<Uint8List?> pickedImageAsBytes(ImageSource source) async =>
+      (await _pickImage(source))?.readAsBytes();
 }

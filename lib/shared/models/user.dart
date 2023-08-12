@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class User extends Equatable {
+final class User extends Equatable {
   const User({required this.id, required this.username});
   factory User.fromJson(Map<String, dynamic> json) {
     return User(

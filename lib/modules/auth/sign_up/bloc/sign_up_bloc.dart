@@ -1,7 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:su_thesis_book/shared/shared.dart';
-import 'package:su_thesis_book/utils/utils.dart';
+import 'package:su_thesis_book/shared/extensions/extensions.dart';
+import 'package:su_thesis_book/shared/repositories/repositories.dart';
+
+export 'package:su_thesis_book/shared/repositories/repositories.dart'
+    show ImageSource;
 
 part 'sign_up_event.dart';
 part 'sign_up_state.dart';
@@ -12,8 +15,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         super(const SignUpState()) {
     // Register Event Handlers
     on<SignUpEdited>(_onEdited);
-    on<SignUpCameraImagePicked>(_onCameraImagePicked);
-    on<SignUpGalleryImagePicked>(_onGalleryImagePicked);
+    on<SignUpImagePicked>(_onImagePicked);
+    on<SignUpImageCropped>(_onImageCropped);
   }
 
   final ImageRepo _imageRepo;
@@ -26,25 +29,18 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     event.doPrint();
   }
 
-  Future<void> _onCameraImagePicked(
-    SignUpCameraImagePicked event,
+  Future<void> _onImagePicked(
+    SignUpImagePicked event,
     Emitter<SignUpState> emit,
   ) async {
-    final imagePath = await _imageRepo.cameraImagePath;
-    if (imagePath != null) {
-      final croppedImagePath = await _imageRepo.cropImagePath(imagePath);
-      emit(state.copyWith(imagePath: croppedImagePath));
-    }
+    final imagePath = await _imageRepo.pickedImagePath(event.source);
+    emit(state.copyWith(pickedImagePath: imagePath));
   }
 
-  Future<void> _onGalleryImagePicked(
-    SignUpGalleryImagePicked event,
+  Future<void> _onImageCropped(
+    SignUpImageCropped event,
     Emitter<SignUpState> emit,
   ) async {
-    final imagePath = await _imageRepo.galleryImagePath;
-    if (imagePath != null) {
-      final croppedImagePath = await _imageRepo.cropImagePath(imagePath);
-      emit(state.copyWith(imagePath: croppedImagePath));
-    }
+    emit(state.copyWith(croppedImagePath: event.imagePath));
   }
 }

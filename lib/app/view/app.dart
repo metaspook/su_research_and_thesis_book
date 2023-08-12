@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:su_thesis_book/l10n/l10n.dart';
-import 'package:su_thesis_book/modules/modules.dart';
+import 'package:su_thesis_book/modules/auth/auth.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
 class App extends StatelessWidget {

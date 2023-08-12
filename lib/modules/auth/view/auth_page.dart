@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:su_thesis_book/modules/modules.dart';
-import 'package:su_thesis_book/shared/shared.dart';
+import 'package:su_thesis_book/modules/auth/auth.dart';
+import 'package:su_thesis_book/shared/extensions/extensions.dart';
+import 'package:su_thesis_book/shared/repositories/repositories.dart';
 import 'package:su_thesis_book/theme/theme.dart';
-import 'package:su_thesis_book/utils/utils.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});

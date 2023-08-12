@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
-import 'package:su_thesis_book/shared/shared.dart';
+import 'package:su_thesis_book/shared/models/models.dart';
 
 class ThesisCard extends StatelessWidget {
   const ThesisCard(this.thesis, {super.key});
