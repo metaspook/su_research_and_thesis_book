@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:su_thesis_book/gen/assets.gen.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
-import 'package:su_thesis_book/router/app_routes.dart';
 import 'package:su_thesis_book/shared/extensions/extensions.dart';
 // import 'package:su_thesis_book/modules/auth/auth.dart';
 // import 'package:su_thesis_book/shared/shared.dart';
@@ -22,13 +21,26 @@ class SignUpView extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(20),
       children: [
+        // Name
         TextField(
-          onChanged: (value) => bloc.add(SignUpEdited(email: value)),
+          onChanged: (value) => bloc.add(SignUpEdited(name: value)),
           decoration: const InputDecoration(hintText: 'name...'),
         ),
-        const TextField(decoration: InputDecoration(hintText: 'email...')),
-        const TextField(decoration: InputDecoration(hintText: 'password...')),
-        const TextField(decoration: InputDecoration(hintText: 'phone...')),
+        // E-mail
+        TextField(
+          onChanged: (value) => bloc.add(SignUpEdited(email: value)),
+          decoration: const InputDecoration(hintText: 'email...'),
+        ),
+        // Password
+        TextField(
+          onChanged: (value) => bloc.add(SignUpEdited(password: value)),
+          decoration: const InputDecoration(hintText: 'password...'),
+        ),
+        // Phone
+        TextField(
+          onChanged: (value) => bloc.add(SignUpEdited(phone: value)),
+          decoration: const InputDecoration(hintText: 'phone...'),
+        ),
         const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,7 +107,7 @@ class SignUpView extends StatelessWidget {
         ElevatedButton.icon(
           icon: const Icon(Icons.forward_rounded),
           label: const Text('Proceed'),
-          onPressed: () => context.go(AppRoutes.home.path),
+          onPressed: () => bloc.add(const SignUpProceeded()),
         ),
       ],
     );

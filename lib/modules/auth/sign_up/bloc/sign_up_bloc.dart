@@ -17,6 +17,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<SignUpEdited>(_onEdited);
     on<SignUpImagePicked>(_onImagePicked);
     on<SignUpImageCropped>(_onImageCropped);
+    on<SignUpProceeded>(_onProceeded);
   }
 
   final ImageRepo _imageRepo;
@@ -26,7 +27,14 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     SignUpEdited event,
     Emitter<SignUpState> emit,
   ) async {
-    event.doPrint();
+    emit(
+      state.copyWith(
+        name: event.name,
+        email: event.email,
+        password: event.password,
+        phone: event.phone,
+      ),
+    );
   }
 
   Future<void> _onImagePicked(
@@ -42,5 +50,12 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     Emitter<SignUpState> emit,
   ) async {
     emit(state.copyWith(croppedImagePath: event.imagePath));
+  }
+
+  Future<void> _onProceeded(
+    SignUpProceeded event,
+    Emitter<SignUpState> emit,
+  ) async {
+    state.doPrint();
   }
 }

@@ -30,3 +30,7 @@ final class SignUpImageCropped extends SignUpEvent {
 
   final String? imagePath;
 }
+
+final class SignUpProceeded extends SignUpEvent {
+  const SignUpProceeded();
+}
