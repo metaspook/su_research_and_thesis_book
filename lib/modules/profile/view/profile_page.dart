@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:su_thesis_book/shared/extensions/extensions.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -14,15 +13,15 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(title: const Text('Profile')),
       body: ListView(
         padding: const EdgeInsets.all(15),
-        children: [
+        children: const [
           // Assets.images.placeholderUser01.image(fit: BoxFit.cover),
           HaloAvatar(
-            // imagePath:
-            //     'https://cdn.icon-icons.com/icons2/2468/PNG/512/user_kids_avatar_user_profile_icon_149314.png',
-            haloAccent: context.theme.colorScheme.primary,
-            size: 4,
+            imagePath:
+                'https://cdn.icon-icons.com/icons2/2468/PNG/512/user_kids_avatar_user_profile_icon_149314.png',
+
+            // size: 3,
           ),
-          const Placeholder(),
+          Placeholder(),
         ],
       ),
     );
