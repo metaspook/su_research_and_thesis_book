@@ -11,21 +11,21 @@ final class Comment extends Equatable {
 
   factory Comment.fromJson(Map<String, dynamic> json) {
     return Comment(
-      id: json['id'] as String,
+      id: json['id'] as int,
       userId: json['userId'] as String,
       thesisId: json['thesisId'] as String,
       body: json['body'] as String,
       createdAt: DateTime.fromMillisecondsSinceEpoch(json['createdAt'] as int),
     );
   }
-  final String id;
+  final int id;
   final String userId;
   final String thesisId;
   final String body;
   final DateTime createdAt;
 
   Comment copyWith({
-    String? id,
+    int? id,
     String? userId,
     String? thesisId,
     String? body,

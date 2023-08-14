@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:su_thesis_book/gen/assets.gen.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
+import 'package:su_thesis_book/router/app_routes.dart';
 import 'package:su_thesis_book/shared/extensions/extensions.dart';
 // import 'package:su_thesis_book/modules/auth/auth.dart';
 // import 'package:su_thesis_book/shared/shared.dart';
@@ -69,18 +70,20 @@ class SignUpView extends StatelessWidget {
               child: Column(
                 children: [
                   // Camera Button
-                  ElevatedButton(
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.camera_alt_rounded),
+                    label: const Text('Camera'),
                     onPressed: () =>
                         bloc.add(const SignUpImagePicked(ImageSource.camera)),
-                    child: const Text('Camera'),
                   ),
                   const SizedBox(height: 20),
                   // Gallery Button
-                  ElevatedButton(
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.photo_library_rounded),
+                    label: const Text('Gallery'),
                     onPressed: () => bloc.add(
                       const SignUpImagePicked(ImageSource.gallery),
                     ),
-                    child: const Text('Gallery'),
                   ),
                 ],
               ),
@@ -89,7 +92,11 @@ class SignUpView extends StatelessWidget {
         ),
         const SizedBox(height: 30),
         // Proceed button
-        ElevatedButton(onPressed: () {}, child: const Text('Proceed')),
+        ElevatedButton.icon(
+          icon: const Icon(Icons.forward_rounded),
+          label: const Text('Proceed'),
+          onPressed: () => context.go(AppRoutes.home.path),
+        ),
       ],
     );
   }

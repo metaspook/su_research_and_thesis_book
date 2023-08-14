@@ -26,9 +26,10 @@ class SignInView extends StatelessWidget {
         const SizedBox(height: 30),
 
         // Proceed button
-        ElevatedButton(
-          onPressed: () => context.push(AppRoutes.home.path),
-          child: const Text('Proceed'),
+        ElevatedButton.icon(
+          icon: const Icon(Icons.forward_rounded),
+          label: const Text('Proceed'),
+          onPressed: () => context.go(AppRoutes.home.path),
         ),
       ],
     );

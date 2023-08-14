@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
+import 'package:su_thesis_book/router/app_routes.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
@@ -26,8 +27,11 @@ class HomeView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 4.5),
                 child: GestureDetector(
-                  onTap: () {},
-                  child: const HaloAvatar(),
+                  onTap: () => context.push(AppRoutes.profile.path),
+                  child: const HaloAvatar(
+                    imagePath:
+                        'https://cdn.icon-icons.com/icons2/2468/PNG/512/user_kids_avatar_user_profile_icon_149314.png',
+                  ),
                 ),
               ),
             ],

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:su_thesis_book/router/app_routes.dart';
+import 'package:su_thesis_book/shared/extensions/build_context_ext.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -10,7 +13,7 @@ class ProfilePage extends StatelessWidget {
     //     .readAsBytes()
     //     .then(print);
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
+      appBar: AppBar(title: const Text('Profile'), leading: context.backButton),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
         children: [
@@ -24,42 +27,29 @@ class ProfilePage extends StatelessWidget {
           Card(
             child: Column(
               children: [
-                // DataTable(
-                //   horizontalMargin: 0,
-                //   columnSpacing: 0,
-                //   columns: const [
-                //     DataColumn(label: SizedBox.shrink()),
-                //     DataColumn(label: SizedBox.shrink()),
-                //   ],
-                //   rows: [
-                //     DataRow(
-                //       cells: [
-                //         DataCell(_textFormField('Name:')),
-                //         DataCell(_textFormField('Raifur Rahman')),
-                //       ],
-                //     ),
-                //     DataRow(
-                //       cells: [
-                //         DataCell(_textFormField('Role:')),
-                //         DataCell(_textFormField('Raifur Rahman')),
-                //       ],
-                //     ),
-                //   ],
-                // ),
-                _textFormField('Name   : Raifur Rahman'),
-                _textFormField('Role   : Student'),
-                _textFormField('Phone  : +01344886532'),
-                _textFormField('E-mail : example@mail.com'),
+                _textFormField(context, 'Name  : Raifur Rahman'),
+                _textFormField(context, 'Role  : Student'),
+                _textFormField(context, 'Phone : +01344886532'),
+                _textFormField(context, 'E-mail: example@mail.com'),
               ],
             ),
           ),
+          const SizedBox(height: 30),
+          ElevatedButton.icon(
+            onPressed: () => context.go(AppRoutes.root.path),
+            icon: const Icon(Icons.logout_outlined),
+            label: const Text('Logout'),
+          )
         ],
       ),
     );
   }
 
-  Widget _textFormField(String initialValue) => TextFormField(
+  Widget _textFormField(BuildContext context, String initialValue) =>
+      TextFormField(
         initialValue: initialValue,
+        style: context.theme.textTheme.titleLarge
+            ?.copyWith(fontFamily: GoogleFonts.ubuntuMono().fontFamily),
         // enabled: false,
         readOnly: true,
         decoration: const InputDecoration(

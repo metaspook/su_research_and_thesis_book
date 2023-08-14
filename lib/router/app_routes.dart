@@ -11,7 +11,7 @@ export 'package:go_router/go_router.dart' show GoRouterHelper;
 
 final class AppRoutes {
   final router = GoRouter(
-    initialLocation: '/profile',
+    // initialLocation: '/root',
     routes: <RouteBase>[
       root,
       home,

@@ -24,7 +24,7 @@ class CommentsPage extends StatelessWidget {
             itemCount: 10,
             itemBuilder: (context, index) {
               final comment = Comment(
-                id: 'author',
+                id: 2,
                 userId: 'profileImagePath',
                 thesisId: 'profileImagePath',
                 body: 'content',
