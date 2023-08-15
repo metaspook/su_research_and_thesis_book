@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:su_thesis_book/shared/extensions/extensions.dart';
+import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
 
 export 'package:su_thesis_book/shared/repositories/repositories.dart'
@@ -60,14 +61,33 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   ) async {
     state.doPrint();
     emit(state.copyWith(status: SignUpStatus.loading));
-    await Future.delayed(
-      const Duration(seconds: 2),
-      () => emit(state.copyWith(status: SignUpStatus.success)),
-    );
-    // final userCredential =
-    //     await _authRepo.signUp(email: state.email, password: state.password);
-    // if (userCredential != null) {
-    // emit(state.copyWith(status: SignUpStatus.success));
-    // }
+    // await Future.delayed(
+    //   const Duration(seconds: 2),
+    //   () => emit(
+    //     state.copyWith(
+    //       status: SignUpStatus.success,
+    //       statusMsg: 'Success! User signed up.',
+    //     ),
+    //   ),
+    // );
+    final firebaseUser =
+        (await _authRepo.signUp(email: state.email, password: state.password))
+            ?.user;
+    if (firebaseUser != null) {
+      final user = User(
+        id: firebaseUser.uid,
+        name: state.name,
+        email: state.email,
+        phone: state.phone,
+        photoUrl: state.croppedImagePath,
+      );
+      _authRepo.addUser(user);
+      emit(
+        state.copyWith(
+          status: SignUpStatus.success,
+          statusMsg: 'Success! User signed up.',
+        ),
+      );
+    }
   }
 }

@@ -11,7 +11,7 @@ import 'package:su_thesis_book/shared/widgets/translucent_loader.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
 typedef SignUpBlocSelector<T> = BlocSelector<SignUpBloc, SignUpState, T>;
-typedef SignUpBlocBlocListener = BlocListener<SignUpBloc, SignUpState>;
+typedef SignUpBlocListener = BlocListener<SignUpBloc, SignUpState>;
 
 class SignUpView extends StatelessWidget {
   const SignUpView({super.key});
@@ -76,7 +76,7 @@ class SignUpView extends StatelessWidget {
                   },
                 ),
               ),
-              SignUpBlocBlocListener(
+              SignUpBlocListener(
                 listenWhen: (previous, current) =>
                     previous.pickedImagePath != current.pickedImagePath,
                 listener: (context, state) async {
@@ -109,10 +109,26 @@ class SignUpView extends StatelessWidget {
           ),
           const SizedBox(height: 30),
           // Proceed button
-          ElevatedButton.icon(
-            icon: const Icon(Icons.forward_rounded),
-            label: const Text('Proceed'),
-            onPressed: () => bloc.add(const SignUpProceeded()),
+
+          SignUpBlocListener(
+            listenWhen: (previous, current) =>
+                // previous.statusMsg != current.statusMsg,
+                current.status == SignUpStatus.success ||
+                current.status == SignUpStatus.failure,
+            listener: (context, state) {
+              final snackBar = SnackBar(
+                backgroundColor: context.theme.snackBarTheme.backgroundColor
+                    ?.withOpacity(.25),
+                behavior: SnackBarBehavior.floating,
+                content: Text(state.statusMsg),
+              );
+              context.scaffoldMessenger.showSnackBar(snackBar);
+            },
+            child: ElevatedButton.icon(
+              icon: const Icon(Icons.forward_rounded),
+              label: const Text('Proceed'),
+              onPressed: () => bloc.add(const SignUpProceeded()),
+            ),
           ),
         ],
       ),

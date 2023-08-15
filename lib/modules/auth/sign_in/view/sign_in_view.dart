@@ -29,7 +29,7 @@ class SignInView extends StatelessWidget {
         ElevatedButton.icon(
           icon: const Icon(Icons.forward_rounded),
           label: const Text('Proceed'),
-          onPressed: () => context.go(AppRoutes.home.path),
+          onPressed: () => context.go(AppRouter.home.path),
         ),
       ],
     );

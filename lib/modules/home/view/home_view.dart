@@ -27,7 +27,7 @@ class HomeView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 4.5),
                 child: GestureDetector(
-                  onTap: () => context.push(AppRoutes.profile.path),
+                  onTap: () => context.push(AppRouter.profile.path),
                   child: const HaloAvatar(
                     imagePath:
                         'https://cdn.icon-icons.com/icons2/2468/PNG/512/user_kids_avatar_user_profile_icon_149314.png',
