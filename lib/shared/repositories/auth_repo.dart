@@ -13,7 +13,7 @@ class AuthRepo {
   FirebaseAuth get _firebaseAuth => FirebaseAuth.instance;
 
   // Public APIs
-  Stream<models.User> get userStream => _userController.stream;
+  Stream<models.User?> get userStream => _userController.stream;
   void addUser(models.User user) => _userController.add(user);
   void dispose() => _userController.close();
   // StreamController<models.User> get userController => _userController;

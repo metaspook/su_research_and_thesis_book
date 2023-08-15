@@ -2,37 +2,32 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:su_thesis_book/app/app.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/modules/profile/profile.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
 
+// Exposes routing interface for view.
 export 'package:go_router/go_router.dart' show GoRouterHelper;
 
 final class AppRouter {
   //-- Register routes
   final config = GoRouter(
-    initialLocation: '/',
+    initialLocation: '/auth',
     routes: <RouteBase>[
-      root,
+      // root,
       home,
+      auth,
       profile,
     ],
   );
 
   //-- Define routes
-  // Root
-  static final root = GoRoute(
-    name: 'root',
-    path: '/',
-    // redirect: (context, state) {
-    //  context.select((SubjectBloc bloc) => bloc)
-    // },
-  );
   // Home
   static final home = GoRoute(
     name: 'home',
-    path: '/home',
+    path: '/',
     builder: (context, state) {
       return const HomePage();
     },
@@ -41,6 +36,11 @@ final class AppRouter {
   static final auth = GoRoute(
     name: 'auth',
     path: '/auth',
+    redirect: (context, state) {
+      final isAuthenticated =
+          context.watch<AppCubit>().state.status == AppStatus.authenticated;
+      return isAuthenticated ? '/' : null;
+    },
     builder: (context, state) {
       return MultiRepositoryProvider(
         providers: [

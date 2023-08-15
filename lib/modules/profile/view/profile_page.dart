@@ -36,7 +36,7 @@ class ProfilePage extends StatelessWidget {
           ),
           const SizedBox(height: 30),
           ElevatedButton.icon(
-            onPressed: () => context.go(AppRouter.root.path),
+            onPressed: () => context.go(AppRouter.auth.path),
             icon: const Icon(Icons.logout_outlined),
             label: const Text('Logout'),
           )
