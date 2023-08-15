@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:su_thesis_book/router/app_routes.dart';
+import 'package:su_thesis_book/router/app_router.dart';
 import 'package:su_thesis_book/shared/extensions/build_context_ext.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 

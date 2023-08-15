@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:su_thesis_book/router/app_routes.dart';
+import 'package:su_thesis_book/router/app_router.dart';
 
 class SignInView extends StatelessWidget {
   const SignInView({super.key});
