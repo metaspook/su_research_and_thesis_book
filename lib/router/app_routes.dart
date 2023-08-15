@@ -22,13 +22,22 @@ final class AppRoutes {
   static final root = GoRoute(
     path: '/',
     builder: (context, state) {
-      return RepositoryProvider<ImageRepo>(
-        create: (context) => const ImageRepo(),
+      return MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider<AuthRepo>(
+            create: (context) => const AuthRepo(),
+          ),
+          RepositoryProvider<ImageRepo>(
+            create: (context) => const ImageRepo(),
+          ),
+        ],
         child: MultiBlocProvider(
           providers: [
             BlocProvider<SignUpBloc>(
-              create: (context) =>
-                  SignUpBloc(imageRepo: context.read<ImageRepo>()),
+              create: (context) => SignUpBloc(
+                authRepo: context.read<AuthRepo>(),
+                imageRepo: context.read<ImageRepo>(),
+              ),
             ),
           ],
           child: const AuthPage(),

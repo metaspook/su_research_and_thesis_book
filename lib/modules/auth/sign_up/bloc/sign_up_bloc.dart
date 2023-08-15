@@ -10,8 +10,9 @@ part 'sign_up_event.dart';
 part 'sign_up_state.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
-  SignUpBloc({required ImageRepo imageRepo})
-      : _imageRepo = imageRepo,
+  SignUpBloc({required AuthRepo authRepo, required ImageRepo imageRepo})
+      : _authRepo = authRepo,
+        _imageRepo = imageRepo,
         super(const SignUpState()) {
     // Register Event Handlers
     on<SignUpEdited>(_onEdited);
@@ -20,6 +21,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<SignUpProceeded>(_onProceeded);
   }
 
+  final AuthRepo _authRepo;
   final ImageRepo _imageRepo;
 
   // Define Event Handlers
@@ -57,5 +59,15 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     Emitter<SignUpState> emit,
   ) async {
     state.doPrint();
+    emit(state.copyWith(status: SignUpStatus.loading));
+    await Future.delayed(
+      const Duration(seconds: 2),
+      () => emit(state.copyWith(status: SignUpStatus.success)),
+    );
+    // final userCredential =
+    //     await _authRepo.signUp(email: state.email, password: state.password);
+    // if (userCredential != null) {
+    // emit(state.copyWith(status: SignUpStatus.success));
+    // }
   }
 }
