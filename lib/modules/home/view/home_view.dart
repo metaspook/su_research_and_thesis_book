@@ -52,7 +52,7 @@ class HomeView extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         label: const Text('Add Thesis'),
-        icon: const Icon(Icons.menu_book_rounded),
+        icon: const Icon(Icons.playlist_add_outlined),
         onPressed: () {
           ThesisEntryDialog.show(context);
         },

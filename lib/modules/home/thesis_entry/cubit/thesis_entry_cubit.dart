@@ -10,4 +10,8 @@ class ThesisEntryCubit extends Cubit<ThesisEntryState> {
   void onChangedThesisName(String value) {
     value.doPrint();
   }
+
+  void pickPdf(String value) {
+    value.doPrint();
+  }
 }
