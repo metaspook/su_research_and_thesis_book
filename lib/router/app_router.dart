@@ -14,7 +14,8 @@ export 'package:go_router/go_router.dart' show GoRouterHelper;
 final class AppRouter {
   //-- Register routes
   final config = GoRouter(
-    initialLocation: '/',
+    // initialLocation: home.path,
+    initialLocation: auth.path,
     routes: <RouteBase>[
       // root,
       home,
@@ -38,7 +39,7 @@ final class AppRouter {
     path: '/auth',
     redirect: (context, state) {
       final isAuthenticated =
-          context.watch<AppCubit>().state.status == AppStatus.authenticated;
+          context.read<AppCubit>().state.status == AppStatus.authenticated;
       return isAuthenticated ? '/' : null;
     },
     builder: (context, state) {

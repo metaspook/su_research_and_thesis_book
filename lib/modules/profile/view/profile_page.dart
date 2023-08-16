@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:su_thesis_book/router/app_router.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
@@ -36,7 +37,10 @@ class ProfilePage extends StatelessWidget {
           ),
           const SizedBox(height: 30),
           ElevatedButton.icon(
-            onPressed: () => const AuthRepo().signOut(),
+            onPressed: () {
+              const AuthRepo().signOut();
+              context.go(AppRouter.auth.path);
+            },
             icon: const Icon(Icons.logout_outlined),
             label: const Text('Sign Out'),
           )
