@@ -4,7 +4,6 @@ import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
-import 'package:su_thesis_book/shared/repositories/repositories.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 
 class HomeView extends StatelessWidget {
@@ -14,7 +13,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    const CommentsRepo().fetchComments().then(print);
+    // const CommentsRepo().fetchComments().then(print);
 
     return Scaffold(
       body: NestedScrollView(
@@ -54,7 +53,7 @@ class HomeView extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.showAlertDialog<AlertDialog>();
+          ThesisEntryDialog.show(context);
         },
         child: const Icon(CupertinoIcons.book),
       ),

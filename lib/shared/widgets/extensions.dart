@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
 // Config
@@ -11,31 +10,6 @@ final _imageCropper = ImageCropper();
 /// Callable Widget Extensions.
 extension CallableWidgetExt on BuildContext {
   ScaffoldMessengerState get scaffoldMessenger => ScaffoldMessenger.of(this);
-  Future<T?> showAlertDialog<T>() => showDialog<T>(
-        context: this,
-        builder: (context) => AlertDialog(
-          insetPadding: const EdgeInsets.all(10),
-          title: const Text('Thesis Entry', textAlign: TextAlign.center),
-          content: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: const Column(
-              children: [
-                TextField(
-                  decoration: InputDecoration(
-                    border: AppThemes.outlineInputBorder,
-                    label: Text('Thesis Name'),
-                  ),
-                ),
-                SizedBox(height: 30),
-                PdfViewer(
-                  uri: 'https://css4.pub/2015/usenix/example.pdf',
-                  heightPercent: .5,
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
 
   Widget? get backButton => Navigator.canPop(this)
       ? IconButton(
