@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
@@ -51,11 +50,12 @@ class HomeView extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
+        label: const Text('Add Thesis'),
+        icon: const Icon(Icons.menu_book_rounded),
         onPressed: () {
           ThesisEntryDialog.show(context);
         },
-        child: const Icon(CupertinoIcons.book),
       ),
     );
   }

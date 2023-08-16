@@ -15,11 +15,12 @@ class AppThemes {
       brightness: brightness,
       seedColor: seedColor ?? _seedColor,
     );
+    //-- Define Theme Data.
     final themeData = ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
-      // AppBar Theme
 
+      // AppBar Theme
       appBarTheme: AppBarTheme(
         shape: const RoundedRectangleBorder(borderRadius: appBarBorderRadius),
         backgroundColor: colorScheme.inversePrimary.withOpacity(.75),
@@ -33,6 +34,10 @@ class AppThemes {
 
     return themeData.copyWith(
       textTheme: GoogleFonts.ubuntuTextTheme(themeData.textTheme),
+      // Floating Action Bar
+      floatingActionButtonTheme: themeData.floatingActionButtonTheme.copyWith(
+        backgroundColor: themeData.appBarTheme.backgroundColor,
+      ),
     );
   }
 
