@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
-import 'package:su_thesis_book/shared/extensions/extensions.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
+import 'package:su_thesis_book/shared/widgets/widgets.dart';
 
 class ThesisView extends StatefulWidget {
   const ThesisView({required this.thesis, super.key});
@@ -14,14 +13,8 @@ class ThesisView extends StatefulWidget {
 }
 
 class _ThesisViewState extends State<ThesisView> {
-  late PDFViewController pdfViewController;
-
-  int pageCount = 0;
-  int pageIndex = 0;
-
   @override
   Widget build(BuildContext context) {
-    final text = '${pageIndex + 1} / $pageCount';
     return Scaffold(
       appBar: AppBar(
         leading: context.backButton,
@@ -38,60 +31,8 @@ class _ThesisViewState extends State<ThesisView> {
               clipBehavior: Clip.none,
               child: Column(
                 children: [
-                  LimitedBox(
-                    maxHeight: context.mediaQuery.size.height * .8225,
-                    child: Stack(
-                      children: [
-                        PDF(
-                          swipeHorizontal: true,
-                          onRender: (pages) => setState(() {
-                            pageCount = pages!;
-                          }),
-                          onViewCreated: (controller) =>
-                              setState(() => pdfViewController = controller),
-                          onPageChanged: (page, total) => setState(() {
-                            pageIndex = page!;
-                          }),
-                          onLinkHandler: (uri) => print('object $uri'),
-                        ).cachedFromUrl(
-                          'https://css4.pub/2015/usenix/example.pdf',
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                              visualDensity: VisualDensity.compact,
-                              onPressed: () {
-                                final page =
-                                    pageIndex == 0 ? pageCount : pageIndex - 1;
-                                pdfViewController.setPage(page);
-                              },
-                              icon: const Icon(Icons.chevron_left_rounded),
-                            ),
-                            Text(
-                              text,
-                              style: context
-                                  .theme.textButtonTheme.style?.textStyle
-                                  ?.resolve({
-                                MaterialState.pressed,
-                                MaterialState.hovered,
-                                MaterialState.focused,
-                              }),
-                            ),
-                            IconButton(
-                              visualDensity: VisualDensity.compact,
-                              onPressed: () {
-                                final page = pageIndex == pageCount - 1
-                                    ? 0
-                                    : pageIndex + 1;
-                                pdfViewController.setPage(page);
-                              },
-                              icon: const Icon(Icons.chevron_right_rounded),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
+                  const PdfViewer(
+                    uri: 'https://css4.pub/2015/usenix/example.pdf',
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,

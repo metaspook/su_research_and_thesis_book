@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
+// NOTE: Separate extensions as file per type in a folder if getting larger.
 
-// NOTE: Separate extensions in files if getting larger.
+// Config
+// <implement here, if any>
 
 /// String Extensions.
 extension StringExt on String {

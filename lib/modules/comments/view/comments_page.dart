@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:su_thesis_book/modules/comments/comments.dart';
-import 'package:su_thesis_book/shared/extensions/extensions.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
+import 'package:su_thesis_book/shared/widgets/widgets.dart';
+import 'package:su_thesis_book/theme/theme.dart';
 
 class CommentsPage extends StatelessWidget {
   const CommentsPage({super.key});

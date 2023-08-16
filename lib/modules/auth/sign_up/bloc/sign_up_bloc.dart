@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:su_thesis_book/shared/extensions/extensions.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
+import 'package:su_thesis_book/utils/utils.dart';
 
 export 'package:su_thesis_book/shared/repositories/repositories.dart'
     show ImageSource;

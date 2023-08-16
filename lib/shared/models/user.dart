@@ -18,6 +18,17 @@ class User extends Equatable {
     );
   }
 
+  // User? fromFirebase(fb.User? firebaseUser) {
+  //   if (firebaseUser == null) return null;
+  //   return User(
+  //     id: firebaseUser.uid,
+  //     name: json['name'] as String,
+  //     email: json['email'] as String,
+  //     phone: json['phone'] as String,
+  //     photoUrl: json['photoUrl'] as String,
+  //   );
+  // }
+
   final String id;
   final String name;
   final String email;

@@ -12,16 +12,16 @@ class AppCubit extends Cubit<AppState> {
   final AuthRepo _authRepo;
 
   void initAuth() {
-    _authRepo.userStream.listen((user) {
-      // if (user != null) {
-      emit(
-        state.copyWith(
-          status: user == null
-              ? AppStatus.unauthenticated
-              : AppStatus.authenticated,
-        ),
-      );
-      // }
-    });
+    // _authRepo.userStream.listen((user) {
+    //   // if (user != null) {
+    //   emit(
+    //     state.copyWith(
+    //       status: user == null
+    //           ? AppStatus.unauthenticated
+    //           : AppStatus.authenticated,
+    //     ),
+    //   );
+    //   // }
+    // });
   }
 }

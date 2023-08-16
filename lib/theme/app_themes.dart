@@ -37,12 +37,15 @@ class AppThemes {
   }
 
   // Public APIs
+  static const radiusCircular = Radius.circular(15);
   static const appBarBorderRadius = BorderRadius.only(
     bottomLeft: radiusCircular,
     bottomRight: radiusCircular,
   );
-  static const radiusCircular = Radius.circular(15);
   static const borderRadius = BorderRadius.all(radiusCircular);
+  static const outlineInputBorder = OutlineInputBorder(
+    borderRadius: borderRadius,
+  );
 
   static ThemeData light({Color? seedColor}) =>
       _themeData(seedColor: seedColor);
