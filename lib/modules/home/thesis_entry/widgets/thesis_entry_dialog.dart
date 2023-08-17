@@ -61,17 +61,17 @@ class ThesisEntryDialog extends StatelessWidget {
                                       padding: const EdgeInsets.all(8),
                                       height:
                                           context.mediaQuery.size.height * .5,
-                                      child: Row(
+                                      child: const Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          TextButton.icon(
-                                            onPressed: cubit.pickPdf,
-                                            icon: const Icon(
-                                              Icons.upload_file_rounded,
-                                            ),
-                                            label: const Text('Upload'),
-                                          )
+                                          // TextButton.icon(
+                                          //   onPressed: cubit.pickPdf,
+                                          //   icon: const Icon(
+                                          //     Icons.upload_file_rounded,
+                                          //   ),
+                                          //   label: const Text('Upload'),
+                                          // )
                                         ],
                                       ),
                                     ),

@@ -5,7 +5,8 @@ import 'package:file_picker/file_picker.dart';
 // defined outside to make repo const (experimental).
 final _filePicker = FilePicker.platform;
 late String? _errorMsg;
-late String? _filePath;
+// ignore: use_late_for_private_fields_and_variables
+String? _filePath;
 
 class ThesisRepo {
   const ThesisRepo();
