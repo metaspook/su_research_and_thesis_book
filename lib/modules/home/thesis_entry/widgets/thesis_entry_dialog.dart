@@ -77,7 +77,7 @@ class ThesisEntryDialog extends StatelessWidget {
                                 TextButton.icon(
                                   onPressed: cubit.pickPdf,
                                   icon: const Icon(
-                                    Icons.upload_file_rounded,
+                                    Icons.file_present_rounded,
                                   ),
                                   label: Text(
                                     pdfPath.isEmpty ? 'Pick PDF' : 'Change',
@@ -91,10 +91,22 @@ class ThesisEntryDialog extends StatelessWidget {
                     ),
                     TextField(
                       onChanged: cubit.onChangedThesisName,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        suffixIcon: ThesisEntryBlocSelector<bool>(
+                          selector: (state) =>
+                              state.pdfPath.isNotEmpty &&
+                              state.thesisName.isNotEmpty,
+                          builder: (context, isUploadable) {
+                            return TextButton.icon(
+                              label: const Text('Upload'),
+                              icon: const Icon(Icons.upload_file_rounded),
+                              onPressed: isUploadable ? () {} : null,
+                            );
+                          },
+                        ),
                         filled: true,
                         border: AppThemes.outlineInputBorder,
-                        label: Text('Thesis Name'),
+                        label: const Text('Thesis Name'),
                       ),
                     ),
                   ],

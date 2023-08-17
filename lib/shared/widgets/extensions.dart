@@ -10,12 +10,15 @@ final _imageCropper = ImageCropper();
 /// Callable Widget Extensions.
 extension CallableWidgetExt on BuildContext {
   ScaffoldMessengerState get scaffoldMessenger => ScaffoldMessenger.of(this);
+  // bool get keyboardVisible => MediaQuery.of(this).viewInsets.bottom != 0;
 
   Widget? get backButton => Navigator.canPop(this)
       ? IconButton(
           onPressed: () {
             final currentFocus = FocusScope.of(this);
-            currentFocus.hasPrimaryFocus == currentFocus.hasFocus
+            // currentFocus.hasPrimaryFocus.doPrint();
+            // currentFocus.hasFocus.doPrint();
+            (currentFocus.hasPrimaryFocus == currentFocus.hasFocus)
                 ? Navigator.pop(this)
                 : currentFocus.unfocus();
           },
@@ -47,4 +50,11 @@ extension PreferredSizeExt on Widget {
         preferredSize: size ?? const Size.fromHeight(kToolbarHeight),
         child: this,
       );
+}
+
+/// PreferredSize Extensions.
+extension OnSubmitted on FocusNode {
+  void onSubmitted(String value) {
+    if (value.isNotEmpty) requestFocus();
+  }
 }

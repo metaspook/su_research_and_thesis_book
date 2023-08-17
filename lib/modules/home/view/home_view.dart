@@ -17,9 +17,9 @@ class HomeView extends StatelessWidget {
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          // AppBar
           SliverAppBar(
-            floating: true,
-            snap: true,
+            pinned: true,
             title: Text(l10n.homeAppBarTitle),
             actions: [
               Padding(

@@ -2,8 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
-class SignInView extends StatelessWidget {
+class SignInView extends StatefulWidget {
   const SignInView({super.key});
+
+  @override
+  State<SignInView> createState() => _SignInViewState();
+}
+
+class _SignInViewState extends State<SignInView> {
+  // TextEditingControllers
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  // FocusNodes
+  final _emailFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    // TextEditingControllers
+    _emailController.dispose();
+    _passwordController.dispose();
+    // FocusNodes
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

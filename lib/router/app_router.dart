@@ -14,8 +14,8 @@ export 'package:go_router/go_router.dart' show GoRouterHelper;
 final class AppRouter {
   //-- Register routes
   final config = GoRouter(
-    initialLocation: home.path,
-    // initialLocation: auth.path,
+    // initialLocation: home.path,
+    initialLocation: auth.path,
     routes: <RouteBase>[
       // root,
       home,

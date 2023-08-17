@@ -15,7 +15,8 @@ class AuthPage extends StatelessWidget {
     const tabBar = TabBar(tabs: [Tab(text: 'Sign in'), Tab(text: 'Sign up')]);
 
     return DefaultTabController(
-      length: 2,
+      initialIndex: 1,
+      length: tabBar.tabs.length,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Authentication 🔐'),
