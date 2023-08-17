@@ -53,8 +53,10 @@ class ThesisEntryDialog extends StatelessWidget {
                         ThesisEntryBlocSelector<String>(
                           selector: (state) => state.pdfPath,
                           builder: (context, pdfPath) {
-                            return pdfPath.isEmpty
-                                ? Card(
+                            return Stack(
+                              children: [
+                                if (pdfPath.isEmpty)
+                                  Card(
                                     child: Container(
                                       padding: const EdgeInsets.all(8),
                                       height:
@@ -74,12 +76,22 @@ class ThesisEntryDialog extends StatelessWidget {
                                       ),
                                     ),
                                   )
-                                : PdfViewer(
+                                else
+                                  PdfViewer(
                                     // 'https://css4.pub/2015/usenix/example.pdf'
                                     uri: pdfPath,
                                     source: PdfSource.path,
                                     heightPercent: .5,
-                                  );
+                                  ),
+                                TextButton.icon(
+                                  onPressed: cubit.pickPdf,
+                                  icon: const Icon(
+                                    Icons.upload_file_rounded,
+                                  ),
+                                  label: const Text('Upload'),
+                                )
+                              ],
+                            );
                           },
                         ),
                       ],

@@ -5,11 +5,13 @@ import 'package:file_picker/file_picker.dart';
 // defined outside to make repo const (experimental).
 final _filePicker = FilePicker.platform;
 late String? _errorMsg;
+late String? _filePath;
 
 class ThesisRepo {
   const ThesisRepo();
 
   Future<FilePickerResult?> _pickPdf() async {
+    if (_filePath != null) await _filePicker.clearTemporaryFiles();
     final result = await _filePicker.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
@@ -22,7 +24,7 @@ class ThesisRepo {
   String? get errorMsg => _errorMsg;
 
   Future<String?> pickedPdfPath() async =>
-      (await _pickPdf())?.files.single.path;
+      _filePath = (await _pickPdf())?.files.single.path;
 
   //- useful for web and Image.memory widget.
   Future<Uint8List?> pickedPdfAsBytes() async =>
