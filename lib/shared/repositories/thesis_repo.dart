@@ -24,6 +24,8 @@ class ThesisRepo {
   // Public APIs
   String? get errorMsg => _errorMsg;
 
+  Future<bool?> clearTempFiles() => _filePicker.clearTemporaryFiles();
+
   Future<String?> pickedPdfPath() async =>
       _filePath = (await _pickPdf())?.files.single.path;
 

@@ -20,4 +20,10 @@ class ThesisEntryCubit extends Cubit<ThesisEntryState> {
     final pdfPath = await _thesisRepo.pickedPdfPath();
     emit(state.copyWith(pdfPath: pdfPath));
   }
+
+  @override
+  Future<void> close() {
+    _thesisRepo.clearTempFiles();
+    return super.close();
+  }
 }

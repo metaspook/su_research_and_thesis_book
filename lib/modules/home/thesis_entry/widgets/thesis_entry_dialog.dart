@@ -64,15 +64,6 @@ class ThesisEntryDialog extends StatelessWidget {
                                       child: const Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                        children: [
-                                          // TextButton.icon(
-                                          //   onPressed: cubit.pickPdf,
-                                          //   icon: const Icon(
-                                          //     Icons.upload_file_rounded,
-                                          //   ),
-                                          //   label: const Text('Upload'),
-                                          // )
-                                        ],
                                       ),
                                     ),
                                   )
@@ -88,7 +79,9 @@ class ThesisEntryDialog extends StatelessWidget {
                                   icon: const Icon(
                                     Icons.upload_file_rounded,
                                   ),
-                                  label: const Text('Upload'),
+                                  label: Text(
+                                    pdfPath.isEmpty ? 'Pick PDF' : 'Change',
+                                  ),
                                 )
                               ],
                             );
