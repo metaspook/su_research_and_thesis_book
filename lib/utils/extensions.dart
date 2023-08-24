@@ -11,6 +11,7 @@ extension StringExt on String {
   String get first => this[0];
   String get last => this[length - 1];
   String get reversed => String.fromCharCodes(codeUnits.reversed);
+  int get length => toString().length;
 }
 
 /// Number Extensions.

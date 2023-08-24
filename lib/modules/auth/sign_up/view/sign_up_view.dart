@@ -6,6 +6,7 @@ import 'package:su_thesis_book/gen/assets.gen.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
+import 'package:su_thesis_book/utils/utils.dart';
 
 typedef SignUpBlocSelector<T> = BlocSelector<SignUpBloc, SignUpState, T>;
 typedef SignUpBlocListener = BlocListener<SignUpBloc, SignUpState>;
@@ -61,14 +62,18 @@ class _SignUpViewState extends State<SignUpView> {
             TextFormField(
               controller: _nameController,
               focusNode: _nameFocusNode,
+              validator: Validator.name,
               onFieldSubmitted: _emailFocusNode.onSubmitted,
-              decoration: const InputDecoration(hintText: 'name...'),
+              decoration: const InputDecoration(
+                hintText: 'name...',
+              ),
               onChanged: (value) => bloc.add(SignUpEdited(name: value)),
             ),
             // E-mail
             TextFormField(
               controller: _emailController,
               focusNode: _emailFocusNode,
+              validator: Validator.email,
               onFieldSubmitted: _passwordFocusNode.onSubmitted,
               decoration: const InputDecoration(hintText: 'email...'),
               onChanged: (value) => bloc.add(SignUpEdited(email: value)),
@@ -77,6 +82,7 @@ class _SignUpViewState extends State<SignUpView> {
             TextFormField(
               controller: _passwordController,
               focusNode: _passwordFocusNode,
+              validator: Validator.password,
               onFieldSubmitted: _phoneFocusNode.onSubmitted,
               decoration: const InputDecoration(hintText: 'password...'),
               onChanged: (value) => bloc.add(SignUpEdited(password: value)),
@@ -85,6 +91,7 @@ class _SignUpViewState extends State<SignUpView> {
             TextFormField(
               controller: _phoneController,
               focusNode: _phoneFocusNode,
+              validator: Validator.phone,
               decoration: const InputDecoration(hintText: 'phone...'),
               onChanged: (value) => bloc.add(SignUpEdited(phone: value)),
             ),
@@ -151,7 +158,6 @@ class _SignUpViewState extends State<SignUpView> {
             ),
             const SizedBox(height: 30),
             // Proceed button
-
             SignUpBlocListener(
               listenWhen: (previous, current) =>
                   // previous.statusMsg != current.statusMsg,
@@ -169,7 +175,10 @@ class _SignUpViewState extends State<SignUpView> {
               child: ElevatedButton.icon(
                 icon: const Icon(Icons.forward_rounded),
                 label: const Text('Proceed'),
-                onPressed: () => bloc.add(const SignUpProceeded()),
+                onPressed: () {
+                  _signUpFormKey.currentState?.validate();
+                  // bloc.add(const SignUpProceeded());
+                },
               ),
             ),
           ],
