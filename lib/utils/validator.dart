@@ -40,6 +40,71 @@ class Validator {
           : errorText ?? 'Invalid Phone format!';
 }
 
+sealed class Validation {
+  const Validation(this.errorText);
+
+  final String errorText;
+  bool _hasMatch(String value);
+}
+
+final class LeadingOrTrailingSpace extends Validation {
+  const LeadingOrTrailingSpace([
+    super.errorText = 'Disallow! Leading or trailing space.',
+  ]);
+
+  @override
+  bool _hasMatch(String value) => RegExp(r'^\S.*\S$').hasMatch(value);
+}
+
+class Validator2 {
+  // This constructor prevents instantiation and extension as this class meant be.
+  const Validator2(this.validations);
+
+  final List<Validation> validations;
+
+  String? call(String? value) {
+    if (value != null) {
+      for (final e in validations) {
+        if (!e._hasMatch(value)) return e.errorText;
+      }
+    }
+    return null;
+  }
+
+  /// * Doesn't have leading or trailing white space.
+  /// * Only word characters, underscores, hyphens, and periods.
+  /// * Characters limit: 3 to 50.
+  /// * Word must be Capitalized or with Uppercase letters.
+  /// * Single space allowed after every word.
+//   static const _leadingOrTrailingSpace = 'Leading or trailing space found!';
+//   static const _onlyAlphabetsHyphensPeriods =
+//       'Supports only alphabets, hyphens and periods!';
+//   static const _capitalizedOrUppercased =
+//       'Word must be Capitalized or with Uppercase letters!';
+//   static const _singleSpaceAllowed = 'Single space allowed after every word.';
+
+// static const _tldlimit = 'TLD Characters limit: 2 to 7';
+// static String _limit(int max, [int min = 1])=> 'Characters limit: $min to $max';
+// Validator list
+  static String? name(String? value, {String? errorText}) =>
+      (value == null || value.isName)
+          ? null
+          : errorText ?? 'Invalid Name format!';
+
+  static String? email(String? value, {String? errorText}) =>
+      (value == null || value.isEmail)
+          ? null
+          : errorText ?? 'Invalid Email format!';
+  static String? password(String? value, {String? errorText}) =>
+      (value == null || value.isPassword)
+          ? null
+          : errorText ?? 'Invalid Password format!';
+  static String? phone(String? value, {String? errorText}) =>
+      (value == null || value.isPhone)
+          ? null
+          : errorText ?? 'Invalid Phone format!';
+}
+
 extension ValidationExt on String {
   bool get isName => RegExp(RegExpPattern.name).hasMatch(this);
   bool get isEmail => RegExp(RegExpPattern.email).hasMatch(this);
@@ -102,3 +167,5 @@ class RegExpPattern {
   static const password =
       '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$_special])[a-zA-Z\\d\\$_special]{8,30}\$';
 }
+
+// https://owasp.org/www-community/password-special-characters

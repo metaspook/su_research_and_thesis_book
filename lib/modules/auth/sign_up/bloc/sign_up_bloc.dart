@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
-import 'package:su_thesis_book/utils/utils.dart';
 
 export 'package:su_thesis_book/shared/repositories/repositories.dart'
     show ImageSource;
@@ -59,7 +58,6 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     SignUpProceeded event,
     Emitter<SignUpState> emit,
   ) async {
-    state.doPrint();
     emit(state.copyWith(status: SignUpStatus.loading));
     // await Future.delayed(
     //   const Duration(seconds: 2),

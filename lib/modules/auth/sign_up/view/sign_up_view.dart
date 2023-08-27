@@ -49,6 +49,7 @@ class _SignUpViewState extends State<SignUpView> {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<SignUpBloc>();
+    const nameValidator = Validator2([LeadingOrTrailingSpace()]);
     final isLoading = context
         .select((SignUpBloc bloc) => bloc.state.status == SignUpStatus.loading);
     return TranslucentLoader(
@@ -62,7 +63,8 @@ class _SignUpViewState extends State<SignUpView> {
             TextFormField(
               controller: _nameController,
               focusNode: _nameFocusNode,
-              validator: Validator.name,
+              validator: nameValidator.call,
+              // validator: Validator.name,
               onFieldSubmitted: _emailFocusNode.onSubmitted,
               decoration: const InputDecoration(
                 hintText: 'name...',
@@ -176,8 +178,11 @@ class _SignUpViewState extends State<SignUpView> {
                 icon: const Icon(Icons.forward_rounded),
                 label: const Text('Proceed'),
                 onPressed: () {
-                  _signUpFormKey.currentState?.validate();
-                  // bloc.add(const SignUpProceeded());
+                  final valid =
+                      _signUpFormKey.currentState?.validate() ?? false;
+                  if (valid) {
+                    bloc.add(const SignUpProceeded());
+                  }
                 },
               ),
             ),

@@ -38,4 +38,19 @@ class AuthRepo {
     }
     return null;
   }
+
+  Future<UserCredential?> signIn({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      return await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } catch (e, s) {
+      log("Couldn't sign-in user", error: e, stackTrace: s);
+    }
+    return null;
+  }
 }
