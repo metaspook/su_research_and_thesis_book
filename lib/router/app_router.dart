@@ -39,7 +39,7 @@ final class AppRouter {
     path: '/auth',
     redirect: (context, state) {
       final isAuthenticated =
-          context.read<AppCubit>().state.status == AppStatus.authenticated;
+          context.watch<AppCubit>().state.status == AppStatus.authenticated;
       return isAuthenticated ? '/' : null;
     },
     builder: (context, state) {
@@ -51,12 +51,21 @@ final class AppRouter {
           RepositoryProvider<ImageRepo>(
             create: (context) => const ImageRepo(),
           ),
+          RepositoryProvider<AppUserRepo>(
+            create: (context) => const AppUserRepo(),
+          ),
         ],
         child: MultiBlocProvider(
           providers: [
+            BlocProvider<SignInBloc>(
+              create: (context) => SignInBloc(
+                authRepo: context.read<AuthRepo>(),
+              ),
+            ),
             BlocProvider<SignUpBloc>(
               create: (context) => SignUpBloc(
                 authRepo: context.read<AuthRepo>(),
+                appUserRepo: context.read<AppUserRepo>(),
                 imageRepo: context.read<ImageRepo>(),
               ),
             ),

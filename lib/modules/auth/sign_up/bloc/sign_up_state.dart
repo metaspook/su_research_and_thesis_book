@@ -55,7 +55,7 @@ final class SignUpState extends Equatable {
       password,
       phone,
       croppedImagePath,
-      pickedImagePath
+      pickedImagePath,
     ];
   }
 }

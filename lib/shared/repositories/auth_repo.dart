@@ -2,10 +2,11 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:su_thesis_book/shared/models/models.dart' as models show User;
+import 'package:su_thesis_book/shared/models/models.dart' as models
+    show AppUser;
 
-models.User? _user;
-final _userController = StreamController<models.User?>();
+models.AppUser? _user;
+final _userController = StreamController<models.AppUser?>();
 
 class AuthRepo {
   const AuthRepo();
@@ -14,8 +15,8 @@ class AuthRepo {
 
   // Public APIs
   // Stream<models.User?> get userStream => _userController.stream;
-  Stream<User?> get authUserStream => _firebaseAuth.authStateChanges();
-  void addUser(models.User user) => _userController.add(user);
+  Stream<User?> get userStream => _firebaseAuth.authStateChanges();
+  void addUser(models.AppUser user) => _userController.add(user);
   void dispose() => _userController.close();
   // StreamController<models.User> get userController => _userController;
 

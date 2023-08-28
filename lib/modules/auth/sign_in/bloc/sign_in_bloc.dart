@@ -51,7 +51,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         (await _authRepo.signIn(email: state.email, password: state.password))
             ?.user;
     if (firebaseUser != null) {
-      final user = User(
+      final user = AppUser(
         id: firebaseUser.uid,
         name: 'N/A',
         email: state.email,

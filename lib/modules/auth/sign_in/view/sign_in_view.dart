@@ -6,6 +6,9 @@ import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
+typedef SignInBlocSelector<T> = BlocSelector<SignInBloc, SignInState, T>;
+typedef SignInBlocListener = BlocListener<SignInBloc, SignInState>;
+
 class SignInView extends StatefulWidget {
   const SignInView({super.key});
 
@@ -48,6 +51,7 @@ class _SignInViewState extends State<SignInView> {
           children: [
             const SizedBox(height: 20),
             const TextField(
+              keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 label: Text('Email'),
                 border: AppThemes.outlineInputBorder,
@@ -55,6 +59,7 @@ class _SignInViewState extends State<SignInView> {
             ),
             const SizedBox(height: 20),
             const TextField(
+              keyboardType: TextInputType.visiblePassword,
               decoration: InputDecoration(
                 label: Text('Password'),
                 border: AppThemes.outlineInputBorder,

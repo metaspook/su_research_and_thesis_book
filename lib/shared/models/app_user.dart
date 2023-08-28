@@ -1,20 +1,39 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:equatable/equatable.dart';
 
-class User extends Equatable {
-  const User({
+/// Named `AppUser` instead of `User` to prevent the same name conflict with firebase's `User` class.
+class AppUser extends Equatable {
+  const AppUser({
     required this.id,
     required this.name,
     required this.email,
     required this.phone,
     required this.photoUrl,
   });
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory AppUser.fromJson(Map<String, dynamic> json) {
+    return AppUser(
       id: json['id'] as String,
       name: json['name'] as String,
       email: json['email'] as String,
       phone: json['phone'] as String,
       photoUrl: json['photoUrl'] as String,
+    );
+  }
+
+  factory AppUser.fromFirebaseObj(
+    Object obj, {
+    required String id,
+  }) {
+    final objMap = Map<String, dynamic>.from(
+      obj as Map<Object?, Object?>,
+    );
+    return AppUser(
+      id: id,
+      name: objMap['name'] as String,
+      email: objMap['email'] as String,
+      phone: objMap['phone'] as String,
+      photoUrl: objMap['photoUrl'] as String,
     );
   }
 
@@ -35,14 +54,14 @@ class User extends Equatable {
   final String phone;
   final String photoUrl;
 
-  User copyWith({
+  AppUser copyWith({
     String? id,
     String? name,
     String? email,
     String? phone,
     String? photoUrl,
   }) {
-    return User(
+    return AppUser(
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,
@@ -58,6 +77,17 @@ class User extends Equatable {
       'email': email,
       'phone': phone,
       'photoUrl': photoUrl,
+    };
+  }
+
+  Map<String, dynamic> toFirebaseObj() {
+    return <String, dynamic>{
+      id: {
+        'name': name,
+        'email': email,
+        'phone': phone,
+        'photoUrl': photoUrl,
+      },
     };
   }
 

@@ -1,4 +1,6 @@
+export 'app_user_repo.dart';
 export 'auth_repo.dart';
 export 'comments_repo.dart';
+export 'database_repo.dart';
 export 'image_repo.dart';
 export 'thesis_repo.dart';
