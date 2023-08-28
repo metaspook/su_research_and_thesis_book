@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:su_thesis_book/shared/repositories/repositories.dart';
+import 'package:su_thesis_book/modules/profile/profile.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
@@ -9,11 +10,15 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<ProfileCubit>();
     // File('d:/lab/projects/su_thesis_book/assets/images/placeholder_user_01.jpg')
     //     .readAsBytes()
     //     .then(print);
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile'), leading: context.backButton),
+      appBar: AppBar(
+          centerTitle: true,
+          title: const Text('Profile'),
+          leading: context.backButton),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
         children: [
@@ -37,7 +42,9 @@ class ProfilePage extends StatelessWidget {
           const SizedBox(height: 30),
           ElevatedButton.icon(
             onPressed: () {
-              const AuthRepo().signOut();
+              // const AuthRepo().signOut();
+              null;
+              cubit.signOut();
               // context.go(AppRouter.auth.path);
             },
             icon: const Icon(Icons.logout_outlined),

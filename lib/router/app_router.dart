@@ -48,11 +48,11 @@ final class AppRouter {
           RepositoryProvider<AuthRepo>(
             create: (context) => const AuthRepo(),
           ),
-          RepositoryProvider<ImageRepo>(
-            create: (context) => const ImageRepo(),
-          ),
           RepositoryProvider<AppUserRepo>(
             create: (context) => const AppUserRepo(),
+          ),
+          RepositoryProvider<ImageRepo>(
+            create: (context) => const ImageRepo(),
           ),
         ],
         child: MultiBlocProvider(
@@ -80,7 +80,27 @@ final class AppRouter {
     name: 'profile',
     path: '/profile',
     builder: (context, state) {
-      return const ProfilePage();
+      return MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider<AuthRepo>(
+            create: (context) => const AuthRepo(),
+          ),
+          RepositoryProvider<AppUserRepo>(
+            create: (context) => const AppUserRepo(),
+          ),
+          RepositoryProvider<ImageRepo>(
+            create: (context) => const ImageRepo(),
+          ),
+        ],
+        child: BlocProvider<ProfileCubit>(
+          create: (context) => ProfileCubit(
+            authRepo: context.read<AuthRepo>(),
+            appUserRepo: context.read<AppUserRepo>(),
+            imageRepo: context.read<ImageRepo>(),
+          ),
+          child: const ProfilePage(),
+        ),
+      );
     },
   );
 }
