@@ -1,5 +1,6 @@
 import 'dart:io' show File;
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:su_thesis_book/gen/assets.gen.dart';
@@ -48,6 +49,12 @@ class _SignUpViewState extends State<SignUpView> {
 
   @override
   Widget build(BuildContext context) {
+    final firebaseDatabase = FirebaseDatabase.instance;
+    firebaseDatabase
+        .ref('roles/1')
+        .get()
+        .then((value) => value.value.doPrint());
+
     final bloc = context.read<SignUpBloc>();
     const nameValidator = Validator2([LeadingOrTrailingSpace()]);
     final isLoading = context

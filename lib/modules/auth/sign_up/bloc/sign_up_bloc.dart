@@ -76,8 +76,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         phone: state.phone,
         photoUrl: state.croppedImagePath,
       );
-      final success = await _appUserRepo.create(appUser.toDatabase());
-      if (success) {
+      final errorMsg = await _appUserRepo.create(appUser.toDatabase());
+      if (errorMsg == null) {
         _appUserRepo.addUser(appUser);
         emit(
           state.copyWith(

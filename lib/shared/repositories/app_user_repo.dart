@@ -4,13 +4,12 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
-import 'package:su_thesis_book/shared/repositories/repositories.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
 //  AppUser? _user;
 final _userController = StreamController<AppUser?>();
 
-class AppUserRepo extends FirebaseRepo {
+class AppUserRepo with FirebaseMixin implements CrudAbstract {
   const AppUserRepo();
 
   // Public APIs

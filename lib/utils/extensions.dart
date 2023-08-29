@@ -20,6 +20,15 @@ extension NumberExt on num {
 }
 
 /// Object Extensions.
+extension ObjectExt on Object {
+  /// A list representation of this object.
+  List<T> toList<T>({bool growable = true}) =>
+      List<T>.from(this as List<Object?>, growable: growable);
+
+  /// A map representation of this object.
+  Map<K, V> toMap<K, V>() => Map<K, V>.from(this as Map<Object?, Object?>);
+}
+
 extension PrintMethod on Object? {
   /// Extension representation of [print] method. Levels: 0	Success,
   /// 1 Warnings, 2 Errors, 3 Info (default).
