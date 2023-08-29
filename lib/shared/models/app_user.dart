@@ -21,7 +21,7 @@ class AppUser extends Equatable {
     );
   }
 
-  factory AppUser.fromFirebaseObj(
+  factory AppUser.fromDatabase(
     Object obj, {
     required String id,
   }) {
@@ -80,7 +80,7 @@ class AppUser extends Equatable {
     };
   }
 
-  Map<String, dynamic> toFirebaseObj() {
+  Map<String, dynamic> toDatabase() {
     return <String, dynamic>{
       id: {
         'name': name,
