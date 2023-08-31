@@ -1,11 +1,7 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:su_thesis_book/theme/theme.dart';
 
 // Config
-final _imageCropper = ImageCropper();
+// <implement here, if any>
 
 /// Callable Widget Extensions.
 extension CallableWidgetExt on BuildContext {
@@ -25,22 +21,6 @@ extension CallableWidgetExt on BuildContext {
           icon: const Icon(Icons.arrow_back_ios_rounded),
         )
       : null;
-
-  // Image Cropper
-  Future<CroppedFile?> _cropImage(String sourcePath) => _imageCropper.cropImage(
-        sourcePath: sourcePath,
-        uiSettings: [
-          AndroidUiSettings(
-            toolbarColor: theme.colorScheme.inversePrimary,
-            activeControlsWidgetColor: theme.colorScheme.inversePrimary,
-          )
-        ],
-      );
-  Future<String?> croppedImagePath(String sourcePath) async =>
-      (await _cropImage(sourcePath))?.path;
-  //- useful for web and Image.memory widget.
-  Future<Uint8List?> croppedImageAsBytes(String sourcePath) async =>
-      (await _cropImage(sourcePath))?.readAsBytes();
 }
 
 /// PreferredSize Extensions.
@@ -52,8 +32,8 @@ extension PreferredSizeExt on Widget {
       );
 }
 
-/// PreferredSize Extensions.
-extension OnSubmitted on FocusNode {
+/// `requestFocus` Extensions.
+extension RequestFocus on FocusNode {
   void onSubmitted(String value) {
     if (value.isNotEmpty) requestFocus();
   }

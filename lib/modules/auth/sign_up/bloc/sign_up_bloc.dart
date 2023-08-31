@@ -13,21 +13,20 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   SignUpBloc({
     required AuthRepo authRepo,
     required AppUserRepo appUserRepo,
-    required ImageRepo imageRepo,
+    required RoleRepo roleRepo,
   })  : _authRepo = authRepo,
         _appUserRepo = appUserRepo,
-        _imageRepo = imageRepo,
+        _roleRepo = roleRepo,
         super(const SignUpState()) {
     // Register Event Handlers
     on<SignUpEdited>(_onEdited);
-    on<SignUpImagePicked>(_onImagePicked);
-    on<SignUpImageCropped>(_onImageCropped);
+    on<SignUpPhotoPicked>(_onPhotoPicked);
     on<SignUpProceeded>(_onProceeded);
   }
 
   final AuthRepo _authRepo;
   final AppUserRepo _appUserRepo;
-  final ImageRepo _imageRepo;
+  final RoleRepo _roleRepo;
 
   // Define Event Handlers
   Future<void> _onEdited(
@@ -44,19 +43,13 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     );
   }
 
-  Future<void> _onImagePicked(
-    SignUpImagePicked event,
+  Future<void> _onPhotoPicked(
+    SignUpPhotoPicked event,
     Emitter<SignUpState> emit,
   ) async {
-    final imagePath = await _imageRepo.pickedImagePath(event.source);
-    emit(state.copyWith(pickedImagePath: imagePath));
-  }
-
-  Future<void> _onImageCropped(
-    SignUpImageCropped event,
-    Emitter<SignUpState> emit,
-  ) async {
-    emit(state.copyWith(croppedImagePath: event.imagePath));
+    emit(
+      state.copyWith(photoPath: event.photoPath, statusMsg: event.statusMsg),
+    );
   }
 
   Future<void> _onProceeded(
@@ -74,7 +67,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         name: state.name,
         email: state.email,
         phone: state.phone,
-        photoUrl: state.croppedImagePath,
+        photoUrl: state.photoPath,
       );
       final errorMsg = await _appUserRepo.create(appUser.toDatabase());
       if (errorMsg == null) {

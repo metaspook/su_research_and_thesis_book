@@ -8,15 +8,15 @@ class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit({
     required AuthRepo authRepo,
     required AppUserRepo appUserRepo,
-    required ImageRepo imageRepo,
+    required RoleRepo roleRepo,
   })  : _authRepo = authRepo,
         _appUserRepo = appUserRepo,
-        _imageRepo = imageRepo,
+        _roleRepo = roleRepo,
         super(const ProfileState());
 
   final AuthRepo _authRepo;
   final AppUserRepo _appUserRepo;
-  final ImageRepo _imageRepo;
+  final RoleRepo _roleRepo;
 
   void signOut() {
     emit(state.copyWith(status: ProfileStatus.loading));

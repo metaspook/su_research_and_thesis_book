@@ -51,8 +51,8 @@ final class AppRouter {
           RepositoryProvider<AppUserRepo>(
             create: (context) => const AppUserRepo(),
           ),
-          RepositoryProvider<ImageRepo>(
-            create: (context) => const ImageRepo(),
+          RepositoryProvider<RoleRepo>(
+            create: (context) => const RoleRepo(),
           ),
         ],
         child: MultiBlocProvider(
@@ -66,7 +66,7 @@ final class AppRouter {
               create: (context) => SignUpBloc(
                 authRepo: context.read<AuthRepo>(),
                 appUserRepo: context.read<AppUserRepo>(),
-                imageRepo: context.read<ImageRepo>(),
+                roleRepo: context.read<RoleRepo>(),
               ),
             ),
           ],
@@ -88,15 +88,15 @@ final class AppRouter {
           RepositoryProvider<AppUserRepo>(
             create: (context) => const AppUserRepo(),
           ),
-          RepositoryProvider<ImageRepo>(
-            create: (context) => const ImageRepo(),
+          RepositoryProvider<RoleRepo>(
+            create: (context) => const RoleRepo(),
           ),
         ],
         child: BlocProvider<ProfileCubit>(
           create: (context) => ProfileCubit(
             authRepo: context.read<AuthRepo>(),
             appUserRepo: context.read<AppUserRepo>(),
-            imageRepo: context.read<ImageRepo>(),
+            roleRepo: context.read<RoleRepo>(),
           ),
           child: const ProfilePage(),
         ),

@@ -18,7 +18,7 @@ class CommentsPage extends StatelessWidget {
             leading: context.backButton,
             centerTitle: true,
             title: const Text('Comments'),
-          )
+          ),
         ],
         body: Stack(
           alignment: Alignment.bottomCenter,

@@ -3,6 +3,7 @@ import 'dart:io' show File;
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_cropicker/image_cropicker.dart';
 import 'package:su_thesis_book/gen/assets.gen.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
@@ -20,6 +21,7 @@ class SignUpView extends StatefulWidget {
 }
 
 class _SignUpViewState extends State<SignUpView> {
+  late final ImageCropicker imageCropicker;
   final _signUpFormKey = GlobalKey<FormState>();
   // TextEditingControllers
   final _nameController = TextEditingController();
@@ -31,6 +33,12 @@ class _SignUpViewState extends State<SignUpView> {
   final _emailFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
   final _phoneFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    imageCropicker = ImageCropicker(context);
+  }
 
   @override
   void dispose() {
@@ -54,7 +62,7 @@ class _SignUpViewState extends State<SignUpView> {
         .ref('roles/1')
         .get()
         .then((value) => value.value.doPrint());
-
+// [].indexOf(element)
     final bloc = context.read<SignUpBloc>();
     const nameValidator = Validator2([LeadingOrTrailingSpace()]);
     final isLoading = context
@@ -117,8 +125,8 @@ class _SignUpViewState extends State<SignUpView> {
                   height: 200,
                   width: 225,
                   child: SignUpBlocSelector<String>(
-                    selector: (state) => state.croppedImagePath,
-                    builder: (context, croppedImagePath) {
+                    selector: (state) => state.photoPath,
+                    builder: (context, photoPath) {
                       return Card(
                         shape: const RoundedRectangleBorder(
                           borderRadius: AppThemes.borderRadius,
@@ -128,44 +136,52 @@ class _SignUpViewState extends State<SignUpView> {
                           padding: const EdgeInsets.all(8),
                           child: ClipRRect(
                             borderRadius: AppThemes.borderRadius,
-                            child: croppedImagePath.isEmpty
+                            child: photoPath.isEmpty
                                 ? Assets.images.placeholderUser01
                                     .image(fit: BoxFit.cover)
-                                : Image.file(File(croppedImagePath)),
+                                : Image.file(File(photoPath)),
                           ),
                         ),
                       );
                     },
                   ),
                 ),
-                SignUpBlocListener(
-                  listenWhen: (previous, current) =>
-                      previous.pickedImagePath != current.pickedImagePath,
-                  listener: (context, state) async {
-                    final croppedImagePath =
-                        await context.croppedImagePath(state.pickedImagePath);
-                    bloc.add(SignUpImageCropped(croppedImagePath));
-                  },
-                  child: Column(
-                    children: [
-                      // Camera Button
-                      ElevatedButton.icon(
-                        icon: const Icon(Icons.camera_alt_rounded),
-                        label: const Text('Camera'),
-                        onPressed: () => bloc
-                            .add(const SignUpImagePicked(ImageSource.camera)),
-                      ),
-                      const SizedBox(height: 20),
-                      // Gallery Button
-                      ElevatedButton.icon(
-                        icon: const Icon(Icons.photo_library_rounded),
-                        label: const Text('Gallery'),
-                        onPressed: () => bloc.add(
-                          const SignUpImagePicked(ImageSource.gallery),
-                        ),
-                      ),
-                    ],
-                  ),
+                Column(
+                  children: [
+                    // Camera Button
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.camera_alt_rounded),
+                      label: const Text('Camera'),
+                      onPressed: () async {
+                        final photoPath =
+                            await imageCropicker.path(ImageSource.camera);
+                        final statusMsg = imageCropicker.statusMsg;
+                        bloc.add(
+                          SignUpPhotoPicked(
+                            photoPath,
+                            statusMsg: statusMsg,
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    // Gallery Button
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.photo_library_rounded),
+                      label: const Text('Gallery'),
+                      onPressed: () async {
+                        final photoPath =
+                            await imageCropicker.path(ImageSource.gallery);
+                        final statusMsg = imageCropicker.statusMsg;
+                        bloc.add(
+                          SignUpPhotoPicked(
+                            photoPath,
+                            statusMsg: statusMsg,
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),

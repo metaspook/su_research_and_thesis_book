@@ -19,16 +19,11 @@ final class SignUpEdited extends SignUpEvent {
   List<Object?> get props => [name, email, password, phone];
 }
 
-final class SignUpImagePicked extends SignUpEvent {
-  const SignUpImagePicked(this.source);
+final class SignUpPhotoPicked extends SignUpEvent {
+  const SignUpPhotoPicked(this.photoPath, {this.statusMsg});
 
-  final ImageSource source;
-}
-
-final class SignUpImageCropped extends SignUpEvent {
-  const SignUpImageCropped(this.imagePath);
-
-  final String? imagePath;
+  final String? photoPath;
+  final String? statusMsg;
 }
 
 final class SignUpProceeded extends SignUpEvent {

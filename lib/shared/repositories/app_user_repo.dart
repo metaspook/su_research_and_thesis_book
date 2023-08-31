@@ -3,14 +3,23 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
-//  AppUser? _user;
 final _userController = StreamController<AppUser?>();
+final _firebaseAuth = FirebaseAuth.instance;
+final _firebaseStorage = FirebaseStorage.instance;
+final _firebaseDatabase = FirebaseDatabase.instance;
 
-class AppUserRepo with FirebaseMixin implements CrudAbstract {
+class AppUserRepo implements CrudAbstract {
   const AppUserRepo();
+
+  FirebaseAuth get auth => _firebaseAuth;
+  Reference get storage => _firebaseStorage.ref('photos');
+  DatabaseReference get db => _firebaseDatabase.ref('users');
+  DatabaseReference get dbRoles => _firebaseDatabase.ref('roles');
 
   // Public APIs
   Stream<AppUser?> get appUserStream => _userController.stream;
@@ -31,16 +40,12 @@ class AppUserRepo with FirebaseMixin implements CrudAbstract {
       final storageRef = storage.child('$userId.jpg')
         ..putFile(File(value['photoUrl']! as String));
       final photoUrl = await storageRef.getDownloadURL();
-      // Get user role by index.
-      final rolesObj = (await rolesRef.get()).value!;
-      // final roleIndex = value['id'][''];
-      final role = List<dynamic>.from(rolesObj as List<Object?>);
       // Upload user data to DB.
       await db.set({
         userId: {
-          'name': value['photoUrl'],
-          'email': value['photoUrl'],
-          'roleIndex': value['role'],
+          'name': value['name'],
+          'email': value['email'],
+          'roleIndex': value['roleIndex'],
           'phone': value['phone'],
           'photoUrl': photoUrl,
         },
@@ -56,21 +61,6 @@ class AppUserRepo with FirebaseMixin implements CrudAbstract {
     }
 
     return null;
-
-    // } catch (e, s) {
-    //   log("Couldn't sign-up user", error: e, stackTrace: s);
-    // }
-
-    // try {
-    //   // if (_user != null) {
-    //   await db.set(value);
-    //   FirebaseStorage.
-    //   return true;
-    //   // }
-    // } catch (e, s) {
-    //   log("Couldn't create user", error: e, stackTrace: s);
-    // }
-    // return false;
   }
 
   @override

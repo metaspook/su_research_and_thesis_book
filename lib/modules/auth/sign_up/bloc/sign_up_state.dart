@@ -10,8 +10,7 @@ final class SignUpState extends Equatable {
     this.email = '',
     this.password = '',
     this.phone = '',
-    this.croppedImagePath = '',
-    this.pickedImagePath = '',
+    this.photoPath = '',
   });
 
   final SignUpStatus status;
@@ -20,8 +19,7 @@ final class SignUpState extends Equatable {
   final String email;
   final String password;
   final String phone;
-  final String croppedImagePath;
-  final String pickedImagePath;
+  final String photoPath;
 
   SignUpState copyWith({
     SignUpStatus? status,
@@ -30,8 +28,7 @@ final class SignUpState extends Equatable {
     String? email,
     String? password,
     String? phone,
-    String? croppedImagePath,
-    String? pickedImagePath,
+    String? photoPath,
   }) {
     return SignUpState(
       status: status ?? this.status,
@@ -40,8 +37,7 @@ final class SignUpState extends Equatable {
       email: email ?? this.email,
       password: password ?? this.password,
       phone: phone ?? this.phone,
-      croppedImagePath: croppedImagePath ?? this.croppedImagePath,
-      pickedImagePath: pickedImagePath ?? this.pickedImagePath,
+      photoPath: photoPath ?? this.photoPath,
     );
   }
 
@@ -54,8 +50,7 @@ final class SignUpState extends Equatable {
       email,
       password,
       phone,
-      croppedImagePath,
-      pickedImagePath,
+      photoPath,
     ];
   }
 }
