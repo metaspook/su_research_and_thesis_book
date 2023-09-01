@@ -10,6 +10,8 @@ final class SignUpState extends Equatable {
     this.email = '',
     this.password = '',
     this.phone = '',
+    this.role = '',
+    this.roles = const <String>[],
     this.photoPath = '',
   });
 
@@ -19,6 +21,8 @@ final class SignUpState extends Equatable {
   final String email;
   final String password;
   final String phone;
+  final String role;
+  final List<String> roles;
   final String photoPath;
 
   SignUpState copyWith({
@@ -28,6 +32,8 @@ final class SignUpState extends Equatable {
     String? email,
     String? password,
     String? phone,
+    String? role,
+    List<String>? roles,
     String? photoPath,
   }) {
     return SignUpState(
@@ -37,6 +43,8 @@ final class SignUpState extends Equatable {
       email: email ?? this.email,
       password: password ?? this.password,
       phone: phone ?? this.phone,
+      role: role ?? this.role,
+      roles: roles ?? this.roles,
       photoPath: photoPath ?? this.photoPath,
     );
   }
@@ -50,6 +58,8 @@ final class SignUpState extends Equatable {
       email,
       password,
       phone,
+      role,
+      roles,
       photoPath,
     ];
   }

@@ -67,7 +67,7 @@ final class AppRouter {
                 authRepo: context.read<AuthRepo>(),
                 appUserRepo: context.read<AppUserRepo>(),
                 roleRepo: context.read<RoleRepo>(),
-              ),
+              )..add(const SignUpFormLoaded()),
             ),
           ],
           child: const AuthPage(),

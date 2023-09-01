@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 /// Custom Themes for the app.
-class AppThemes {
+sealed class AppThemes {
   const AppThemes._();
 
   static final _seedColor = ([...Colors.primaries]..shuffle()).first;
@@ -30,6 +30,21 @@ class AppThemes {
         backgroundColor: colorScheme.primary.withOpacity(.375),
         textStyle: const TextStyle(fontWeight: FontWeight.w400),
       ),
+      // DropdownMenu Theme
+      // inputDecorationTheme: ,
+      dropdownMenuTheme: DropdownMenuThemeData(
+        inputDecorationTheme: const InputDecorationTheme(filled: true),
+        menuStyle: MenuStyle(
+          visualDensity: VisualDensity.compact,
+          // alignment: Alignment.topRight,
+          backgroundColor: MaterialStateProperty.all(
+            Colors.black,
+          ),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+          ),
+        ),
+      ),
     );
 
     return themeData.copyWith(
@@ -42,6 +57,7 @@ class AppThemes {
   }
 
   // Public APIs
+  // static double? get hintFontSize => theme.textTheme.titleMedium?.fontSize;
   static const radiusCircular = Radius.circular(15);
   static const appBarBorderRadius = BorderRadius.only(
     bottomLeft: radiusCircular,

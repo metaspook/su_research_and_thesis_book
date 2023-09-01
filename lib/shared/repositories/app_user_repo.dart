@@ -37,8 +37,8 @@ class AppUserRepo implements CrudAbstract {
           .user!
           .uid;
       // Upload user photo to Storage and get URL.
-      final storageRef = storage.child('$userId.jpg')
-        ..putFile(File(value['photoUrl']! as String));
+      final storageRef = storage.child('$userId.jpg');
+      await storageRef.putFile(File(value['photoPath']! as String));
       final photoUrl = await storageRef.getDownloadURL();
       // Upload user data to DB.
       await db.set({

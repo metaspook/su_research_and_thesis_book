@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
 
 export 'package:su_thesis_book/shared/repositories/repositories.dart'
@@ -22,6 +21,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<SignUpEdited>(_onEdited);
     on<SignUpPhotoPicked>(_onPhotoPicked);
     on<SignUpProceeded>(_onProceeded);
+    on<SignUpFormLoaded>(_onFormLoaded);
   }
 
   final AuthRepo _authRepo;
@@ -35,10 +35,12 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   ) async {
     emit(
       state.copyWith(
+        status: SignUpStatus.editing,
         name: event.name,
         email: event.email,
         password: event.password,
         phone: event.phone,
+        role: event.role,
       ),
     );
   }
@@ -52,33 +54,44 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     );
   }
 
+  Future<void> _onFormLoaded(
+    SignUpFormLoaded event,
+    Emitter<SignUpState> emit,
+  ) async {
+    emit(state.copyWith(status: SignUpStatus.loading));
+    final roles = await _roleRepo.roles;
+    emit(
+      state.copyWith(
+        roles: roles,
+        status: roles.isEmpty ? SignUpStatus.failure : SignUpStatus.initial,
+        statusMsg: _roleRepo.errorMsg,
+      ),
+    );
+  }
+
   Future<void> _onProceeded(
     SignUpProceeded event,
     Emitter<SignUpState> emit,
   ) async {
     emit(state.copyWith(status: SignUpStatus.loading));
 
-    final user =
-        (await _authRepo.signUp(email: state.email, password: state.password))
-            ?.user;
-    if (user != null) {
-      final appUser = AppUser(
-        id: user.uid,
-        name: state.name,
-        email: state.email,
-        phone: state.phone,
-        photoUrl: state.photoPath,
+    final roleIndex = state.roles.indexOf(state.role);
+    final userObj = {
+      'name': state.name,
+      'email': state.email,
+      'password': state.password,
+      'phone': state.phone,
+      'roleIndex': roleIndex,
+      'photoPath': state.photoPath,
+    };
+    final errorMsg = await _appUserRepo.create(userObj);
+    if (errorMsg == null) {
+      emit(
+        state.copyWith(
+          status: SignUpStatus.success,
+          statusMsg: 'Success! User signed up.',
+        ),
       );
-      final errorMsg = await _appUserRepo.create(appUser.toDatabase());
-      if (errorMsg == null) {
-        _appUserRepo.addUser(appUser);
-        emit(
-          state.copyWith(
-            status: SignUpStatus.success,
-            // statusMsg: 'Success! User signed up.',
-          ),
-        );
-      }
     }
   }
 }

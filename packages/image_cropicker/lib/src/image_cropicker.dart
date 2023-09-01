@@ -33,8 +33,8 @@ class ImageCropicker {
   Future<XFile?> _pickImage(ImageSource source) async {
     try {
       final file = await _imagePicker.pickImage(source: source);
-      if (file != null) return file;
-      _statusMsg = 'No image is picked!';
+      if (file == null) _statusMsg = 'No image is picked!';
+      return file;
     } catch (e, s) {
       _statusMsg = "Couldn't pick the image";
       log("Couldn't pick the image", error: e, stackTrace: s);
@@ -56,8 +56,8 @@ class ImageCropicker {
           WebUiSettings(context: _context),
         ],
       );
-      if (file != null) return file;
-      _statusMsg = 'No image is cropped!';
+      if (file == null) _statusMsg = 'No image is cropped!';
+      return file;
     } catch (e, s) {
       _statusMsg = "Couldn't crop the image";
       log("Couldn't crop the image", error: e, stackTrace: s);

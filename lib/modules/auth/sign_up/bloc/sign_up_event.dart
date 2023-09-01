@@ -8,15 +8,22 @@ sealed class SignUpEvent extends Equatable {
 }
 
 final class SignUpEdited extends SignUpEvent {
-  const SignUpEdited({this.name, this.email, this.password, this.phone});
+  const SignUpEdited({
+    this.name,
+    this.email,
+    this.password,
+    this.phone,
+    this.role,
+  });
 
   final String? name;
   final String? email;
   final String? password;
   final String? phone;
+  final String? role;
 
   @override
-  List<Object?> get props => [name, email, password, phone];
+  List<Object?> get props => [name, email, password, phone, role];
 }
 
 final class SignUpPhotoPicked extends SignUpEvent {
@@ -24,6 +31,10 @@ final class SignUpPhotoPicked extends SignUpEvent {
 
   final String? photoPath;
   final String? statusMsg;
+}
+
+final class SignUpFormLoaded extends SignUpEvent {
+  const SignUpFormLoaded();
 }
 
 final class SignUpProceeded extends SignUpEvent {

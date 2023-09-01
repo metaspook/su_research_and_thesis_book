@@ -57,6 +57,7 @@ class _SignUpViewState extends State<SignUpView> {
 
   @override
   Widget build(BuildContext context) {
+    const dropdownValue = 'Dog';
     final firebaseDatabase = FirebaseDatabase.instance;
     firebaseDatabase
         .ref('roles/1')
@@ -115,6 +116,26 @@ class _SignUpViewState extends State<SignUpView> {
               keyboardType: TextInputType.phone,
               decoration: const InputDecoration(hintText: 'phone...'),
               onChanged: (value) => bloc.add(SignUpEdited(phone: value)),
+            ),
+            // Roles
+            SignUpBlocSelector<List<String>>(
+              selector: (state) => state.roles,
+              builder: (context, roles) {
+                return DropdownButtonFormField<String>(
+                  dropdownColor:
+                      context.theme.colorScheme.background.withOpacity(.75),
+                  borderRadius: AppThemes.borderRadius,
+                  hint: const Text('role...'),
+                  onChanged: (role) => bloc.add(SignUpEdited(role: role)),
+                  items: [
+                    for (final role in roles)
+                      DropdownMenuItem<String>(
+                        value: role,
+                        child: Text(role),
+                      ),
+                  ],
+                );
+              },
             ),
             const SizedBox(height: 20),
             Row(
