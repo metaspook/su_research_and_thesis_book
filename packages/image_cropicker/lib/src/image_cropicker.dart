@@ -17,6 +17,8 @@ final _imagePicker = ImagePicker();
 final _imageCropper = ImageCropper();
 // ignore: use_late_for_private_fields_and_variables
 String? _statusMsg;
+const _errorMsgPick = "Couldn't pick the image!";
+const _errorMsgCrop = "Couldn't crop the image!";
 
 /// {@template image_cropicker}
 /// Image Picker and Cropper.
@@ -36,8 +38,8 @@ class ImageCropicker {
       if (file == null) _statusMsg = 'No image is picked!';
       return file;
     } catch (e, s) {
-      _statusMsg = "Couldn't pick the image";
-      log("Couldn't pick the image", error: e, stackTrace: s);
+      _statusMsg = _errorMsgPick;
+      log(_errorMsgPick, error: e, stackTrace: s);
     }
     return null;
   }
@@ -59,15 +61,15 @@ class ImageCropicker {
       if (file == null) _statusMsg = 'No image is cropped!';
       return file;
     } catch (e, s) {
-      _statusMsg = "Couldn't crop the image";
-      log("Couldn't crop the image", error: e, stackTrace: s);
+      _statusMsg = _errorMsgCrop;
+      log(_errorMsgCrop, error: e, stackTrace: s);
     }
     return null;
   }
 
   //-- Public APIs
   /// Status message of picking, cropping and errors.
-  /// * `null` value indicates successful operation.
+  /// * Value `null` indicates successful operation.
   String? get statusMsg => _statusMsg;
 
   /// Pick image with crop option and get file.
