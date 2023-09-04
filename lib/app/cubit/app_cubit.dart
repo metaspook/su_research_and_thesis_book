@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
@@ -13,33 +15,39 @@ class AppCubit extends Cubit<AppState> {
 
   final AuthRepo _authRepo;
   final AppUserRepo _appUserRepo;
+  late final StreamSubscription<User?> _userSubscription;
 
   // AuthUser, DBUser, AppUser
 
   void initAuth() {
-    _authRepo.userStream.listen((user) {
+    // Get authUser.
+    _userSubscription = _authRepo.userStream.listen((user) async {
       if (user != null) {
-        _appUserRepo.read(user.uid);
+        // Get appUser by authUser's id.
+        final appUserRecord = await _appUserRepo.read(user.uid);
+        final errorMsg = appUserRecord.$1;
+        final appUser = appUserRecord.object;
+        if (appUser != null) {
+          emit(state.copyWith(status: AppStatus.authenticated, user: appUser));
+        } else {
+          emit(state.copyWith(statusMsg: errorMsg));
+          // Sign out authUser because user data not found.
+          await _authRepo.signOut();
+        }
       } else {
-        _appUserRepo.addUser(null);
+        emit(
+          state.copyWith(
+            status: AppStatus.unauthenticated,
+            user: AppUser.empty,
+          ),
+        );
       }
-    });
-    _appUserRepo.appUserStream.listen((appUser) {
-      emit(
-        state.copyWith(
-          status: appUser == null
-              ? AppStatus.unauthenticated
-              : AppStatus.authenticated,
-          user: appUser,
-        ),
-      );
     });
   }
 
   @override
   Future<void> close() {
-    _authRepo.dispose();
-    _appUserRepo.dispose();
+    _userSubscription.cancel();
     return super.close();
   }
 }

@@ -33,7 +33,7 @@ class HomeView extends StatelessWidget {
                 ),
               ),
             ],
-          )
+          ),
         ],
         body: ListView.builder(
           physics: const BouncingScrollPhysics(),

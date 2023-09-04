@@ -81,7 +81,7 @@ class _PdfViewerState extends State<PdfViewer> {
                   pdfViewController.setPage(page);
                 },
                 icon: const Icon(Icons.chevron_right_rounded),
-              )
+              ),
             ],
           ),
         ],

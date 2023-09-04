@@ -8,7 +8,7 @@ class WebApiService {
   // Common headers
   Map<String, String> get _headers => const {
         'Accept': '*/*',
-        'User-Agent': 'Thunder Client (https://www.thunderclient.com)'
+        'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
       };
   bool _success(int code) => code >= 200 && code < 300;
   String _errorMsg(String objName) => "[FAIL!] Couldn't fetch $objName";

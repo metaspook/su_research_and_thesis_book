@@ -3,53 +3,58 @@ import 'dart:developer';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
-final _firebaseDatabase = FirebaseDatabase.instance;
-// ignore: use_late_for_private_fields_and_variables
-String? _errorMsg;
+//-- Config
+const _errorMsgRoleNotFound = 'User role not found!';
+const _errorMsgRolesNotFound = 'User roles not found!';
+const _errorMsgIndex = "Couldn't get index of the role!";
+const _errorMsgRole = "Couldn't get role of the index!";
+const _errorMsgRoles = "Couldn't get the user roles!";
+// user roles cache.
 List<String> _roles = const [];
 
 class RoleRepo {
   const RoleRepo();
 
-  DatabaseReference get _db => _firebaseDatabase.ref('roles');
-  String? get errorMsg => _errorMsg;
+  DatabaseReference get _db => FirebaseDatabase.instance.ref('roles');
 
+  //-- Public APIs
   /// Get user role by index.
-  Future<String?> roleAt(int index) async {
+  Future<(String?, {String? role})> roleAt(int index) async {
     if (_roles.isEmpty) {
       try {
         final roleObj = (await _db.child('$index').get()).value;
-        if (roleObj != null) return roleObj.toString();
-        _errorMsg = 'User role not found!';
+        return roleObj == null
+            ? (_errorMsgRoleNotFound, role: null)
+            : (null, role: roleObj.toString());
       } catch (e, s) {
-        _errorMsg = "Couldn't get the user role!";
-        log("Couldn't fetch the user role!", error: e, stackTrace: s);
+        log(_errorMsgRole, error: e, stackTrace: s);
+        return (_errorMsgRole, role: null);
       }
     }
-
-    return _roles[index];
+    return (null, role: _roles[index]);
   }
 
   /// Get user role by index.
-  Future<int?> indexOf(String role) async {
-    final roles_ = await roles;
-    return roles_.isEmpty ? null : roles_.indexOf(role);
+  Future<(String?, {int? index})> indexOf(String role) async {
+    final rolesRecord = await roles;
+    return rolesRecord.roles.isEmpty
+        ? (_errorMsgIndex, index: null)
+        : (null, index: rolesRecord.roles.indexOf(role));
   }
 
   /// Get user roles.
-  Future<List<String>> get roles async {
+  Future<(String?, {List<String> roles})> get roles async {
+    String? errorMsg;
     if (_roles.isEmpty) {
       try {
         final rolesObj = (await _db.get()).value;
-        // rolesObj.doPrint();
         if (rolesObj != null) _roles = rolesObj.toList<String>();
-        _errorMsg = 'User roles not found!';
+        errorMsg = _errorMsgRolesNotFound;
       } catch (e, s) {
-        _errorMsg = "Couldn't get the user roles!";
-        log("Couldn't fetch the user roles!", error: e, stackTrace: s);
+        log(_errorMsgRoles, error: e, stackTrace: s);
+        errorMsg = _errorMsgRoles;
       }
     }
-
-    return _roles;
+    return (errorMsg, roles: _roles);
   }
 }

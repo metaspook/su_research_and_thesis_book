@@ -2,56 +2,76 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:su_thesis_book/shared/models/models.dart' as models
-    show AppUser;
 
-models.AppUser? _user;
-final _userController = StreamController<models.AppUser?>();
+export 'package:firebase_auth/firebase_auth.dart' show User;
+
+const _errorMsgSignIn = "Couldn't sign-in the user!";
+const _errorMsgSignUp = "Couldn't sign-up the user!";
+const _errorMsgSignOut = "Couldn't sign-out the user!";
 
 class AuthRepo {
   const AuthRepo();
 
-  FirebaseAuth get _firebaseAuth => FirebaseAuth.instance;
+  FirebaseAuth get _auth => FirebaseAuth.instance;
 
-  // Public APIs
-  // Stream<models.User?> get userStream => _userController.stream;
-  Stream<User?> get userStream => _firebaseAuth.authStateChanges();
-  void addUser(models.AppUser user) => _userController.add(user);
-  void dispose() => _userController.close();
-  // StreamController<models.User> get userController => _userController;
+  //-- Public APIs
+  Stream<User?> get userStream => _auth.authStateChanges();
 
-  void signOut() {
-    _firebaseAuth.signOut();
-    dispose();
-  }
-
-  Future<UserCredential?> signUp({
+  Future<String?> signIn({
     required String email,
     required String password,
   }) async {
     try {
-      return await _firebaseAuth.createUserWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+    } on FirebaseAuthException catch (e) {
+      return const <String, String>{
+        'invalid-email': 'Invalid email!',
+        'user-disabled': "This email's user is disabled!",
+        'user-not-found': "This email's user is not found!",
+        'wrong-password': 'Invalid password or unassociated with email!',
+      }[e.code];
     } catch (e, s) {
-      log("Couldn't sign-up user", error: e, stackTrace: s);
+      log(_errorMsgSignIn, error: e, stackTrace: s);
+      return _errorMsgSignIn;
     }
     return null;
   }
 
-  Future<UserCredential?> signIn({
+  Future<String?> signOut() async {
+    try {
+      await _auth.signOut();
+    } catch (e, s) {
+      log(_errorMsgSignOut, error: e, stackTrace: s);
+      return _errorMsgSignOut;
+    }
+    return null;
+  }
+
+  Future<(String?, {User? user})> signUp({
     required String email,
     required String password,
   }) async {
     try {
-      return await _firebaseAuth.signInWithEmailAndPassword(
+      final user = (await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
-      );
+      ))
+          .user;
+      return (null, user: user);
+    } on FirebaseAuthException catch (e) {
+      final errorMsg = const <String, String>{
+        'email-already-in-use': "This email's user already exists!",
+        'invalid-email': 'Invalid email!',
+        'operation-not-allowed': "Email/password accounts aren't enabled!",
+        'weak-password': "Password isn't strong enough!",
+      }[e.code];
+      return (errorMsg, user: null);
     } catch (e, s) {
-      log("Couldn't sign-in user", error: e, stackTrace: s);
+      log(_errorMsgSignUp, error: e, stackTrace: s);
+      return (_errorMsgSignUp, user: null);
     }
-    return null;
   }
 }

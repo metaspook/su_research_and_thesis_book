@@ -1,6 +1,5 @@
 import 'dart:io' show File;
 
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropicker/image_cropicker.dart';
@@ -57,12 +56,12 @@ class _SignUpViewState extends State<SignUpView> {
 
   @override
   Widget build(BuildContext context) {
-    const dropdownValue = 'Dog';
-    final firebaseDatabase = FirebaseDatabase.instance;
-    firebaseDatabase
-        .ref('roles/1')
-        .get()
-        .then((value) => value.value.doPrint());
+    // const dropdownValue = 'Dog';
+    // final firebaseDatabase = FirebaseDatabase.instance;
+    // firebaseDatabase
+    //     .ref('roles/1')
+    //     .get()
+    //     .then((value) => value.value.doPrint());
 // [].indexOf(element)
     final bloc = context.read<SignUpBloc>();
     const nameValidator = Validator2([LeadingOrTrailingSpace()]);

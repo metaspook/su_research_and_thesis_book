@@ -17,7 +17,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         _appUserRepo = appUserRepo,
         _roleRepo = roleRepo,
         super(const SignUpState()) {
-    // Register Event Handlers
+    //-- Register Event Handlers
     on<SignUpEdited>(_onEdited);
     on<SignUpPhotoPicked>(_onPhotoPicked);
     on<SignUpProceeded>(_onProceeded);
@@ -28,7 +28,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   final AppUserRepo _appUserRepo;
   final RoleRepo _roleRepo;
 
-  // Define Event Handlers
+  //-- Define Event Handlers
   Future<void> _onEdited(
     SignUpEdited event,
     Emitter<SignUpState> emit,
@@ -59,14 +59,15 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     Emitter<SignUpState> emit,
   ) async {
     emit(state.copyWith(status: SignUpStatus.loading));
-    final roles = await _roleRepo.roles;
-    emit(
-      state.copyWith(
-        roles: roles,
-        status: roles.isEmpty ? SignUpStatus.failure : SignUpStatus.initial,
-        statusMsg: _roleRepo.errorMsg,
-      ),
-    );
+    final rolesRecord = await _roleRepo.roles;
+    final errorMsg = rolesRecord.$1;
+    if (rolesRecord.roles.isEmpty) {
+      emit(state.copyWith(status: SignUpStatus.failure, statusMsg: errorMsg));
+    } else {
+      emit(
+        state.copyWith(roles: rolesRecord.roles, status: SignUpStatus.initial),
+      );
+    }
   }
 
   Future<void> _onProceeded(
@@ -74,24 +75,34 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     Emitter<SignUpState> emit,
   ) async {
     emit(state.copyWith(status: SignUpStatus.loading));
-
-    final roleIndex = state.roles.indexOf(state.role);
-    final userObj = {
-      'name': state.name,
-      'email': state.email,
-      'password': state.password,
-      'phone': state.phone,
-      'roleIndex': roleIndex,
-      'photoPath': state.photoPath,
-    };
-    final errorMsg = await _appUserRepo.create(userObj);
-    if (errorMsg == null) {
-      emit(
-        state.copyWith(
-          status: SignUpStatus.success,
-          statusMsg: 'Success! User signed up.',
-        ),
-      );
+    //  SignUp user.
+    final signUpRecord =
+        await _authRepo.signUp(email: state.email, password: state.password);
+    final errorMsg = signUpRecord.$1;
+    final userId = signUpRecord.user?.uid;
+    if (userId != null) {
+      //  Create user.
+      final roleIndex = state.roles.indexOf(state.role);
+      final userObj = {
+        'name': state.name,
+        'email': state.email,
+        'roleIndex': roleIndex,
+        'phone': state.phone,
+        'photoPath': state.photoPath,
+      };
+      final errorMsg = await _appUserRepo.create(userId, value: userObj);
+      if (errorMsg == null) {
+        emit(
+          state.copyWith(
+            status: SignUpStatus.success,
+            statusMsg: 'Success! User signed up.',
+          ),
+        );
+      } else {
+        emit(state.copyWith(status: SignUpStatus.failure, statusMsg: errorMsg));
+      }
+    } else {
+      emit(state.copyWith(status: SignUpStatus.failure, statusMsg: errorMsg));
     }
   }
 }

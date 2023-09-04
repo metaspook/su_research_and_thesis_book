@@ -18,7 +18,7 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
           centerTitle: true,
           title: const Text('Profile'),
-          leading: context.backButton),
+          leading: context.backButton,),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
         children: [

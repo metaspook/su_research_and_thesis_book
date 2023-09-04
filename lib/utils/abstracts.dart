@@ -1,11 +1,11 @@
 import 'package:su_thesis_book/utils/utils.dart';
 
-abstract class CrudAbstract {
-  Future<String?> create(Json value);
+abstract class CrudAbstract<T> {
+  Future<String?> create(String id, {required Json value});
 
-  Future<String?> read(String id);
+  Future<(String?, {T? object})> read(String id);
 
-  Future<String?> update(Json value);
+  Future<String?> update(String id, {required Json value});
 
   Future<String?> delete(String id);
 }

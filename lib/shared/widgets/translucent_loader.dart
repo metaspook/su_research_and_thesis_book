@@ -49,7 +49,7 @@ class TranslucentLoader extends StatelessWidget {
                           alignment: PlaceholderAlignment.middle,
                           child: circularProgressIndicator,
                         ),
-                        const TextSpan(text: 'ADING')
+                        const TextSpan(text: 'ADING'),
                       ],
                     ),
                   ),

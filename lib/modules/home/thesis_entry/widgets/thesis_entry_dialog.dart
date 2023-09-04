@@ -82,7 +82,7 @@ class ThesisEntryDialog extends StatelessWidget {
                                   label: Text(
                                     pdfPath.isEmpty ? 'Pick PDF' : 'Change',
                                   ),
-                                )
+                                ),
                               ],
                             );
                           },
