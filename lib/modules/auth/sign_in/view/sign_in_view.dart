@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
-import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 import 'package:su_thesis_book/utils/utils.dart';
@@ -39,7 +38,7 @@ class _SignInViewState extends State<SignInView> {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<SignInBloc>();
-    const nameValidator = Validator2([LeadingOrTrailingSpace()]);
+    // const nameValidator = Validator2([LeadingOrTrailingSpace()]);
     final isLoading = context
         .select((SignInBloc bloc) => bloc.state.status == SignInStatus.loading);
     return TranslucentLoader(
@@ -50,30 +49,59 @@ class _SignInViewState extends State<SignInView> {
           padding: const EdgeInsets.all(20),
           children: [
             const SizedBox(height: 20),
-            const TextField(
+            // E-mail
+            TextFormField(
+              controller: _emailController,
+              focusNode: _emailFocusNode,
+              validator: Validator.email,
+              onFieldSubmitted: _emailFocusNode.onSubmitted,
               keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                label: Text('Email'),
+              decoration: const InputDecoration(
+                label: Text('E-mail'),
                 border: AppThemes.outlineInputBorder,
               ),
+              onChanged: (value) => bloc.add(SignInEdited(email: value)),
             ),
             const SizedBox(height: 20),
-            const TextField(
+            // Password
+            TextFormField(
+              controller: _passwordController,
+              focusNode: _passwordFocusNode,
+              validator: Validator.password,
+              onFieldSubmitted: _passwordFocusNode.onSubmitted,
               keyboardType: TextInputType.visiblePassword,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 label: Text('Password'),
                 border: AppThemes.outlineInputBorder,
               ),
+              onChanged: (value) => bloc.add(SignInEdited(password: value)),
             ),
             const SizedBox(height: 30),
 
             // Proceed button
-            ElevatedButton.icon(
-              icon: const Icon(Icons.forward_rounded),
-              label: const Text('Proceed'),
-              onPressed: () {
-                context.go(AppRouter.home.path);
+            SignInBlocListener(
+              listenWhen: (previous, current) =>
+                  // previous.statusMsg != current.statusMsg,
+                  current.status == SignInStatus.success ||
+                  current.status == SignInStatus.failure,
+              listener: (context, state) {
+                final snackBar = SnackBar(
+                  backgroundColor: context.theme.snackBarTheme.backgroundColor
+                      ?.withOpacity(.25),
+                  behavior: SnackBarBehavior.floating,
+                  content: Text(state.statusMsg),
+                );
+                context.scaffoldMessenger.showSnackBar(snackBar);
               },
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.forward_rounded),
+                label: const Text('Proceed'),
+                onPressed: () {
+                  final valid =
+                      _signInFormKey.currentState?.validate() ?? false;
+                  if (valid) bloc.add(const SignInProceeded());
+                },
+              ),
             ),
           ],
         ),

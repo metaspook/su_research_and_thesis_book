@@ -26,15 +26,29 @@ class App extends StatelessWidget {
           authRepo: context.read<AuthRepo>(),
           appUserRepo: context.read<AppUserRepo>(),
         )..initAuth(),
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          theme: AppThemes.light(),
-          darkTheme: AppThemes.dark(),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          routerConfig: router.config,
-        ),
+        child: AppView(router: router),
       ),
+    );
+  }
+}
+
+class AppView extends StatelessWidget {
+  const AppView({
+    required this.router,
+    super.key,
+  });
+
+  final AppRouter router;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      theme: AppThemes.light(),
+      darkTheme: AppThemes.dark(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      routerConfig: router.config,
     );
   }
 }

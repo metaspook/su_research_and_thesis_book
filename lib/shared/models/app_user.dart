@@ -7,6 +7,7 @@ class AppUser extends Equatable {
   const AppUser({
     required this.id,
     this.name,
+    this.role,
     this.email,
     this.phone,
     this.photoUrl,
@@ -16,6 +17,7 @@ class AppUser extends Equatable {
     return AppUser(
       id: json['id'] as String,
       name: json['name'] as String,
+      role: json['role'] as String,
       email: json['email'] as String,
       phone: json['phone'] as String,
       photoUrl: json['photoUrl'] as String,
@@ -23,6 +25,7 @@ class AppUser extends Equatable {
   }
 
   final String id;
+  final String? role;
   final String? name;
   final String? email;
   final String? phone;
@@ -41,6 +44,7 @@ class AppUser extends Equatable {
     return <String, dynamic>{
       'id': id,
       'name': name,
+      'role': role,
       'email': email,
       'phone': phone,
       'photoUrl': photoUrl,
@@ -52,6 +56,7 @@ class AppUser extends Equatable {
     return [
       id,
       name,
+      role,
       email,
       phone,
       photoUrl,

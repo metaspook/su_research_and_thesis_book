@@ -64,7 +64,7 @@ class _SignUpViewState extends State<SignUpView> {
     //     .then((value) => value.value.doPrint());
 // [].indexOf(element)
     final bloc = context.read<SignUpBloc>();
-    const nameValidator = Validator2([LeadingOrTrailingSpace()]);
+    // const nameValidator = Validator2([LeadingOrTrailingSpace()]);
     final isLoading = context
         .select((SignUpBloc bloc) => bloc.state.status == SignUpStatus.loading);
     return TranslucentLoader(
@@ -78,8 +78,7 @@ class _SignUpViewState extends State<SignUpView> {
             TextFormField(
               controller: _nameController,
               focusNode: _nameFocusNode,
-              validator: nameValidator.call,
-              // validator: Validator.name,
+              validator: Validator.name,
               onFieldSubmitted: _emailFocusNode.onSubmitted,
               keyboardType: TextInputType.name,
               decoration: const InputDecoration(
@@ -209,7 +208,6 @@ class _SignUpViewState extends State<SignUpView> {
             // Proceed button
             SignUpBlocListener(
               listenWhen: (previous, current) =>
-                  // previous.statusMsg != current.statusMsg,
                   current.status == SignUpStatus.success ||
                   current.status == SignUpStatus.failure,
               listener: (context, state) {
@@ -227,9 +225,7 @@ class _SignUpViewState extends State<SignUpView> {
                 onPressed: () {
                   final valid =
                       _signUpFormKey.currentState?.validate() ?? false;
-                  if (valid) {
-                    bloc.add(const SignUpProceeded());
-                  }
+                  if (valid) bloc.add(const SignUpProceeded());
                 },
               ),
             ),

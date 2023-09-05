@@ -18,8 +18,11 @@ class ProfileCubit extends Cubit<ProfileState> {
   final AppUserRepo _appUserRepo;
   final RoleRepo _roleRepo;
 
-  void signOut() {
+  Future<void> signOut() async {
     emit(state.copyWith(status: ProfileStatus.loading));
-    _authRepo.signOut();
+    final errorMsg = await _authRepo.signOut();
+    if (errorMsg == null) {
+      emit(state.copyWith(status: ProfileStatus.failure, statusMsg: errorMsg));
+    }
   }
 }
