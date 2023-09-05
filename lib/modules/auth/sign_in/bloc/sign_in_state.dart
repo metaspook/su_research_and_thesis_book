@@ -8,25 +8,28 @@ final class SignInState extends Equatable {
     this.statusMsg = '',
     this.email = '',
     this.password = '',
+    this.obscurePassword = true,
   });
 
   final SignInStatus status;
   final String statusMsg;
-
   final String email;
   final String password;
+  final bool obscurePassword;
 
   SignInState copyWith({
     SignInStatus? status,
     String? statusMsg,
     String? email,
     String? password,
+    bool? obscurePassword,
   }) {
     return SignInState(
       status: status ?? this.status,
       statusMsg: statusMsg ?? this.statusMsg,
       email: email ?? this.email,
       password: password ?? this.password,
+      obscurePassword: obscurePassword ?? this.obscurePassword,
     );
   }
 
@@ -37,6 +40,7 @@ final class SignInState extends Equatable {
       statusMsg,
       email,
       password,
+      obscurePassword,
     ];
   }
 }

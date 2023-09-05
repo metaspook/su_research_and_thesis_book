@@ -37,6 +37,10 @@ final class SignUpFormLoaded extends SignUpEvent {
   const SignUpFormLoaded();
 }
 
+final class SignUpObscurePasswordToggled extends SignUpEvent {
+  const SignUpObscurePasswordToggled();
+}
+
 final class SignUpProceeded extends SignUpEvent {
   const SignUpProceeded();
 }

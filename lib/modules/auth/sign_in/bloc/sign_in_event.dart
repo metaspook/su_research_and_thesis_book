@@ -17,6 +17,10 @@ final class SignInEdited extends SignInEvent {
   List<Object?> get props => [email, password];
 }
 
+final class SignInObscurePasswordToggled extends SignInEvent {
+  const SignInObscurePasswordToggled();
+}
+
 final class SignInProceeded extends SignInEvent {
   const SignInProceeded();
 }

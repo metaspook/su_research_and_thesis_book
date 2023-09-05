@@ -13,6 +13,7 @@ final class SignUpState extends Equatable {
     this.role = '',
     this.roles = const <String>[],
     this.photoPath = '',
+    this.obscurePassword = true,
   });
 
   final SignUpStatus status;
@@ -24,6 +25,7 @@ final class SignUpState extends Equatable {
   final String role;
   final List<String> roles;
   final String photoPath;
+  final bool obscurePassword;
 
   SignUpState copyWith({
     SignUpStatus? status,
@@ -35,6 +37,7 @@ final class SignUpState extends Equatable {
     String? role,
     List<String>? roles,
     String? photoPath,
+    bool? obscurePassword,
   }) {
     return SignUpState(
       status: status ?? this.status,
@@ -46,6 +49,7 @@ final class SignUpState extends Equatable {
       role: role ?? this.role,
       roles: roles ?? this.roles,
       photoPath: photoPath ?? this.photoPath,
+      obscurePassword: obscurePassword ?? this.obscurePassword,
     );
   }
 
@@ -61,6 +65,7 @@ final class SignUpState extends Equatable {
       role,
       roles,
       photoPath,
+      obscurePassword,
     ];
   }
 }

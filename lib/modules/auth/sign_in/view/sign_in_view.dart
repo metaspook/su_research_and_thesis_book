@@ -25,6 +25,14 @@ class _SignInViewState extends State<SignInView> {
   final _passwordFocusNode = FocusNode();
 
   @override
+  void initState() {
+    super.initState();
+    // Restore form state.
+    _emailController.text = context.read<SignInBloc>().state.email;
+    _passwordController.text = context.read<SignInBloc>().state.password;
+  }
+
+  @override
   void dispose() {
     // TextEditingControllers
     _emailController.dispose();
@@ -57,24 +65,45 @@ class _SignInViewState extends State<SignInView> {
               onFieldSubmitted: _emailFocusNode.onSubmitted,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
-                label: Text('E-mail'),
                 border: AppThemes.outlineInputBorder,
+                label: Text('E-mail'),
               ),
               onChanged: (value) => bloc.add(SignInEdited(email: value)),
             ),
             const SizedBox(height: 20),
             // Password
-            TextFormField(
-              controller: _passwordController,
-              focusNode: _passwordFocusNode,
-              validator: Validator.password,
-              onFieldSubmitted: _passwordFocusNode.onSubmitted,
-              keyboardType: TextInputType.visiblePassword,
-              decoration: const InputDecoration(
-                label: Text('Password'),
-                border: AppThemes.outlineInputBorder,
-              ),
-              onChanged: (value) => bloc.add(SignInEdited(password: value)),
+            Builder(
+              builder: (context) {
+                final isEmptyPassword = context
+                    .select((SignInBloc bloc) => bloc.state.password.isEmpty);
+                final obscurePassword = context
+                    .select((SignInBloc bloc) => bloc.state.obscurePassword);
+
+                return TextFormField(
+                  controller: _passwordController,
+                  focusNode: _passwordFocusNode,
+                  validator: Validator.password,
+                  onFieldSubmitted: _passwordFocusNode.onSubmitted,
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: obscurePassword,
+                  decoration: InputDecoration(
+                    border: AppThemes.outlineInputBorder,
+                    label: const Text('Password'),
+                    suffixIcon: IconButton(
+                      onPressed: isEmptyPassword
+                          ? null
+                          : () =>
+                              bloc.add(const SignInObscurePasswordToggled()),
+                      icon: Icon(
+                        obscurePassword
+                            ? Icons.visibility_rounded
+                            : Icons.visibility_off_rounded,
+                      ),
+                    ),
+                  ),
+                  onChanged: (value) => bloc.add(SignInEdited(password: value)),
+                );
+              },
             ),
             const SizedBox(height: 30),
 

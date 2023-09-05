@@ -37,6 +37,11 @@ class _SignUpViewState extends State<SignUpView> {
   void initState() {
     super.initState();
     imageCropicker = ImageCropicker(context);
+    // Restore form state.
+    _nameController.text = context.read<SignUpBloc>().state.name;
+    _emailController.text = context.read<SignUpBloc>().state.email;
+    _passwordController.text = context.read<SignUpBloc>().state.password;
+    _phoneController.text = context.read<SignUpBloc>().state.phone;
   }
 
   @override
@@ -97,14 +102,37 @@ class _SignUpViewState extends State<SignUpView> {
               onChanged: (value) => bloc.add(SignUpEdited(email: value)),
             ),
             // Password
-            TextFormField(
-              controller: _passwordController,
-              focusNode: _passwordFocusNode,
-              validator: Validator.password,
-              onFieldSubmitted: _phoneFocusNode.onSubmitted,
-              keyboardType: TextInputType.visiblePassword,
-              decoration: const InputDecoration(hintText: 'password...'),
-              onChanged: (value) => bloc.add(SignUpEdited(password: value)),
+            Builder(
+              builder: (context) {
+                final isEmptyPassword = context
+                    .select((SignUpBloc bloc) => bloc.state.password.isEmpty);
+                final obscurePassword = context
+                    .select((SignUpBloc bloc) => bloc.state.obscurePassword);
+
+                return TextFormField(
+                  controller: _passwordController,
+                  focusNode: _passwordFocusNode,
+                  validator: Validator.password,
+                  onFieldSubmitted: _phoneFocusNode.onSubmitted,
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: obscurePassword,
+                  decoration: InputDecoration(
+                    hintText: 'password...',
+                    suffixIcon: IconButton(
+                      onPressed: isEmptyPassword
+                          ? null
+                          : () =>
+                              bloc.add(const SignUpObscurePasswordToggled()),
+                      icon: Icon(
+                        obscurePassword
+                            ? Icons.visibility_rounded
+                            : Icons.visibility_off_rounded,
+                      ),
+                    ),
+                  ),
+                  onChanged: (value) => bloc.add(SignUpEdited(password: value)),
+                );
+              },
             ),
             // Phone
             TextFormField(

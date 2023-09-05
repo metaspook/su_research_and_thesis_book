@@ -21,6 +21,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<SignUpEdited>(_onEdited);
     on<SignUpPhotoPicked>(_onPhotoPicked);
     on<SignUpProceeded>(_onProceeded);
+    on<SignUpObscurePasswordToggled>(_onObscurePasswordToggled);
     on<SignUpFormLoaded>(_onFormLoaded);
   }
 
@@ -68,6 +69,13 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         state.copyWith(roles: rolesRecord.roles, status: SignUpStatus.initial),
       );
     }
+  }
+
+  Future<void> _onObscurePasswordToggled(
+    SignUpObscurePasswordToggled event,
+    Emitter<SignUpState> emit,
+  ) async {
+    emit(state.copyWith(obscurePassword: !state.obscurePassword));
   }
 
   Future<void> _onProceeded(

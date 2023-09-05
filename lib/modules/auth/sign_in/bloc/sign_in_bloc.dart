@@ -12,6 +12,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         super(const SignInState()) {
     //-- Register Event Handlers
     on<SignInEdited>(_onEdited);
+    on<SignInObscurePasswordToggled>(_onObscurePasswordToggled);
     on<SignInProceeded>(_onProceeded);
   }
 
@@ -28,6 +29,13 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         password: event.password,
       ),
     );
+  }
+
+  Future<void> _onObscurePasswordToggled(
+    SignInObscurePasswordToggled event,
+    Emitter<SignInState> emit,
+  ) async {
+    emit(state.copyWith(obscurePassword: !state.obscurePassword));
   }
 
   Future<void> _onProceeded(
