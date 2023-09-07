@@ -1,4 +1,4 @@
-part of 'profile_cubit.dart';
+part of 'profile_bloc.dart';
 
 enum ProfileStatus { initial, editing, loading, success, failure }
 
@@ -11,8 +11,9 @@ final class ProfileState extends Equatable {
     this.email = '',
     this.password = '',
     this.phone = '',
-    this.croppedImagePath = '',
-    this.pickedImagePath = '',
+    this.photoUrl = '',
+    this.obscurePassword = true,
+    this.editMode = false,
   });
 
   final ProfileStatus status;
@@ -22,8 +23,9 @@ final class ProfileState extends Equatable {
   final String email;
   final String password;
   final String phone;
-  final String croppedImagePath;
-  final String pickedImagePath;
+  final String photoUrl;
+  final bool obscurePassword;
+  final bool editMode;
 
   ProfileState copyWith({
     ProfileStatus? status,
@@ -33,8 +35,9 @@ final class ProfileState extends Equatable {
     String? email,
     String? password,
     String? phone,
-    String? croppedImagePath,
-    String? pickedImagePath,
+    String? photoUrl,
+    bool? obscurePassword,
+    bool? editMode,
   }) {
     return ProfileState(
       status: status ?? this.status,
@@ -44,8 +47,9 @@ final class ProfileState extends Equatable {
       email: email ?? this.email,
       password: password ?? this.password,
       phone: phone ?? this.phone,
-      croppedImagePath: croppedImagePath ?? this.croppedImagePath,
-      pickedImagePath: pickedImagePath ?? this.pickedImagePath,
+      photoUrl: photoUrl ?? this.photoUrl,
+      obscurePassword: obscurePassword ?? this.obscurePassword,
+      editMode: editMode ?? this.editMode,
     );
   }
 
@@ -59,8 +63,9 @@ final class ProfileState extends Equatable {
       email,
       password,
       phone,
-      croppedImagePath,
-      pickedImagePath,
+      photoUrl,
+      obscurePassword,
+      editMode,
     ];
   }
 }

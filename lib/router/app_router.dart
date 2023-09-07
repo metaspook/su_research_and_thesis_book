@@ -92,11 +92,9 @@ final class AppRouter {
             create: (context) => const RoleRepo(),
           ),
         ],
-        child: BlocProvider<ProfileCubit>(
-          create: (context) => ProfileCubit(
+        child: BlocProvider<ProfileBloc>(
+          create: (context) => ProfileBloc(
             authRepo: context.read<AuthRepo>(),
-            appUserRepo: context.read<AppUserRepo>(),
-            roleRepo: context.read<RoleRepo>(),
           ),
           child: const ProfilePage(),
         ),
