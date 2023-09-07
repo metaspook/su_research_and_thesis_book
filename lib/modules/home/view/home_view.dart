@@ -7,6 +7,8 @@ import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 
+typedef AppBlocSelector<T> = BlocSelector<AppCubit, AppState, T>;
+
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
@@ -28,7 +30,7 @@ class HomeView extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 4.5),
                 child: GestureDetector(
                   onTap: () => context.push(AppRouter.profile.path),
-                  child: BlocSelector<AppCubit, AppState, String?>(
+                  child: AppBlocSelector<String?>(
                     selector: (state) => state.user.photoUrl,
                     builder: (context, photoUrl) {
                       return HaloAvatar(imagePath: photoUrl);

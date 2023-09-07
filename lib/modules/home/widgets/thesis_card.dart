@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
+import 'package:su_thesis_book/theme/extensions.dart';
 
 class ThesisCard extends StatelessWidget {
   const ThesisCard(this.thesis, {super.key});
@@ -21,40 +22,37 @@ class ThesisCard extends StatelessWidget {
             builder: (context) => ThesisView(thesis: thesis),
           ),
         ),
-        title: Text(thesis.name),
+        title: Text(
+          thesis.name,
+          style: context.theme.textTheme.titleLarge,
+        ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text.rich(
               TextSpan(
                 text: 'Author: ',
-                style: TextStyle(
+                style: context.theme.textTheme.titleMedium?.copyWith(
                   color: theme.badgeTheme.backgroundColor,
                 ),
                 children: [
                   TextSpan(
                     text: thesis.author,
-                    style: TextStyle(
-                      color: theme.badgeTheme.backgroundColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
             ),
             Text.rich(
               TextSpan(
-                text: 'Created At: ',
-                style: TextStyle(
+                text: 'Posted: ',
+                style: context.theme.textTheme.titleMedium?.copyWith(
                   color: theme.badgeTheme.backgroundColor,
                 ),
                 children: [
                   TextSpan(
                     text: dateStr,
-                    style: TextStyle(
-                      color: theme.badgeTheme.backgroundColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),

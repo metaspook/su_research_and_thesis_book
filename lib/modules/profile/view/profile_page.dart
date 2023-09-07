@@ -10,7 +10,6 @@ import 'package:su_thesis_book/theme/theme.dart';
 typedef ProfileBlocSelector<T> = BlocSelector<ProfileCubit, ProfileState, T>;
 typedef ProfileBlocListener = BlocListener<ProfileCubit, ProfileState>;
 typedef AppBlocSelector<T> = BlocSelector<AppCubit, AppState, T>;
-// typedef AppBlocListener = BlocListener<AppCubit, AppState>;
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
