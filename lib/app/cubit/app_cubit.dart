@@ -11,17 +11,10 @@ class AppCubit extends Cubit<AppState> {
   AppCubit({required AuthRepo authRepo, required AppUserRepo appUserRepo})
       : _authRepo = authRepo,
         _appUserRepo = appUserRepo,
-        super(const AppState());
-
-  final AuthRepo _authRepo;
-  final AppUserRepo _appUserRepo;
-  late final StreamSubscription<User?> _userSubscription;
-
-  // AuthUser, DBUser, AppUser
-
-  void initAuth() {
-    // Get authUser.
+        super(const AppState()) {
+    //-- Initialize Authentication.
     _userSubscription = _authRepo.userStream.listen((user) async {
+      // Check authUser from stream.
       if (user != null) {
         // Get appUser by authUser's id.
         final appUserRecord = await _appUserRepo.read(user.uid);
@@ -44,6 +37,10 @@ class AppCubit extends Cubit<AppState> {
       }
     });
   }
+
+  final AuthRepo _authRepo;
+  final AppUserRepo _appUserRepo;
+  late final StreamSubscription<User?> _userSubscription;
 
   @override
   Future<void> close() {

@@ -5,19 +5,21 @@ import 'dart:io';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
+import 'package:su_thesis_book/shared/services/services.dart';
 import 'package:su_thesis_book/utils/utils.dart';
-
-//-- Config
-const _errorMsgCreateUser = "Couldn't create the User!";
-const _errorMsgReadUser = "Couldn't read the User data!";
-const _errorMsgUpdateUser = "Couldn't update the User!";
-const _errorMsgDeleteUser = "Couldn't delete the User!";
 
 class AppUserRepo implements CrudAbstract<AppUser> {
   const AppUserRepo();
 
-  Reference get _storage => FirebaseStorage.instance.ref('photos');
-  DatabaseReference get _db => FirebaseDatabase.instance.ref('users');
+  //-- Config
+  static const _errorMsgCreateUser = "Couldn't create the User!";
+  static const _errorMsgReadUser = "Couldn't read the User data!";
+  static const _errorMsgUpdateUser = "Couldn't update the User!";
+  static const _errorMsgDeleteUser = "Couldn't delete the User!";
+
+  FirebaseService get _firebaseService => const FirebaseService();
+  DatabaseReference get _db => _firebaseService.db.ref('users');
+  Reference get _storage => _firebaseService.storage.ref('photos');
 
   //-- Public APIs
   /// Create user data to database.

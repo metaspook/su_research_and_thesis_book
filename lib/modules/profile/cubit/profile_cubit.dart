@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
+import 'package:su_thesis_book/utils/extensions.dart';
 
 part 'profile_state.dart';
 
@@ -22,6 +23,14 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(state.copyWith(status: ProfileStatus.loading));
     final errorMsg = await _authRepo.signOut();
     if (errorMsg == null) {
+      'signOut'.doPrint();
+      emit(
+        state.copyWith(
+          status: ProfileStatus.success,
+          statusMsg: 'Success! User signed out.',
+        ),
+      );
+    } else {
       emit(state.copyWith(status: ProfileStatus.failure, statusMsg: errorMsg));
     }
   }

@@ -1,54 +1,37 @@
-// part of 'app_router.dart';
-
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:su_thesis_book/app/app.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/modules/profile/profile.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
 
-// Exposes routing interface for view.
+// Exposes routing interface for views.
 export 'package:go_router/go_router.dart' show GoRouterHelper;
 
 final class AppRouter {
-  //-- Register routes
-  final config = GoRouter(
-    // navigatorKey: ,
-    // initialLocation: home.path,
-    // initialLocation: auth.path,
-    routes: <RouteBase>[
-      // root,
-      home,
-      auth,
-      profile,
-    ],
-    redirect: (context, state) {
-      final status = context.watch<AppCubit>().state.status;
-      return switch (status) {
-        AppStatus.authenticated => '/',
-        _ => '/auth',
-      };
-    },
-    // redirect: (context, state) {
-    //   final status = context.watch<AppCubit>().state.status;
-    //   final isAuthenticated = status == AppStatus.authenticated;
-    //   return isAuthenticated ? '/' : '/auth';
-    // },
-  );
+  AppRouter({this.initialLocation, this.navigatorKey})
+      : config = GoRouter(
+          //-- Register routes
+          routes: <RouteBase>[
+            home,
+            auth,
+            profile,
+          ],
+          initialLocation: initialLocation,
+          navigatorKey: navigatorKey,
+        );
+
+  final GlobalKey<NavigatorState>? navigatorKey;
+  final String? initialLocation;
+  final GoRouter config;
 
   //-- Define routes
   // Home
   static final home = GoRoute(
     name: 'home',
     path: '/',
-    // redirect: (context, state) {
-    //   final status = context.watch<AppCubit>().state.status;
-    //   return switch (status) {
-    //     AppStatus.authenticated => '/',
-    //     _ => '/auth',
-    //   };
-    // },
+    // redirect: _redirect,
     builder: (context, state) {
       return const HomePage();
     },
@@ -57,16 +40,12 @@ final class AppRouter {
   static final auth = GoRoute(
     name: 'auth',
     path: '/auth',
-    // redirect: (context, state) {
-    //   final status = context.watch<AppCubit>().state.status;
-    //   final isAuthenticated = status == AppStatus.authenticated;
-    //   return isAuthenticated ? '/' : null;
-    // },
+    // redirect: _redirect,
     builder: (context, state) {
       return MultiRepositoryProvider(
         providers: [
           RepositoryProvider<AuthRepo>(
-            create: (context) => const AuthRepo(),
+            create: (context) => AuthRepo(),
           ),
           RepositoryProvider<AppUserRepo>(
             create: (context) => const AppUserRepo(),
@@ -95,6 +74,7 @@ final class AppRouter {
       );
     },
   );
+
   // Profile
   static final profile = GoRoute(
     name: 'profile',
@@ -103,7 +83,7 @@ final class AppRouter {
       return MultiRepositoryProvider(
         providers: [
           RepositoryProvider<AuthRepo>(
-            create: (context) => const AuthRepo(),
+            create: (context) => AuthRepo(),
           ),
           RepositoryProvider<AppUserRepo>(
             create: (context) => const AppUserRepo(),
@@ -123,4 +103,20 @@ final class AppRouter {
       );
     },
   );
+
+  // static FutureOr<String?> _redirect(
+  //   BuildContext context,
+  //   GoRouterState state,
+  // ) {
+  //   // AppStatus prevStatus;
+  //   final status = context.watch<AppCubit>().state.status;
+  //   'Path: ${state.path}, isAuthenticated: ${status.isAuthenticated}'.doPrint();
+  //   if (state.path == '/auth' && status.isAuthenticated) {
+  //     return '/';
+  //   } else if (state.path != '/auth' && status.isUnauthenticated) {
+  //     return '/auth';
+  //   }
+
+  //   return null;
+  // }
 }

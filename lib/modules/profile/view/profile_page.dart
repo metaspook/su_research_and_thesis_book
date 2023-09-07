@@ -8,7 +8,7 @@ import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
 typedef ProfileBlocSelector<T> = BlocSelector<ProfileCubit, ProfileState, T>;
-// typedef ProfileBlocListener = BlocListener<ProfileCubit, ProfileState>;
+typedef ProfileBlocListener = BlocListener<ProfileCubit, ProfileState>;
 typedef AppBlocSelector<T> = BlocSelector<AppCubit, AppState, T>;
 // typedef AppBlocListener = BlocListener<AppCubit, AppState>;
 
@@ -18,9 +18,6 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<ProfileCubit>();
-    // File('d:/lab/projects/su_thesis_book/assets/images/placeholder_user_01.jpg')
-    //     .readAsBytes()
-    //     .then(print);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -73,10 +70,26 @@ class ProfilePage extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 30),
-                ElevatedButton.icon(
-                  onPressed: cubit.signOut,
-                  icon: const Icon(Icons.logout_outlined),
-                  label: const Text('Sign Out'),
+                // Sign Out button
+                ProfileBlocListener(
+                  listenWhen: (previous, current) =>
+                      current.status == ProfileStatus.success ||
+                      current.status == ProfileStatus.failure,
+                  listener: (context, state) {
+                    final snackBar = SnackBar(
+                      backgroundColor: context
+                          .theme.snackBarTheme.backgroundColor
+                          ?.withOpacity(.25),
+                      behavior: SnackBarBehavior.floating,
+                      content: Text(state.statusMsg),
+                    );
+                    context.scaffoldMessenger.showSnackBar(snackBar);
+                  },
+                  child: ElevatedButton.icon(
+                    onPressed: cubit.signOut,
+                    icon: const Icon(Icons.logout_outlined),
+                    label: const Text('Sign Out'),
+                  ),
                 ),
               ],
             ),

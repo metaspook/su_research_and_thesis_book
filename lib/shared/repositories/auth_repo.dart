@@ -2,30 +2,33 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:su_thesis_book/utils/utils.dart';
 
 export 'package:firebase_auth/firebase_auth.dart' show User;
 
-const _errorMsgSignIn = "Couldn't sign-in the user!";
-const _errorMsgSignUp = "Couldn't sign-up the user!";
-const _errorMsgSignOut = "Couldn't sign-out the user!";
-
 class AuthRepo {
-  const AuthRepo();
+  AuthRepo() : _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth;
 
-  FirebaseAuth get _auth => FirebaseAuth.instance;
+  //-- Config
+  static const _errorMsgSignIn = "Couldn't sign-in the user!";
+  static const _errorMsgSignUp = "Couldn't sign-up the user!";
+  static const _errorMsgSignOut = "Couldn't sign-out the user!";
 
   //-- Public APIs
   Stream<User?> get userStream => _auth.authStateChanges();
+  User? get currentUser => _auth.currentUser;
 
   Future<String?> signIn({
     required String email,
     required String password,
   }) async {
     try {
-      await _auth.signInWithEmailAndPassword(
+      final ss = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+      ss.doPrint();
     } on FirebaseAuthException catch (e) {
       return const <String, String>{
         'invalid-email': 'Invalid email!',

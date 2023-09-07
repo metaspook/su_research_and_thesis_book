@@ -1,17 +1,23 @@
 part of 'app_cubit.dart';
 
-enum AppStatus { authenticated, unauthenticated }
+enum AppStatus {
+  authenticated,
+  unauthenticated;
+
+  bool get isAuthenticated => this == AppStatus.authenticated;
+  bool get isUnauthenticated => this == AppStatus.unauthenticated;
+}
 
 final class AppState extends Equatable {
   const AppState({
     this.status = AppStatus.unauthenticated,
     this.statusMsg = '',
-    this.user,
+    this.user = AppUser.empty,
   });
 
   final AppStatus status;
   final String statusMsg;
-  final AppUser? user;
+  final AppUser user;
 
   AppState copyWith({
     AppStatus? status,

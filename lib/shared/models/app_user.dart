@@ -1,8 +1,11 @@
-// ignore_for_file: lines_longer_than_80_chars
-
 import 'package:equatable/equatable.dart';
+import 'package:su_thesis_book/utils/utils.dart';
 
-/// Named `AppUser` instead of `User` to prevent the same name conflict with firebase's `User` class.
+/// {@template user}
+/// User model.
+/// * Named `AppUser` instead of `User` to prevent the same name conflict with firebase's `User` class.
+/// * [AppUser.empty] represents an unauthenticated user.
+/// {@endtemplate}
 class AppUser extends Equatable {
   const AppUser({
     required this.id,
@@ -13,14 +16,14 @@ class AppUser extends Equatable {
     this.photoUrl,
   });
 
-  factory AppUser.fromJson(Map<String, dynamic> json) {
+  factory AppUser.fromJson(Json json) {
     return AppUser(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      role: json['role'] as String,
-      email: json['email'] as String,
-      phone: json['phone'] as String,
-      photoUrl: json['photoUrl'] as String,
+      id: json['id']! as String,
+      name: json['name'] as String?,
+      role: json['role'] as String?,
+      email: json['email'] as String?,
+      phone: json['phone'] as String?,
+      photoUrl: json['photoUrl'] as String?,
     );
   }
 
@@ -33,15 +36,11 @@ class AppUser extends Equatable {
 
   /// Empty user which represents an unauthenticated user.
   static const empty = AppUser(id: '');
-
-  /// Convenience getter to determine whether the current user is empty.
   bool get isEmpty => this == AppUser.empty;
-
-  /// Convenience getter to determine whether the current user is not empty.
   bool get isNotEmpty => this != AppUser.empty;
 
-  Map<String, dynamic> toJson() {
-    return <String, dynamic>{
+  Json toJson() {
+    return <String, Object?>{
       'id': id,
       'name': name,
       'role': role,
@@ -52,16 +51,7 @@ class AppUser extends Equatable {
   }
 
   @override
-  List<Object?> get props {
-    return [
-      id,
-      name,
-      role,
-      email,
-      phone,
-      photoUrl,
-    ];
-  }
+  List<Object?> get props => [id, name, role, email, phone, photoUrl];
 
   @override
   bool get stringify => true;

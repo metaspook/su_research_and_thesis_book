@@ -11,11 +11,10 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final router = AppRouter();
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AuthRepo>(
-          create: (context) => const AuthRepo(),
+          create: (context) => AuthRepo(),
         ),
         RepositoryProvider<AppUserRepo>(
           create: (context) => const AppUserRepo(),
@@ -25,24 +24,26 @@ class App extends StatelessWidget {
         create: (context) => AppCubit(
           authRepo: context.read<AuthRepo>(),
           appUserRepo: context.read<AppUserRepo>(),
-        )..initAuth(),
-        child: AppView(router: router),
+        ),
+        child: const AppView(),
       ),
     );
   }
 }
 
 class AppView extends StatelessWidget {
-  const AppView({
-    required this.router,
-    super.key,
-  });
-
-  final AppRouter router;
+  const AppView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Configure authentication based router's initialLocation.
+    final isAuthenticated =
+        context.select((AppCubit cubit) => cubit.state.status.isAuthenticated);
+    final initialLocation =
+        isAuthenticated ? AppRouter.home.path : AppRouter.auth.path;
+    final router = AppRouter(initialLocation: initialLocation);
     return MaterialApp.router(
+      title: 'SU Thesis Book',
       debugShowCheckedModeBanner: false,
       theme: AppThemes.light(),
       darkTheme: AppThemes.dark(),

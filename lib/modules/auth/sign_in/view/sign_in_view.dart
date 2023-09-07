@@ -110,8 +110,8 @@ class _SignInViewState extends State<SignInView> {
             // Proceed button
             SignInBlocListener(
               listenWhen: (previous, current) =>
-                  // previous.statusMsg != current.statusMsg,
-                  current.status == SignInStatus.success ||
+                  previous != current &&
+                      current.status == SignInStatus.success ||
                   current.status == SignInStatus.failure,
               listener: (context, state) {
                 final snackBar = SnackBar(
