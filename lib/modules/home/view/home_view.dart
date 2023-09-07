@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:su_thesis_book/app/app.dart';
 import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/router/router.dart';
@@ -26,9 +28,11 @@ class HomeView extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 4.5),
                 child: GestureDetector(
                   onTap: () => context.push(AppRouter.profile.path),
-                  child: const HaloAvatar(
-                    imagePath:
-                        'https://cdn.icon-icons.com/icons2/2468/PNG/512/user_kids_avatar_user_profile_icon_149314.png',
+                  child: BlocSelector<AppCubit, AppState, String?>(
+                    selector: (state) => state.user.photoUrl,
+                    builder: (context, photoUrl) {
+                      return HaloAvatar(imagePath: photoUrl);
+                    },
                   ),
                 ),
               ),
