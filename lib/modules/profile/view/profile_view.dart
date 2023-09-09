@@ -24,41 +24,40 @@ class ProfileView extends StatelessWidget {
           selector: (state) => state.user,
           builder: (context, user) {
             return Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                // Profile photo
                 HaloAvatar(
-                  imagePath: user?.photoUrl,
+                  url: user?.photoUrl,
                   size: 4,
                 ),
                 const SizedBox(height: height),
-                Card(
-                  child: Column(
-                    children: [
-                      _textFormField(
-                        context,
-                        'Name  : ${user?.name ?? 'N/A'}',
+                Column(
+                  children: [
+                    for (final e in {
+                      'Name': user?.name ?? 'N/A',
+                      'E-mail': user?.email ?? 'N/A',
+                      'Phone': user?.phone ?? 'N/A',
+                      'Role': user?.role ?? 'N/A',
+                    }.entries)
+                      TextFormField(
+                        initialValue: e.value,
+                        readOnly: true,
+                        style: context.theme.textTheme.titleLarge?.copyWith(
+                          fontFamily: GoogleFonts.ubuntuMono().fontFamily,
+                        ),
+                        decoration: InputDecoration(
+                          filled: true,
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          label: Text(e.key),
+                        ),
                       ),
-                      _textFormField(
-                        context,
-                        'Role  : ${user?.role ?? 'N/A'}',
-                      ),
-                      _textFormField(
-                        context,
-                        'Phone : ${user?.phone ?? 'N/A'}',
-                      ),
-                      _textFormField(
-                        context,
-                        'E-mail: ${user?.email ?? 'N/A'}',
-                      ),
-                    ],
-                  ),
+                  ],
                 ),
               ],
             );
           },
         ),
         const SizedBox(height: height),
-        // Sign Out button
         ProfileBlocListener(
           listenWhen: (previous, current) =>
               current.status == ProfileStatus.success ||
@@ -74,13 +73,17 @@ class ProfileView extends StatelessWidget {
           },
           child: Row(
             children: [
-              ElevatedButton.icon(
-                onPressed: () => bloc.add(const ProfileEditModeToggled()),
-                icon: const Icon(Icons.edit_document),
-                label: const Text('Edit'),
+              // Edit button
+              Expanded(
+                child: ElevatedButton.icon(
+                  onPressed: () => bloc.add(const ProfileEditModeToggled()),
+                  icon: const Icon(Icons.edit_document),
+                  label: const Text('Edit'),
+                ),
               ),
               const SizedBox(width: width),
               Expanded(
+                // Sign Out button
                 child: ElevatedButton.icon(
                   onPressed: () => bloc.add(const ProfileSignedOut()),
                   icon: const Icon(Icons.logout_outlined),
@@ -93,16 +96,4 @@ class ProfileView extends StatelessWidget {
       ],
     );
   }
-
-  Widget _textFormField(BuildContext context, String initialValue) =>
-      TextFormField(
-        initialValue: initialValue,
-        style: context.theme.textTheme.titleLarge
-            ?.copyWith(fontFamily: GoogleFonts.ubuntuMono().fontFamily),
-        // enabled: false,
-        readOnly: true,
-        decoration: const InputDecoration(
-          filled: true,
-        ),
-      );
 }

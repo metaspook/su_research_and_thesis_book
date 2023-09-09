@@ -21,21 +21,37 @@ class Validator {
 // static const _tldlimit = 'TLD Characters limit: 2 to 7';
 // static String _limit(int max, [int min = 1])=> 'Characters limit: $min to $max';
 // Validator list
-  static String? name(String? value, {String? errorText}) =>
-      (value == null || value.isName)
+  static String? name(
+    String? value, {
+    bool required = true,
+    String? errorText,
+  }) =>
+      (value == null || value.isName || !required)
           ? null
           : errorText ?? 'Invalid Name format!';
 
-  static String? email(String? value, {String? errorText}) =>
-      (value == null || value.isEmail)
+  static String? email(
+    String? value, {
+    bool required = true,
+    String? errorText,
+  }) =>
+      (value == null || value.isEmail || !required)
           ? null
           : errorText ?? 'Invalid Email format!';
-  static String? password(String? value, {String? errorText}) =>
-      (value == null || value.isPassword)
+  static String? password(
+    String? value, {
+    bool required = true,
+    String? errorText,
+  }) =>
+      (value == null || value.isPassword || !required)
           ? null
           : errorText ?? 'Invalid Password format!';
-  static String? phone(String? value, {String? errorText}) =>
-      (value == null || value.isPhone)
+  static String? phone(
+    String? value, {
+    bool required = true,
+    String? errorText,
+  }) =>
+      (value == null || value.isPhone || !required)
           ? null
           : errorText ?? 'Invalid Phone format!';
 }

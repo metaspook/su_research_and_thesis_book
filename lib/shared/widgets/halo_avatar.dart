@@ -2,6 +2,7 @@
 // ignore_for_file: lines_longer_than_80_chars
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -11,21 +12,35 @@ import 'package:flutter/material.dart';
 ///
 /// Out of range values will have unexpected effects.
 
-/// Creates a circle with halo that represents a user.
+// enum HaloAvatarImage { asset, file, memory, network }
+
+/// Creates a circle with halo that represents a user. The halo works as `CircularProgressIndicator`
 class HaloAvatar extends StatelessWidget {
   const HaloAvatar({
     super.key,
-    this.imagePath,
+    this.url,
     this.size = .825,
     this.haloColor,
     this.errorColor,
-  });
+  })  : path = null,
+        isLocal = false;
+
+  const HaloAvatar.local({
+    super.key,
+    this.path,
+    this.size = .825,
+    this.haloColor,
+    this.errorColor,
+  })  : url = null,
+        isLocal = true;
 
   /// The radius of the avatar is multiplication between `size` and `kToolbarHeight`.
   final double size;
   final Color? haloColor;
   final Color? errorColor;
-  final String? imagePath;
+  final String? path;
+  final String? url;
+  final bool isLocal;
 
   static late Color _haloColor;
   static final _memoryImage = MemoryImage(base64Decode(_placeholderImage));
@@ -39,16 +54,21 @@ class HaloAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _haloColor = haloColor ?? Theme.of(context).colorScheme.primary;
+    late final File file;
+
     return Center(
-      child: imagePath == null
-          ? _imageBuilder(context, _memoryImage)
-          : CachedNetworkImage(
-              imageUrl: imagePath!,
-              imageBuilder: _imageBuilder,
-              // fit: BoxFit.scaleDown,
-              progressIndicatorBuilder: _progressIndicatorBuilder,
-              errorWidget: _errorWidget,
-            ),
+      child: isLocal
+          ? (path != null && (file = File(path!)).existsSync())
+              ? _imageBuilder(context, FileImage(file))
+              : _imageBuilder(context, _memoryImage)
+          : (url != null && url!.isNotEmpty)
+              ? CachedNetworkImage(
+                  imageUrl: url!,
+                  imageBuilder: _imageBuilder,
+                  progressIndicatorBuilder: _progressIndicatorBuilder,
+                  errorWidget: _errorWidget,
+                )
+              : _imageBuilder(context, _memoryImage),
     );
   }
 

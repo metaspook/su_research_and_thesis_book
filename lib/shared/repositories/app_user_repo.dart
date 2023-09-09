@@ -16,20 +16,35 @@ class AppUserRepo implements CrudAbstract<AppUser> {
   static const _errorMsgReadUser = "Couldn't read the User data!";
   static const _errorMsgUpdateUser = "Couldn't update the User!";
   static const _errorMsgDeleteUser = "Couldn't delete the User!";
+  static const _errorMsgUserPhoto = "Couldn't upload the User photo!";
 
   FirebaseService get _firebaseService => const FirebaseService();
   DatabaseReference get _db => _firebaseService.db.ref('users');
   Reference get _storage => _firebaseService.storage.ref('photos');
 
   //-- Public APIs
+  /// Upload user photo to Storage and get URL.
+  Future<(String?, {String? photoUrl})> uploadPhoto(
+    String userId, {
+    required String path,
+  }) async {
+    try {
+      final storageRef = _storage.child('$userId.jpg');
+      await storageRef.putFile(File(path));
+      final photoUrl = await storageRef.getDownloadURL();
+      return (null, photoUrl: photoUrl);
+    } catch (e, s) {
+      log(_errorMsgUserPhoto, error: e, stackTrace: s);
+      return (_errorMsgUserPhoto, photoUrl: null);
+    }
+  }
+
   /// Create user data to database.
   @override
   Future<String?> create(String userId, {required Json value}) async {
+    final photoUrl =
+        await uploadPhoto(userId, path: value['photoPath']! as String);
     try {
-      // Upload user photo to Storage and get URL.
-      final storageRef = _storage.child('$userId.jpg');
-      await storageRef.putFile(File(value['photoPath']! as String));
-      final photoUrl = await storageRef.getDownloadURL();
       // Upload user data to DB.
       await _db.set({
         userId: {

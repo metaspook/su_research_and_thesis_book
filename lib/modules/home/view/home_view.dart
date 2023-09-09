@@ -33,7 +33,7 @@ class HomeView extends StatelessWidget {
                   child: AppBlocSelector<String?>(
                     selector: (state) => state.user.photoUrl,
                     builder: (context, photoUrl) {
-                      return HaloAvatar(imagePath: photoUrl);
+                      return HaloAvatar(url: photoUrl);
                     },
                   ),
                 ),

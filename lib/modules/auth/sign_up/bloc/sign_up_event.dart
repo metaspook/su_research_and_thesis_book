@@ -31,6 +31,9 @@ final class SignUpPhotoPicked extends SignUpEvent {
 
   final String? photoPath;
   final String? statusMsg;
+
+  @override
+  List<Object?> get props => [photoPath, statusMsg];
 }
 
 final class SignUpFormLoaded extends SignUpEvent {

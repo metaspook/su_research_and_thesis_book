@@ -11,7 +11,7 @@ final class ProfileState extends Equatable {
     this.email = '',
     this.password = '',
     this.phone = '',
-    this.photoUrl = '',
+    this.photoPath = '',
     this.obscurePassword = true,
     this.editMode = false,
   });
@@ -23,7 +23,7 @@ final class ProfileState extends Equatable {
   final String email;
   final String password;
   final String phone;
-  final String photoUrl;
+  final String photoPath;
   final bool obscurePassword;
   final bool editMode;
 
@@ -35,7 +35,7 @@ final class ProfileState extends Equatable {
     String? email,
     String? password,
     String? phone,
-    String? photoUrl,
+    String? photoPath,
     bool? obscurePassword,
     bool? editMode,
   }) {
@@ -47,7 +47,7 @@ final class ProfileState extends Equatable {
       email: email ?? this.email,
       password: password ?? this.password,
       phone: phone ?? this.phone,
-      photoUrl: photoUrl ?? this.photoUrl,
+      photoPath: photoPath ?? this.photoPath,
       obscurePassword: obscurePassword ?? this.obscurePassword,
       editMode: editMode ?? this.editMode,
     );
@@ -63,7 +63,7 @@ final class ProfileState extends Equatable {
       email,
       password,
       phone,
-      photoUrl,
+      photoPath,
       obscurePassword,
       editMode,
     ];

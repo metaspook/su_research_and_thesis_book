@@ -95,6 +95,7 @@ final class AppRouter {
         child: BlocProvider<ProfileBloc>(
           create: (context) => ProfileBloc(
             authRepo: context.read<AuthRepo>(),
+            appUserRepo: context.read<AppUserRepo>(),
           ),
           child: const ProfilePage(),
         ),
