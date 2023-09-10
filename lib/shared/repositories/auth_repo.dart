@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:su_thesis_book/utils/utils.dart';
 
-export 'package:firebase_auth/firebase_auth.dart' show User;
+export 'package:firebase_auth/firebase_auth.dart'
+    show AuthCredential, User, UserCredential;
 
 class AuthRepo {
   AuthRepo() : _auth = FirebaseAuth.instance;
@@ -16,13 +16,42 @@ class AuthRepo {
   static const _errorMsgSignOut = "Couldn't sign-out the user!";
   static const _errorMsgUpdateEmail = "Couldn't update the user email!";
   static const _errorMsgUpdatePassword = "Couldn't update the user password!";
+  static UserCredential? _userCredential;
 
   //-- Public APIs
-  Stream<User?> get userStream => _auth.authStateChanges();
+  Stream<User?> get userStream => _auth.userChanges();
   User? get currentUser => _auth.currentUser;
+  UserCredential? get userCredential => _userCredential;
 
-  Future<String?> updateEmail(String newEmail) async {
+//   Future<void> _reauthenticateAndDelete() async {
+//     try {
+//       final providerData = _auth.currentUser?.providerData.first;
+//       final providerData = _auth.currentUser?.reload();
+
+//       if (AppleAuthProvider().providerId == providerData!.providerId) {
+//         await _auth.currentUser!
+//             .reauthenticateWithProvider(AppleAuthProvider());
+//       } else if (GoogleAuthProvider().providerId == providerData.providerId) {
+//         await _auth.currentUser!
+//             .reauthenticateWithProvider(GoogleAuthProvider());
+//       } else {
+//         EmailAuthProvider.credential(
+//             email: currentUser.email, password: 'password');
+//       }
+// // GoogleAuthProvider.credential(idToken: '', accessToken: '')
+//       await _auth.currentUser?.delete();
+//     } catch (e) {
+//       // Handle exceptions
+//     }
+//   }
+
+  Future<String?> updateEmail(
+    String newEmail, {
+    required AuthCredential credential,
+  }) async {
     try {
+      _userCredential =
+          await _auth.currentUser?.reauthenticateWithCredential(credential);
       await _auth.currentUser?.updateEmail(newEmail);
     } on FirebaseAuthException catch (e) {
       final errorMsg = const <String, String>{
@@ -56,33 +85,35 @@ class AuthRepo {
     return null;
   }
 
-  Future<String?> signIn({
+  Future<(String?, {UserCredential? userCredential})> signIn({
     required String email,
     required String password,
   }) async {
     try {
-      final ss = await _auth.signInWithEmailAndPassword(
+      final userCredential =
+          _userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      ss.doPrint();
+      return (null, userCredential: userCredential);
     } on FirebaseAuthException catch (e) {
-      return const <String, String>{
+      final errorMsg = const <String, String>{
         'invalid-email': 'Invalid email!',
         'user-disabled': "This email's user is disabled!",
         'user-not-found': "This email's user is not found!",
         'wrong-password': 'Invalid password or unassociated with email!',
       }[e.code];
+      return (errorMsg, userCredential: null);
     } catch (e, s) {
       log(_errorMsgSignIn, error: e, stackTrace: s);
-      return _errorMsgSignIn;
+      return (_errorMsgSignIn, userCredential: null);
     }
-    return null;
   }
 
   Future<String?> signOut() async {
     try {
       await _auth.signOut();
+      _userCredential = null;
     } catch (e, s) {
       log(_errorMsgSignOut, error: e, stackTrace: s);
       return _errorMsgSignOut;

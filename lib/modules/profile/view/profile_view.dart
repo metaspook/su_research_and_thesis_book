@@ -11,7 +11,7 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<ProfileBloc>();
+    final cubit = context.read<ProfileCubit>();
     const height = 30.0;
     const width = height / 2;
     return ListView(
@@ -59,9 +59,7 @@ class ProfileView extends StatelessWidget {
         ),
         const SizedBox(height: height),
         ProfileBlocListener(
-          listenWhen: (previous, current) =>
-              current.status == ProfileStatus.success ||
-              current.status == ProfileStatus.failure,
+          listenWhen: (previous, current) => current.status.hasMessage,
           listener: (context, state) {
             final snackBar = SnackBar(
               backgroundColor:
@@ -76,7 +74,7 @@ class ProfileView extends StatelessWidget {
               // Edit button
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: () => bloc.add(const ProfileEditModeToggled()),
+                  onPressed: cubit.toggleEditMode,
                   icon: const Icon(Icons.edit_document),
                   label: const Text('Edit'),
                 ),
@@ -85,7 +83,7 @@ class ProfileView extends StatelessWidget {
               Expanded(
                 // Sign Out button
                 child: ElevatedButton.icon(
-                  onPressed: () => bloc.add(const ProfileSignedOut()),
+                  onPressed: cubit.signOut,
                   icon: const Icon(Icons.logout_outlined),
                   label: const Text('Sign Out'),
                 ),

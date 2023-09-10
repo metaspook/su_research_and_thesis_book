@@ -1,10 +1,21 @@
-part of 'profile_bloc.dart';
+part of 'profile_update_bloc.dart';
 
-enum ProfileStatus { initial, editing, loading, success, failure }
+enum ProfileUpdateStatus {
+  initial,
+  editing,
+  loading,
+  success,
+  failure;
 
-final class ProfileState extends Equatable {
-  const ProfileState({
-    this.status = ProfileStatus.initial,
+  bool get isLoading => this == ProfileUpdateStatus.loading;
+  bool get hasMessage =>
+      this == ProfileUpdateStatus.success ||
+      this == ProfileUpdateStatus.failure;
+}
+
+final class ProfileUpdateState extends Equatable {
+  const ProfileUpdateState({
+    this.status = ProfileUpdateStatus.initial,
     this.statusMsg = '',
     this.name = '',
     this.role = '',
@@ -16,7 +27,7 @@ final class ProfileState extends Equatable {
     this.editMode = false,
   });
 
-  final ProfileStatus status;
+  final ProfileUpdateStatus status;
   final String statusMsg;
   final String name;
   final String role;
@@ -27,8 +38,8 @@ final class ProfileState extends Equatable {
   final bool obscurePassword;
   final bool editMode;
 
-  ProfileState copyWith({
-    ProfileStatus? status,
+  ProfileUpdateState copyWith({
+    ProfileUpdateStatus? status,
     String? statusMsg,
     String? name,
     String? role,
@@ -39,7 +50,7 @@ final class ProfileState extends Equatable {
     bool? obscurePassword,
     bool? editMode,
   }) {
-    return ProfileState(
+    return ProfileUpdateState(
       status: status ?? this.status,
       statusMsg: statusMsg ?? this.statusMsg,
       name: name ?? this.name,

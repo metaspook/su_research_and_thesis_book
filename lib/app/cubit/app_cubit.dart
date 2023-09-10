@@ -1,13 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
 
 part 'app_state.dart';
 
-class AppCubit extends Cubit<AppState> {
+class AppCubit extends HydratedCubit<AppState> {
   AppCubit({required AuthRepo authRepo, required AppUserRepo appUserRepo})
       : _authRepo = authRepo,
         _appUserRepo = appUserRepo,
@@ -46,5 +47,22 @@ class AppCubit extends Cubit<AppState> {
   Future<void> close() {
     _userSubscription.cancel();
     return super.close();
+  }
+
+  @override
+  AppState? fromJson(Map<String, dynamic> json) {
+    return json['userCredential'] == null
+        ? null
+        : state.copyWith(
+            userCredential:
+                jsonDecode(json['userCredential'] as String) as UserCredential,
+          );
+  }
+
+  @override
+  Map<String, dynamic>? toJson(AppState state) {
+    return _authRepo.userCredential == null
+        ? null
+        : {'userCredential': jsonEncode(_authRepo.userCredential)};
   }
 }

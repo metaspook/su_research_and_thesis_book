@@ -45,8 +45,9 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     emit(state.copyWith(status: SignInStatus.loading));
 
     //  SignIn user.
-    final errorMsg =
+    final signInRecord =
         await _authRepo.signIn(email: state.email, password: state.password);
+    final errorMsg = signInRecord.$1;
     if (errorMsg == null) {
       'hello'.doPrint();
       emit(

@@ -26,34 +26,52 @@ class Validator {
     bool required = true,
     String? errorText,
   }) =>
-      (value == null || value.isName || !required)
-          ? null
-          : errorText ?? 'Invalid Name format!';
+      required
+          ? (value == null || value.isEmpty || !value.isName)
+              ? errorText ?? 'Invalid Name format!'
+              : null
+          : (value == null || value.isEmpty || value.isName)
+              ? null
+              : errorText ?? 'Invalid Name format!';
 
   static String? email(
     String? value, {
     bool required = true,
     String? errorText,
   }) =>
-      (value == null || value.isEmail || !required)
-          ? null
-          : errorText ?? 'Invalid Email format!';
+      required
+          ? (value == null || value.isEmpty || !value.isEmail)
+              ? errorText ?? 'Invalid Email format!'
+              : null
+          : (value == null || value.isEmpty || value.isEmail)
+              ? null
+              : errorText ?? 'Invalid Email format!';
+
   static String? password(
     String? value, {
     bool required = true,
     String? errorText,
   }) =>
-      (value == null || value.isPassword || !required)
-          ? null
-          : errorText ?? 'Invalid Password format!';
+      required
+          ? (value == null || value.isEmpty || !value.isPassword)
+              ? errorText ?? 'Invalid Password format!'
+              : null
+          : (value == null || value.isEmpty || value.isPassword)
+              ? null
+              : errorText ?? 'Invalid Password format!';
+
   static String? phone(
     String? value, {
     bool required = true,
     String? errorText,
   }) =>
-      (value == null || value.isPhone || !required)
-          ? null
-          : errorText ?? 'Invalid Phone format!';
+      required
+          ? (value == null || value.isEmpty || !value.isPhone)
+              ? errorText ?? 'Invalid Phone format!'
+              : null
+          : (value == null || value.isEmpty || value.isPhone)
+              ? null
+              : errorText ?? 'Invalid Phone format!';
 }
 
 sealed class Validation {

@@ -1,22 +1,23 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
+import 'package:su_thesis_book/utils/utils.dart';
 
-part 'profile_event.dart';
-part 'profile_state.dart';
+part 'profile_update_event.dart';
+part 'profile_update_state.dart';
 
-class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  ProfileBloc({required AuthRepo authRepo, required AppUserRepo appUserRepo})
-      : _authRepo = authRepo,
+class ProfileUpdateBloc extends Bloc<ProfileUpdateEvent, ProfileUpdateState> {
+  ProfileUpdateBloc({
+    required AuthRepo authRepo,
+    required AppUserRepo appUserRepo,
+  })  : _authRepo = authRepo,
         _appUserRepo = appUserRepo,
-        super(const ProfileState()) {
+        super(const ProfileUpdateState()) {
     //-- Register Event Handlers
-    on<ProfileEdited>(_onEdited);
-    on<ProfileEditModeToggled>(_onEditModeToggled);
-    on<ProfileEditSaved>(_onEditSaved);
-    on<ProfileObscurePasswordToggled>(_onObscurePasswordToggled);
-    on<ProfilePhotoPicked>(_onPhotoPicked);
-    on<ProfileSignedOut>(_onSignedOut);
+    on<ProfileUpdateEdited>(_onEdited);
+    on<ProfileUpdateSaved>(_onSaved);
+    on<ProfileUpdateObscurePasswordToggled>(_onObscurePasswordToggled);
+    on<ProfileUpdatePhotoPicked>(_onPhotoPicked);
   }
 
   final AuthRepo _authRepo;
@@ -24,12 +25,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   //-- Define Event Handlers
   Future<void> _onEdited(
-    ProfileEdited event,
-    Emitter<ProfileState> emit,
+    ProfileUpdateEdited event,
+    Emitter<ProfileUpdateState> emit,
   ) async {
     emit(
       state.copyWith(
-        status: ProfileStatus.editing,
+        status: ProfileUpdateStatus.editing,
         name: event.name,
         email: event.email,
         phone: event.phone,
@@ -38,36 +39,33 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     );
   }
 
-  Future<void> _onEditModeToggled(
-    ProfileEditModeToggled event,
-    Emitter<ProfileState> emit,
-  ) async {
-    emit(state.copyWith(editMode: !state.editMode));
-  }
-
-  Future<void> _onEditSaved(
-    ProfileEditSaved event,
-    Emitter<ProfileState> emit,
+  Future<void> _onSaved(
+    ProfileUpdateSaved event,
+    Emitter<ProfileUpdateState> emit,
   ) async {
     final userId = _authRepo.currentUser?.uid;
     if (userId != null) {
       final prevStatus = state.status;
-      emit(state.copyWith(status: ProfileStatus.loading));
+      emit(state.copyWith(status: ProfileUpdateStatus.loading));
       final userData = <String, Object?>{};
       // Name
       if (state.name.isNotEmpty) userData.addAll({'name': state.name});
       // Phone
       if (state.phone.isNotEmpty) userData.addAll({'phone': state.phone});
       // Email
-      if (state.email.isNotEmpty) {
+      if (state.email.isNotEmpty && event.credential != null) {
         // Update email to authentication.
-        final errorMsg = await _authRepo.updateEmail(state.email);
+        final errorMsg = await _authRepo.updateEmail(
+          state.email,
+          credential: event.credential!,
+        );
         if (errorMsg == null) {
           userData.addAll({'email': state.email});
         } else {
+          errorMsg.doPrint();
           emit(
             state.copyWith(
-              status: ProfileStatus.failure,
+              status: ProfileUpdateStatus.failure,
               statusMsg: errorMsg,
             ),
           );
@@ -82,7 +80,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         } else {
           emit(
             state.copyWith(
-              status: ProfileStatus.failure,
+              status: ProfileUpdateStatus.failure,
               statusMsg: errorMsg,
             ),
           );
@@ -99,7 +97,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         } else {
           emit(
             state.copyWith(
-              status: ProfileStatus.failure,
+              status: ProfileUpdateStatus.failure,
               statusMsg: errorMsg,
             ),
           );
@@ -111,14 +109,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         if (errorMsg == null) {
           emit(
             state.copyWith(
-              status: ProfileStatus.success,
+              status: ProfileUpdateStatus.success,
               statusMsg: 'Success! Profile update.',
             ),
           );
         } else {
           emit(
             state.copyWith(
-              status: ProfileStatus.failure,
+              status: ProfileUpdateStatus.failure,
               statusMsg: errorMsg,
             ),
           );
@@ -130,8 +128,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   Future<void> _onPhotoPicked(
-    ProfilePhotoPicked event,
-    Emitter<ProfileState> emit,
+    ProfileUpdatePhotoPicked event,
+    Emitter<ProfileUpdateState> emit,
   ) async {
     emit(
       state.copyWith(statusMsg: event.statusMsg, photoPath: event.photoPath),
@@ -139,34 +137,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   Future<void> _onObscurePasswordToggled(
-    ProfileObscurePasswordToggled event,
-    Emitter<ProfileState> emit,
+    ProfileUpdateObscurePasswordToggled event,
+    Emitter<ProfileUpdateState> emit,
   ) async {
     emit(state.copyWith(obscurePassword: !state.obscurePassword));
-  }
-
-  Future<void> _onSignedOut(
-    ProfileSignedOut event,
-    Emitter<ProfileState> emit,
-  ) async {
-    emit(state.copyWith(status: ProfileStatus.loading));
-
-    //  SignOut user.
-    final errorMsg = await _authRepo.signOut();
-    if (errorMsg == null) {
-      emit(
-        state.copyWith(
-          status: ProfileStatus.success,
-          statusMsg: 'Success! User signed out.',
-        ),
-      );
-    } else {
-      emit(
-        state.copyWith(
-          status: ProfileStatus.failure,
-          statusMsg: errorMsg,
-        ),
-      );
-    }
   }
 }
