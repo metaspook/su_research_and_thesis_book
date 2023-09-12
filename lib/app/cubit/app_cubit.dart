@@ -21,7 +21,7 @@ class AppCubit extends Cubit<AppState> {
         final errorMsg = appUserRecord.$1;
         final appUser = appUserRecord.object;
         if (appUser != null) {
-          emit(AppState.authenticated(user: appUser));
+          emit(AppState.authenticated(appUser));
         } else {
           emit(state.copyWith(statusMsg: errorMsg));
           // Sign out authUser because user data not found.

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
-import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
 // extension ThesisEntryDialogExt on BuildContext {
@@ -68,21 +67,21 @@ class ThesisEntryDialog extends StatelessWidget {
                                     ),
                                   )
                                 else
-                                  PdfViewer(
-                                    // 'https://css4.pub/2015/usenix/example.pdf'
-                                    uri: pdfPath,
-                                    source: PdfSource.path,
-                                    heightPercent: .5,
+                                  // PdfViewer(
+                                  //   // 'https://css4.pub/2015/usenix/example.pdf'
+                                  //   uri: pdfPath,
+                                  //   source: PdfSource.path,
+                                  //   heightPercent: .5,
+                                  // ),
+                                  TextButton.icon(
+                                    onPressed: cubit.pickPdf,
+                                    icon: const Icon(
+                                      Icons.file_present_rounded,
+                                    ),
+                                    label: Text(
+                                      pdfPath.isEmpty ? 'Pick PDF' : 'Change',
+                                    ),
                                   ),
-                                TextButton.icon(
-                                  onPressed: cubit.pickPdf,
-                                  icon: const Icon(
-                                    Icons.file_present_rounded,
-                                  ),
-                                  label: Text(
-                                    pdfPath.isEmpty ? 'Pick PDF' : 'Change',
-                                  ),
-                                ),
                               ],
                             );
                           },

@@ -34,29 +34,19 @@ class _ThesisViewState extends State<ThesisView> {
                 children: [
                   const PdfViewer(
                     uri: 'https://css4.pub/2015/usenix/example.pdf',
+                    // heightPercent: .80,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const Row(
-                        children: [
-                          // Icon(Icons.remove_red_eye_rounded),
-                          // Text(' Views: 10'),
-                          Column(
-                            children: [
-                              CounterBadge(
-                                label: 'Views',
-                                count: 20,
-                                largeSize: 27.5,
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 9,
-                                  vertical: 6,
-                                ),
-                              ),
-                              // CounterBadge(label: 'Comments', count: 10),
-                            ],
-                          ),
-                        ],
+                      const CounterBadge(
+                        label: 'Views',
+                        count: 20,
+                        largeSize: 27.5,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 9,
+                          vertical: 6,
+                        ),
                       ),
                       TextButton.icon(
                         onPressed: () => Navigator.push(

@@ -16,10 +16,10 @@ class AuthRepo {
   static const _errorMsgSignOut = "Couldn't sign-out the user!";
   static const _errorMsgUpdateEmail = "Couldn't update the user email!";
   static const _errorMsgUpdatePassword = "Couldn't update the user password!";
-  static AuthCredential? _credential;
+  // static AuthCredential? _credential;
 
   //-- Public APIs
-  Stream<User?> get userStream => _auth.userChanges();
+  Stream<User?> get userStream => _auth.authStateChanges();
   User? get currentUser => _auth.currentUser;
 
   Future<String?> updateEmail(String newEmail) async {
@@ -83,7 +83,7 @@ class AuthRepo {
 
   Future<String?> signOut() async {
     try {
-      await _auth.signOut().then((_) => _credential = null);
+      await _auth.signOut();
     } catch (e, s) {
       log(_errorMsgSignOut, error: e, stackTrace: s);
       return _errorMsgSignOut;

@@ -12,13 +12,13 @@ class PdfViewer extends StatefulWidget {
   const PdfViewer({
     required this.uri,
     this.source = PdfSource.url,
-    this.heightPercent = .8225,
+    // this.heightPercent = .8225,
     super.key,
   });
 
   final String uri;
   final PdfSource source;
-  final double heightPercent;
+  // final double heightPercent;
 
   @override
   State<PdfViewer> createState() => _PdfViewerState();
@@ -46,8 +46,9 @@ class _PdfViewerState extends State<PdfViewer> {
       // onLinkHandler: (uri) => print('Clicked Link : $uri'),
     );
 
-    return LimitedBox(
-      maxHeight: context.mediaQuery.size.height * widget.heightPercent,
+    return SizedBox(
+      height: context.mediaQuery.size.height * .7925,
+      // width: context.mediaQuery.size.width,
       child: Stack(
         children: [
           switch (widget.source) {
