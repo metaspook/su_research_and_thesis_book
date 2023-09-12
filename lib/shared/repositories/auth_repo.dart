@@ -16,42 +16,14 @@ class AuthRepo {
   static const _errorMsgSignOut = "Couldn't sign-out the user!";
   static const _errorMsgUpdateEmail = "Couldn't update the user email!";
   static const _errorMsgUpdatePassword = "Couldn't update the user password!";
-  static UserCredential? _userCredential;
+  static AuthCredential? _credential;
 
   //-- Public APIs
   Stream<User?> get userStream => _auth.userChanges();
   User? get currentUser => _auth.currentUser;
-  UserCredential? get userCredential => _userCredential;
 
-//   Future<void> _reauthenticateAndDelete() async {
-//     try {
-//       final providerData = _auth.currentUser?.providerData.first;
-//       final providerData = _auth.currentUser?.reload();
-
-//       if (AppleAuthProvider().providerId == providerData!.providerId) {
-//         await _auth.currentUser!
-//             .reauthenticateWithProvider(AppleAuthProvider());
-//       } else if (GoogleAuthProvider().providerId == providerData.providerId) {
-//         await _auth.currentUser!
-//             .reauthenticateWithProvider(GoogleAuthProvider());
-//       } else {
-//         EmailAuthProvider.credential(
-//             email: currentUser.email, password: 'password');
-//       }
-// // GoogleAuthProvider.credential(idToken: '', accessToken: '')
-//       await _auth.currentUser?.delete();
-//     } catch (e) {
-//       // Handle exceptions
-//     }
-//   }
-
-  Future<String?> updateEmail(
-    String newEmail, {
-    required AuthCredential credential,
-  }) async {
+  Future<String?> updateEmail(String newEmail) async {
     try {
-      _userCredential =
-          await _auth.currentUser?.reauthenticateWithCredential(credential);
       await _auth.currentUser?.updateEmail(newEmail);
     } on FirebaseAuthException catch (e) {
       final errorMsg = const <String, String>{
@@ -85,17 +57,15 @@ class AuthRepo {
     return null;
   }
 
-  Future<(String?, {UserCredential? userCredential})> signIn({
+  Future<String?> signIn({
     required String email,
     required String password,
   }) async {
     try {
-      final userCredential =
-          _userCredential = await _auth.signInWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return (null, userCredential: userCredential);
     } on FirebaseAuthException catch (e) {
       final errorMsg = const <String, String>{
         'invalid-email': 'Invalid email!',
@@ -103,17 +73,17 @@ class AuthRepo {
         'user-not-found': "This email's user is not found!",
         'wrong-password': 'Invalid password or unassociated with email!',
       }[e.code];
-      return (errorMsg, userCredential: null);
+      return errorMsg;
     } catch (e, s) {
       log(_errorMsgSignIn, error: e, stackTrace: s);
-      return (_errorMsgSignIn, userCredential: null);
+      return _errorMsgSignIn;
     }
+    return null;
   }
 
   Future<String?> signOut() async {
     try {
-      await _auth.signOut();
-      _userCredential = null;
+      await _auth.signOut().then((_) => _credential = null);
     } catch (e, s) {
       log(_errorMsgSignOut, error: e, stackTrace: s);
       return _errorMsgSignOut;
@@ -146,3 +116,33 @@ class AuthRepo {
     }
   }
 }
+
+// extension AuthCredentialExt on AuthCredential {
+//   /// Empty user which represents an unauthenticated user.
+//   static const empty = AuthCredential(providerId: '', signInMethod: '');
+//   bool get isEmpty => this == empty;
+//   bool get isNotEmpty => this != empty;
+// }
+  // AuthCredential? get credential => _credential;
+
+//   Future<void> _reauthenticateAndDelete() async {
+//     try {
+//       final providerData = _auth.currentUser?.providerData.first;
+//       final providerData = _auth.currentUser?.reload();
+
+//       if (AppleAuthProvider().providerId == providerData!.providerId) {
+//         await _auth.currentUser!
+//             .reauthenticateWithProvider(AppleAuthProvider());
+//       } else if (GoogleAuthProvider().providerId == providerData.providerId) {
+//         await _auth.currentUser!
+//             .reauthenticateWithProvider(GoogleAuthProvider());
+//       } else {
+//         EmailAuthProvider.credential(
+//             email: currentUser.email, password: 'password');
+//       }
+// // GoogleAuthProvider.credential(idToken: '', accessToken: '')
+//       await _auth.currentUser?.delete();
+//     } catch (e) {
+//       // Handle exceptions
+//     }
+//   }

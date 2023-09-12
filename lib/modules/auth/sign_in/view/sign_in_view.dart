@@ -46,17 +46,20 @@ class _SignInViewState extends State<SignInView> {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<SignInBloc>();
-    // const nameValidator = Validator2([LeadingOrTrailingSpace()]);
     final isLoading = context
         .select((SignInBloc bloc) => bloc.state.status == SignInStatus.loading);
+
     return TranslucentLoader(
       enabled: isLoading,
       child: Form(
         key: _signInFormKey,
         child: ListView(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppThemes.width,
+            vertical: AppThemes.height,
+          ),
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: AppThemes.height),
             // E-mail
             TextFormField(
               controller: _emailController,
@@ -70,7 +73,7 @@ class _SignInViewState extends State<SignInView> {
               ),
               onChanged: (value) => bloc.add(SignInEdited(email: value)),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppThemes.height2x),
             // Password
             Builder(
               builder: (context) {
@@ -105,14 +108,10 @@ class _SignInViewState extends State<SignInView> {
                 );
               },
             ),
-            const SizedBox(height: 30),
-
+            const SizedBox(height: AppThemes.height2x),
             // Proceed button
             SignInBlocListener(
-              listenWhen: (previous, current) =>
-                  previous != current &&
-                      current.status == SignInStatus.success ||
-                  current.status == SignInStatus.failure,
+              listenWhen: (previous, current) => current.status.hasMessage,
               listener: (context, state) {
                 final snackBar = SnackBar(
                   backgroundColor: context.theme.snackBarTheme.backgroundColor

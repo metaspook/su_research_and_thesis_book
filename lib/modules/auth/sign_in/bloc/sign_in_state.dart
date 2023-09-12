@@ -1,6 +1,16 @@
 part of 'sign_in_bloc.dart';
 
-enum SignInStatus { initial, editing, loading, success, failure }
+enum SignInStatus {
+  initial,
+  editing,
+  loading,
+  success,
+  failure;
+
+  bool get isLoading => this == SignInStatus.loading;
+  bool get hasMessage =>
+      this == SignInStatus.success || this == SignInStatus.failure;
+}
 
 final class SignInState extends Equatable {
   const SignInState({

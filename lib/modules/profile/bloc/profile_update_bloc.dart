@@ -55,10 +55,7 @@ class ProfileUpdateBloc extends Bloc<ProfileUpdateEvent, ProfileUpdateState> {
       // Email
       if (state.email.isNotEmpty && event.credential != null) {
         // Update email to authentication.
-        final errorMsg = await _authRepo.updateEmail(
-          state.email,
-          credential: event.credential!,
-        );
+        final errorMsg = await _authRepo.updateEmail(state.email);
         if (errorMsg == null) {
           userData.addAll({'email': state.email});
         } else {

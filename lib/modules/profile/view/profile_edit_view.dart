@@ -232,20 +232,13 @@ class _ProfileUpdateViewState extends State<ProfileUpdateView> {
                 const SizedBox(width: width),
                 Expanded(
                   // Save button
-                  child: Builder(
-                    builder: (context) {
-                      final credential = context
-                          .watch<AppCubit>()
-                          .state
-                          .userCredential
-                          ?.credential;
-                      final state = context.watch<ProfileUpdateBloc>().state;
+                  child: ProfileUpdateBlocBuilder(
+                    builder: (context, state) {
                       final enabled = state.name.isNotEmpty ||
                           state.email.isNotEmpty ||
                           state.phone.isNotEmpty ||
                           state.password.isNotEmpty ||
                           state.photoPath.isNotEmpty;
-
                       return ElevatedButton.icon(
                         onPressed: enabled
                             ? () {
@@ -253,11 +246,7 @@ class _ProfileUpdateViewState extends State<ProfileUpdateView> {
                                         ?.validate() ??
                                     false;
                                 if (valid) {
-                                  bloc.add(
-                                    ProfileUpdateSaved(
-                                      credential: credential,
-                                    ),
-                                  );
+                                  bloc.add(const ProfileUpdateSaved());
                                 }
                               }
                             : null,

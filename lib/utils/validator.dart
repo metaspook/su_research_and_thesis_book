@@ -28,11 +28,11 @@ class Validator {
   }) =>
       required
           ? (value == null || value.isEmpty || !value.isName)
-              ? errorText ?? 'Invalid Name format!'
+              ? errorText ?? 'Must consists capitalized words!'
               : null
           : (value == null || value.isEmpty || value.isName)
               ? null
-              : errorText ?? 'Invalid Name format!';
+              : errorText ?? 'Must consists capitalized words!';
 
   static String? email(
     String? value, {
@@ -54,11 +54,13 @@ class Validator {
   }) =>
       required
           ? (value == null || value.isEmpty || !value.isPassword)
-              ? errorText ?? 'Invalid Password format!'
+              ? errorText ??
+                  'At least a special character, small and capital letter!'
               : null
           : (value == null || value.isEmpty || value.isPassword)
               ? null
-              : errorText ?? 'Invalid Password format!';
+              : errorText ??
+                  'At least a special character, small and capital letter!';
 
   static String? phone(
     String? value, {

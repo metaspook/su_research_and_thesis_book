@@ -1,6 +1,16 @@
 part of 'sign_up_bloc.dart';
 
-enum SignUpStatus { initial, editing, loading, success, failure }
+enum SignUpStatus {
+  initial,
+  editing,
+  loading,
+  success,
+  failure;
+
+  bool get isLoading => this == SignUpStatus.loading;
+  bool get hasMessage =>
+      this == SignUpStatus.success || this == SignUpStatus.failure;
+}
 
 final class SignUpState extends Equatable {
   const SignUpState({

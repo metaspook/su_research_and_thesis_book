@@ -61,23 +61,19 @@ class _SignUpViewState extends State<SignUpView> {
 
   @override
   Widget build(BuildContext context) {
-    // const dropdownValue = 'Dog';
-    // final firebaseDatabase = FirebaseDatabase.instance;
-    // firebaseDatabase
-    //     .ref('roles/1')
-    //     .get()
-    //     .then((value) => value.value.doPrint());
-// [].indexOf(element)
     final bloc = context.read<SignUpBloc>();
-    // const nameValidator = Validator2([LeadingOrTrailingSpace()]);
     final isLoading = context
         .select((SignUpBloc bloc) => bloc.state.status == SignUpStatus.loading);
+
     return TranslucentLoader(
       enabled: isLoading,
       child: Form(
         key: _signUpFormKey,
         child: ListView(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppThemes.width,
+            vertical: AppThemes.height,
+          ),
           children: [
             // Name
             TextFormField(
@@ -163,81 +159,79 @@ class _SignUpViewState extends State<SignUpView> {
                 );
               },
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppThemes.height2x),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Image Card
-                SizedBox(
-                  height: 200,
-                  width: 225,
-                  child: SignUpBlocSelector<String>(
-                    selector: (state) => state.photoPath,
-                    builder: (context, photoPath) {
-                      return Card(
-                        shape: const RoundedRectangleBorder(
+                SignUpBlocSelector<String>(
+                  selector: (state) => state.photoPath,
+                  builder: (context, photoPath) {
+                    return Card(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: AppThemes.borderRadius,
+                      ),
+                      clipBehavior: Clip.hardEdge,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: ClipRRect(
                           borderRadius: AppThemes.borderRadius,
+                          child: photoPath.isEmpty
+                              ? Assets.images.placeholderUser01
+                                  .image(fit: BoxFit.cover)
+                              : Image.file(File(photoPath)),
                         ),
-                        clipBehavior: Clip.hardEdge,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: ClipRRect(
-                            borderRadius: AppThemes.borderRadius,
-                            child: photoPath.isEmpty
-                                ? Assets.images.placeholderUser01
-                                    .image(fit: BoxFit.cover)
-                                : Image.file(File(photoPath)),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
-                Column(
-                  children: [
-                    // Camera Button
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.camera_alt_rounded),
-                      label: const Text('Camera'),
-                      onPressed: () async {
-                        final photoPath =
-                            await imageCropicker.path(ImageSource.camera);
-                        final statusMsg = imageCropicker.statusMsg;
-                        bloc.add(
-                          SignUpPhotoPicked(
-                            photoPath,
-                            statusMsg: statusMsg,
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    // Gallery Button
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.photo_library_rounded),
-                      label: const Text('Gallery'),
-                      onPressed: () async {
-                        final photoPath =
-                            await imageCropicker.path(ImageSource.gallery);
-                        final statusMsg = imageCropicker.statusMsg;
-                        bloc.add(
-                          SignUpPhotoPicked(
-                            photoPath,
-                            statusMsg: statusMsg,
-                          ),
-                        );
-                      },
-                    ),
-                  ],
+                const SizedBox(width: AppThemes.height2x),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Camera Button
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.camera_alt_rounded),
+                        label: const Text('Camera'),
+                        onPressed: () async {
+                          final photoPath =
+                              await imageCropicker.path(ImageSource.camera);
+                          final statusMsg = imageCropicker.statusMsg;
+                          bloc.add(
+                            SignUpPhotoPicked(
+                              photoPath,
+                              statusMsg: statusMsg,
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: AppThemes.height2x),
+                      // Gallery Button
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.photo_library_rounded),
+                        label: const Text('Gallery'),
+                        onPressed: () async {
+                          final photoPath =
+                              await imageCropicker.path(ImageSource.gallery);
+                          final statusMsg = imageCropicker.statusMsg;
+                          bloc.add(
+                            SignUpPhotoPicked(
+                              photoPath,
+                              statusMsg: statusMsg,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: AppThemes.height2x),
             // Proceed button
             SignUpBlocListener(
-              listenWhen: (previous, current) =>
-                  current.status == SignUpStatus.success ||
-                  current.status == SignUpStatus.failure,
+              listenWhen: (previous, current) => current.status.hasMessage,
               listener: (context, state) {
                 final snackBar = SnackBar(
                   backgroundColor: context.theme.snackBarTheme.backgroundColor

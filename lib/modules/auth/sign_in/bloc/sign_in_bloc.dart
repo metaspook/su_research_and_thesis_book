@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
-import 'package:su_thesis_book/utils/extensions.dart';
 
 part 'sign_in_event.dart';
 part 'sign_in_state.dart';
@@ -45,11 +44,9 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     emit(state.copyWith(status: SignInStatus.loading));
 
     //  SignIn user.
-    final signInRecord =
+    final errorMsg =
         await _authRepo.signIn(email: state.email, password: state.password);
-    final errorMsg = signInRecord.$1;
     if (errorMsg == null) {
-      'hello'.doPrint();
       emit(
         state.copyWith(
           status: SignInStatus.success,
