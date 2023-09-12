@@ -9,9 +9,6 @@ import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
-typedef SignUpBlocSelector<T> = BlocSelector<SignUpBloc, SignUpState, T>;
-typedef SignUpBlocListener = BlocListener<SignUpBloc, SignUpState>;
-
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
 
@@ -230,26 +227,31 @@ class _SignUpViewState extends State<SignUpView> {
             ),
             const SizedBox(height: AppThemes.height2x),
             // Proceed button
-            SignUpBlocListener(
+            SignUpBlocConsumer(
               listenWhen: (previous, current) => current.status.hasMessage,
               listener: (context, state) {
-                final snackBar = SnackBar(
-                  backgroundColor: context.theme.snackBarTheme.backgroundColor
-                      ?.withOpacity(.25),
-                  behavior: SnackBarBehavior.floating,
-                  content: Text(state.statusMsg),
-                );
+                final snackBar = SnackBar(content: Text(state.statusMsg));
                 context.scaffoldMessenger.showSnackBar(snackBar);
               },
-              child: ElevatedButton.icon(
-                icon: const Icon(Icons.forward_rounded),
-                label: const Text('Proceed'),
-                onPressed: () {
-                  final valid =
-                      _signUpFormKey.currentState?.validate() ?? false;
-                  if (valid) bloc.add(const SignUpProceeded());
-                },
-              ),
+              builder: (context, state) {
+                final enabled = state.name.isNotEmpty ||
+                    state.email.isNotEmpty ||
+                    state.phone.isNotEmpty ||
+                    state.password.isNotEmpty ||
+                    state.photoPath.isNotEmpty ||
+                    state.role.isNotEmpty;
+                return ElevatedButton.icon(
+                  icon: const Icon(Icons.forward_rounded),
+                  label: const Text('Proceed'),
+                  onPressed: enabled
+                      ? () {
+                          final valid =
+                              _signUpFormKey.currentState?.validate() ?? false;
+                          if (valid) bloc.add(const SignUpProceeded());
+                        }
+                      : null,
+                );
+              },
             ),
           ],
         ),

@@ -207,9 +207,7 @@ class _ProfileUpdateViewState extends State<ProfileUpdateView> {
           ),
           const SizedBox(height: height - 6),
           ProfileBlocListener(
-            listenWhen: (previous, current) =>
-                current.status == ProfileUpdateStatus.success ||
-                current.status == ProfileUpdateStatus.failure,
+            listenWhen: (previous, current) => current.status.hasMessage,
             listener: (context, state) {
               final snackBar = SnackBar(
                 backgroundColor: context.theme.snackBarTheme.backgroundColor

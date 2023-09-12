@@ -53,6 +53,12 @@ sealed class AppThemes {
       floatingActionButtonTheme: themeData.floatingActionButtonTheme.copyWith(
         backgroundColor: themeData.appBarTheme.backgroundColor,
       ),
+      //  SnackBar Theme
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor:
+            themeData.snackBarTheme.backgroundColor?.withOpacity(.25),
+        behavior: SnackBarBehavior.floating,
+      ),
     );
   }
 

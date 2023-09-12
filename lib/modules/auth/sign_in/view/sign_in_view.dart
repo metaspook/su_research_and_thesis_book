@@ -5,9 +5,6 @@ import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
-typedef SignInBlocSelector<T> = BlocSelector<SignInBloc, SignInState, T>;
-typedef SignInBlocListener = BlocListener<SignInBloc, SignInState>;
-
 class SignInView extends StatefulWidget {
   const SignInView({super.key});
 
@@ -110,7 +107,7 @@ class _SignInViewState extends State<SignInView> {
             ),
             const SizedBox(height: AppThemes.height2x),
             // Proceed button
-            SignInBlocListener(
+            SignInBlocConsumer(
               listenWhen: (previous, current) => current.status.hasMessage,
               listener: (context, state) {
                 final snackBar = SnackBar(
@@ -121,15 +118,21 @@ class _SignInViewState extends State<SignInView> {
                 );
                 context.scaffoldMessenger.showSnackBar(snackBar);
               },
-              child: ElevatedButton.icon(
-                icon: const Icon(Icons.forward_rounded),
-                label: const Text('Proceed'),
-                onPressed: () {
-                  final valid =
-                      _signInFormKey.currentState?.validate() ?? false;
-                  if (valid) bloc.add(const SignInProceeded());
-                },
-              ),
+              builder: (context, state) {
+                final enabled =
+                    state.email.isNotEmpty || state.password.isNotEmpty;
+                return ElevatedButton.icon(
+                  icon: const Icon(Icons.forward_rounded),
+                  label: const Text('Proceed'),
+                  onPressed: enabled
+                      ? () {
+                          final valid =
+                              _signInFormKey.currentState?.validate() ?? false;
+                          if (valid) bloc.add(const SignInProceeded());
+                        }
+                      : null,
+                );
+              },
             ),
           ],
         ),
