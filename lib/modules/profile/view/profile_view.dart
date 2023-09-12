@@ -11,6 +11,7 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: font preload
     final cubit = context.read<ProfileCubit>();
     const height = 30.0;
     const width = height / 2;

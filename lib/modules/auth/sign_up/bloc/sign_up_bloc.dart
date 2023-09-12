@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
+import 'package:su_thesis_book/utils/extensions.dart';
 
 export 'package:su_thesis_book/shared/repositories/repositories.dart'
     show ImageSource;
@@ -88,6 +89,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         await _authRepo.signUp(email: state.email, password: state.password);
     final errorMsg = signUpRecord.$1;
     final userId = signUpRecord.user?.uid;
+
     if (userId != null) {
       //  Create user.
       final roleIndex = state.roles.indexOf(state.role);
@@ -100,6 +102,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       };
       final errorMsg = await _appUserRepo.create(userId, value: userObj);
       if (errorMsg == null) {
+        'Signed Up'.doPrint();
         emit(
           state.copyWith(
             status: SignUpStatus.success,

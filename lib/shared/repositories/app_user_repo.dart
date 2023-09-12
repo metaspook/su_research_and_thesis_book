@@ -42,18 +42,19 @@ class AppUserRepo implements CrudAbstract<AppUser> {
   /// Create user data to database.
   @override
   Future<String?> create(String userId, {required Json value}) async {
-    final photoUrl =
-        await uploadPhoto(userId, path: value['photoPath']! as String);
     try {
+      // Upload user photo to storage.
+      final uploadRecord =
+          await uploadPhoto(userId, path: value['photoPath']! as String);
+      final errorMsg = uploadRecord.$1;
+      if (errorMsg != null) return errorMsg;
       // Upload user data to DB.
-      await _db.set({
-        userId: {
-          'name': value['name'],
-          'email': value['email'],
-          'roleIndex': value['roleIndex'],
-          'phone': value['phone'],
-          'photoUrl': photoUrl,
-        },
+      await _db.child(userId).set({
+        'name': value['name'],
+        'email': value['email'],
+        'roleIndex': value['roleIndex'],
+        'phone': value['phone'],
+        'photoUrl': uploadRecord.photoUrl,
       });
     } catch (e, s) {
       log(_errorMsgCreateUser, error: e, stackTrace: s);

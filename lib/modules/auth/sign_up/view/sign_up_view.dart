@@ -161,29 +161,34 @@ class _SignUpViewState extends State<SignUpView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Image Card
-                SignUpBlocSelector<String>(
-                  selector: (state) => state.photoPath,
-                  builder: (context, photoPath) {
-                    return Card(
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: AppThemes.borderRadius,
-                      ),
-                      clipBehavior: Clip.hardEdge,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: ClipRRect(
+                Card(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: AppThemes.borderRadius,
+                  ),
+                  clipBehavior: Clip.hardEdge,
+                  child: Container(
+                    height: context.mediaQuery.size.longestSide * .225,
+                    width: context.mediaQuery.size.shortestSide * .45,
+                    padding: const EdgeInsets.all(8),
+                    child: SignUpBlocSelector<String>(
+                      selector: (state) => state.photoPath,
+                      builder: (context, photoPath) {
+                        return ClipRRect(
                           borderRadius: AppThemes.borderRadius,
                           child: photoPath.isEmpty
                               ? Assets.images.placeholderUser01
                                   .image(fit: BoxFit.cover)
-                              : Image.file(File(photoPath)),
-                        ),
-                      ),
-                    );
-                  },
+                              : Image.file(
+                                  File(photoPath),
+                                  fit: BoxFit.cover,
+                                ),
+                        );
+                      },
+                    ),
+                  ),
                 ),
                 const SizedBox(width: AppThemes.height2x),
-                Expanded(
+                Flexible(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
