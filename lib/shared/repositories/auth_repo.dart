@@ -7,16 +7,15 @@ export 'package:firebase_auth/firebase_auth.dart'
     show AuthCredential, User, UserCredential;
 
 class AuthRepo {
-  AuthRepo() : _auth = FirebaseAuth.instance;
-  final FirebaseAuth _auth;
+  const AuthRepo();
 
   //-- Config
+  static final _auth = FirebaseAuth.instance;
   static const _errorMsgSignIn = "Couldn't sign-in the user!";
   static const _errorMsgSignUp = "Couldn't sign-up the user!";
   static const _errorMsgSignOut = "Couldn't sign-out the user!";
   static const _errorMsgUpdateEmail = "Couldn't update the user email!";
   static const _errorMsgUpdatePassword = "Couldn't update the user password!";
-  // static AuthCredential? _credential;
 
   //-- Public APIs
   Stream<User?> get userStream => _auth.authStateChanges();
@@ -91,17 +90,19 @@ class AuthRepo {
     return null;
   }
 
-  Future<(String?, {User? user})> signUp({
+  Future<(String?, {String? userId})> signUp({
     required String email,
     required String password,
   }) async {
     try {
-      final user = (await _auth.createUserWithEmailAndPassword(
+      final userId = (await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       ))
-          .user;
-      return (null, user: user);
+          .user
+          ?.uid;
+
+      return (null, userId: userId);
     } on FirebaseAuthException catch (e) {
       final errorMsg = const <String, String>{
         'email-already-in-use': "This email's user already exists!",
@@ -109,40 +110,10 @@ class AuthRepo {
         'operation-not-allowed': "Email/password accounts aren't enabled!",
         'weak-password': "Password isn't strong enough!",
       }[e.code];
-      return (errorMsg, user: null);
+      return (errorMsg, userId: null);
     } catch (e, s) {
       log(_errorMsgSignUp, error: e, stackTrace: s);
-      return (_errorMsgSignUp, user: null);
+      return (_errorMsgSignUp, userId: null);
     }
   }
 }
-
-// extension AuthCredentialExt on AuthCredential {
-//   /// Empty user which represents an unauthenticated user.
-//   static const empty = AuthCredential(providerId: '', signInMethod: '');
-//   bool get isEmpty => this == empty;
-//   bool get isNotEmpty => this != empty;
-// }
-  // AuthCredential? get credential => _credential;
-
-//   Future<void> _reauthenticateAndDelete() async {
-//     try {
-//       final providerData = _auth.currentUser?.providerData.first;
-//       final providerData = _auth.currentUser?.reload();
-
-//       if (AppleAuthProvider().providerId == providerData!.providerId) {
-//         await _auth.currentUser!
-//             .reauthenticateWithProvider(AppleAuthProvider());
-//       } else if (GoogleAuthProvider().providerId == providerData.providerId) {
-//         await _auth.currentUser!
-//             .reauthenticateWithProvider(GoogleAuthProvider());
-//       } else {
-//         EmailAuthProvider.credential(
-//             email: currentUser.email, password: 'password');
-//       }
-// // GoogleAuthProvider.credential(idToken: '', accessToken: '')
-//       await _auth.currentUser?.delete();
-//     } catch (e) {
-//       // Handle exceptions
-//     }
-//   }

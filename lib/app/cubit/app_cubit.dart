@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
+import 'package:su_thesis_book/utils/utils.dart';
 
 part 'app_state.dart';
 
@@ -21,14 +22,20 @@ class AppCubit extends Cubit<AppState> {
         final errorMsg = appUserRecord.$1;
         final appUser = appUserRecord.object;
         if (appUser != null) {
+          'user: $user'.doPrint();
           emit(AppState.authenticated(appUser));
         } else {
           emit(state.copyWith(statusMsg: errorMsg));
           // Sign out authUser because user data not found.
-          await _authRepo.signOut();
+          // await _authRepo.signOut();
         }
       } else {
-        emit(const AppState.unauthenticated());
+        emit(
+          state.copyWith(
+            status: AppStatus.unauthenticated,
+            user: AppUser.empty,
+          ),
+        );
       }
     });
   }

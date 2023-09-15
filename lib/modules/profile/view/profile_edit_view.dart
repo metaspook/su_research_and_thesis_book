@@ -54,8 +54,7 @@ class _ProfileUpdateViewState extends State<ProfileUpdateView> {
   Widget build(BuildContext context) {
     final bloc = context.read<ProfileUpdateBloc>();
     final cubit = context.read<ProfileCubit>();
-    const height = 30.0;
-    const width = height / 2;
+
     // Set the hint text.
     final hintTextName = context.read<AppCubit>().state.user.name ?? 'N/A';
     final hintTextEmail = context.read<AppCubit>().state.user.email ?? 'N/A';
@@ -64,8 +63,8 @@ class _ProfileUpdateViewState extends State<ProfileUpdateView> {
     return Form(
       child: ListView(
         padding: const EdgeInsets.symmetric(
-          horizontal: width,
-          vertical: height,
+          horizontal: AppThemes.width,
+          vertical: AppThemes.height2x,
         ),
         children: [
           Row(
@@ -78,50 +77,54 @@ class _ProfileUpdateViewState extends State<ProfileUpdateView> {
                   return HaloAvatar.local(path: photoPath, size: 4);
                 },
               ),
-              Column(
-                children: [
-                  // Camera Button
-                  ElevatedButton.icon(
-                    icon: const Icon(
-                      Icons.camera_alt_rounded,
+              const SizedBox(width: AppThemes.height2x),
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Camera Button
+                    ElevatedButton.icon(
+                      icon: const Icon(
+                        Icons.camera_alt_rounded,
+                      ),
+                      label: const Text('Camera'),
+                      onPressed: () async {
+                        final photoPath =
+                            await imageCropicker.path(ImageSource.camera);
+                        final statusMsg = imageCropicker.statusMsg;
+                        bloc.add(
+                          ProfileUpdatePhotoPicked(
+                            photoPath,
+                            statusMsg: statusMsg,
+                          ),
+                        );
+                      },
                     ),
-                    label: const Text('Camera'),
-                    onPressed: () async {
-                      final photoPath =
-                          await imageCropicker.path(ImageSource.camera);
-                      final statusMsg = imageCropicker.statusMsg;
-                      bloc.add(
-                        ProfileUpdatePhotoPicked(
-                          photoPath,
-                          statusMsg: statusMsg,
-                        ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  // Gallery Button
-                  ElevatedButton.icon(
-                    icon: const Icon(
-                      Icons.photo_library_rounded,
+                    const SizedBox(height: 20),
+                    // Gallery Button
+                    ElevatedButton.icon(
+                      icon: const Icon(
+                        Icons.photo_library_rounded,
+                      ),
+                      label: const Text('Gallery'),
+                      onPressed: () async {
+                        final photoPath =
+                            await imageCropicker.path(ImageSource.gallery);
+                        final statusMsg = imageCropicker.statusMsg;
+                        bloc.add(
+                          ProfileUpdatePhotoPicked(
+                            photoPath,
+                            statusMsg: statusMsg,
+                          ),
+                        );
+                      },
                     ),
-                    label: const Text('Gallery'),
-                    onPressed: () async {
-                      final photoPath =
-                          await imageCropicker.path(ImageSource.gallery);
-                      final statusMsg = imageCropicker.statusMsg;
-                      bloc.add(
-                        ProfileUpdatePhotoPicked(
-                          photoPath,
-                          statusMsg: statusMsg,
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
-          const SizedBox(height: height),
+          const SizedBox(height: AppThemes.height2x),
           Form(
             key: _profileUpdateFormKey,
             child: Padding(
@@ -205,7 +208,7 @@ class _ProfileUpdateViewState extends State<ProfileUpdateView> {
               ),
             ),
           ),
-          const SizedBox(height: height - 6),
+          const SizedBox(height: AppThemes.height2x),
           ProfileBlocListener(
             listenWhen: (previous, current) => current.status.hasMessage,
             listener: (context, state) {
@@ -227,7 +230,7 @@ class _ProfileUpdateViewState extends State<ProfileUpdateView> {
                     label: const Text('Cancel'),
                   ),
                 ),
-                const SizedBox(width: width),
+                const SizedBox(width: AppThemes.width),
                 Expanded(
                   // Save button
                   child: ProfileUpdateBlocBuilder(

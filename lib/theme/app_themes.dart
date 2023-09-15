@@ -5,7 +5,21 @@ import 'package:google_fonts/google_fonts.dart';
 sealed class AppThemes {
   const AppThemes._();
 
-  static final _seedColor = ([...Colors.primaries]..shuffle()).first;
+  // static final _seedColor = ([...Colors.primaries]..shuffle()).first;
+  static final _seedColor = (<MaterialColor>[
+    Colors.red,
+    Colors.pink,
+    Colors.lightBlue,
+    Colors.cyan,
+    Colors.teal,
+    Colors.green,
+    Colors.lightGreen,
+    Colors.amber,
+    Colors.orange,
+    Colors.deepOrange,
+    Colors.blueGrey,
+  ]..shuffle())
+      .first;
 
   static ThemeData _themeData({
     Brightness brightness = Brightness.light,

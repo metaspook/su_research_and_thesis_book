@@ -5,22 +5,20 @@ import 'dart:io';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
-import 'package:su_thesis_book/shared/services/services.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
 class AppUserRepo implements CrudAbstract<AppUser> {
   const AppUserRepo();
 
   //-- Config
+
+  static final _db = FirebaseDatabase.instance.ref('users');
+  static final _storage = FirebaseStorage.instance.ref('photos');
   static const _errorMsgCreateUser = "Couldn't create the User!";
   static const _errorMsgReadUser = "Couldn't read the User data!";
   static const _errorMsgUpdateUser = "Couldn't update the User!";
   static const _errorMsgDeleteUser = "Couldn't delete the User!";
   static const _errorMsgUserPhoto = "Couldn't upload the User photo!";
-
-  FirebaseService get _firebaseService => const FirebaseService();
-  DatabaseReference get _db => _firebaseService.db.ref('users');
-  Reference get _storage => _firebaseService.storage.ref('photos');
 
   //-- Public APIs
   /// Upload user photo to Storage and get URL.
@@ -65,18 +63,20 @@ class AppUserRepo implements CrudAbstract<AppUser> {
 
   /// Read user data from database.
   @override
-  Future<(String?, {AppUser? object})> read(String userId) async {
+  Future<(String?, {AppUser object})> read(String userId) async {
     try {
       // Download user data from DB.
       final userObj = (await _db.child(userId).get()).value;
-      if (userObj == null) return ('User data not found!', object: null);
+      if (userObj == null) {
+        return ('User data not found!', object: AppUser.empty);
+      }
       final userMap = userObj.toMap<String, Object>();
       // Convert user data to model.
       final user = AppUser.fromJson({'id': userId, ...userMap});
       return (null, object: user);
     } catch (e, s) {
       log(_errorMsgReadUser, error: e, stackTrace: s);
-      return (_errorMsgReadUser, object: null);
+      return (_errorMsgReadUser, object: AppUser.empty);
     }
   }
 

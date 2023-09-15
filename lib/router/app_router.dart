@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
@@ -10,7 +9,8 @@ import 'package:su_thesis_book/shared/repositories/repositories.dart';
 export 'package:go_router/go_router.dart' show GoRouterHelper;
 
 final class AppRouter {
-  AppRouter({this.initialLocation, this.navigatorKey})
+  // AppRouter({this.initialLocation, this.navigatorKey})
+  AppRouter({this.initialLocation})
       : config = GoRouter(
           //-- Register routes
           routes: <RouteBase>[
@@ -19,10 +19,10 @@ final class AppRouter {
             profile,
           ],
           initialLocation: initialLocation,
-          navigatorKey: navigatorKey,
+          // navigatorKey: navigatorKey,
         );
 
-  final GlobalKey<NavigatorState>? navigatorKey;
+  // final GlobalKey<NavigatorState>? navigatorKey;
   final String? initialLocation;
   final GoRouter config;
 
@@ -45,7 +45,7 @@ final class AppRouter {
       return MultiRepositoryProvider(
         providers: [
           RepositoryProvider<AuthRepo>(
-            create: (context) => AuthRepo(),
+            create: (context) => const AuthRepo(),
           ),
           RepositoryProvider<AppUserRepo>(
             create: (context) => const AppUserRepo(),
@@ -83,7 +83,7 @@ final class AppRouter {
       return MultiRepositoryProvider(
         providers: [
           RepositoryProvider<AuthRepo>(
-            create: (context) => AuthRepo(),
+            create: (context) => const AuthRepo(),
           ),
           RepositoryProvider<AppUserRepo>(
             create: (context) => const AppUserRepo(),

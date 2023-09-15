@@ -1,13 +1,13 @@
 import 'dart:developer';
 
 import 'package:firebase_database/firebase_database.dart';
-import 'package:su_thesis_book/shared/services/firebase_service.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
 class RoleRepo {
   const RoleRepo();
 
   //-- Config
+  static final _db = FirebaseDatabase.instance.ref('roles');
   static const _errorMsgRoleNotFound = 'User role not found!';
   static const _errorMsgRolesNotFound = 'User roles not found!';
   static const _errorMsgIndex = "Couldn't get index of the role!";
@@ -15,9 +15,6 @@ class RoleRepo {
   static const _errorMsgRoles = "Couldn't get the user roles!";
   // user roles cache.
   static List<String> _roles = const [];
-
-  FirebaseService get _firebaseService => const FirebaseService();
-  DatabaseReference get _db => _firebaseService.db.ref('roles');
 
   //-- Public APIs
   /// Get user role by index.

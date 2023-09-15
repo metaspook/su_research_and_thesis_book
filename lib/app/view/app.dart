@@ -14,7 +14,7 @@ class App extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AuthRepo>(
-          create: (context) => AuthRepo(),
+          create: (context) => const AuthRepo(),
         ),
         RepositoryProvider<AppUserRepo>(
           create: (context) => const AppUserRepo(),
@@ -37,10 +37,11 @@ class AppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Configure authentication based router's initialLocation.
+    // const AppUserRepo().userStream.listen(print);
     final isAuthenticated =
         context.select((AppCubit cubit) => cubit.state.status.isAuthenticated);
     final initialLocation =
-        isAuthenticated ? AppRouter.home.path : AppRouter.auth.path;
+        isAuthenticated ? AppRouter.home.path : AppRouter.home.path;
     final router = AppRouter(initialLocation: initialLocation);
     return MaterialApp.router(
       title: 'SU Thesis Book',
