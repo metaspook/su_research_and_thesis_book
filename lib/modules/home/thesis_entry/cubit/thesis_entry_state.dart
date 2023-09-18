@@ -1,6 +1,16 @@
 part of 'thesis_entry_cubit.dart';
 
-enum ThesisEntryStatus { initial, editing, loading, success, failure }
+enum ThesisEntryStatus {
+  initial,
+  editing,
+  loading,
+  success,
+  failure;
+
+  bool get isLoading => this == ThesisEntryStatus.loading;
+  bool get hasMessage =>
+      this == ThesisEntryStatus.success || this == ThesisEntryStatus.failure;
+}
 
 final class ThesisEntryState extends Equatable {
   const ThesisEntryState({

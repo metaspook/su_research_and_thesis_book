@@ -8,18 +8,17 @@ import 'package:connectivity_plus/connectivity_plus.dart'
     show Connectivity, ConnectivityResult;
 import 'package:flutter/services.dart' show PlatformException;
 
-// Config
-final _connectivity = Connectivity();
-// ignore: use_late_for_private_fields_and_variables
-String? _statusMsg;
-const _errorMsg = "Couldn't fetch the connectivity result!";
-
 /// {@template connectivator}
 /// Network connectivity checker.
 /// {@endtemplate}
 class Connectivator {
   /// {@macro connectivator}
   const Connectivator();
+
+  //-- Config
+  static final _connectivity = Connectivity();
+  static String? _statusMsg;
+  static const _errorMsg = "Couldn't fetch the connectivity result!";
 
   //-- Parse connectivity result.
   bool _parseConnectivityResult(ConnectivityResult connectivityResult) {

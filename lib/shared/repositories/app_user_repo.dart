@@ -11,7 +11,6 @@ class AppUserRepo implements CrudAbstract<AppUser> {
   const AppUserRepo();
 
   //-- Config
-
   static final _db = FirebaseDatabase.instance.ref('users');
   static final _storage = FirebaseStorage.instance.ref('photos');
   static const _errorMsgCreateUser = "Couldn't create the User!";
@@ -23,8 +22,8 @@ class AppUserRepo implements CrudAbstract<AppUser> {
   //-- Public APIs
   /// Upload user photo to Storage and get URL.
   Future<(String?, {String? photoUrl})> uploadPhoto(
-    String userId, {
-    required String path,
+    String path, {
+    required String userId,
   }) async {
     try {
       final storageRef = _storage.child('$userId.jpg');
@@ -43,7 +42,7 @@ class AppUserRepo implements CrudAbstract<AppUser> {
     try {
       // Upload user photo to storage.
       final uploadRecord =
-          await uploadPhoto(userId, path: value['photoPath']! as String);
+          await uploadPhoto(value['photoPath']! as String, userId: userId);
       final errorMsg = uploadRecord.$1;
       if (errorMsg != null) return errorMsg;
       // Upload user data to DB.

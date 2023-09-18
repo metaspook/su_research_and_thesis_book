@@ -33,7 +33,24 @@ final class AppRouter {
     path: '/',
     // redirect: _redirect,
     builder: (context, state) {
-      return const HomePage();
+      return RepositoryProvider<ThesisRepo>(
+        create: (context) => const ThesisRepo(),
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<HomeCubit>(
+              create: (context) => HomeCubit(
+                thesisRepo: context.read<ThesisRepo>(),
+              ),
+            ),
+            BlocProvider<ThesisEntryCubit>(
+              create: (context) => ThesisEntryCubit(
+                thesisRepo: context.read<ThesisRepo>(),
+              ),
+            ),
+          ],
+          child: const HomePage(),
+        ),
+      );
     },
   );
   // Auth

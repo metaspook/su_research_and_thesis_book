@@ -6,11 +6,6 @@ class Validator {
   // This constructor prevents instantiation and extension as this class meant be.
   const Validator._();
 
-  /// * Doesn't have leading or trailing white space.
-  /// * Only word characters, underscores, hyphens, and periods.
-  /// * Characters limit: 3 to 50.
-  /// * Word must be Capitalized or with Uppercase letters.
-  /// * Single space allowed after every word.
 //   static const _leadingOrTrailingSpace = 'Leading or trailing space found!';
 //   static const _onlyAlphabetsHyphensPeriods =
 //       'Supports only alphabets, hyphens and periods!';
@@ -20,7 +15,17 @@ class Validator {
 
 // static const _tldlimit = 'TLD Characters limit: 2 to 7';
 // static String _limit(int max, [int min = 1])=> 'Characters limit: $min to $max';
-// Validator list
+
+  //-- Config
+  static const _errorMsgName =
+      'Must be capitalized words and 3 to 50 characters!';
+
+  //-- Ready-made validators
+  /// * Doesn't have leading or trailing white space.
+  /// * Only word characters, underscores, hyphens, and periods.
+  /// * Characters limit: 3 to 50.
+  /// * Word must be Capitalized or with Uppercase letters.
+  /// * Single space allowed after every word.
   static String? name(
     String? value, {
     bool required = true,
@@ -28,11 +33,11 @@ class Validator {
   }) =>
       required
           ? (value == null || value.isEmpty || !value.isName)
-              ? errorText ?? 'Must consists capitalized words!'
+              ? errorText ?? _errorMsgName
               : null
           : (value == null || value.isEmpty || value.isName)
               ? null
-              : errorText ?? 'Must consists capitalized words!';
+              : errorText ?? _errorMsgName;
 
   static String? email(
     String? value, {

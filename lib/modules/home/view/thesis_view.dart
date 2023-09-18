@@ -20,7 +20,7 @@ class _ThesisViewState extends State<ThesisView> {
       appBar: AppBar(
         leading: context.backButton,
         centerTitle: true,
-        title: Text(widget.thesis.name),
+        title: Text(widget.thesis.name ?? 'N/A'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
@@ -32,10 +32,7 @@ class _ThesisViewState extends State<ThesisView> {
               clipBehavior: Clip.none,
               child: Column(
                 children: [
-                  const PdfViewer(
-                    uri: 'https://css4.pub/2015/usenix/example.pdf',
-                    // heightPercent: .80,
-                  ),
+                  const PdfViewer('https://css4.pub/2015/usenix/example.pdf'),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [

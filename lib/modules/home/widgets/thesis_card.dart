@@ -12,7 +12,9 @@ class ThesisCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final dateStr = DateFormat('EEE, y/M/d').format(thesis.createdAt);
+    final dateStr = thesis.createdAt == null
+        ? 'N/A'
+        : DateFormat('EEE, y/M/d').format(thesis.createdAt!);
 
     return Card(
       child: ListTile(
@@ -23,7 +25,7 @@ class ThesisCard extends StatelessWidget {
           ),
         ),
         title: Text(
-          thesis.name,
+          thesis.name ?? 'N/A',
           style: context.theme.textTheme.titleLarge,
         ),
         subtitle: Column(
@@ -35,10 +37,10 @@ class ThesisCard extends StatelessWidget {
                 style: context.theme.textTheme.titleMedium?.copyWith(
                   color: theme.badgeTheme.backgroundColor,
                 ),
-                children: [
+                children: const [
                   TextSpan(
-                    text: thesis.author,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    // text: thesis.author,
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),

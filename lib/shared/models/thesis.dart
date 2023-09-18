@@ -1,47 +1,53 @@
 import 'package:equatable/equatable.dart';
 
-final class Thesis extends Equatable {
+class Thesis extends Equatable {
   const Thesis({
+    required this.id,
     required this.name,
-    required this.author,
+    required this.userId,
+    required this.fileUrl,
     required this.createdAt,
   });
 
-  factory Thesis.fromJson(Map<String, dynamic> json) {
+  factory Thesis.fromJson(Map<String, dynamic> map) {
     return Thesis(
-      name: json['name'] as String,
-      author: json['author'] as String,
-      createdAt: json['createdAt'] as DateTime,
+      id: map['id'] as String,
+      name: map['name'] as String?,
+      userId: map['userId'] as String?,
+      fileUrl: map['fileUrl'] as String?,
+      createdAt: map['createdAt'] == null
+          ? null
+          : DateTime.parse(map['createdAt'] as String),
     );
   }
 
-  final String name;
-  final String author;
-  final DateTime createdAt;
+  final String id;
+  final String? name;
+  final String? userId;
+  final String? fileUrl;
+  final DateTime? createdAt;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
+      'id': id,
       'name': name,
-      'author': author,
-      'createdAt': createdAt,
+      'userId': userId,
+      'fileUrl': fileUrl,
+      'createdAt': createdAt?.millisecondsSinceEpoch,
     };
-  }
-
-  Thesis copyWith({
-    String? name,
-    String? author,
-    DateTime? createdAt,
-  }) {
-    return Thesis(
-      name: name ?? this.name,
-      author: author ?? this.author,
-      createdAt: createdAt ?? this.createdAt,
-    );
   }
 
   @override
   bool get stringify => true;
 
   @override
-  List<Object> get props => [name, author, createdAt];
+  List<Object?> get props {
+    return [
+      id,
+      name,
+      userId,
+      fileUrl,
+      createdAt,
+    ];
+  }
 }

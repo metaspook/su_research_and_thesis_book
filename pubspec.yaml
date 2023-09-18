@@ -11,7 +11,7 @@ dependencies:
   cached_network_image: ^3.2.3
   cupertino_icons: ^1.0.5
   equatable: ^2.0.5
-  file_picker: ^5.3.3
+  file_picker: ^5.5.0
   firebase_auth: ^4.7.2
   firebase_core: ^2.15.0
   firebase_database: ^10.2.4
@@ -30,15 +30,16 @@ dependencies:
     path: packages/image_cropicker
   intl: ^0.18.0
   path_provider: ^2.0.15
+  uuid: ^4.0.0
 
 dev_dependencies:
   bloc_test: ^9.1.2
+  build_runner:
+  flutter_gen_runner:
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.0
   very_good_analysis: ^5.0.0
-  build_runner:
-  flutter_gen_runner:
 
 flutter:
   uses-material-design: true

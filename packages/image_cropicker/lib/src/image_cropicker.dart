@@ -12,14 +12,6 @@ import 'package:image_picker/image_picker.dart';
 
 export 'package:image_picker/image_picker.dart' show ImageSource;
 
-// Config
-final _imagePicker = ImagePicker();
-final _imageCropper = ImageCropper();
-// ignore: use_late_for_private_fields_and_variables
-String? _statusMsg;
-const _errorMsgPick = "Couldn't pick the image!";
-const _errorMsgCrop = "Couldn't crop the image!";
-
 /// {@template image_cropicker}
 /// Image Picker and Cropper.
 /// {@endtemplate}
@@ -28,6 +20,13 @@ class ImageCropicker {
   const ImageCropicker(BuildContext context) : _context = context;
 
   final BuildContext _context;
+
+  //-- Config
+  static final _imagePicker = ImagePicker();
+  static final _imageCropper = ImageCropper();
+  static String? _statusMsg;
+  static const _errorMsgPick = "Couldn't pick the image!";
+  static const _errorMsgCrop = "Couldn't crop the image!";
 
   ThemeData get _theme => Theme.of(_context);
 

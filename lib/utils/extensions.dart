@@ -27,6 +27,10 @@ extension ObjectExt on Object {
 
   /// A map representation of this object.
   Map<K, V> toMap<K, V>() => Map<K, V>.from(this as Map<Object?, Object?>);
+
+  /// A json map representation of this object.
+  Map<String, Object?> toJson() =>
+      Map<String, Object?>.from(this as Map<Object?, Object?>);
 }
 
 extension PrintMethod on Object? {

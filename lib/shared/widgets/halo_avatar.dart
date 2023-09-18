@@ -42,6 +42,7 @@ class HaloAvatar extends StatelessWidget {
   final String? url;
   final bool isLocal;
 
+  //-- Config
   static late Color _haloColor;
   static final _memoryImage = MemoryImage(base64Decode(_placeholderImage));
   static const _placeholderImage =

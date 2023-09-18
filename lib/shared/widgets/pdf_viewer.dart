@@ -2,23 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
-enum PdfSource { asset, url, path }
+enum PdfSourceType { asset, url, path }
 
 class PdfViewer extends StatefulWidget {
   /// `heightPercent` (which ranges from 0.0 to 1.0) is percentage of
   /// `MediaQuery.of(context).size.height`.
   ///
   /// Out of range values will have unexpected effects.
-  const PdfViewer({
-    required this.uri,
-    this.source = PdfSource.url,
-    // this.heightPercent = .8225,
-    super.key,
-  });
+  const PdfViewer(this.source, {this.type = PdfSourceType.url, super.key});
 
-  final String uri;
-  final PdfSource source;
+  final String source;
+  final PdfSourceType type;
   // final double heightPercent;
+  // this.heightPercent = .8225,
+  // 'https://css4.pub/2015/usenix/example.pdf'
 
   @override
   State<PdfViewer> createState() => _PdfViewerState();
@@ -51,10 +48,10 @@ class _PdfViewerState extends State<PdfViewer> {
       // width: context.mediaQuery.size.width,
       child: Stack(
         children: [
-          switch (widget.source) {
-            PdfSource.asset => pdf.fromAsset(widget.uri),
-            PdfSource.path => pdf.fromPath(widget.uri),
-            PdfSource.url => pdf.cachedFromUrl(widget.uri),
+          switch (widget.type) {
+            PdfSourceType.asset => pdf.fromAsset(widget.source),
+            PdfSourceType.path => pdf.fromPath(widget.source),
+            PdfSourceType.url => pdf.cachedFromUrl(widget.source),
           },
           Row(
             mainAxisAlignment: MainAxisAlignment.end,

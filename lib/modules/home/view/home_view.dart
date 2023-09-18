@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:su_thesis_book/app/app.dart';
 import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/router/router.dart';
-import 'package:su_thesis_book/shared/models/models.dart';
+import 'package:su_thesis_book/shared/repositories/thesis_repo.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
-
-typedef AppBlocSelector<T> = BlocSelector<AppCubit, AppState, T>;
+import 'package:su_thesis_book/utils/utils.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    const ThesisRepo().thesesStream.listen((event) {
+      event.doPrint();
+    });
     final l10n = context.l10n;
 
     // const CommentsRepo().fetchComments().then(print);
@@ -41,18 +42,24 @@ class HomeView extends StatelessWidget {
             ],
           ),
         ],
-        body: ListView.builder(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(5),
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            final thesis = Thesis(
-              name: 'Thesis Name',
-              author: 'Riad',
-              createdAt: DateTime.now(),
-            );
+        body: Builder(
+          builder: (context) {
+            final isLoading = context
+                .select((HomeCubit cubit) => cubit.state.status.isLoading);
+            final theses =
+                context.select((HomeCubit cubit) => cubit.state.theses);
 
-            return ThesisCard(thesis);
+            return TranslucentLoader(
+              enabled: isLoading,
+              child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.all(5),
+                itemCount: theses.length,
+                itemBuilder: (context, index) {
+                  return ThesisCard(theses[index]);
+                },
+              ),
+            );
           },
         ),
       ),

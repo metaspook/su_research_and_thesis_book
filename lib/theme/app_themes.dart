@@ -81,6 +81,7 @@ sealed class AppThemes {
 
   static const height = 15.0;
   static const height2x = height * 2;
+  static const height6x = height * 6;
   static const width = height;
   static const width2x = width * 2;
 
