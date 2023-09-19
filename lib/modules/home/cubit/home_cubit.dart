@@ -8,13 +8,13 @@ import 'package:su_thesis_book/shared/repositories/repositories.dart';
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit({required ThesisRepo thesisRepo})
+  HomeCubit({required AppUserRepo appUserRepo, required ThesisRepo thesisRepo})
       : _thesisRepo = thesisRepo,
+        _appUserRepo = appUserRepo,
         super(const HomeState()) {
     //-- Thesis data subscription.
-    _thesesSubscription = _thesisRepo.thesesStream.listen((theses) async {
-      emit(state.copyWith(status: HomeStatus.loading));
-
+    emit(state.copyWith(status: HomeStatus.loading));
+    _thesesSubscription = _thesisRepo.stream.listen((theses) async {
       if (theses.isNotEmpty) {
         emit(state.copyWith(status: HomeStatus.success, theses: theses));
       }
@@ -22,7 +22,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   final ThesisRepo _thesisRepo;
-
+  final AppUserRepo _appUserRepo;
   late final StreamSubscription<List<Thesis>> _thesesSubscription;
 
   @override

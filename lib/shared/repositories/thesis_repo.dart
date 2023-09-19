@@ -16,6 +16,7 @@ class ThesisRepo implements CrudAbstract<Thesis> {
   //-- Config
   static final _filePicker = FilePicker.platform;
   static final _db = FirebaseDatabase.instance.ref('theses');
+  static final _dbUsers = FirebaseDatabase.instance.ref('users');
   static final _storage = FirebaseStorage.instance.ref('theses');
   static const _errorMsgCreateThesis = "Couldn't create the Thesis!";
   static const _errorMsgReadThesis = "Couldn't read the Thesis data!";
@@ -24,6 +25,7 @@ class ThesisRepo implements CrudAbstract<Thesis> {
   static const _errorMsgUploadFile = "Couldn't upload the thesis file!";
   static const _errorMsgFilePicker = "Couldn't pick the file!";
   static const _errorMsgTempFiles = "Couldn't clear the temporary file!";
+  static final _authorsCache = <String, String?>{};
 
   // pick files.
   Future<({String? errorMsg, FilePickerResult? result})> _pickFile() async {
@@ -37,23 +39,34 @@ class ThesisRepo implements CrudAbstract<Thesis> {
   }
 
   //-- Public APIs
-  Stream<List<Thesis>> get thesesStream => _db.onValue.map<List<Thesis>>(
-        (event) => event.snapshot.value == null
-            ? const []
-            : [
-                for (final e in event.snapshot.children)
-                  Thesis.fromJson({
-                    'id': e.key,
-                    ...e.value!.toJson(),
-                  }),
-              ],
-      );
+  /// Generates a new thesis id.
+  String get newId => _db.push().key ?? uuid;
 
-  // Stream<List<Thesis>> get thesisStream => _db.onValue.map<List<Thesis>>(
-  //       (event) => event.snapshot.value == null
-  //           ? const []
-  //           : [for (final e in event.snapshot.value!)] Thesis.fromJson(event.snapshot.value!.toJson()),
-  //     );
+  /// Get author name by userId, retrieve from cache if exist.
+  Future<String?> authorById(String userId) async =>
+      _authorsCache[userId] ??
+      (_authorsCache[userId] =
+          (await _dbUsers.child('$userId/name').get()).value as String?);
+
+  Stream<List<Thesis>> get stream =>
+      _db.onValue.asyncMap<List<Thesis>>((event) async {
+        final theses = <Thesis>[];
+        if (event.snapshot.children.isNotEmpty) {
+          for (final e in event.snapshot.children) {
+            final thesisMap = e.value!.toMap<String, Object?>();
+            final userId = thesisMap['userId']! as String;
+            final author = await authorById(userId);
+            final thesisJson = <String, Object?>{
+              'id': e.key,
+              'author': author,
+              ...thesisMap,
+            };
+            final thesis = Thesis.fromJson(thesisJson);
+            theses.add(thesis);
+          }
+        }
+        return theses;
+      });
 
   /// Upload thesis file to Storage and get URL.
   Future<({String? errorMsg, String? fileUrl})> uploadFile(String path) async {

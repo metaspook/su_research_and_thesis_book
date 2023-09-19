@@ -37,10 +37,10 @@ class ThesisCard extends StatelessWidget {
                 style: context.theme.textTheme.titleMedium?.copyWith(
                   color: theme.badgeTheme.backgroundColor,
                 ),
-                children: const [
+                children: [
                   TextSpan(
-                    // text: thesis.author,
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    text: thesis.author ?? 'N/A',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),

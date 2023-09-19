@@ -35,6 +35,7 @@ class ThesisEntryCubit extends Cubit<ThesisEntryState> {
     // Upload thesis file to storage.
     final uploadRecord = await _thesisRepo.uploadFile(state.pdfPath);
     if (uploadRecord.errorMsg == null) {
+      final thesisId = _thesisRepo.newId;
       final thesisObj = {
         'createdAt': timestamp,
         'fileUrl': uploadRecord.fileUrl,
@@ -42,7 +43,7 @@ class ThesisEntryCubit extends Cubit<ThesisEntryState> {
         'userId': userId,
       };
       // Create thesis data in database.
-      final errorMsg = await _thesisRepo.create(uuid, value: thesisObj);
+      final errorMsg = await _thesisRepo.create(thesisId, value: thesisObj);
       if (errorMsg == null) {
         emit(
           state.copyWith(

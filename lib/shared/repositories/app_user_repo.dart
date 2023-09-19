@@ -36,6 +36,10 @@ class AppUserRepo implements CrudAbstract<AppUser> {
     }
   }
 
+  /// Get user's full name by id.
+  Future<String?> nameById(String userId) async =>
+      (await _db.child('$userId/name').get()).value as String?;
+
   /// Create user data to database.
   @override
   Future<String?> create(String userId, {required Json value}) async {
