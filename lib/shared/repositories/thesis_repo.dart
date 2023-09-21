@@ -44,25 +44,24 @@ class ThesisRepo implements CrudAbstract<Thesis> {
       (_cache[userId] =
           (await _dbUsers.child('$userId/name').get()).value as String?);
 
-  Stream<List<Thesis>> get stream =>
-      _db.onValue.asyncMap<List<Thesis>>((event) async {
-        final theses = <Thesis>[];
-        if (event.snapshot.children.isNotEmpty) {
-          for (final e in event.snapshot.children) {
-            final thesisMap = e.value!.toMap<String, Object?>();
-            final userId = thesisMap['userId']! as String;
-            final author = await authorById(userId);
-            final thesisJson = <String, Object?>{
-              'id': e.key,
-              'author': author,
-              ...thesisMap,
-            };
-            final thesis = Thesis.fromJson(thesisJson);
-            theses.add(thesis);
-          }
-        }
-        return theses;
-      });
+  /// Convert database snapshot to model with logic specified .
+  Future<Thesis> snapshotToModel(DataSnapshot snapshot) async {
+    final thesisMap = snapshot.value!.toJson();
+    final userId = thesisMap['userId']! as String;
+    final author = await authorById(userId);
+    final thesisJson = <String, Object?>{
+      'id': snapshot.key,
+      'author': author,
+      ...thesisMap,
+    };
+    return Thesis.fromJson(thesisJson);
+  }
+
+  Stream<List<Thesis>> get stream => _db.onValue.asyncMap<List<Thesis>>(
+        (event) async => <Thesis>[
+          for (final e in event.snapshot.children) await snapshotToModel(e),
+        ],
+      );
 
   /// Upload thesis file to Storage and get URL.
   Future<({String? errorMsg, String? fileUrl})> uploadFile(String path) async {
