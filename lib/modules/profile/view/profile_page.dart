@@ -23,7 +23,7 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Profile'),
-        leading: context.backButton,
+        leading: context.backButton(),
       ),
       body: Builder(
         builder: (context) {

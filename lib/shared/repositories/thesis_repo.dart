@@ -50,9 +50,10 @@ class ThesisRepo implements CrudAbstract<Thesis> {
     final userId = thesisMap['userId']! as String;
     final author = await authorById(userId);
     final thesisJson = <String, Object?>{
+      'comments': [],
       'id': snapshot.key,
-      'author': author,
       ...thesisMap,
+      'author': author,
     };
     return Thesis.fromJson(thesisJson);
   }
@@ -101,6 +102,12 @@ class ThesisRepo implements CrudAbstract<Thesis> {
     );
   }
 
+  Future<void> incrementViews(Thesis thesis) async {
+    await _db
+        .child('${thesis.id}/${thesis.views}')
+        .update({'views': (thesis.views ?? 0) + 1});
+  }
+
   @override
   Future<String?> create(String thesisId, {required Json value}) async {
     try {
@@ -113,7 +120,7 @@ class ThesisRepo implements CrudAbstract<Thesis> {
   }
 
   @override
-  Future<String?> delete(String id) {
+  Future<String?> delete(String id) async {
     // TODO: implement delete
     throw UnimplementedError();
   }
@@ -125,8 +132,13 @@ class ThesisRepo implements CrudAbstract<Thesis> {
   }
 
   @override
-  Future<String?> update(String id, {required Json value}) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<String?> update(String id, {required Json value}) async {
+    try {
+      await _db.child(id).update(value);
+    } catch (e, s) {
+      log(_errorMsgUpdateThesis, error: e, stackTrace: s);
+      return _errorMsgUpdateThesis;
+    }
+    return null;
   }
 }

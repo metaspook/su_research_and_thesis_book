@@ -15,7 +15,7 @@ class CommentsPage extends StatelessWidget {
           // AppBar
           SliverAppBar(
             pinned: true,
-            leading: context.backButton,
+            leading: context.backButton(),
             centerTitle: true,
             title: const Text('Comments'),
           ),
@@ -30,10 +30,10 @@ class CommentsPage extends StatelessWidget {
               itemCount: 10,
               itemBuilder: (context, index) {
                 final comment = Comment(
-                  id: 2,
+                  id: '2',
                   userId: 'profileImagePath',
                   thesisId: 'profileImagePath',
-                  body: 'content',
+                  content: 'content',
                   createdAt: DateTime.now(),
                 );
                 return CommentCard(comment);

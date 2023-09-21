@@ -3,7 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/modules/profile/profile.dart';
+import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
+import 'package:su_thesis_book/utils/utils.dart';
 
 // Exposes routing interface for views.
 export 'package:go_router/go_router.dart' show GoRouterHelper;
@@ -33,21 +35,13 @@ final class AppRouter {
     path: '/',
     // redirect: _redirect,
     builder: (context, state) {
-      return MultiRepositoryProvider(
-        providers: [
-          RepositoryProvider<ThesisRepo>(
-            create: (context) => ThesisRepo(),
-          ),
-          RepositoryProvider<AppUserRepo>(
-            create: (context) => const AppUserRepo(),
-          ),
-        ],
+      return RepositoryProvider<ThesisRepo>(
+        create: (context) => ThesisRepo(),
         child: MultiBlocProvider(
           providers: [
             BlocProvider<HomeCubit>(
               create: (context) => HomeCubit(
                 thesisRepo: context.read<ThesisRepo>(),
-                appUserRepo: context.read<AppUserRepo>(),
               ),
             ),
             BlocProvider<ThesisEntryCubit>(
@@ -60,6 +54,9 @@ final class AppRouter {
         ),
       );
     },
+    routes: <RouteBase>[
+      thesis,
+    ],
   );
   // Auth
   static final auth = GoRoute(
@@ -137,6 +134,17 @@ final class AppRouter {
     },
   );
 
+  // Thesis
+  static final thesis = GoRoute(
+    name: 'thesis',
+    path: 'thesis',
+    builder: (context, state) {
+      'Current Route: ${state.fullPath}'.doPrint();
+      final thesis = state.extra! as Thesis;
+      return ThesisView(thesis: thesis);
+    },
+  );
+
   // static FutureOr<String?> _redirect(
   //   BuildContext context,
   //   GoRouterState state,
@@ -152,4 +160,8 @@ final class AppRouter {
 
   //   return null;
   // }
+}
+
+extension GoRouteExt on GoRoute {
+  String get pathUnderRoot => '/$path';
 }

@@ -8,14 +8,14 @@ extension CallableWidgetExt on BuildContext {
   ScaffoldMessengerState get scaffoldMessenger => ScaffoldMessenger.of(this);
   // bool get keyboardVisible => MediaQuery.of(this).viewInsets.bottom != 0;
 
-  Widget? get backButton => Navigator.canPop(this)
+  Widget? backButton<T extends Object?>([T? result]) => Navigator.canPop(this)
       ? IconButton(
           onPressed: () {
             final currentFocus = FocusScope.of(this);
             // currentFocus.hasPrimaryFocus.doPrint();
             // currentFocus.hasFocus.doPrint();
             (currentFocus.hasPrimaryFocus == currentFocus.hasFocus)
-                ? Navigator.pop(this)
+                ? Navigator.pop<T>(this, result)
                 : currentFocus.unfocus();
           },
           icon: const Icon(Icons.arrow_back_ios_rounded),

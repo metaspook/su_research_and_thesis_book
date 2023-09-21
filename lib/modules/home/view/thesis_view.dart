@@ -4,23 +4,18 @@ import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 
-class ThesisView extends StatefulWidget {
+class ThesisView extends StatelessWidget {
   const ThesisView({required this.thesis, super.key});
 
   final Thesis thesis;
 
   @override
-  State<ThesisView> createState() => _ThesisViewState();
-}
-
-class _ThesisViewState extends State<ThesisView> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: context.backButton,
+        leading: context.backButton(),
         centerTitle: true,
-        title: Text(widget.thesis.name ?? 'N/A'),
+        title: Text(thesis.name ?? 'N/A'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
@@ -32,15 +27,15 @@ class _ThesisViewState extends State<ThesisView> {
               clipBehavior: Clip.none,
               child: Column(
                 children: [
-                  PdfViewer(widget.thesis.fileUrl!),
+                  PdfViewer(thesis.fileUrl!),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const CounterBadge(
+                      CounterBadge(
                         label: 'Views',
-                        count: 20,
+                        count: thesis.views,
                         largeSize: 27.5,
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 9,
                           vertical: 6,
                         ),

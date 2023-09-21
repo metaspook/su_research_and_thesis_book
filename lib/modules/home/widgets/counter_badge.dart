@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:su_thesis_book/utils/extensions.dart';
 
 class CounterBadge extends StatelessWidget {
   const CounterBadge({
     required this.label,
-    required this.count,
+    this.count,
     super.key,
     this.padding,
     this.largeSize,
   });
 
   final String label;
-  final int count;
+  final int? count;
   final EdgeInsetsGeometry? padding;
   final double? largeSize;
 
@@ -24,7 +25,7 @@ class CounterBadge extends StatelessWidget {
           text: '$label: ',
           children: [
             TextSpan(
-              text: count.toString(),
+              text: count.toStringParseNull(),
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ],

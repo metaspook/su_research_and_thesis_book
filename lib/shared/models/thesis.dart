@@ -1,43 +1,57 @@
 import 'package:equatable/equatable.dart';
+import 'package:su_thesis_book/shared/models/models.dart' show Comment;
 
 class Thesis extends Equatable {
   const Thesis({
+    required this.comments,
     required this.id,
-    this.name,
-    this.author,
-    this.userId,
-    this.fileUrl,
+    required this.userId,
     this.createdAt,
+    this.name,
+    this.views,
+    this.fileUrl,
+    this.author,
   });
 
-  factory Thesis.fromJson(Map<String, dynamic> map) {
+  factory Thesis.fromJson(Map<String, dynamic> json) {
     return Thesis(
-      id: map['id'] as String,
-      name: map['name'] as String?,
-      author: map['author'] as String?,
-      userId: map['userId'] as String?,
-      fileUrl: map['fileUrl'] as String?,
-      createdAt: map['createdAt'] == null
+      comments: const [],
+      // comments: List<Comment>.from(
+      //   (json['comments'] as List<Object>).map<Comment>(
+      //     (x) => Comment.fromJson(x.toJson()),
+      //   ),
+      // ),
+      id: json['id'] as String,
+      userId: json['userId'] as String,
+      createdAt: json['createdAt'] == null
           ? null
-          : DateTime.parse(map['createdAt'] as String),
+          : DateTime.tryParse(json['createdAt'] as String),
+      name: json['name'] as String?,
+      views: json['views'] as int?,
+      fileUrl: json['fileUrl'] as String?,
+      author: json['author'] as String?,
     );
   }
 
+  final List<Comment> comments;
   final String id;
-  final String? name;
-  final String? author;
-  final String? userId;
-  final String? fileUrl;
+  final String userId;
   final DateTime? createdAt;
+  final String? name;
+  final int? views;
+  final String? fileUrl;
+  final String? author;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
+      'comments': comments.map((x) => x.toJson()).toList(),
       'id': id,
-      'name': name,
-      'author': author,
       'userId': userId,
+      'createdAt': createdAt?.toString(),
+      'name': name,
+      'views': views,
       'fileUrl': fileUrl,
-      'createdAt': createdAt?.millisecondsSinceEpoch,
+      'author': author,
     };
   }
 
@@ -46,13 +60,6 @@ class Thesis extends Equatable {
 
   @override
   List<Object?> get props {
-    return [
-      id,
-      name,
-      author,
-      userId,
-      fileUrl,
-      createdAt,
-    ];
+    return [comments, id, userId, author, createdAt, name, views, fileUrl];
   }
 }

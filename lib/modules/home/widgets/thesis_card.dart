@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
+import 'package:su_thesis_book/router/app_router.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/theme/extensions.dart';
 
@@ -11,6 +13,7 @@ class ThesisCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<HomeCubit>();
     final theme = Theme.of(context);
     final dateStr = thesis.createdAt == null
         ? 'N/A'
@@ -18,12 +21,10 @@ class ThesisCard extends StatelessWidget {
 
     return Card(
       child: ListTile(
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute<ThesisView>(
-            builder: (context) => ThesisView(thesis: thesis),
-          ),
-        ),
+        onTap: () => Future.wait([
+          context.push(AppRouter.thesis.pathUnderRoot, extra: thesis),
+          cubit.incrementViews(thesis),
+        ]),
         title: Text(
           thesis.name ?? 'N/A',
           style: context.theme.textTheme.titleLarge,
@@ -61,12 +62,16 @@ class ThesisCard extends StatelessWidget {
             ),
           ],
         ),
-        trailing: const Column(
+        trailing: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            CounterBadge(label: 'Views', count: 20, largeSize: 20),
-            CounterBadge(label: 'Comments', count: 10, largeSize: 20),
+            CounterBadge(label: 'Views', count: thesis.views, largeSize: 20),
+            CounterBadge(
+              label: 'Comments',
+              count: thesis.comments.length,
+              largeSize: 20,
+            ),
           ],
         ),
       ),

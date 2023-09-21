@@ -5,48 +5,39 @@ final class Comment extends Equatable {
     required this.id,
     required this.userId,
     required this.thesisId,
-    required this.body,
-    required this.createdAt,
+    this.author,
+    this.createdAt,
+    this.content,
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) {
     return Comment(
-      id: json['id'] as int,
-      userId: json['userId'] as String,
+      id: json['id'] as String,
       thesisId: json['thesisId'] as String,
-      body: json['body'] as String,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(json['createdAt'] as int),
+      userId: json['userId'] as String,
+      author: json['author'] as String?,
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.tryParse(json['createdAt'] as String),
+      content: json['content'] as String?,
     );
   }
-  final int id;
-  final String userId;
-  final String thesisId;
-  final String body;
-  final DateTime createdAt;
 
-  Comment copyWith({
-    int? id,
-    String? userId,
-    String? thesisId,
-    String? body,
-    DateTime? createdAt,
-  }) {
-    return Comment(
-      id: id ?? this.id,
-      userId: userId ?? this.userId,
-      thesisId: thesisId ?? this.thesisId,
-      body: body ?? this.body,
-      createdAt: createdAt ?? this.createdAt,
-    );
-  }
+  final String id;
+  final String thesisId;
+  final String userId;
+  final String? author;
+  final DateTime? createdAt;
+  final String? content;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'id': id,
-      'userId': userId,
       'thesisId': thesisId,
-      'body': body,
-      'createdAt': createdAt.millisecondsSinceEpoch,
+      'userId': userId,
+      'author': author,
+      'createdAt': createdAt?.toString(),
+      'content': content,
     };
   }
 
@@ -54,7 +45,7 @@ final class Comment extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object> get props {
-    return [id, userId, thesisId, body, createdAt];
+  List<Object?> get props {
+    return [id, thesisId, userId, author, createdAt, content];
   }
 }

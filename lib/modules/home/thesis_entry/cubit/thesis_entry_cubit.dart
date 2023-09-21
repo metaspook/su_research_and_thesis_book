@@ -37,10 +37,11 @@ class ThesisEntryCubit extends Cubit<ThesisEntryState> {
     if (uploadRecord.errorMsg == null) {
       final thesisId = _thesisRepo.newId;
       final thesisObj = {
-        'createdAt': timestamp,
-        'fileUrl': uploadRecord.fileUrl,
-        'name': state.thesisName,
         'userId': userId,
+        'createdAt': timestamp,
+        'name': state.thesisName,
+        'views': 0,
+        'fileUrl': uploadRecord.fileUrl,
       };
       // Create thesis data in database.
       final errorMsg = await _thesisRepo.create(thesisId, value: thesisObj);
