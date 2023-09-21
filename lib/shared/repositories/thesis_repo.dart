@@ -8,24 +8,20 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
-// export 'package:su_thesis_book/utils/utils.dart' show uuid;
-
 class ThesisRepo implements CrudAbstract<Thesis> {
-  const ThesisRepo();
-
   //-- Config
-  static final _filePicker = FilePicker.platform;
-  static final _db = FirebaseDatabase.instance.ref('theses');
-  static final _dbUsers = FirebaseDatabase.instance.ref('users');
-  static final _storage = FirebaseStorage.instance.ref('theses');
-  static const _errorMsgCreateThesis = "Couldn't create the Thesis!";
-  static const _errorMsgReadThesis = "Couldn't read the Thesis data!";
-  static const _errorMsgUpdateThesis = "Couldn't update the Thesis!";
-  static const _errorMsgDeleteThesis = "Couldn't delete the Thesis!";
-  static const _errorMsgUploadFile = "Couldn't upload the thesis file!";
-  static const _errorMsgFilePicker = "Couldn't pick the file!";
-  static const _errorMsgTempFiles = "Couldn't clear the temporary file!";
-  static final _authorsCache = <String, String?>{};
+  final _cache = cacheService<String?>();
+  final _db = FirebaseDatabase.instance.ref('theses');
+  final _dbUsers = FirebaseDatabase.instance.ref('users');
+  final _storage = FirebaseStorage.instance.ref('theses');
+  final _filePicker = FilePicker.platform;
+  final _errorMsgCreateThesis = "Couldn't create the Thesis!";
+  final _errorMsgReadThesis = "Couldn't read the Thesis data!";
+  final _errorMsgUpdateThesis = "Couldn't update the Thesis!";
+  final _errorMsgDeleteThesis = "Couldn't delete the Thesis!";
+  final _errorMsgUploadFile = "Couldn't upload the thesis file!";
+  final _errorMsgFilePicker = "Couldn't pick the file!";
+  final _errorMsgTempFiles = "Couldn't clear the temporary file!";
 
   // pick files.
   Future<({String? errorMsg, FilePickerResult? result})> _pickFile() async {
@@ -44,8 +40,8 @@ class ThesisRepo implements CrudAbstract<Thesis> {
 
   /// Get author name by userId, retrieve from cache if exist.
   Future<String?> authorById(String userId) async =>
-      _authorsCache[userId] ??
-      (_authorsCache[userId] =
+      _cache[userId] ??
+      (_cache[userId] =
           (await _dbUsers.child('$userId/name').get()).value as String?);
 
   Stream<List<Thesis>> get stream =>

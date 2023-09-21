@@ -33,7 +33,7 @@ class ThesisEntryDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider<ThesisRepo>(
-      create: (context) => const ThesisRepo(),
+      create: (context) => ThesisRepo(),
       child: BlocProvider<ThesisEntryCubit>(
         create: (context) =>
             ThesisEntryCubit(thesisRepo: context.read<ThesisRepo>()),

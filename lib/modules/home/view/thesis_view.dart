@@ -32,7 +32,7 @@ class _ThesisViewState extends State<ThesisView> {
               clipBehavior: Clip.none,
               child: Column(
                 children: [
-                  const PdfViewer('https://css4.pub/2015/usenix/example.pdf'),
+                  PdfViewer(widget.thesis.fileUrl!),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [

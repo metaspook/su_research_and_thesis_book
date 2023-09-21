@@ -36,3 +36,7 @@ String get uuid => _uuid.v4();
 
 /// String representation of the current UTC date and time.
 String get timestamp => DateTime.timestamp().toString();
+
+/// A minimalistic in-memory cache service.
+/// * Value type will be `Object?` if not specify in place of `T`.
+Map<String, T> cacheService<T extends Object?>() => <String, T>{};

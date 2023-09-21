@@ -12,7 +12,7 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const ThesisRepo().stream.listen((event) {
+    ThesisRepo().stream.listen((event) {
       event.doPrint();
     });
     final l10n = context.l10n;

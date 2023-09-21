@@ -36,7 +36,7 @@ final class AppRouter {
       return MultiRepositoryProvider(
         providers: [
           RepositoryProvider<ThesisRepo>(
-            create: (context) => const ThesisRepo(),
+            create: (context) => ThesisRepo(),
           ),
           RepositoryProvider<AppUserRepo>(
             create: (context) => const AppUserRepo(),
