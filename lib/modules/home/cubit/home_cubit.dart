@@ -11,7 +11,7 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit({required ThesisRepo thesisRepo})
       : _thesisRepo = thesisRepo,
         super(const HomeState()) {
-    //-- Thesis data subscription.
+    //-- Theses data subscription.
     emit(state.copyWith(status: HomeStatus.loading));
     _thesesSubscription = _thesisRepo.stream.listen((theses) async {
       if (theses.isNotEmpty) {
@@ -24,8 +24,8 @@ class HomeCubit extends Cubit<HomeState> {
   late final StreamSubscription<List<Thesis>> _thesesSubscription;
 
   Future<void> incrementViews(Thesis thesis) async {
-    final value = {'views': (thesis.views ?? 0) + 1};
-    await _thesisRepo.update(thesis.id, value: value);
+    // final value = {'views': (thesis.views ?? 0) + 1};
+    // await _thesisRepo.update(thesis.id, value: value);
   }
 
   @override

@@ -1,6 +1,16 @@
 part of 'comments_cubit.dart';
 
-enum CommentsStatus { initial, loading, success, failure }
+enum CommentsStatus {
+  initial,
+  editing,
+  loading,
+  success,
+  failure;
+
+  bool get isLoading => this == CommentsStatus.loading;
+  bool get hasMessage =>
+      this == CommentsStatus.success || this == CommentsStatus.failure;
+}
 
 final class CommentsState extends Equatable {
   const CommentsState({

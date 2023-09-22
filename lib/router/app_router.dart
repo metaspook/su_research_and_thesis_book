@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
+import 'package:su_thesis_book/modules/comments/comments.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/modules/profile/profile.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
@@ -15,11 +16,7 @@ final class AppRouter {
   AppRouter({this.initialLocation})
       : config = GoRouter(
           //-- Register routes
-          routes: <RouteBase>[
-            home,
-            auth,
-            profile,
-          ],
+          routes: <RouteBase>[home, auth, profile],
           initialLocation: initialLocation,
           // navigatorKey: navigatorKey,
         );
@@ -54,9 +51,7 @@ final class AppRouter {
         ),
       );
     },
-    routes: <RouteBase>[
-      thesis,
-    ],
+    routes: <RouteBase>[thesis],
   );
   // Auth
   static final auth = GoRoute(
@@ -142,6 +137,26 @@ final class AppRouter {
       'Current Route: ${state.fullPath}'.doPrint();
       final thesis = state.extra! as Thesis;
       return ThesisView(thesis: thesis);
+    },
+    routes: <RouteBase>[comments],
+  );
+
+  // Comments
+  static final comments = GoRoute(
+    name: 'comments',
+    path: 'comments',
+    builder: (context, state) {
+      'Current Route: ${state.fullPath}'.doPrint();
+      final thesis = state.extra! as Thesis;
+      return RepositoryProvider<CommentRepo>(
+        create: (context) => CommentRepo(),
+        child: BlocProvider<CommentsCubit>(
+          create: (context) => CommentsCubit(
+            commentRepo: context.read<CommentRepo>(),
+          ),
+          child: CommentsPage(thesis: thesis),
+        ),
+      );
     },
   );
 

@@ -102,16 +102,10 @@ class ThesisRepo implements CrudAbstract<Thesis> {
     );
   }
 
-  Future<void> incrementViews(Thesis thesis) async {
-    await _db
-        .child('${thesis.id}/${thesis.views}')
-        .update({'views': (thesis.views ?? 0) + 1});
-  }
-
   @override
-  Future<String?> create(String thesisId, {required Json value}) async {
+  Future<String?> create(String id, {required Json value}) async {
     try {
-      await _db.child(thesisId).set(value);
+      await _db.child(id).set(value);
     } catch (e, s) {
       log(_errorMsgCreateThesis, error: e, stackTrace: s);
       return _errorMsgCreateThesis;

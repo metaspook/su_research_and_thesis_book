@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:su_thesis_book/app/app.dart';
 import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/router/router.dart';
@@ -74,9 +75,7 @@ class HomeView extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         label: const Text('Add Thesis'),
         icon: const Icon(Icons.playlist_add_outlined),
-        onPressed: () {
-          ThesisEntryDialog.show(context);
-        },
+        onPressed: () => ThesisEntryDialog.show(context),
       ),
     );
   }

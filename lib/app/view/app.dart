@@ -31,6 +31,8 @@ class App extends StatelessWidget {
   }
 }
 
+typedef AppBlocSelector<T> = BlocSelector<AppCubit, AppState, T>;
+
 class AppView extends StatelessWidget {
   const AppView({super.key});
 

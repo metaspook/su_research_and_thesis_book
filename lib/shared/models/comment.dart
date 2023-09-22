@@ -6,6 +6,7 @@ final class Comment extends Equatable {
     required this.userId,
     required this.thesisId,
     this.author,
+    this.authorPhotoUrl,
     this.createdAt,
     this.content,
   });
@@ -16,6 +17,7 @@ final class Comment extends Equatable {
       thesisId: json['thesisId'] as String,
       userId: json['userId'] as String,
       author: json['author'] as String?,
+      authorPhotoUrl: json['authorPhotoUrl'] as String?,
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.tryParse(json['createdAt'] as String),
@@ -27,6 +29,7 @@ final class Comment extends Equatable {
   final String thesisId;
   final String userId;
   final String? author;
+  final String? authorPhotoUrl;
   final DateTime? createdAt;
   final String? content;
 
@@ -36,6 +39,7 @@ final class Comment extends Equatable {
       'thesisId': thesisId,
       'userId': userId,
       'author': author,
+      'authorPhotoUrl': authorPhotoUrl,
       'createdAt': createdAt?.toString(),
       'content': content,
     };
@@ -46,6 +50,6 @@ final class Comment extends Equatable {
 
   @override
   List<Object?> get props {
-    return [id, thesisId, userId, author, createdAt, content];
+    return [id, thesisId, userId, author, authorPhotoUrl, createdAt, content];
   }
 }
