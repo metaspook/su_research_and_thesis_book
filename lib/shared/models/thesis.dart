@@ -1,9 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:su_thesis_book/shared/models/models.dart' show Comment;
 
 class Thesis extends Equatable {
   const Thesis({
-    required this.comments,
     required this.id,
     required this.userId,
     this.createdAt,
@@ -11,16 +9,11 @@ class Thesis extends Equatable {
     this.views,
     this.fileUrl,
     this.author,
+    this.authorPhotoUrl,
   });
 
   factory Thesis.fromJson(Map<String, dynamic> json) {
     return Thesis(
-      comments: const [],
-      // comments: List<Comment>.from(
-      //   (json['comments'] as List<Object>).map<Comment>(
-      //     (x) => Comment.fromJson(x.toJson()),
-      //   ),
-      // ),
       id: json['id'] as String,
       userId: json['userId'] as String,
       createdAt: json['createdAt'] == null
@@ -30,10 +23,10 @@ class Thesis extends Equatable {
       views: json['views'] as int?,
       fileUrl: json['fileUrl'] as String?,
       author: json['author'] as String?,
+      authorPhotoUrl: json['authorPhotoUrl'] as String?,
     );
   }
 
-  final List<Comment> comments;
   final String id;
   final String userId;
   final DateTime? createdAt;
@@ -41,10 +34,10 @@ class Thesis extends Equatable {
   final int? views;
   final String? fileUrl;
   final String? author;
+  final String? authorPhotoUrl;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'comments': comments.map((x) => x.toJson()).toList(),
       'id': id,
       'userId': userId,
       'createdAt': createdAt?.toString(),
@@ -52,6 +45,7 @@ class Thesis extends Equatable {
       'views': views,
       'fileUrl': fileUrl,
       'author': author,
+      'authorPhotoUrl': authorPhotoUrl,
     };
   }
 
@@ -60,6 +54,15 @@ class Thesis extends Equatable {
 
   @override
   List<Object?> get props {
-    return [comments, id, userId, author, createdAt, name, views, fileUrl];
+    return [
+      id,
+      userId,
+      createdAt,
+      name,
+      views,
+      fileUrl,
+      author,
+      authorPhotoUrl,
+    ];
   }
 }

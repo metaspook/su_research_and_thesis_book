@@ -6,10 +6,26 @@ import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
-class CommentsPage extends StatelessWidget {
+class CommentsPage extends StatefulWidget {
   const CommentsPage({required this.thesis, super.key});
 
   final Thesis thesis;
+
+  @override
+  State<CommentsPage> createState() => _CommentsPageState();
+}
+
+class _CommentsPageState extends State<CommentsPage> {
+  // TextEditingControllers & FocusNodes
+  final _commentController = TextEditingController();
+  final _commentFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _commentController.dispose();
+    _commentFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,12 +60,12 @@ class CommentsPage extends StatelessWidget {
                         ),
                       )
                     : TranslucentLoader(
-                        enabled: false,
+                        enabled: isLoading,
                         child: ListView.builder(
                           physics: const BouncingScrollPhysics(),
                           padding: const EdgeInsets.all(5),
-                          keyboardDismissBehavior:
-                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          // keyboardDismissBehavior:
+                          //     ScrollViewKeyboardDismissBehavior.onDrag,
                           itemCount: comments.length,
                           itemBuilder: (context, index) {
                             return CommentCard(comments[index]);
@@ -67,29 +83,28 @@ class CommentsPage extends StatelessWidget {
                   right: 17.5,
                 ),
                 child: TextField(
+                  controller: _commentController,
+                  focusNode: _commentFocusNode,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   clipBehavior: Clip.none,
-                  onChanged: cubit.onChangedCommentText,
                   decoration: InputDecoration(
                     hintText: 'comment here...',
-                    suffixIcon: Builder(
-                      builder: (context) {
-                        final userId = context.select(
-                          (AppCubit cubit) => cubit.state.user.id,
-                        );
-                        final enabled = context.select(
-                          (CommentsCubit cubit) =>
-                              cubit.state.commentText.isNotEmpty,
-                        );
-
+                    suffixIcon: AppBlocSelector<String>(
+                      selector: (state) => state.user.id,
+                      builder: (context, userId) {
                         return IconButton(
-                          onPressed: enabled
-                              ? () => cubit.send(
-                                    userId: userId,
-                                    thesisId: thesis.id,
-                                  )
-                              : null,
+                          onPressed: () {
+                            _commentFocusNode.unfocus();
+                            if (_commentController.text.isNotEmpty) {
+                              cubit.send(
+                                userId: userId,
+                                thesisId: widget.thesis.id,
+                                commentStr: _commentController.text,
+                              );
+                              _commentController.clear();
+                            }
+                          },
                           icon: const Icon(Icons.send_rounded),
                         );
                       },

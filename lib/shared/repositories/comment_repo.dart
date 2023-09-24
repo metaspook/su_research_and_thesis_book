@@ -5,9 +5,13 @@ import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
 class CommentRepo implements CrudAbstract<Comment> {
+  CommentRepo({required this.thesisId});
+
+  final String thesisId;
+
   //-- Config
-  final _cache = cacheService<String?>();
-  final _cachePhoto = cacheService<String?>();
+  final _cacheAuthor = cacheService<String?>();
+  final _cacheAuthorPhoto = cacheService<String?>();
   final _db = FirebaseDatabase.instance.ref('comments');
   final _dbUsers = FirebaseDatabase.instance.ref('users');
   final _errorMsgCreateComment = "Couldn't create the Thesis!";
@@ -24,14 +28,14 @@ class CommentRepo implements CrudAbstract<Comment> {
 
   /// Get author name by userId, retrieve from cache if exist.
   Future<String?> authorById(String userId) async =>
-      _cache[userId] ??
-      (_cache[userId] =
+      _cacheAuthor[userId] ??
+      (_cacheAuthor[userId] =
           (await _dbUsers.child('$userId/name').get()).value as String?);
 
   /// Get author photo by userId, retrieve from cache if exist.
   Future<String?> authorPhotoById(String userId) async =>
-      _cachePhoto[userId] ??
-      (_cachePhoto[userId] =
+      _cacheAuthorPhoto[userId] ??
+      (_cacheAuthorPhoto[userId] =
           (await _dbUsers.child('$userId/photoUrl').get()).value as String?);
 
   /// Convert database snapshot to model with logic specified .
@@ -49,7 +53,11 @@ class CommentRepo implements CrudAbstract<Comment> {
     return Comment.fromJson(commentJson);
   }
 
-  Stream<List<Comment>> get stream => _db.onValue.asyncMap<List<Comment>>(
+  Stream<List<Comment>> get stream => _db
+      .orderByChild('thesisId')
+      .equalTo(thesisId)
+      .onValue
+      .asyncMap<List<Comment>>(
         (event) async => <Comment>[
           for (final e in event.snapshot.children) await snapshotToModel(e),
         ],

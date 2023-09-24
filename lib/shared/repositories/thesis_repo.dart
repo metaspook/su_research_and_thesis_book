@@ -10,7 +10,8 @@ import 'package:su_thesis_book/utils/utils.dart';
 
 class ThesisRepo implements CrudAbstract<Thesis> {
   //-- Config
-  final _cache = cacheService<String?>();
+  final _cacheAuthor = cacheService<String?>();
+  final _cacheAuthorPhoto = cacheService<String?>();
   final _db = FirebaseDatabase.instance.ref('theses');
   final _dbUsers = FirebaseDatabase.instance.ref('users');
   final _storage = FirebaseStorage.instance.ref('theses');
@@ -40,20 +41,27 @@ class ThesisRepo implements CrudAbstract<Thesis> {
 
   /// Get author name by userId, retrieve from cache if exist.
   Future<String?> authorById(String userId) async =>
-      _cache[userId] ??
-      (_cache[userId] =
+      _cacheAuthor[userId] ??
+      (_cacheAuthor[userId] =
           (await _dbUsers.child('$userId/name').get()).value as String?);
+
+  /// Get author photo by userId, retrieve from cache if exist.
+  Future<String?> authorPhotoById(String userId) async =>
+      _cacheAuthorPhoto[userId] ??
+      (_cacheAuthorPhoto[userId] =
+          (await _dbUsers.child('$userId/photoUrl').get()).value as String?);
 
   /// Convert database snapshot to model with logic specified .
   Future<Thesis> snapshotToModel(DataSnapshot snapshot) async {
     final thesisMap = snapshot.value!.toJson();
     final userId = thesisMap['userId']! as String;
     final author = await authorById(userId);
+    final authorPhotoUrl = await authorPhotoById(userId);
     final thesisJson = <String, Object?>{
-      'comments': [],
       'id': snapshot.key,
       ...thesisMap,
       'author': author,
+      'authorPhotoUrl': authorPhotoUrl,
     };
     return Thesis.fromJson(thesisJson);
   }

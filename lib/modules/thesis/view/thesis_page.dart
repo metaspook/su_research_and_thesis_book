@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 
-class ThesisView extends StatelessWidget {
-  const ThesisView({required this.thesis, super.key});
+class ThesisPage extends StatelessWidget {
+  const ThesisPage({required this.thesis, super.key});
 
   final Thesis thesis;
 
@@ -50,20 +49,6 @@ class ThesisView extends StatelessWidget {
                 ],
               ),
             ),
-            // const Card(
-            //   elevation: 4,
-            //   child: Padding(
-            //     padding: EdgeInsets.all(12),
-            //     child: Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //       children: [
-            //         Text('Views'),
-            //         Text('Comments'),
-            //         Text('Comments'),
-            //       ],
-            //     ),
-            //   ),
-            // )
           ],
         ),
       ),

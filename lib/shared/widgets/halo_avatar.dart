@@ -57,20 +57,18 @@ class HaloAvatar extends StatelessWidget {
     _haloColor = haloColor ?? Theme.of(context).colorScheme.primary;
     late final File file;
 
-    return Center(
-      child: isLocal
-          ? (path != null && (file = File(path!)).existsSync())
-              ? _imageBuilder(context, FileImage(file))
-              : _imageBuilder(context, _memoryImage)
-          : (url != null && url!.isNotEmpty)
-              ? CachedNetworkImage(
-                  imageUrl: url!,
-                  imageBuilder: _imageBuilder,
-                  progressIndicatorBuilder: _progressIndicatorBuilder,
-                  errorWidget: _errorWidget,
-                )
-              : _imageBuilder(context, _memoryImage),
-    );
+    return isLocal
+        ? (path != null && (file = File(path!)).existsSync())
+            ? _imageBuilder(context, FileImage(file))
+            : _imageBuilder(context, _memoryImage)
+        : (url != null && url!.isNotEmpty)
+            ? CachedNetworkImage(
+                imageUrl: url!,
+                imageBuilder: _imageBuilder,
+                progressIndicatorBuilder: _progressIndicatorBuilder,
+                errorWidget: _errorWidget,
+              )
+            : _imageBuilder(context, _memoryImage);
   }
 
   double get _radius {

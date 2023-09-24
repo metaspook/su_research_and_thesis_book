@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
-import 'package:su_thesis_book/utils/extensions.dart';
+import 'package:su_thesis_book/shared/widgets/widgets.dart';
+import 'package:su_thesis_book/utils/utils.dart';
 
 class CommentCard extends StatelessWidget {
   const CommentCard(this.comment, {super.key});
@@ -13,11 +13,7 @@ class CommentCard extends StatelessWidget {
     return Card(
       child: ListTile(
         titleAlignment: ListTileTitleAlignment.titleHeight,
-        leading: CircleAvatar(
-          backgroundImage: comment.authorPhotoUrl == null
-              ? null
-              : CachedNetworkImageProvider(comment.authorPhotoUrl!),
-        ),
+        leading: HaloAvatar(url: comment.authorPhotoUrl),
         title: Text(comment.author.toStringParseNull()),
         subtitle: Text(comment.content.toStringParseNull()),
       ),

@@ -4,12 +4,14 @@ import 'package:su_thesis_book/modules/auth/auth.dart';
 import 'package:su_thesis_book/modules/comments/comments.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/modules/profile/profile.dart';
+import 'package:su_thesis_book/modules/thesis/cubit/thesis_cubit.dart';
+import 'package:su_thesis_book/modules/thesis/thesis.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
 // Exposes routing interface for views.
-export 'package:go_router/go_router.dart' show GoRouterHelper;
+export 'package:go_router/go_router.dart' show GoRoute, GoRouterHelper;
 
 final class AppRouter {
   // AppRouter({this.initialLocation, this.navigatorKey})
@@ -136,7 +138,16 @@ final class AppRouter {
     builder: (context, state) {
       'Current Route: ${state.fullPath}'.doPrint();
       final thesis = state.extra! as Thesis;
-      return ThesisView(thesis: thesis);
+      return RepositoryProvider<ThesisRepo>(
+        create: (context) => ThesisRepo(),
+        child: BlocProvider<ThesisCubit>(
+          create: (context) => ThesisCubit(
+            thesisRepo: context.read<ThesisRepo>(),
+            thesis: thesis,
+          )..incrementViews(thesis),
+          child: ThesisPage(thesis: thesis),
+        ),
+      );
     },
     routes: <RouteBase>[comments],
   );
@@ -149,7 +160,7 @@ final class AppRouter {
       'Current Route: ${state.fullPath}'.doPrint();
       final thesis = state.extra! as Thesis;
       return RepositoryProvider<CommentRepo>(
-        create: (context) => CommentRepo(),
+        create: (context) => CommentRepo(thesisId: thesis.id),
         child: BlocProvider<CommentsCubit>(
           create: (context) => CommentsCubit(
             commentRepo: context.read<CommentRepo>(),

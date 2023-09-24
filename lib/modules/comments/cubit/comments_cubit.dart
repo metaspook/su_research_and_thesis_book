@@ -26,14 +26,10 @@ class CommentsCubit extends Cubit<CommentsState> {
   final CommentRepo _commentRepo;
   late final StreamSubscription<List<Comment>> _commentsSubscription;
 
-  void onChangedCommentText(String value) {
-    value.doPrint();
-    emit(state.copyWith(commentText: value));
-  }
-
   Future<void> send({
     required String userId,
     required String thesisId,
+    required String commentStr,
   }) async {
     emit(state.copyWith(status: CommentsStatus.loading));
     // Upload thesis file to storage.
@@ -42,7 +38,7 @@ class CommentsCubit extends Cubit<CommentsState> {
       'thesisId': thesisId,
       'userId': userId,
       'createdAt': timestamp,
-      'content': state.commentText.trim(),
+      'content': commentStr.trim(),
     };
     // Create thesis data in database.
     final errorMsg = await _commentRepo.create(commentId, value: commentObj);
@@ -50,7 +46,7 @@ class CommentsCubit extends Cubit<CommentsState> {
       emit(
         state.copyWith(
           status: CommentsStatus.success,
-          statusMsg: 'Success! Thesis uploaded.',
+          statusMsg: 'Success! Comment sended.',
         ),
       );
     } else {

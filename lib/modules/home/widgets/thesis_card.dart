@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
-import 'package:su_thesis_book/router/app_router.dart';
+import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
+import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/extensions.dart';
 
 class ThesisCard extends StatelessWidget {
@@ -25,6 +26,7 @@ class ThesisCard extends StatelessWidget {
           context.push(AppRouter.thesis.pathUnderRoot, extra: thesis),
           cubit.incrementViews(thesis),
         ]),
+        leading: HaloAvatar(url: thesis.authorPhotoUrl),
         title: Text(
           thesis.name ?? 'N/A',
           style: context.theme.textTheme.titleLarge,
@@ -63,15 +65,8 @@ class ThesisCard extends StatelessWidget {
           ],
         ),
         trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             CounterBadge(label: 'Views', count: thesis.views, largeSize: 20),
-            CounterBadge(
-              label: 'Comments',
-              count: thesis.comments.length,
-              largeSize: 20,
-            ),
           ],
         ),
       ),

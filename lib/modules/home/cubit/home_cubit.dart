@@ -24,8 +24,12 @@ class HomeCubit extends Cubit<HomeState> {
   late final StreamSubscription<List<Thesis>> _thesesSubscription;
 
   Future<void> incrementViews(Thesis thesis) async {
-    // final value = {'views': (thesis.views ?? 0) + 1};
-    // await _thesisRepo.update(thesis.id, value: value);
+    // final views = (thesis.views ?? 0);
+    // if (views ==) {
+
+    // }
+    final value = {'views': (thesis.views ?? 0) + 1};
+    await _thesisRepo.update(thesis.id, value: value);
   }
 
   @override
