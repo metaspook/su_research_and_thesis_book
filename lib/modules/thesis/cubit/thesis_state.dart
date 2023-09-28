@@ -14,14 +14,14 @@ enum ThesisStatus {
 
 class ThesisState extends Equatable {
   const ThesisState({
+    required this.thesis,
     this.status = ThesisStatus.initial,
     this.statusMsg = '',
-    this.thesis,
   });
 
   final ThesisStatus status;
   final String statusMsg;
-  final Thesis? thesis;
+  final Thesis thesis;
 
   ThesisState copyWith({
     ThesisStatus? status,

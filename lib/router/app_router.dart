@@ -144,7 +144,7 @@ final class AppRouter {
           create: (context) => ThesisCubit(
             thesisRepo: context.read<ThesisRepo>(),
             thesis: thesis,
-          )..incrementViews(thesis),
+          ),
           child: ThesisPage(thesis: thesis),
         ),
       );

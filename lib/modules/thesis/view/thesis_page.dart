@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:su_thesis_book/modules/thesis/cubit/thesis_cubit.dart';
 import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
+import 'package:su_thesis_book/utils/extensions.dart';
 
 class ThesisPage extends StatelessWidget {
   const ThesisPage({required this.thesis, super.key});
@@ -10,11 +13,13 @@ class ThesisPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<ThesisCubit>();
+
     return Scaffold(
       appBar: AppBar(
         leading: context.backButton(),
         centerTitle: true,
-        title: Text(thesis.name ?? 'N/A'),
+        title: Text(thesis.name.toStringParseNull()),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
@@ -39,8 +44,13 @@ class ThesisPage extends StatelessWidget {
                         ),
                       ),
                       TextButton.icon(
-                        onPressed: () => context
-                            .pushNamed(AppRouter.comments.name!, extra: thesis),
+                        onPressed: () => Future.wait([
+                          cubit.incrementViews(thesis, firstView: false),
+                          context.pushNamed(
+                            AppRouter.comments.name!,
+                            extra: thesis,
+                          ),
+                        ]),
                         icon: const Icon(Icons.comment_outlined),
                         label: const Text('Comments'),
                       ),

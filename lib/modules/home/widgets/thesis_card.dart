@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
@@ -14,7 +12,6 @@ class ThesisCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<HomeCubit>();
     final theme = Theme.of(context);
     final dateStr = thesis.createdAt == null
         ? 'N/A'
@@ -22,10 +19,8 @@ class ThesisCard extends StatelessWidget {
 
     return Card(
       child: ListTile(
-        onTap: () => Future.wait([
-          context.push(AppRouter.thesis.pathUnderRoot, extra: thesis),
-          cubit.incrementViews(thesis),
-        ]),
+        onTap: () =>
+            context.push(AppRouter.thesis.pathUnderRoot, extra: thesis),
         leading: HaloAvatar(url: thesis.authorPhotoUrl),
         title: Text(
           thesis.name ?? 'N/A',

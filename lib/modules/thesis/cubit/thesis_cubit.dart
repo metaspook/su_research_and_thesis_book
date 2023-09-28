@@ -8,19 +8,30 @@ part 'thesis_state.dart';
 class ThesisCubit extends Cubit<ThesisState> {
   ThesisCubit({required ThesisRepo thesisRepo, required Thesis thesis})
       : _thesisRepo = thesisRepo,
-        _thesis = thesis,
-        super(const ThesisState()) {
-    //-- Theses data subscription.
-    // incrementViews(thesis);
+        super(ThesisState(thesis: thesis)) {
+    //-- Increment Theses views.
+    incrementViews(state.thesis);
   }
 
-  Future<void> incrementViews(Thesis thesis) async {
-    // final views = _thesis.views ?? 0;
-    // if (views == 0) {}
-    final value = {'views': (thesis.views ?? 0) + 1};
-    await _thesisRepo.update(thesis.id, value: value);
-  }
-
-  final Thesis _thesis;
   final ThesisRepo _thesisRepo;
+  static bool _firstView = true;
+
+  /// Increment Thesis view count.
+  /// * Increment only once if `firstView` is `true`.
+  Future<void> incrementViews(Thesis thesis, {bool firstView = true}) async {
+    if (_firstView == firstView) {
+      final value = {'views': (thesis.views ?? 0) + 1};
+      final errorMsg = await _thesisRepo.update(thesis.id, value: value);
+      if (errorMsg == null) {
+        if (_firstView) _firstView = !_firstView;
+      } else {
+        emit(
+          state.copyWith(
+            status: ThesisStatus.failure,
+            statusMsg: "Couldn't increment Thesis views!",
+          ),
+        );
+      }
+    }
+  }
 }
