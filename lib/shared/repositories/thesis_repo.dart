@@ -16,10 +16,11 @@ class ThesisRepo implements CrudAbstract<Thesis> {
   final _dbUsers = FirebaseDatabase.instance.ref('users');
   final _storage = FirebaseStorage.instance.ref('theses');
   final _filePicker = FilePicker.platform;
-  final _errorMsgCreateThesis = "Couldn't create the Thesis!";
-  final _errorMsgReadThesis = "Couldn't read the Thesis data!";
-  final _errorMsgUpdateThesis = "Couldn't update the Thesis!";
-  final _errorMsgDeleteThesis = "Couldn't delete the Thesis!";
+  final _errorMsgCreate = "Couldn't create the Thesis!";
+  final _errorMsgRead = "Couldn't read the Thesis data!";
+  final _errorMsgUpdate = "Couldn't update the Thesis!";
+  final _errorMsgDelete = "Couldn't delete the Thesis!";
+  // final _errorMsgNotFound = 'Thesis data not found!';
   final _errorMsgUploadFile = "Couldn't upload the thesis file!";
   final _errorMsgFilePicker = "Couldn't pick the file!";
   final _errorMsgTempFiles = "Couldn't clear the temporary file!";
@@ -52,9 +53,10 @@ class ThesisRepo implements CrudAbstract<Thesis> {
           (await _dbUsers.child('$userId/photoUrl').get()).value as String?);
 
   /// Convert database snapshot to model with logic specified .
-  Future<Thesis> snapshotToModel(DataSnapshot snapshot) async {
-    final thesisMap = snapshot.value!.toJson();
-    final userId = thesisMap['userId']! as String;
+  Future<Thesis?> snapshotToModel(DataSnapshot snapshot) async {
+    final thesisMap = snapshot.value?.toJson();
+    final userId = thesisMap?['userId'] as String?;
+    if (thesisMap == null || userId == null) return null;
     final author = await authorById(userId);
     final authorPhotoUrl = await authorPhotoById(userId);
     final thesisJson = <String, Object?>{
@@ -67,9 +69,14 @@ class ThesisRepo implements CrudAbstract<Thesis> {
   }
 
   Stream<List<Thesis>> get stream => _db.onValue.asyncMap<List<Thesis>>(
-        (event) async => <Thesis>[
-          for (final e in event.snapshot.children) await snapshotToModel(e),
-        ],
+        (event) async {
+          final theses = <Thesis>[];
+          for (final e in event.snapshot.children) {
+            final thesis = await snapshotToModel(e);
+            if (thesis != null) theses.add(thesis);
+          }
+          return theses;
+        },
       );
 
   /// Upload thesis file to Storage and get URL.
@@ -115,8 +122,8 @@ class ThesisRepo implements CrudAbstract<Thesis> {
     try {
       await _db.child(id).set(value);
     } catch (e, s) {
-      log(_errorMsgCreateThesis, error: e, stackTrace: s);
-      return _errorMsgCreateThesis;
+      log(_errorMsgCreate, error: e, stackTrace: s);
+      return _errorMsgCreate;
     }
     return null;
   }
@@ -138,8 +145,8 @@ class ThesisRepo implements CrudAbstract<Thesis> {
     try {
       await _db.child(id).update(value);
     } catch (e, s) {
-      log(_errorMsgUpdateThesis, error: e, stackTrace: s);
-      return _errorMsgUpdateThesis;
+      log(_errorMsgUpdate, error: e, stackTrace: s);
+      return _errorMsgUpdate;
     }
     return null;
   }

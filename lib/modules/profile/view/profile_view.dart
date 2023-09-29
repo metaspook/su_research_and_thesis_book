@@ -5,6 +5,7 @@ import 'package:su_thesis_book/modules/profile/profile.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
+import 'package:su_thesis_book/utils/utils.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -35,10 +36,10 @@ class ProfileView extends StatelessWidget {
                 Column(
                   children: [
                     for (final e in {
-                      'Name': user?.name ?? 'N/A',
-                      'E-mail': user?.email ?? 'N/A',
-                      'Phone': user?.phone ?? 'N/A',
-                      'Role': user?.role ?? 'N/A',
+                      'Name': user?.name.toStringParseNull(),
+                      'E-mail': user?.email.toStringParseNull(),
+                      'Phone': user?.phone.toStringParseNull(),
+                      'Role': user?.role.toStringParseNull(),
                     }.entries)
                       TextFormField(
                         initialValue: e.value,

@@ -4,10 +4,8 @@ import 'package:su_thesis_book/app/app.dart';
 import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/router/router.dart';
-import 'package:su_thesis_book/shared/repositories/repositories.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
-import 'package:su_thesis_book/utils/utils.dart';
 
 typedef HomeBlocSelector<T> = BlocSelector<HomeCubit, HomeState, T>;
 
@@ -16,12 +14,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThesisRepo().stream.listen((event) {
-      event.doPrint();
-    });
     final l10n = context.l10n;
-
-    // const CommentsRepo().fetchComments().then(print);
 
     return Scaffold(
       body: NestedScrollView(

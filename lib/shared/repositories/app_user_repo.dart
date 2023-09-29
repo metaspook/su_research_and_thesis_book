@@ -8,16 +8,17 @@ import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
 class AppUserRepo implements CrudAbstract<AppUser> {
-  const AppUserRepo();
-
   //-- Config
-  static final _db = FirebaseDatabase.instance.ref('users');
-  static final _storage = FirebaseStorage.instance.ref('photos');
-  static const _errorMsgCreateUser = "Couldn't create the User!";
-  static const _errorMsgReadUser = "Couldn't read the User data!";
-  static const _errorMsgUpdateUser = "Couldn't update the User!";
-  static const _errorMsgDeleteUser = "Couldn't delete the User!";
-  static const _errorMsgUserPhoto = "Couldn't upload the User photo!";
+  final _db = FirebaseDatabase.instance.ref('users');
+  final _dbRoles = FirebaseDatabase.instance.ref('roles');
+  final _storage = FirebaseStorage.instance.ref('photos');
+  final _errorMsgCreate = "Couldn't create the User!";
+  final _errorMsgRead = "Couldn't read the User data!";
+  final _errorMsgUpdate = "Couldn't update the User!";
+  final _errorMsgDelete = "Couldn't delete the User!";
+  final _errorMsgNotFound = 'User data not found!';
+  final _errorMsgRole = "Couldn't get role of the index!";
+  final _errorMsgUserPhoto = "Couldn't upload the User photo!";
 
   //-- Public APIs
   /// Upload user photo to Storage and get URL.
@@ -58,10 +59,30 @@ class AppUserRepo implements CrudAbstract<AppUser> {
         'photoUrl': uploadRecord.photoUrl,
       });
     } catch (e, s) {
-      log(_errorMsgCreateUser, error: e, stackTrace: s);
-      return _errorMsgCreateUser;
+      log(_errorMsgCreate, error: e, stackTrace: s);
+      return _errorMsgCreate;
     }
     return null;
+  }
+
+  /// Get user role by index.
+  Future<String?> roleByIndex(int index) async {
+    final roleObj = (await _dbRoles.child('$index').get()).value;
+    return roleObj?.toString();
+  }
+
+  /// Convert database snapshot to model with logic specified .
+  Future<AppUser?> snapshotToModel(DataSnapshot snapshot) async {
+    final userMap = snapshot.value?.toJson();
+    final userRoleIndex = userMap?['roleIndex'] as int?;
+    if (userMap == null || userRoleIndex == null) return null;
+    final userRole = await roleByIndex(userRoleIndex);
+    final userJson = <String, Object?>{
+      'id': snapshot.key,
+      ...userMap,
+      'role': userRole,
+    };
+    return AppUser.fromJson(userJson);
   }
 
   /// Read user data from database.
@@ -69,17 +90,13 @@ class AppUserRepo implements CrudAbstract<AppUser> {
   Future<(String?, {AppUser object})> read(String userId) async {
     try {
       // Download user data from DB.
-      final userObj = (await _db.child(userId).get()).value;
-      if (userObj == null) {
-        return ('User data not found!', object: AppUser.empty);
-      }
-      final userMap = userObj.toMap<String, Object>();
-      // Convert user data to model.
-      final user = AppUser.fromJson({'id': userId, ...userMap});
-      return (null, object: user);
+      final snapshot = await _db.child(userId).get();
+      final appUser = await snapshotToModel(snapshot);
+      if (appUser == null) return (_errorMsgNotFound, object: AppUser.empty);
+      return (null, object: appUser);
     } catch (e, s) {
-      log(_errorMsgReadUser, error: e, stackTrace: s);
-      return (_errorMsgReadUser, object: AppUser.empty);
+      log(_errorMsgRead, error: e, stackTrace: s);
+      return (_errorMsgRead, object: AppUser.empty);
     }
   }
 
@@ -89,8 +106,8 @@ class AppUserRepo implements CrudAbstract<AppUser> {
     try {
       await _db.child(userId).update(value);
     } catch (e, s) {
-      log(_errorMsgUpdateUser, error: e, stackTrace: s);
-      return _errorMsgUpdateUser;
+      log(_errorMsgUpdate, error: e, stackTrace: s);
+      return _errorMsgUpdate;
     }
     return null;
   }
@@ -101,8 +118,8 @@ class AppUserRepo implements CrudAbstract<AppUser> {
     try {
       await _db.child(userId).remove();
     } catch (e, s) {
-      log(_errorMsgDeleteUser, error: e, stackTrace: s);
-      return _errorMsgDeleteUser;
+      log(_errorMsgDelete, error: e, stackTrace: s);
+      return _errorMsgDelete;
     }
     return null;
   }

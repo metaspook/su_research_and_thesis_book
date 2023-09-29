@@ -14,13 +14,11 @@ class CommentRepo implements CrudAbstract<Comment> {
   final _cacheAuthorPhoto = cacheService<String?>();
   final _db = FirebaseDatabase.instance.ref('comments');
   final _dbUsers = FirebaseDatabase.instance.ref('users');
-  final _errorMsgCreateComment = "Couldn't create the Thesis!";
-  final _errorMsgReadThesis = "Couldn't read the Thesis data!";
-  final _errorMsgUpdateThesis = "Couldn't update the Thesis!";
-  final _errorMsgDeleteThesis = "Couldn't delete the Thesis!";
-  final _errorMsgUploadFile = "Couldn't upload the thesis file!";
-  final _errorMsgFilePicker = "Couldn't pick the file!";
-  final _errorMsgTempFiles = "Couldn't clear the temporary file!";
+  final _errorMsgCreate = "Couldn't create the Comment!";
+  final _errorMsgRead = "Couldn't read the Comment data!";
+  final _errorMsgUpdate = "Couldn't update the Comment!";
+  final _errorMsgDelete = "Couldn't delete the Comment!";
+  final _errorMsgNotFound = 'Comment data not found!';
 
   //-- Public APIs
   /// Generates a new comment id.
@@ -39,9 +37,10 @@ class CommentRepo implements CrudAbstract<Comment> {
           (await _dbUsers.child('$userId/photoUrl').get()).value as String?);
 
   /// Convert database snapshot to model with logic specified .
-  Future<Comment> snapshotToModel(DataSnapshot snapshot) async {
-    final commentMap = snapshot.value!.toJson();
-    final userId = commentMap['userId']! as String;
+  Future<Comment?> snapshotToModel(DataSnapshot snapshot) async {
+    final commentMap = snapshot.value?.toJson();
+    final userId = commentMap?['userId'] as String?;
+    if (commentMap == null || userId == null) return null;
     final author = await authorById(userId);
     final authorPhotoUrl = await authorPhotoById(userId);
     final commentJson = <String, Object?>{
@@ -54,13 +53,18 @@ class CommentRepo implements CrudAbstract<Comment> {
   }
 
   Stream<List<Comment>> get stream => _db
-      .orderByChild('thesisId')
-      .equalTo(thesisId)
-      .onValue
-      .asyncMap<List<Comment>>(
-        (event) async => <Comment>[
-          for (final e in event.snapshot.children) await snapshotToModel(e),
-        ],
+          .orderByChild('thesisId')
+          .equalTo(thesisId)
+          .onValue
+          .asyncMap<List<Comment>>(
+        (event) async {
+          final comments = <Comment>[];
+          for (final e in event.snapshot.children) {
+            final comment = await snapshotToModel(e);
+            if (comment != null) comments.add(comment);
+          }
+          return comments;
+        },
       );
 
   @override
@@ -68,8 +72,8 @@ class CommentRepo implements CrudAbstract<Comment> {
     try {
       await _db.child(id).set(value);
     } catch (e, s) {
-      log(_errorMsgCreateComment, error: e, stackTrace: s);
-      return _errorMsgCreateComment;
+      log(_errorMsgCreate, error: e, stackTrace: s);
+      return _errorMsgCreate;
     }
     return null;
   }

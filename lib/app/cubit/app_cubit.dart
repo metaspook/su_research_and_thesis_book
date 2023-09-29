@@ -19,6 +19,7 @@ class AppCubit extends Cubit<AppState> {
       if (user != null) {
         // Get appUser by authUser's id.
         final appUserRecord = await _appUserRepo.read(user.uid);
+
         final errorMsg = appUserRecord.$1;
         final appUser = appUserRecord.object;
         if (appUser.isNotEmpty) {

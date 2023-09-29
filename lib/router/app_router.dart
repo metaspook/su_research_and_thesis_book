@@ -61,35 +61,22 @@ final class AppRouter {
     path: '/auth',
     // redirect: _redirect,
     builder: (context, state) {
-      return MultiRepositoryProvider(
+      return MultiBlocProvider(
         providers: [
-          RepositoryProvider<AuthRepo>(
-            create: (context) => const AuthRepo(),
+          BlocProvider<SignInBloc>(
+            create: (context) => SignInBloc(
+              authRepo: context.read<AuthRepo>(),
+            ),
           ),
-          RepositoryProvider<AppUserRepo>(
-            create: (context) => const AppUserRepo(),
-          ),
-          RepositoryProvider<RoleRepo>(
-            create: (context) => const RoleRepo(),
+          BlocProvider<SignUpBloc>(
+            create: (context) => SignUpBloc(
+              authRepo: context.read<AuthRepo>(),
+              appUserRepo: context.read<AppUserRepo>(),
+              roleRepo: context.read<RoleRepo>(),
+            )..add(const SignUpFormLoaded()),
           ),
         ],
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider<SignInBloc>(
-              create: (context) => SignInBloc(
-                authRepo: context.read<AuthRepo>(),
-              ),
-            ),
-            BlocProvider<SignUpBloc>(
-              create: (context) => SignUpBloc(
-                authRepo: context.read<AuthRepo>(),
-                appUserRepo: context.read<AppUserRepo>(),
-                roleRepo: context.read<RoleRepo>(),
-              )..add(const SignUpFormLoaded()),
-            ),
-          ],
-          child: const AuthPage(),
-        ),
+        child: const AuthPage(),
       );
     },
   );
@@ -99,34 +86,21 @@ final class AppRouter {
     name: 'profile',
     path: '/profile',
     builder: (context, state) {
-      return MultiRepositoryProvider(
+      return MultiBlocProvider(
         providers: [
-          RepositoryProvider<AuthRepo>(
-            create: (context) => const AuthRepo(),
+          BlocProvider<ProfileCubit>(
+            create: (context) => ProfileCubit(
+              authRepo: context.read<AuthRepo>(),
+            ),
           ),
-          RepositoryProvider<AppUserRepo>(
-            create: (context) => const AppUserRepo(),
-          ),
-          RepositoryProvider<RoleRepo>(
-            create: (context) => const RoleRepo(),
+          BlocProvider<ProfileUpdateBloc>(
+            create: (context) => ProfileUpdateBloc(
+              authRepo: context.read<AuthRepo>(),
+              appUserRepo: context.read<AppUserRepo>(),
+            ),
           ),
         ],
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider<ProfileCubit>(
-              create: (context) => ProfileCubit(
-                authRepo: context.read<AuthRepo>(),
-              ),
-            ),
-            BlocProvider<ProfileUpdateBloc>(
-              create: (context) => ProfileUpdateBloc(
-                authRepo: context.read<AuthRepo>(),
-                appUserRepo: context.read<AppUserRepo>(),
-              ),
-            ),
-          ],
-          child: const ProfilePage(),
-        ),
+        child: const ProfilePage(),
       );
     },
   );
