@@ -32,6 +32,10 @@ class HomeCubit extends Cubit<HomeState> {
     await _thesisRepo.update(thesis.id, value: value);
   }
 
+  void onDestinationSelected(int index) {
+    emit(state.copyWith(viewIndex: index));
+  }
+
   @override
   Future<void> close() {
     _thesesSubscription.cancel();
