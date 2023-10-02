@@ -28,6 +28,7 @@ class _ProfileCarouselState extends State<ProfileCarousel> {
             // aspectRatio: context.mediaQuery.size.width * .00675,
             viewportFraction: .3,
             // viewportFraction: context.mediaQuery.size.width * .0008,
+            autoPlayInterval: const Duration(seconds: 2),
           ),
         ),
       ],

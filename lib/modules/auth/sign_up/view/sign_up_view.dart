@@ -67,10 +67,7 @@ class _SignUpViewState extends State<SignUpView> {
       child: Form(
         key: _signUpFormKey,
         child: ListView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppThemes.width2x,
-            vertical: AppThemes.height2x,
-          ),
+          padding: AppThemes.viewPadding,
           children: [
             // Name
             TextFormField(

@@ -51,10 +51,7 @@ class _SignInViewState extends State<SignInView> {
       child: Form(
         key: _signInFormKey,
         child: ListView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppThemes.width2x,
-            vertical: AppThemes.height2x,
-          ),
+          padding: AppThemes.viewPadding,
           children: [
             const SizedBox(height: AppThemes.height2x),
             // E-mail

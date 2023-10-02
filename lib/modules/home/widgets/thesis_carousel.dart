@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:su_thesis_book/theme/theme.dart';
 
 class ThesisCarousel extends StatefulWidget {
   const ThesisCarousel({super.key});
@@ -23,7 +24,10 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
           options: CarouselOptions(
             autoPlay: true,
             enlargeCenterPage: true,
-            aspectRatio: 2,
+            // aspectRatio: 1.5,
+            viewportFraction: .9,
+            enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+            autoPlayInterval: const Duration(milliseconds: 4500),
             onPageChanged: (index, reason) {
               setState(() {
                 _current = index;
@@ -70,41 +74,49 @@ final List<String> _imgList = [
 
 final List<Widget> _imageSliders = _imgList
     .map(
-      (item) => Container(
-        child: Container(
-          margin: const EdgeInsets.all(5),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
-            child: Stack(
-              children: <Widget>[
-                Image.network(item, fit: BoxFit.cover, width: 1000),
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color.fromARGB(200, 0, 0, 0),
-                          Color.fromARGB(0, 0, 0, 0),
-                        ],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                      ),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 20,
-                    ),
-                    child: Text(
-                      'No. ${_imgList.indexOf(item)} image',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+      (item) => SizedBox(
+        // height: 200,
+        width: double.infinity,
+        child: Card(
+          color: AppThemes.selectedColorsRandomized[_imgList.indexOf(item)],
+          child: const Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 20,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'A New Cryptography',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  'Raifur Rahman',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 17.5,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  'Professor | Computer Science',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 15,
+                    // fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  'A thesis, or dissertation, is a document submitted in support of candidature for an academic degree',
+                  style: TextStyle(
+                    color: Colors.white,
+                    // fontSize: 17.5,
+                    // fontWeight: FontWeight.bold,
                   ),
                 ),
               ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
+import 'package:su_thesis_book/theme/theme.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -11,6 +12,7 @@ class HomeView extends StatelessWidget {
       children: [
         const ThesisCarousel(),
         GridView.count(
+          padding: AppThemes.viewPadding,
           shrinkWrap: true,
           crossAxisCount: 3,
           childAspectRatio: 1.625,

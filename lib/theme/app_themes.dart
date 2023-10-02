@@ -1,12 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 /// Custom Themes for the app.
 sealed class AppThemes {
-  const AppThemes._();
+  static final _random = Random();
 
-  // static final _seedColor = ([...Colors.primaries]..shuffle()).first;
-  static final _seedColor = (<MaterialColor>[
+  /// Selected colors from [Colors.primaries].
+  static const _selectedColors = <MaterialColor>[
     Colors.red,
     Colors.pink,
     Colors.lightBlue,
@@ -18,8 +20,13 @@ sealed class AppThemes {
     Colors.orange,
     Colors.deepOrange,
     Colors.blueGrey,
-  ]..shuffle())
-      .first;
+  ];
+  static final selectedColorsRandomized = [..._selectedColors]..shuffle();
+  static final _seedColor = randomSelectedColor;
+  static Color get randomSelectedColor {
+    final randomColorIndex = _random.nextInt(_selectedColors.length);
+    return _selectedColors[randomColorIndex];
+  }
 
   static ThemeData _themeData({
     Brightness brightness = Brightness.light,
@@ -86,6 +93,11 @@ sealed class AppThemes {
   static const width = height; // this won't always be same as the height.
   static const width2x = width * 2;
   static const width4x = width * 4;
+
+  static const viewPadding = EdgeInsets.symmetric(
+    horizontal: AppThemes.width2x,
+    vertical: AppThemes.height2x,
+  );
 
   static const radiusCircular = Radius.circular(15);
   static const appBarBorderRadius = BorderRadius.only(
