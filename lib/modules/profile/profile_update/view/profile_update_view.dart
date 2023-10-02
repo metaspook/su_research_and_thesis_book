@@ -63,8 +63,8 @@ class _ProfileUpdateViewState extends State<ProfileUpdateView> {
     return Form(
       child: ListView(
         padding: const EdgeInsets.symmetric(
-          horizontal: AppThemes.width,
-          vertical: AppThemes.height2x,
+          horizontal: AppThemes.width2x,
+          vertical: AppThemes.height4x,
         ),
         children: [
           Row(
@@ -74,10 +74,10 @@ class _ProfileUpdateViewState extends State<ProfileUpdateView> {
               ProfileUpdateBlocSelector<String>(
                 selector: (state) => state.photoPath,
                 builder: (context, photoPath) {
-                  return HaloAvatar.local(path: photoPath, size: 4);
+                  return HaloAvatar.local(photoPath, size: 4);
                 },
               ),
-              const SizedBox(width: AppThemes.height2x),
+              const SizedBox(width: AppThemes.height4x),
               Flexible(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -124,7 +124,7 @@ class _ProfileUpdateViewState extends State<ProfileUpdateView> {
               ),
             ],
           ),
-          const SizedBox(height: AppThemes.height2x),
+          const SizedBox(height: AppThemes.height4x),
           Form(
             key: _profileUpdateFormKey,
             child: Padding(
@@ -208,7 +208,7 @@ class _ProfileUpdateViewState extends State<ProfileUpdateView> {
               ),
             ),
           ),
-          const SizedBox(height: AppThemes.height2x),
+          const SizedBox(height: AppThemes.height4x),
           ProfileBlocListener(
             listenWhen: (previous, current) => current.status.hasMessage,
             listener: (context, state) {
@@ -230,7 +230,7 @@ class _ProfileUpdateViewState extends State<ProfileUpdateView> {
                     label: const Text('Cancel'),
                   ),
                 ),
-                const SizedBox(width: AppThemes.width),
+                const SizedBox(width: AppThemes.width2x),
                 Expanded(
                   // Save button
                   child: ProfileUpdateBlocBuilder(

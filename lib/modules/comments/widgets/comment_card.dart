@@ -13,7 +13,7 @@ class CommentCard extends StatelessWidget {
     return Card(
       child: ListTile(
         titleAlignment: ListTileTitleAlignment.titleHeight,
-        leading: HaloAvatar(url: comment.authorPhotoUrl),
+        leading: HaloAvatar(comment.authorPhotoUrl),
         title: Text(comment.author.toStringParseNull()),
         subtitle: Text(comment.content.toStringParseNull()),
       ),

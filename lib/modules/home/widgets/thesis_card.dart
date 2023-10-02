@@ -21,7 +21,7 @@ class ThesisCard extends StatelessWidget {
       child: ListTile(
         onTap: () =>
             context.push(AppRouter.thesis.pathUnderRoot, extra: thesis),
-        leading: HaloAvatar(url: thesis.authorPhotoUrl),
+        leading: HaloAvatar(thesis.authorPhotoUrl),
         title: Text(
           thesis.name ?? 'N/A',
           style: context.theme.textTheme.titleLarge,

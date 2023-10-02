@@ -28,10 +28,7 @@ class ProfileView extends StatelessWidget {
             return Column(
               children: [
                 // Profile photo
-                HaloAvatar(
-                  url: user?.photoUrl,
-                  size: 4,
-                ),
+                HaloAvatar(user?.photoUrl, size: 4),
                 const SizedBox(height: height),
                 Column(
                   children: [

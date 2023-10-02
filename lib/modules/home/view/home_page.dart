@@ -43,7 +43,7 @@ class HomePage extends StatelessWidget {
                   child: AppBlocSelector<String?>(
                     selector: (state) => state.user.photoUrl,
                     builder: (context, photoUrl) {
-                      return HaloAvatar(url: photoUrl);
+                      return HaloAvatar(photoUrl);
                     },
                   ),
                 ),

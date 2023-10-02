@@ -52,11 +52,11 @@ class _SignInViewState extends State<SignInView> {
         key: _signInFormKey,
         child: ListView(
           padding: const EdgeInsets.symmetric(
-            horizontal: AppThemes.width,
-            vertical: AppThemes.height,
+            horizontal: AppThemes.width2x,
+            vertical: AppThemes.height2x,
           ),
           children: [
-            const SizedBox(height: AppThemes.height),
+            const SizedBox(height: AppThemes.height2x),
             // E-mail
             TextFormField(
               controller: _emailController,
@@ -70,7 +70,7 @@ class _SignInViewState extends State<SignInView> {
               ),
               onChanged: (value) => bloc.add(SignInEdited(email: value)),
             ),
-            const SizedBox(height: AppThemes.height2x),
+            const SizedBox(height: AppThemes.height4x),
             // Password
             Builder(
               builder: (context) {
@@ -105,7 +105,7 @@ class _SignInViewState extends State<SignInView> {
                 );
               },
             ),
-            const SizedBox(height: AppThemes.height2x),
+            const SizedBox(height: AppThemes.height4x),
             // Proceed button
             SignInBlocConsumer(
               listenWhen: (previous, current) => current.status.hasMessage,

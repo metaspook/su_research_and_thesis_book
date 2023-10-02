@@ -16,18 +16,18 @@ import 'package:flutter/material.dart';
 
 /// Creates a circle with halo that represents a user. The halo works as `CircularProgressIndicator`
 class HaloAvatar extends StatelessWidget {
-  const HaloAvatar({
+  const HaloAvatar(
+    this.url, {
     super.key,
-    this.url,
     this.size = .825,
     this.haloColor,
     this.errorColor,
   })  : path = null,
         isLocal = false;
 
-  const HaloAvatar.local({
+  const HaloAvatar.local(
+    this.path, {
     super.key,
-    this.path,
     this.size = .825,
     this.haloColor,
     this.errorColor,

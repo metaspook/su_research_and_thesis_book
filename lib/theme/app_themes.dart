@@ -79,11 +79,13 @@ sealed class AppThemes {
   // Public APIs
   // static double? get hintFontSize => theme.textTheme.titleMedium?.fontSize;
 
-  static const height = 15.0;
+  static const height = 7.5;
   static const height2x = height * 2;
+  static const height4x = height * 4;
   static const height6x = height * 6;
-  static const width = height;
+  static const width = height; // this won't always be same as the height.
   static const width2x = width * 2;
+  static const width4x = width * 4;
 
   static const radiusCircular = Radius.circular(15);
   static const appBarBorderRadius = BorderRadius.only(
