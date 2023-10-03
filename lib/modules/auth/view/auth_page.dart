@@ -30,7 +30,7 @@ class AuthPage extends StatelessWidget {
           // centerTitle: true,
           // ClipRRect to match the border radius wth AppBar
           bottom: const ClipRRect(
-            borderRadius: AppThemes.appBarBorderRadius,
+            borderRadius: AppThemes.topRadius,
             child: tabBar,
           ).toPreferredSize(tabBar.preferredSize),
         ),

@@ -43,7 +43,7 @@ sealed class AppThemes {
 
       // AppBar Theme
       appBarTheme: AppBarTheme(
-        shape: const RoundedRectangleBorder(borderRadius: appBarBorderRadius),
+        shape: const RoundedRectangleBorder(borderRadius: topRadius),
         backgroundColor: colorScheme.inversePrimary.withOpacity(.75),
       ),
       // Badge Theme
@@ -88,10 +88,12 @@ sealed class AppThemes {
 
   static const height = 7.5;
   static const height2x = height * 2;
+  static const height3x = height * 3;
   static const height4x = height * 4;
   static const height6x = height * 6;
   static const width = height; // this won't always be same as the height.
   static const width2x = width * 2;
+  static const width3x = width * 3;
   static const width4x = width * 4;
   static const horizontalPadding = width2x;
   static const verticalPadding = height2x;
@@ -102,9 +104,13 @@ sealed class AppThemes {
   );
 
   static const radiusCircular = Radius.circular(15);
-  static const appBarBorderRadius = BorderRadius.only(
+  static const bottomRadius = BorderRadius.only(
     bottomLeft: radiusCircular,
     bottomRight: radiusCircular,
+  );
+  static const topRadius = BorderRadius.only(
+    topLeft: radiusCircular,
+    topRight: radiusCircular,
   );
   static const borderRadius = BorderRadius.all(radiusCircular);
   static const outlineInputBorder = OutlineInputBorder(

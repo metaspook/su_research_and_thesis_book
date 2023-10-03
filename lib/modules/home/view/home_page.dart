@@ -5,6 +5,7 @@ import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
+import 'package:su_thesis_book/theme/theme.dart';
 
 typedef HomeBlocSelector<T> = BlocSelector<HomeCubit, HomeState, T>;
 
@@ -27,7 +28,6 @@ class HomePage extends StatelessWidget {
         view: HomeView(),
       ),
     ];
-
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
@@ -86,17 +86,21 @@ class HomePage extends StatelessWidget {
       ),
       bottomNavigationBar: HomeBlocSelector<int>(
         selector: (state) => state.viewIndex,
-        builder: (context, selectedIndex) => NavigationBar(
-          height: kBottomNavigationBarHeight * 1.25,
-          selectedIndex: selectedIndex,
-          onDestinationSelected: cubit.onDestinationSelected,
-          destinations: [
-            for (final viewRecord in viewRecords)
-              NavigationDestination(
-                icon: Icon(viewRecord.icon),
-                label: viewRecord.label,
-              ),
-          ],
+        builder: (context, selectedIndex) => ClipRRect(
+          borderRadius: AppThemes.topRadius,
+          clipBehavior: Clip.hardEdge,
+          child: NavigationBar(
+            height: kBottomNavigationBarHeight * 1.25,
+            selectedIndex: selectedIndex,
+            onDestinationSelected: cubit.onDestinationSelected,
+            destinations: [
+              for (final viewRecord in viewRecords)
+                NavigationDestination(
+                  icon: Icon(viewRecord.icon),
+                  label: viewRecord.label,
+                ),
+            ],
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

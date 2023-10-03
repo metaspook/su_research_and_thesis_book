@@ -13,11 +13,18 @@ class HomeView extends StatelessWidget {
       children: [
         const ThesisCarousel(),
         GridView.count(
-          padding: AppThemes.viewPadding,
+          padding: const EdgeInsets.symmetric(vertical: AppThemes.height3x),
           shrinkWrap: true,
           crossAxisCount: 3,
           childAspectRatio: 1.625,
-          children: [..._iconButtonRecords.map(IconButtonLabeled.new)],
+          children: [
+            for (var i = 0; i < _iconButtonRecords.length; i++)
+              IconButtonLabeled(
+                _iconButtonRecords[i],
+                color: AppThemes.selectedColorsRandomized[i],
+                size: context.mediaQuery.size.shortestSide * .09,
+              ),
+          ],
         ),
         const ProfileCarousel(),
       ],
