@@ -93,10 +93,12 @@ sealed class AppThemes {
   static const width = height; // this won't always be same as the height.
   static const width2x = width * 2;
   static const width4x = width * 4;
+  static const horizontalPadding = width2x;
+  static const verticalPadding = height2x;
 
   static const viewPadding = EdgeInsets.symmetric(
-    horizontal: AppThemes.width2x,
-    vertical: AppThemes.height2x,
+    horizontal: horizontalPadding,
+    vertical: verticalPadding,
   );
 
   static const radiusCircular = Radius.circular(15);

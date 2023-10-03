@@ -9,6 +9,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      padding: const EdgeInsets.symmetric(vertical: AppThemes.verticalPadding),
       children: [
         const ThesisCarousel(),
         GridView.count(
