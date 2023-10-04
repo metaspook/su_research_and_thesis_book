@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:su_thesis_book/theme/theme.dart';
 
 // Config
 // <implement here, if any>
@@ -8,6 +9,9 @@ extension CallableWidgetExt on BuildContext {
   ScaffoldMessengerState get scaffoldMessenger => ScaffoldMessenger.of(this);
   // bool get keyboardVisible => MediaQuery.of(this).viewInsets.bottom != 0;
 
+  Widget emptyListText([String? text]) => Center(
+        child: Text(text ?? 'Empty!', style: theme.textTheme.displayMedium),
+      );
   Widget? backButton<T extends Object?>([T? result]) => Navigator.canPop(this)
       ? IconButton(
           onPressed: () {

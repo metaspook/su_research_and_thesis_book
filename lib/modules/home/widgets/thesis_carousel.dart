@@ -23,11 +23,10 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
           carouselController: _controller,
           options: CarouselOptions(
             autoPlay: true,
-            enlargeCenterPage: true,
-            // aspectRatio: 1.5,
-            viewportFraction: .9,
-            enlargeStrategy: CenterPageEnlargeStrategy.zoom,
             autoPlayInterval: const Duration(milliseconds: 4500),
+            enlargeCenterPage: true,
+            enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+            viewportFraction: .9,
             onPageChanged: (index, reason) {
               setState(() {
                 _current = index;

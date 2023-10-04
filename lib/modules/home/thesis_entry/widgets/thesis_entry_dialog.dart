@@ -60,7 +60,7 @@ class ThesisEntryDialog extends StatelessWidget {
                               physics: const ClampingScrollPhysics(),
                               shrinkWrap: true,
                               children: [
-                                const SizedBox(height: AppThemes.height6x),
+                                const SizedBox(height: AppThemes.height * 6),
                                 ThesisEntryBlocSelector<String>(
                                   selector: (state) => state.pdfPath,
                                   builder: (context, pdfPath) {

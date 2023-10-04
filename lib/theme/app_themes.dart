@@ -43,7 +43,7 @@ sealed class AppThemes {
 
       // AppBar Theme
       appBarTheme: AppBarTheme(
-        shape: const RoundedRectangleBorder(borderRadius: topRadius),
+        shape: const RoundedRectangleBorder(borderRadius: bottomRadius),
         backgroundColor: colorScheme.inversePrimary.withOpacity(.75),
       ),
       // Badge Theme
@@ -87,32 +87,24 @@ sealed class AppThemes {
   // static double? get hintFontSize => theme.textTheme.titleMedium?.fontSize;
 
   static const height = 7.5;
-  static const height2x = height * 2;
-  static const height3x = height * 3;
-  static const height4x = height * 4;
-  static const height6x = height * 6;
-  static const width = height; // this won't always be same as the height.
-  static const width2x = width * 2;
-  static const width3x = width * 3;
-  static const width4x = width * 4;
-  static const horizontalPadding = width2x;
-  static const verticalPadding = height2x;
-
+  static const width = 7.5; // this won't always be same as the height.
+  static const horizontalPadding = EdgeInsets.symmetric(horizontal: width);
+  static const verticalPadding = EdgeInsets.symmetric(vertical: height);
   static const viewPadding = EdgeInsets.symmetric(
-    horizontal: horizontalPadding,
-    vertical: verticalPadding,
+    horizontal: width,
+    vertical: height,
   );
 
-  static const radiusCircular = Radius.circular(15);
-  static const bottomRadius = BorderRadius.only(
-    bottomLeft: radiusCircular,
-    bottomRight: radiusCircular,
-  );
+  static const circularRadius = Radius.circular(15);
+  static const borderRadius = BorderRadius.all(circularRadius);
   static const topRadius = BorderRadius.only(
-    topLeft: radiusCircular,
-    topRight: radiusCircular,
+    topLeft: circularRadius,
+    topRight: circularRadius,
   );
-  static const borderRadius = BorderRadius.all(radiusCircular);
+  static const bottomRadius = BorderRadius.only(
+    bottomLeft: circularRadius,
+    bottomRight: circularRadius,
+  );
   static const outlineInputBorder = OutlineInputBorder(
     borderRadius: borderRadius,
   );

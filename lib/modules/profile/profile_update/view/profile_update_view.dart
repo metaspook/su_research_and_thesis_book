@@ -63,8 +63,8 @@ class _ProfileUpdateViewState extends State<ProfileUpdateView> {
     return Form(
       child: ListView(
         padding: const EdgeInsets.symmetric(
-          horizontal: AppThemes.width2x,
-          vertical: AppThemes.height4x,
+          horizontal: AppThemes.width * 2,
+          vertical: AppThemes.height * 4,
         ),
         children: [
           Row(
@@ -77,7 +77,7 @@ class _ProfileUpdateViewState extends State<ProfileUpdateView> {
                   return HaloAvatar.local(photoPath, size: 4);
                 },
               ),
-              const SizedBox(width: AppThemes.height4x),
+              const SizedBox(width: AppThemes.height * 4),
               Flexible(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -124,7 +124,7 @@ class _ProfileUpdateViewState extends State<ProfileUpdateView> {
               ),
             ],
           ),
-          const SizedBox(height: AppThemes.height4x),
+          const SizedBox(height: AppThemes.height * 4),
           Form(
             key: _profileUpdateFormKey,
             child: Padding(
@@ -208,7 +208,7 @@ class _ProfileUpdateViewState extends State<ProfileUpdateView> {
               ),
             ),
           ),
-          const SizedBox(height: AppThemes.height4x),
+          const SizedBox(height: AppThemes.height * 4),
           ProfileBlocListener(
             listenWhen: (previous, current) => current.status.hasMessage,
             listener: (context, state) {
@@ -230,7 +230,7 @@ class _ProfileUpdateViewState extends State<ProfileUpdateView> {
                     label: const Text('Cancel'),
                   ),
                 ),
-                const SizedBox(width: AppThemes.width2x),
+                const SizedBox(width: AppThemes.width * 2),
                 Expanded(
                   // Save button
                   child: ProfileUpdateBlocBuilder(

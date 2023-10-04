@@ -67,7 +67,7 @@ class _SignUpViewState extends State<SignUpView> {
       child: Form(
         key: _signUpFormKey,
         child: ListView(
-          padding: AppThemes.viewPadding,
+          padding: AppThemes.viewPadding * 2,
           children: [
             // Name
             TextFormField(
@@ -153,7 +153,7 @@ class _SignUpViewState extends State<SignUpView> {
                 );
               },
             ),
-            const SizedBox(height: AppThemes.height4x),
+            const SizedBox(height: AppThemes.height * 4),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -184,7 +184,7 @@ class _SignUpViewState extends State<SignUpView> {
                     ),
                   ),
                 ),
-                const SizedBox(width: AppThemes.height4x),
+                const SizedBox(width: AppThemes.height * 4),
                 Flexible(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -205,7 +205,7 @@ class _SignUpViewState extends State<SignUpView> {
                           );
                         },
                       ),
-                      const SizedBox(height: AppThemes.height4x),
+                      const SizedBox(height: AppThemes.height * 4),
                       // Gallery Button
                       ElevatedButton.icon(
                         icon: const Icon(Icons.photo_library_rounded),
@@ -227,7 +227,7 @@ class _SignUpViewState extends State<SignUpView> {
                 ),
               ],
             ),
-            const SizedBox(height: AppThemes.height4x),
+            const SizedBox(height: AppThemes.height * 4),
             // Proceed button
             SignUpBlocConsumer(
               listenWhen: (previous, current) => current.status.hasMessage,

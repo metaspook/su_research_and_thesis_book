@@ -8,19 +8,53 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final iconButtonRecords =
+        <({IconData icon, String label, void Function()? onPressed})>[
+      (
+        label: 'All Thesis',
+        icon: Icons.file_copy_rounded,
+        onPressed: () {},
+      ),
+      (
+        label: 'Category',
+        icon: Icons.category_rounded,
+        onPressed: () {},
+      ),
+      (
+        label: 'Publishers',
+        icon: Icons.group_rounded,
+        onPressed: () {},
+      ),
+      (
+        label: 'Upload Thesis',
+        icon: Icons.upload_file_rounded,
+        onPressed: () {},
+      ),
+      (
+        label: 'Notifications',
+        icon: Icons.notifications_rounded,
+        onPressed: () {},
+      ),
+      (
+        label: 'Profile',
+        icon: Icons.person_rounded,
+        onPressed: () {},
+      ),
+    ];
+
     return ListView(
-      padding: const EdgeInsets.symmetric(vertical: AppThemes.verticalPadding),
+      padding: AppThemes.verticalPadding * 2,
       children: [
         const ThesisCarousel(),
         GridView.count(
-          padding: const EdgeInsets.symmetric(vertical: AppThemes.height3x),
+          padding: AppThemes.verticalPadding * 3,
           shrinkWrap: true,
           crossAxisCount: 3,
           childAspectRatio: 1.625,
           children: [
-            for (var i = 0; i < _iconButtonRecords.length; i++)
+            for (var i = 0; i < iconButtonRecords.length; i++)
               IconButtonLabeled(
-                _iconButtonRecords[i],
+                iconButtonRecords[i],
                 color: AppThemes.selectedColorsRandomized[i],
                 size: context.mediaQuery.size.shortestSide * .09,
               ),
@@ -31,37 +65,3 @@ class HomeView extends StatelessWidget {
     );
   }
 }
-
-final _iconButtonRecords =
-    <({IconData icon, String label, void Function()? onPressed})>[
-  (
-    label: 'All Thesis',
-    icon: Icons.file_copy_rounded,
-    onPressed: () {},
-  ),
-  (
-    label: 'Category',
-    icon: Icons.category_rounded,
-    onPressed: () {},
-  ),
-  (
-    label: 'Publishers',
-    icon: Icons.group_rounded,
-    onPressed: () {},
-  ),
-  (
-    label: 'Upload Thesis',
-    icon: Icons.upload_file_rounded,
-    onPressed: () {},
-  ),
-  (
-    label: 'Notifications',
-    icon: Icons.notifications_rounded,
-    onPressed: () {},
-  ),
-  (
-    label: 'Profile',
-    icon: Icons.person_rounded,
-    onPressed: () {},
-  ),
-];

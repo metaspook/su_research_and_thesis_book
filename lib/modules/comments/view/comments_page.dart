@@ -53,12 +53,7 @@ class _CommentsPageState extends State<CommentsPage> {
                     .select((CommentsCubit cubit) => cubit.state.comments);
 
                 return comments.isEmpty
-                    ? Center(
-                        child: Text(
-                          'No Comments!',
-                          style: context.theme.textTheme.displayMedium,
-                        ),
-                      )
+                    ? context.emptyListText()
                     : TranslucentLoader(
                         enabled: isLoading,
                         child: ListView.builder(

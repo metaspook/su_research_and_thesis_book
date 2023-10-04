@@ -5,7 +5,5 @@
         "description": "Text shown in the AppBar of the Home Page"
     },
     "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
-    }
+    "bookmarkAppBarTitle": "Bookmark"
 }
