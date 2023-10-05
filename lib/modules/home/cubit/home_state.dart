@@ -16,13 +16,13 @@ class HomeState extends Equatable {
   const HomeState({
     this.status = HomeStatus.initial,
     this.statusMsg = '',
-    this.theses = const [],
-    this.viewIndex = 0,
+    this.theses,
+    this.viewIndex = 1,
   });
 
   final HomeStatus status;
   final String statusMsg;
-  final List<Thesis> theses;
+  final List<Thesis>? theses;
   final int viewIndex;
 
   HomeState copyWith({
@@ -40,5 +40,5 @@ class HomeState extends Equatable {
   }
 
   @override
-  List<Object> get props => [status, statusMsg, theses, viewIndex];
+  List<Object?> get props => [status, statusMsg, theses, viewIndex];
 }

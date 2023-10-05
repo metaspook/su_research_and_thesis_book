@@ -9,7 +9,7 @@ class ThesesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theses = context.select((ThesesCubit cubit) => cubit.state.theses);
+    final theses = context.select((HomeCubit cubit) => cubit.state.theses);
     return theses == null
         ? const TranslucentLoader()
         : theses.isEmpty

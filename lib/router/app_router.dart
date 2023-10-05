@@ -43,6 +43,11 @@ final class AppRouter {
                 thesisRepo: context.read<ThesisRepo>(),
               ),
             ),
+            BlocProvider<ThesesCubit>(
+              create: (context) =>
+                  ThesesCubit(thesisRepo: context.read<ThesisRepo>()),
+              child: const ThesesView(),
+            ),
             BlocProvider<ThesisEntryCubit>(
               create: (context) => ThesisEntryCubit(
                 thesisRepo: context.read<ThesisRepo>(),

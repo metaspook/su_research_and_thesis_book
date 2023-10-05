@@ -11,8 +11,8 @@ class HomeView extends StatelessWidget {
     final iconButtonRecords =
         <({IconData icon, String label, void Function()? onPressed})>[
       (
-        label: 'All Thesis',
-        icon: Icons.file_copy_rounded,
+        label: 'Bookmarks',
+        icon: Icons.bookmark_rounded,
         onPressed: () {},
       ),
       (
@@ -26,11 +26,6 @@ class HomeView extends StatelessWidget {
         onPressed: () {},
       ),
       (
-        label: 'Upload Thesis',
-        icon: Icons.upload_file_rounded,
-        onPressed: () {},
-      ),
-      (
         label: 'Notifications',
         icon: Icons.notifications_rounded,
         onPressed: () {},
@@ -38,6 +33,11 @@ class HomeView extends StatelessWidget {
       (
         label: 'Profile',
         icon: Icons.person_rounded,
+        onPressed: () {},
+      ),
+      (
+        label: 'Upload Thesis',
+        icon: Icons.upload_file_rounded,
         onPressed: () {},
       ),
     ];

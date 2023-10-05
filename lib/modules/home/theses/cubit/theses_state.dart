@@ -16,25 +16,29 @@ class ThesesState extends Equatable {
   const ThesesState({
     this.status = ThesesStatus.initial,
     this.statusMsg = '',
-    this.theses,
+    this.searchMode = false,
+    this.search = '',
   });
 
   final ThesesStatus status;
   final String statusMsg;
-  final List<Thesis>? theses;
+  final bool searchMode;
+  final String search;
 
   ThesesState copyWith({
     ThesesStatus? status,
     String? statusMsg,
-    List<Thesis>? theses,
+    bool? searchMode,
+    String? search,
   }) {
     return ThesesState(
       status: status ?? this.status,
       statusMsg: statusMsg ?? this.statusMsg,
-      theses: theses ?? this.theses,
+      searchMode: searchMode ?? this.searchMode,
+      search: search ?? this.search,
     );
   }
 
   @override
-  List<Object?> get props => [status, statusMsg, theses];
+  List<Object?> get props => [status, statusMsg, searchMode, searchMode];
 }
