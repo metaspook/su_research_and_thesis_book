@@ -4,8 +4,23 @@ import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
-class ThesesAppBar extends StatelessWidget {
+class ThesesAppBar extends StatefulWidget {
   const ThesesAppBar({super.key});
+
+  @override
+  State<ThesesAppBar> createState() => _ThesesAppBarState();
+}
+
+class _ThesesAppBarState extends State<ThesesAppBar> {
+  // TextEditingControllers
+  final _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // TextEditingControllers
+    _searchController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

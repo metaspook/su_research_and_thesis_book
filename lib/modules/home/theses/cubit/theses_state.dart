@@ -40,5 +40,5 @@ class ThesesState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [status, statusMsg, searchMode, searchMode];
+  List<Object?> get props => [status, statusMsg, searchMode, search];
 }
