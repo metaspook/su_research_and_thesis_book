@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
+import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
@@ -13,7 +14,9 @@ class HomeView extends StatelessWidget {
       (
         label: 'Bookmarks',
         icon: Icons.bookmark_rounded,
-        onPressed: () {},
+        onPressed: AppRouter.bookmarks.name == null
+            ? null
+            : () => context.pushNamed(AppRouter.bookmarks.name!),
       ),
       (
         label: 'Category',
@@ -33,7 +36,9 @@ class HomeView extends StatelessWidget {
       (
         label: 'Profile',
         icon: Icons.person_rounded,
-        onPressed: () {},
+        onPressed: AppRouter.profile.name == null
+            ? null
+            : () => context.pushNamed(AppRouter.profile.name!),
       ),
       (
         label: 'Upload Thesis',
@@ -55,7 +60,7 @@ class HomeView extends StatelessWidget {
             for (var i = 0; i < iconButtonRecords.length; i++)
               IconButtonLabeled(
                 iconButtonRecords[i],
-                color: AppThemes.selectedColorsRandomized[i],
+                // color: AppThemes.selectedColors[i],
                 size: context.mediaQuery.size.shortestSide * .09,
               ),
           ],

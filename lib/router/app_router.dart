@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
+import 'package:su_thesis_book/modules/bookmarks/bookmarks.dart';
 import 'package:su_thesis_book/modules/comments/comments.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/modules/profile/profile.dart';
@@ -18,7 +19,7 @@ final class AppRouter {
   AppRouter({this.initialLocation})
       : config = GoRouter(
           //-- Register routes
-          routes: <RouteBase>[home, auth, profile],
+          routes: <RouteBase>[home, auth, profile, bookmarks],
           initialLocation: initialLocation,
           // navigatorKey: navigatorKey,
         );
@@ -145,6 +146,24 @@ final class AppRouter {
             commentRepo: context.read<CommentRepo>(),
           ),
           child: CommentsPage(thesis: thesis),
+        ),
+      );
+    },
+  );
+
+  // Comments
+  static final bookmarks = GoRoute(
+    name: 'bookmarks',
+    path: '/bookmarks',
+    builder: (context, state) {
+      'Current Route: ${state.fullPath}'.doPrint();
+      return RepositoryProvider<ThesisRepo>(
+        create: (context) => ThesisRepo(),
+        child: BlocProvider<BookmarksCubit>(
+          create: (context) => BookmarksCubit(
+            thesisRepo: context.read<ThesisRepo>(),
+          ),
+          child: const BookmarksPage(),
         ),
       );
     },

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
+import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
 // typedef HomeBlocSelector<T> = BlocSelector<HomeCubit, HomeState, T>;
@@ -12,11 +14,12 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final viewRecords = [
       (
         label: 'Home',
         icon: Icons.home_rounded,
-        appBar: const HomeAppBar(),
+        appBar: context.sliverAppBar(l10n.homeAppBarTitle),
         view: const HomeView(),
       ),
       (
@@ -40,7 +43,6 @@ class HomePage extends StatelessWidget {
       bottomNavigationBar: ClipRRect(
         borderRadius: AppThemes.topRadius,
         child: NavigationBar(
-          height: kBottomNavigationBarHeight * 1.25,
           selectedIndex: viewIndex,
           onDestinationSelected: cubit.onDestinationSelected,
           destinations: [

@@ -5,6 +5,6 @@
         "description": "Text shown in the AppBar of the Home Page"
     },
     "counterAppBarTitle": "Counter",
-    "bookmarkAppBarTitle": "Bookmark",
+    "bookmarkAppBarTitle": "Bookmarks",
     "thesesAppBarTitle": "Browse Theses"
 }

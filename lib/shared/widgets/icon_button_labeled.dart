@@ -14,16 +14,10 @@ class IconButtonLabeled extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            record.icon,
-            color: color,
-            size: size,
-          ),
+          Icon(record.icon, color: color, size: size),
           Text(
             record.label,
-            style: TextStyle(
-              fontSize: size == null ? null : size! / 2.4,
-            ),
+            style: TextStyle(fontSize: size == null ? null : size! / 2.4),
           ),
         ],
       ),

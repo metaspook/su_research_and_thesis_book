@@ -6,9 +6,16 @@ import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/extensions.dart';
 
 class ThesisCard extends StatelessWidget {
-  const ThesisCard(this.thesis, {super.key});
+  const ThesisCard(
+    this.thesis, {
+    this.selected = false,
+    this.onLongPress,
+    super.key,
+  });
 
   final Thesis thesis;
+  final bool selected;
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +25,11 @@ class ThesisCard extends StatelessWidget {
         : DateFormat('EEE, y/M/d').format(thesis.createdAt!);
 
     return Card(
+      semanticContainer: false,
       child: ListTile(
+        selected: true,
+        selectedColor: Colors.black,
+        onLongPress: onLongPress,
         onTap: () =>
             context.push(AppRouter.thesis.pathUnderRoot, extra: thesis),
         leading: HaloAvatar(thesis.authorPhotoUrl),

@@ -8,7 +8,7 @@ sealed class AppThemes {
   static final _random = Random();
 
   /// Selected colors from [Colors.primaries].
-  static const _selectedColors = <MaterialColor>[
+  static const selectedColors = <MaterialColor>[
     Colors.red,
     Colors.pink,
     Colors.lightBlue,
@@ -21,11 +21,11 @@ sealed class AppThemes {
     Colors.deepOrange,
     Colors.blueGrey,
   ];
-  static final selectedColorsRandomized = [..._selectedColors]..shuffle();
+  static final selectedColorsRandomized = [...selectedColors]..shuffle();
   static final _seedColor = randomSelectedColor;
   static Color get randomSelectedColor {
-    final randomColorIndex = _random.nextInt(_selectedColors.length);
-    return _selectedColors[randomColorIndex];
+    final randomColorIndex = _random.nextInt(selectedColors.length);
+    return selectedColors[randomColorIndex];
   }
 
   static ThemeData _themeData({
@@ -44,6 +44,17 @@ sealed class AppThemes {
       // AppBar Theme
       appBarTheme: AppBarTheme(
         shape: const RoundedRectangleBorder(borderRadius: bottomRadius),
+        backgroundColor: colorScheme.inversePrimary.withOpacity(.75),
+      ),
+      // NavigationBar Theme
+      navigationBarTheme: NavigationBarThemeData(
+        height: kBottomNavigationBarHeight * 1.25,
+        labelTextStyle: const MaterialStatePropertyAll(TextStyle()),
+        iconTheme: const MaterialStatePropertyAll(
+          IconThemeData(
+            size: kBottomNavigationBarHeight * .5,
+          ),
+        ),
         backgroundColor: colorScheme.inversePrimary.withOpacity(.75),
       ),
       // Badge Theme

@@ -17,7 +17,7 @@ class HomeState extends Equatable {
     this.status = HomeStatus.initial,
     this.statusMsg = '',
     this.theses,
-    this.viewIndex = 1,
+    this.viewIndex = 0,
   });
 
   final HomeStatus status;
