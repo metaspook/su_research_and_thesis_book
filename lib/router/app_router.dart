@@ -1,25 +1,11 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:su_thesis_book/modules/auth/auth.dart';
-import 'package:su_thesis_book/modules/bookmarks/bookmarks.dart';
-import 'package:su_thesis_book/modules/comments/comments.dart';
-import 'package:su_thesis_book/modules/home/home.dart';
-import 'package:su_thesis_book/modules/profile/profile.dart';
-import 'package:su_thesis_book/modules/thesis/cubit/thesis_cubit.dart';
-import 'package:su_thesis_book/modules/thesis/thesis.dart';
-import 'package:su_thesis_book/shared/models/models.dart';
-import 'package:su_thesis_book/shared/repositories/repositories.dart';
-import 'package:su_thesis_book/utils/utils.dart';
-
-// Exposes routing interface for views.
-export 'package:go_router/go_router.dart' show GoRoute, GoRouterHelper;
+part of 'router.dart';
 
 final class AppRouter {
   // AppRouter({this.initialLocation, this.navigatorKey})
   AppRouter({this.initialLocation})
       : config = GoRouter(
           //-- Register routes
-          routes: <RouteBase>[home, auth, profile, bookmarks],
+          routes: <RouteBase>[home, auth, profile, bookmarks, thesisEntry],
           initialLocation: initialLocation,
           // navigatorKey: navigatorKey,
         );
@@ -48,11 +34,6 @@ final class AppRouter {
               create: (context) =>
                   ThesesCubit(thesisRepo: context.read<ThesisRepo>()),
               child: const ThesesView(),
-            ),
-            BlocProvider<ThesisEntryCubit>(
-              create: (context) => ThesisEntryCubit(
-                thesisRepo: context.read<ThesisRepo>(),
-              ),
             ),
           ],
           child: const HomePage(),
@@ -151,7 +132,7 @@ final class AppRouter {
     },
   );
 
-  // Comments
+  // Bookmarks
   static final bookmarks = GoRoute(
     name: 'bookmarks',
     path: '/bookmarks',
@@ -164,6 +145,24 @@ final class AppRouter {
             thesisRepo: context.read<ThesisRepo>(),
           ),
           child: const BookmarksPage(),
+        ),
+      );
+    },
+  );
+
+  // Thesis Entry
+  static final thesisEntry = GoRoute(
+    name: 'thesisEntry',
+    path: '/thesisEntry',
+    builder: (context, state) {
+      'Current Route: ${state.fullPath}'.doPrint();
+      return RepositoryProvider<ThesisRepo>(
+        create: (context) => ThesisRepo(),
+        child: BlocProvider<ThesisEntryCubit>(
+          create: (context) => ThesisEntryCubit(
+            thesisRepo: context.read<ThesisRepo>(),
+          ),
+          child: const ThesisEntryPage(),
         ),
       );
     },

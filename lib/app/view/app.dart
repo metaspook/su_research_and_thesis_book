@@ -46,7 +46,7 @@ class AppView extends StatelessWidget {
     final isAuthenticated =
         context.select((AppCubit cubit) => cubit.state.status.isAuthenticated);
     final initialLocation =
-        isAuthenticated ? AppRouter.home.path : AppRouter.auth.path;
+        isAuthenticated ? AppRouter.thesisEntry.path : AppRouter.auth.path;
     final router = AppRouter(initialLocation: initialLocation);
     return MaterialApp.router(
       title: 'SU Thesis Book',

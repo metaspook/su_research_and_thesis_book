@@ -41,9 +41,11 @@ class HomeView extends StatelessWidget {
             : () => context.pushNamed(AppRouter.profile.name!),
       ),
       (
-        label: 'Upload Thesis',
+        label: 'Thesis Entry',
         icon: Icons.upload_file_rounded,
-        onPressed: () {},
+        onPressed: AppRouter.thesisEntry.name == null
+            ? null
+            : () => context.pushNamed(AppRouter.thesisEntry.name!),
       ),
     ];
 

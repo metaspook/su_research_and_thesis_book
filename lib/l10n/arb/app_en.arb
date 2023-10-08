@@ -6,5 +6,6 @@
     },
     "counterAppBarTitle": "Counter",
     "bookmarkAppBarTitle": "Bookmarks",
-    "thesesAppBarTitle": "Browse Theses"
+    "thesesAppBarTitle": "Browse Theses",
+    "thesisEntryAppBarTitle": "Thesis Entry"
 }
