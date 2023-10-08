@@ -20,7 +20,7 @@ class BookmarksPage extends StatelessWidget {
         context.select((BookmarksCubit cubit) => cubit.state.selectedTheses);
     final selectedThesesIsEmpty = selectedTheses.isEmpty;
     final theses = context.select((BookmarksCubit cubit) => cubit.state.theses);
-    final thesesIsEmpty = theses.isEmpty;
+    final thesesNullOrEmpty = theses == null || theses.isEmpty;
 
     return Scaffold(
       body: NestedScrollView(
@@ -32,7 +32,7 @@ class BookmarksPage extends StatelessWidget {
               // Select All button.
               IconButton(
                 padding: EdgeInsets.zero,
-                onPressed: thesesIsEmpty || theses == selectedTheses
+                onPressed: thesesNullOrEmpty || theses == selectedTheses
                     ? null
                     : cubit.onAllSelected,
                 iconSize: kToolbarHeight * .575,
@@ -67,22 +67,28 @@ class BookmarksPage extends StatelessWidget {
             ],
           ),
         ],
-        body: ListView.builder(
-          padding: AppThemes.viewPadding,
-          physics: const BouncingScrollPhysics(),
-          itemCount: theses.length,
-          itemBuilder: (context, index) {
-            final thesis = theses[index];
-            return ThesisCard(
-              thesis,
-              selected: selectedTheses.contains(thesis),
-              onTap: selectedThesesIsEmpty
-                  ? null
-                  : () => cubit.onSelectionToggled(thesis),
-              onLongPress: () => cubit.onSelectionToggled(thesis),
-            );
-          },
-        ),
+        body:
+            // Handle Null and Empty cases.
+            theses == null
+                ? const TranslucentLoader()
+                : theses.isEmpty
+                    ? context.emptyListText()
+                    : ListView.builder(
+                        padding: AppThemes.viewPadding,
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: theses.length,
+                        itemBuilder: (context, index) {
+                          final thesis = theses[index];
+                          return ThesisCard(
+                            thesis,
+                            selected: selectedTheses.contains(thesis),
+                            onTap: selectedThesesIsEmpty
+                                ? null
+                                : () => cubit.onSelectionToggled(thesis),
+                            onLongPress: () => cubit.onSelectionToggled(thesis),
+                          );
+                        },
+                      ),
       ),
     );
   }

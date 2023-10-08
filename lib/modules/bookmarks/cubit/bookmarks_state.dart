@@ -17,14 +17,14 @@ class BookmarksState extends Equatable {
     this.status = BookmarksStatus.initial,
     this.statusMsg = '',
     this.removeMode = false,
-    this.theses = const [],
+    this.theses,
     this.selectedTheses = const [],
   });
 
   final BookmarksStatus status;
   final String statusMsg;
   final bool removeMode;
-  final List<Thesis> theses;
+  final List<Thesis>? theses;
   final List<Thesis> selectedTheses;
 
   BookmarksState copyWith({

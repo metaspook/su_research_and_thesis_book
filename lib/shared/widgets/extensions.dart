@@ -9,8 +9,12 @@ extension CallableWidgetExt on BuildContext {
   ScaffoldMessengerState get scaffoldMessenger => ScaffoldMessenger.of(this);
   // bool get keyboardVisible => MediaQuery.of(this).viewInsets.bottom != 0;
 
-  Widget emptyListText([String? text]) => Center(
-        child: Text(text ?? 'Empty!', style: theme.textTheme.displayMedium),
+  Widget emptyListText({String? data, bool hasToolbarHeight = true}) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(data ?? 'Empty!', style: theme.textTheme.displayMedium),
+          SizedBox(height: hasToolbarHeight ? kToolbarHeight : null),
+        ],
       );
   Widget? backButton<T extends Object?>([T? result]) => Navigator.canPop(this)
       ? IconButton(

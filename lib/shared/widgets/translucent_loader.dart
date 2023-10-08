@@ -6,18 +6,20 @@ class TranslucentLoader extends StatelessWidget {
   const TranslucentLoader({
     super.key,
     this.child,
+    this.color,
     this.value,
     this.enabled = true,
     this.addToolbarHeight = true,
   });
   final Widget? child;
+  final Color? color;
   final double? value;
   final bool enabled;
   final bool addToolbarHeight;
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = Theme.of(context).primaryColor;
+    final primaryColor = color ?? Theme.of(context).colorScheme.inversePrimary;
     final circularProgressIndicator = CircularProgressIndicator(
       value: value,
       color: primaryColor.withOpacity(.5),

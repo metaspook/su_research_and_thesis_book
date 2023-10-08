@@ -11,11 +11,14 @@ class BookmarksCubit extends Cubit<BookmarksState> {
       : _thesisRepo = thesisRepo,
         super(const BookmarksState()) {
     // final thesis = Thesis(id: uuid, userId: 'userId');
-    final theses = [
-      for (var i = 0; i < 10; i++)
-        Thesis(id: 'uuid', userId: 'userId', name: uuid.substring(25)),
-    ];
-    emit(state.copyWith(theses: theses));
+    emit(state.copyWith(status: BookmarksStatus.loading));
+    Future.delayed(const Duration(seconds: 2), () {
+      final theses = [
+        for (var i = 0; i < 10; i++)
+          Thesis(id: 'uuid', userId: 'userId', name: uuid.substring(25)),
+      ];
+      emit(state.copyWith(status: BookmarksStatus.success, theses: theses));
+    });
   }
 
   final ThesisRepo _thesisRepo;
@@ -36,7 +39,7 @@ class BookmarksCubit extends Cubit<BookmarksState> {
 
   void onRemoved() {
     final selectedTheses = [...state.selectedTheses];
-    final theses = [...state.theses]..removeWhere(selectedTheses.remove);
+    final theses = [...state.theses!]..removeWhere(selectedTheses.remove);
     emit(state.copyWith(theses: theses, selectedTheses: selectedTheses));
   }
 
