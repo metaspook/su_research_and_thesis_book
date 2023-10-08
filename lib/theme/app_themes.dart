@@ -62,16 +62,16 @@ sealed class AppThemes {
         backgroundColor: colorScheme.primary.withOpacity(.375),
         textStyle: const TextStyle(fontWeight: FontWeight.w400),
       ),
+      // ListTile Theme
+      listTileTheme: ListTileThemeData(
+        selectedTileColor: colorScheme.outlineVariant,
+      ),
       // DropdownMenu Theme
-      // inputDecorationTheme: ,
       dropdownMenuTheme: DropdownMenuThemeData(
         inputDecorationTheme: const InputDecorationTheme(filled: true),
         menuStyle: MenuStyle(
           visualDensity: VisualDensity.compact,
-          // alignment: Alignment.topRight,
-          backgroundColor: MaterialStateProperty.all(
-            Colors.black,
-          ),
+          backgroundColor: const MaterialStatePropertyAll(Colors.black),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
           ),

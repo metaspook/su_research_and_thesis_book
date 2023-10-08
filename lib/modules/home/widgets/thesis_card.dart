@@ -9,12 +9,14 @@ class ThesisCard extends StatelessWidget {
   const ThesisCard(
     this.thesis, {
     this.selected = false,
+    this.onTap,
     this.onLongPress,
     super.key,
   });
 
   final Thesis thesis;
   final bool selected;
+  final VoidCallback? onTap;
   final VoidCallback? onLongPress;
 
   @override
@@ -25,13 +27,13 @@ class ThesisCard extends StatelessWidget {
         : DateFormat('EEE, y/M/d').format(thesis.createdAt!);
 
     return Card(
-      semanticContainer: false,
+      clipBehavior: Clip.antiAlias,
       child: ListTile(
-        selected: true,
-        selectedColor: Colors.black,
+        selected: selected,
+        // shape: selected ? AppThemes.outlineInputBorder : null,
         onLongPress: onLongPress,
-        onTap: () =>
-            context.push(AppRouter.thesis.pathUnderRoot, extra: thesis),
+        onTap: onTap ??
+            () => context.push(AppRouter.thesis.pathUnderRoot, extra: thesis),
         leading: HaloAvatar(thesis.authorPhotoUrl),
         title: Text(
           thesis.name ?? 'N/A',

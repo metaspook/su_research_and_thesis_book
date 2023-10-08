@@ -2,7 +2,7 @@ part of 'bookmarks_cubit.dart';
 
 enum BookmarksStatus {
   initial,
-  editing,
+  selecting,
   loading,
   success,
   failure;

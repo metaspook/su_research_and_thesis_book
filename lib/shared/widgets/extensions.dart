@@ -9,13 +9,6 @@ extension CallableWidgetExt on BuildContext {
   ScaffoldMessengerState get scaffoldMessenger => ScaffoldMessenger.of(this);
   // bool get keyboardVisible => MediaQuery.of(this).viewInsets.bottom != 0;
 
-  Widget sliverAppBar([String? title, List<Widget>? actions]) => SliverAppBar(
-        pinned: true,
-        centerTitle: true,
-        leading: backButton(),
-        title: title == null ? null : Text(title),
-        actions: actions,
-      );
   Widget emptyListText([String? text]) => Center(
         child: Text(text ?? 'Empty!', style: theme.textTheme.displayMedium),
       );
@@ -32,6 +25,18 @@ extension CallableWidgetExt on BuildContext {
           icon: const Icon(Icons.arrow_back_ios_rounded),
         )
       : null;
+  Widget sliverAppBar(
+    String title, {
+    List<Widget>? actions,
+    bool centerTitle = true,
+  }) =>
+      SliverAppBar(
+        pinned: true,
+        centerTitle: centerTitle,
+        leading: backButton(),
+        title: Text(title),
+        actions: actions,
+      );
 }
 
 /// PreferredSize Extensions.

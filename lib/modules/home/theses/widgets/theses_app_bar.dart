@@ -32,7 +32,7 @@ class _ThesesAppBarState extends State<ThesesAppBar> {
 
     return context.sliverAppBar(
       l10n.thesesAppBarTitle,
-      [
+      actions: [
         if (searchMode)
           Flexible(
             child: Padding(
