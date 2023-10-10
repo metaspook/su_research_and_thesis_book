@@ -5,7 +5,14 @@ final class AppRouter {
   AppRouter({this.initialLocation})
       : config = GoRouter(
           //-- Register routes
-          routes: <RouteBase>[home, auth, profile, bookmarks, thesisEntry],
+          routes: <RouteBase>[
+            home,
+            auth,
+            profile,
+            bookmarks,
+            thesisEntry,
+            password
+          ],
           initialLocation: initialLocation,
           // navigatorKey: navigatorKey,
         );
@@ -20,6 +27,7 @@ final class AppRouter {
     name: 'home',
     path: '/',
     // redirect: _redirect,
+    routes: <RouteBase>[thesis],
     builder: (context, state) {
       return RepositoryProvider<ThesisRepo>(
         create: (context) => ThesisRepo(),
@@ -40,13 +48,13 @@ final class AppRouter {
         ),
       );
     },
-    routes: <RouteBase>[thesis],
   );
   // Auth
   static final auth = GoRoute(
     name: 'auth',
     path: '/auth',
     // redirect: _redirect,
+    // routes: <RouteBase>[password],
     builder: (context, state) {
       return MultiBlocProvider(
         providers: [
@@ -163,6 +171,24 @@ final class AppRouter {
             thesisRepo: context.read<ThesisRepo>(),
           ),
           child: const ThesisEntryPage(),
+        ),
+      );
+    },
+  );
+
+  // Thesis Entry
+  static final password = GoRoute(
+    name: 'password',
+    path: '/auth/password',
+    builder: (context, state) {
+      'Current Route: ${state.fullPath}'.doPrint();
+      return RepositoryProvider<AuthRepo>(
+        create: (context) => const AuthRepo(),
+        child: BlocProvider<PasswordBloc>(
+          create: (context) => PasswordBloc(
+            authRepo: context.read<AuthRepo>(),
+          ),
+          child: const PasswordPage(),
         ),
       );
     },

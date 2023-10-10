@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
+import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 import 'package:su_thesis_book/utils/utils.dart';
@@ -103,28 +104,46 @@ class _SignInViewState extends State<SignInView> {
               },
             ),
             const SizedBox(height: AppThemes.height * 1.5),
-            // Remember me
-            SignInBlocSelector<bool>(
-              selector: (state) => state.rememberMe,
-              builder: (context, rememberMe) {
-                return GestureDetector(
-                  onTap: () => bloc.add(const SignInRememberMeToggled()),
-                  child: Row(
-                    children: [
-                      Checkbox(
-                        visualDensity: const VisualDensity(
-                          horizontal: VisualDensity.minimumDensity,
-                          vertical: VisualDensity.minimumDensity,
-                        ),
-                        value: rememberMe,
-                        onChanged: (_) =>
-                            bloc.add(const SignInRememberMeToggled()),
+            // Remember me button
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SignInBlocSelector<bool>(
+                  selector: (state) => state.rememberMe,
+                  builder: (context, rememberMe) {
+                    return GestureDetector(
+                      onTap: () => bloc.add(const SignInRememberMeToggled()),
+                      child: Row(
+                        children: [
+                          Checkbox(
+                            visualDensity: const VisualDensity(
+                              horizontal: VisualDensity.minimumDensity,
+                              vertical: VisualDensity.minimumDensity,
+                            ),
+                            value: rememberMe,
+                            onChanged: (_) =>
+                                bloc.add(const SignInRememberMeToggled()),
+                          ),
+                          const Text('Remember me'),
+                        ],
                       ),
-                      const Text('Remember me'),
-                    ],
-                  ),
-                );
-              },
+                    );
+                  },
+                ),
+                // Forget Password button
+                SignInBlocSelector<String>(
+                  selector: (state) => state.email,
+                  builder: (context, email) {
+                    return TextButton.icon(
+                      icon: const Icon(Icons.help_center_rounded),
+                      label: const Text('Forget Password'),
+                      onPressed: email.isEmpty
+                          ? null
+                          : () => context.pushNamed(AppRouter.password.name!),
+                    );
+                  },
+                ),
+              ],
             ),
             const SizedBox(height: AppThemes.height * 2),
             // Proceed button

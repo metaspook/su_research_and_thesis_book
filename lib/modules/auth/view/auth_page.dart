@@ -22,14 +22,7 @@ class AuthPage extends StatelessWidget {
   Widget build(BuildContext context) {
     const tabBar = TabBar(
       splashBorderRadius: AppThemes.borderRadius,
-      tabs: [
-        ClipRRect(
-          clipBehavior: Clip.hardEdge,
-          borderRadius: AppThemes.bottomRadius,
-          child: Tab(text: 'Sign in'),
-        ),
-        Tab(text: 'Sign up'),
-      ],
+      tabs: [Tab(text: 'Sign in'), Tab(text: 'Sign up')],
     );
 
     return DefaultTabController(
