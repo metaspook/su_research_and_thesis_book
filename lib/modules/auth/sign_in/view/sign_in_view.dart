@@ -102,7 +102,31 @@ class _SignInViewState extends State<SignInView> {
                 );
               },
             ),
-            const SizedBox(height: AppThemes.height * 4),
+            const SizedBox(height: AppThemes.height * 1.5),
+            // Remember me
+            SignInBlocSelector<bool>(
+              selector: (state) => state.rememberMe,
+              builder: (context, rememberMe) {
+                return GestureDetector(
+                  onTap: () => bloc.add(const SignInRememberMeToggled()),
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        visualDensity: const VisualDensity(
+                          horizontal: VisualDensity.minimumDensity,
+                          vertical: VisualDensity.minimumDensity,
+                        ),
+                        value: rememberMe,
+                        onChanged: (_) =>
+                            bloc.add(const SignInRememberMeToggled()),
+                      ),
+                      const Text('Remember me'),
+                    ],
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: AppThemes.height * 2),
             // Proceed button
             SignInBlocConsumer(
               listenWhen: (previous, current) => current.status.hasMessage,

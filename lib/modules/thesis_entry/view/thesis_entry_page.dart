@@ -80,6 +80,31 @@ class ThesisEntryPage extends StatelessWidget {
                   ),
                   const SizedBox(height: AppThemes.height * 2),
                   // Thesis View
+                  DropdownButtonFormField<String>(
+                    dropdownColor:
+                        context.theme.colorScheme.background.withOpacity(.75),
+                    decoration: const InputDecoration(
+                      label: Text('Department'),
+                      filled: true,
+                      border: AppThemes.outlineInputBorder,
+                    ),
+                    borderRadius: AppThemes.borderRadius,
+                    // hint: const Text('role...'),
+                    onChanged: (role) {},
+                    items: [
+                      for (final role in [
+                        'Computer Science',
+                        'Electrical',
+                        'Electronics',
+                      ])
+                        DropdownMenuItem<String>(
+                          value: role,
+                          child: Text(role),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: AppThemes.height * 2),
+                  // Thesis Preview
                   ThesisEntryBlocSelector<String>(
                     selector: (state) => state.pdfPath,
                     builder: (context, pdfPath) {

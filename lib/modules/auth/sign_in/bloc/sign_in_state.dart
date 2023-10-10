@@ -19,6 +19,7 @@ final class SignInState extends Equatable {
     this.email = '',
     this.password = '',
     this.obscurePassword = true,
+    this.rememberMe = false,
   });
 
   final SignInStatus status;
@@ -26,6 +27,7 @@ final class SignInState extends Equatable {
   final String email;
   final String password;
   final bool obscurePassword;
+  final bool rememberMe;
 
   SignInState copyWith({
     SignInStatus? status,
@@ -33,6 +35,7 @@ final class SignInState extends Equatable {
     String? email,
     String? password,
     bool? obscurePassword,
+    bool? rememberMe,
   }) {
     return SignInState(
       status: status ?? this.status,
@@ -40,17 +43,12 @@ final class SignInState extends Equatable {
       email: email ?? this.email,
       password: password ?? this.password,
       obscurePassword: obscurePassword ?? this.obscurePassword,
+      rememberMe: rememberMe ?? this.rememberMe,
     );
   }
 
   @override
   List<Object> get props {
-    return [
-      status,
-      statusMsg,
-      email,
-      password,
-      obscurePassword,
-    ];
+    return [status, statusMsg, email, password, obscurePassword, rememberMe];
   }
 }

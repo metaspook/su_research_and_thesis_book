@@ -31,14 +31,16 @@ extension CallableWidgetExt on BuildContext {
       : null;
   Widget sliverAppBar(
     String title, {
-    List<Widget>? actions,
     bool centerTitle = true,
+    PreferredSizeWidget? bottom,
+    List<Widget>? actions,
   }) =>
       SliverAppBar(
         pinned: true,
-        centerTitle: centerTitle,
         leading: backButton(),
+        centerTitle: centerTitle,
         title: Text(title),
+        bottom: bottom,
         actions: actions,
       );
 }
@@ -48,7 +50,7 @@ extension PreferredSizeExt on Widget {
   /// Converts to a preferredSizeWidget. If size null, value fallback to Size.fromHeight(kToolbarHeight).
   PreferredSize toPreferredSize(Size? size) => PreferredSize(
         preferredSize: size ?? const Size.fromHeight(kToolbarHeight),
-        child: this,
+        child: ClipRRect(child: this),
       );
 }
 

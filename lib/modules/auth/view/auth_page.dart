@@ -20,22 +20,32 @@ class AuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const tabBar = TabBar(tabs: [Tab(text: 'Sign in'), Tab(text: 'Sign up')]);
+    const tabBar = TabBar(
+      splashBorderRadius: AppThemes.borderRadius,
+      tabs: [
+        ClipRRect(
+          clipBehavior: Clip.hardEdge,
+          borderRadius: AppThemes.bottomRadius,
+          child: Tab(text: 'Sign in'),
+        ),
+        Tab(text: 'Sign up'),
+      ],
+    );
 
     return DefaultTabController(
       length: tabBar.tabs.length,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Authentication 🔐'),
-          // centerTitle: true,
-          // ClipRRect to match the border radius wth AppBar
-          bottom: const ClipRRect(
-            borderRadius: AppThemes.topRadius,
-            child: tabBar,
-          ).toPreferredSize(tabBar.preferredSize),
-        ),
-        body: const TabBarView(
-          children: [SignInView(), SignUpView()],
+        body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            context.sliverAppBar(
+              'Authentication 🔐',
+              centerTitle: false,
+              bottom: tabBar,
+            ),
+          ],
+          body: const TabBarView(
+            children: [SignInView(), SignUpView()],
+          ),
         ),
       ),
     );

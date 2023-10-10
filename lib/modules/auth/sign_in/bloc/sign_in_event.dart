@@ -21,6 +21,10 @@ final class SignInObscurePasswordToggled extends SignInEvent {
   const SignInObscurePasswordToggled();
 }
 
+final class SignInRememberMeToggled extends SignInEvent {
+  const SignInRememberMeToggled();
+}
+
 final class SignInProceeded extends SignInEvent {
   const SignInProceeded();
 }
