@@ -26,6 +26,7 @@ class AuthPage extends StatelessWidget {
     );
 
     return DefaultTabController(
+      initialIndex: 1,
       length: tabBar.tabs.length,
       child: Scaffold(
         body: NestedScrollView(

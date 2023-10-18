@@ -20,7 +20,10 @@ class App extends StatelessWidget {
           create: (context) => AppUserRepo(),
         ),
         RepositoryProvider<RoleRepo>(
-          create: (context) => const RoleRepo(),
+          create: (context) => RoleRepo(),
+        ),
+        RepositoryProvider<DepartmentRepo>(
+          create: (context) => DepartmentRepo(),
         ),
       ],
       child: BlocProvider<AppCubit>(

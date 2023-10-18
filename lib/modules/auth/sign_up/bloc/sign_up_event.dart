@@ -14,6 +14,7 @@ final class SignUpEdited extends SignUpEvent {
     this.password,
     this.phone,
     this.role,
+    this.department,
   });
 
   final String? name;
@@ -21,9 +22,10 @@ final class SignUpEdited extends SignUpEvent {
   final String? password;
   final String? phone;
   final String? role;
+  final String? department;
 
   @override
-  List<Object?> get props => [name, email, password, phone, role];
+  List<Object?> get props => [name, email, password, phone, role, department];
 }
 
 final class SignUpPhotoPicked extends SignUpEvent {

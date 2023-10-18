@@ -40,3 +40,8 @@ String get timestamp => DateTime.timestamp().toString();
 /// A minimalistic in-memory cache service.
 /// * Value type will be `Object?` if not specify in place of `T`.
 Map<String, T> cacheService<T extends Object?>() => <String, T>{};
+
+// Map<String, dynamic> sortMapByKeys(Map<String, dynamic> unsortedMap) {
+//   var sortedMap = SplayTreeMap<String, dynamic>.from(unsortedMap);
+//   return sortedMap;
+// }

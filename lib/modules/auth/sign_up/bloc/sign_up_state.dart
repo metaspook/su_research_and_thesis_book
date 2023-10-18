@@ -22,6 +22,8 @@ final class SignUpState extends Equatable {
     this.phone = '',
     this.role = '',
     this.roles = const <String>[],
+    this.department = '',
+    this.departments = const <String>[],
     this.photoPath = '',
     this.obscurePassword = true,
   });
@@ -34,8 +36,8 @@ final class SignUpState extends Equatable {
   final String phone;
   final String role;
   final List<String> roles;
-  // final String department;
-  // final List<String> departments;
+  final String department;
+  final List<String> departments;
   final String photoPath;
   final bool obscurePassword;
 
@@ -48,6 +50,8 @@ final class SignUpState extends Equatable {
     String? phone,
     String? role,
     List<String>? roles,
+    String? department,
+    List<String>? departments,
     String? photoPath,
     bool? obscurePassword,
   }) {
@@ -60,6 +64,8 @@ final class SignUpState extends Equatable {
       phone: phone ?? this.phone,
       role: role ?? this.role,
       roles: roles ?? this.roles,
+      department: department ?? this.department,
+      departments: departments ?? this.departments,
       photoPath: photoPath ?? this.photoPath,
       obscurePassword: obscurePassword ?? this.obscurePassword,
     );
@@ -76,6 +82,8 @@ final class SignUpState extends Equatable {
       phone,
       role,
       roles,
+      department,
+      departments,
       photoPath,
       obscurePassword,
     ];

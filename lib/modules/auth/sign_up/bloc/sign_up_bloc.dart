@@ -10,9 +10,11 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     required AuthRepo authRepo,
     required AppUserRepo appUserRepo,
     required RoleRepo roleRepo,
+    required DepartmentRepo departmentRepo,
   })  : _authRepo = authRepo,
         _appUserRepo = appUserRepo,
         _roleRepo = roleRepo,
+        _departmentRepo = departmentRepo,
         super(const SignUpState()) {
     //-- Register Event Handlers
     on<SignUpEdited>(_onEdited);
@@ -20,11 +22,14 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<SignUpProceeded>(_onProceeded);
     on<SignUpObscurePasswordToggled>(_onObscurePasswordToggled);
     on<SignUpFormLoaded>(_onFormLoaded);
+    //-- Initial Event Handlers
+    add(const SignUpFormLoaded());
   }
 
   final AuthRepo _authRepo;
   final AppUserRepo _appUserRepo;
   final RoleRepo _roleRepo;
+  final DepartmentRepo _departmentRepo;
 
   //-- Define Event Handlers
   Future<void> _onEdited(
@@ -39,6 +44,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         password: event.password,
         phone: event.phone,
         role: event.role,
+        department: event.department,
       ),
     );
   }
@@ -58,13 +64,19 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   ) async {
     emit(state.copyWith(status: SignUpStatus.loading));
     final rolesRecord = await _roleRepo.roles;
-    final errorMsg = rolesRecord.$1;
-    if (rolesRecord.roles.isEmpty) {
-      emit(state.copyWith(status: SignUpStatus.failure, statusMsg: errorMsg));
-    } else {
+    final departmentsRecord = await _departmentRepo.departments;
+    final errorMsg = rolesRecord.$1 ?? departmentsRecord.$1;
+
+    if (errorMsg == null) {
       emit(
-        state.copyWith(roles: rolesRecord.roles, status: SignUpStatus.initial),
+        state.copyWith(
+          status: SignUpStatus.initial,
+          roles: rolesRecord.roles,
+          departments: departmentsRecord.departments,
+        ),
       );
+    } else {
+      emit(state.copyWith(status: SignUpStatus.failure, statusMsg: errorMsg));
     }
   }
 

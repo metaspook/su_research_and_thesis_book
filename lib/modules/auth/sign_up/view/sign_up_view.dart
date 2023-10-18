@@ -153,6 +153,27 @@ class _SignUpViewState extends State<SignUpView> {
                 );
               },
             ),
+            // Department
+            SignUpBlocSelector<List<String>>(
+              selector: (state) => state.departments,
+              builder: (context, departments) {
+                return DropdownButtonFormField<String>(
+                  dropdownColor:
+                      context.theme.colorScheme.background.withOpacity(.75),
+                  borderRadius: AppThemes.borderRadius,
+                  hint: const Text('department...'),
+                  onChanged: (department) =>
+                      bloc.add(SignUpEdited(department: department)),
+                  items: [
+                    for (final department in departments)
+                      DropdownMenuItem<String>(
+                        value: department,
+                        child: Text(department),
+                      ),
+                  ],
+                );
+              },
+            ),
             const SizedBox(height: AppThemes.height * 4),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
