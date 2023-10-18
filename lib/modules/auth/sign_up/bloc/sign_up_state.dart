@@ -34,6 +34,8 @@ final class SignUpState extends Equatable {
   final String phone;
   final String role;
   final List<String> roles;
+  // final String department;
+  // final List<String> departments;
   final String photoPath;
   final bool obscurePassword;
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
 import 'package:su_thesis_book/router/router.dart';
+import 'package:su_thesis_book/shared/repositories/repositories.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 import 'package:su_thesis_book/utils/utils.dart';
@@ -43,6 +44,8 @@ class _SignInViewState extends State<SignInView> {
 
   @override
   Widget build(BuildContext context) {
+    FacultiesRepo().faculties.then(print);
+
     final bloc = context.read<SignInBloc>();
     final isLoading = context
         .select((SignInBloc bloc) => bloc.state.status == SignInStatus.loading);
@@ -139,7 +142,8 @@ class _SignInViewState extends State<SignInView> {
                       label: const Text('Forget Password'),
                       onPressed: email.isEmpty
                           ? null
-                          : () => context.pushNamed(AppRouter.password.name!),
+                          : () =>
+                              context.pushNamed(AppRouter.passwordReset.name!),
                     );
                   },
                 ),

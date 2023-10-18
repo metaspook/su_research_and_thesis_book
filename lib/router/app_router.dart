@@ -11,7 +11,7 @@ final class AppRouter {
             profile,
             bookmarks,
             thesisEntry,
-            password
+            passwordReset,
           ],
           initialLocation: initialLocation,
           // navigatorKey: navigatorKey,
@@ -54,7 +54,6 @@ final class AppRouter {
     name: 'auth',
     path: '/auth',
     // redirect: _redirect,
-    // routes: <RouteBase>[password],
     builder: (context, state) {
       return MultiBlocProvider(
         providers: [
@@ -161,7 +160,7 @@ final class AppRouter {
   // Thesis Entry
   static final thesisEntry = GoRoute(
     name: 'thesisEntry',
-    path: '/thesisEntry',
+    path: '/thesis_entry',
     builder: (context, state) {
       'Current Route: ${state.fullPath}'.doPrint();
       return RepositoryProvider<ThesisRepo>(
@@ -177,18 +176,18 @@ final class AppRouter {
   );
 
   // Thesis Entry
-  static final password = GoRoute(
-    name: 'password',
-    path: '/auth/password',
+  static final passwordReset = GoRoute(
+    name: 'passwordReset',
+    path: '/password_reset',
     builder: (context, state) {
       'Current Route: ${state.fullPath}'.doPrint();
       return RepositoryProvider<AuthRepo>(
         create: (context) => const AuthRepo(),
-        child: BlocProvider<PasswordBloc>(
-          create: (context) => PasswordBloc(
+        child: BlocProvider<PasswordResetBloc>(
+          create: (context) => PasswordResetBloc(
             authRepo: context.read<AuthRepo>(),
           ),
-          child: const PasswordPage(),
+          child: const PasswordResetPage(),
         ),
       );
     },

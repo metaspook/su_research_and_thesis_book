@@ -56,6 +56,23 @@ class AuthRepo {
     return null;
   }
 
+  Future<String?> forgotPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      final errorMsg = const <String, String>{
+        'weak-password': "Password isn't strong enough!",
+        'requires-recent-login':
+            'Recent Sign-in required! Please sign out then in again.',
+      }[e.code];
+      return errorMsg;
+    } catch (e, s) {
+      log(_errorMsgUpdatePassword, error: e, stackTrace: s);
+      return _errorMsgUpdatePassword;
+    }
+    return null;
+  }
+
   Future<String?> signIn({
     required String email,
     required String password,
