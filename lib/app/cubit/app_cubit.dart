@@ -8,23 +8,22 @@ import 'package:su_thesis_book/utils/utils.dart';
 
 part 'app_state.dart';
 
-class AppCubit extends Cubit<AppState> {
+class AppCubit extends HydratedCubit<AppState> {
   AppCubit({required AuthRepo authRepo, required AppUserRepo appUserRepo})
       : _authRepo = authRepo,
         _appUserRepo = appUserRepo,
-        super(const AppState.unauthenticated()) {
+        super(const AppState()) {
     //-- Initialize Authentication.
     _userSubscription = _authRepo.userStream.listen((user) async {
       // Check authUser from stream.
       if (user != null) {
         // Get appUser by authUser's id.
         final appUserRecord = await _appUserRepo.read(user.uid);
-
         final errorMsg = appUserRecord.$1;
         final appUser = appUserRecord.object;
         if (appUser.isNotEmpty) {
           'user: $user'.doPrint();
-          emit(AppState.authenticated(appUser));
+          emit(AppState(status: AppStatus.authenticated, user: appUser));
         } else {
           emit(state.copyWith(statusMsg: errorMsg));
           // Sign out authUser because user data not found.
@@ -44,6 +43,20 @@ class AppCubit extends Cubit<AppState> {
   final AuthRepo _authRepo;
   final AppUserRepo _appUserRepo;
   late final StreamSubscription<User?> _userSubscription;
+
+  void onGetStarted() {
+    emit(state.copyWith(firstLaunch: false));
+  }
+
+  @override
+  AppState? fromJson(Map<String, dynamic> json) {
+    return AppState.fromJson(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(AppState state) {
+    return state.toJson();
+  }
 
   @override
   Future<void> close() {

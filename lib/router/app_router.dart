@@ -15,6 +15,13 @@ final class AppRouter {
           ],
           initialLocation: initialLocation,
           // navigatorKey: navigatorKey,
+          // redirect: (context, state) {
+          //   // AppStatus prevStatus;
+          //   final status = context.watch<AppCubit>().state.status;
+          //   'Path: ${state.path}, isAuthenticated: ${status.isAuthenticated}'
+          //       .doPrint();
+          //   return status.isAuthenticated ? null : '/auth';
+          // },
         );
 
   // final GlobalKey<NavigatorState>? navigatorKey;
@@ -66,8 +73,6 @@ final class AppRouter {
             create: (context) => SignUpBloc(
               authRepo: context.read<AuthRepo>(),
               appUserRepo: context.read<AppUserRepo>(),
-              roleRepo: context.read<RoleRepo>(),
-              departmentRepo: context.read<DepartmentRepo>(),
             ),
           ),
         ],
@@ -183,7 +188,7 @@ final class AppRouter {
     builder: (context, state) {
       'Current Route: ${state.fullPath}'.doPrint();
       return RepositoryProvider<AuthRepo>(
-        create: (context) => const AuthRepo(),
+        create: (context) => AuthRepo(),
         child: BlocProvider<PasswordResetBloc>(
           create: (context) => PasswordResetBloc(
             authRepo: context.read<AuthRepo>(),

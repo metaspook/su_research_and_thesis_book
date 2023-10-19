@@ -7,15 +7,13 @@ export 'package:firebase_auth/firebase_auth.dart'
     show AuthCredential, User, UserCredential;
 
 class AuthRepo {
-  const AuthRepo();
-
   //-- Config
-  static final _auth = FirebaseAuth.instance;
-  static const _errorMsgSignIn = "Couldn't sign-in the user!";
-  static const _errorMsgSignUp = "Couldn't sign-up the user!";
-  static const _errorMsgSignOut = "Couldn't sign-out the user!";
-  static const _errorMsgUpdateEmail = "Couldn't update the user email!";
-  static const _errorMsgUpdatePassword = "Couldn't update the user password!";
+  final _auth = FirebaseAuth.instance;
+  final _errorMsgSignIn = "Couldn't sign-in the user!";
+  final _errorMsgSignUp = "Couldn't sign-up the user!";
+  final _errorMsgSignOut = "Couldn't sign-out the user!";
+  final _errorMsgUpdateEmail = "Couldn't update the user email!";
+  final _errorMsgUpdatePassword = "Couldn't update the user password!";
 
   //-- Public APIs
   Stream<User?> get userStream => _auth.authStateChanges();
@@ -107,7 +105,7 @@ class AuthRepo {
     return null;
   }
 
-  Future<(String?, {String? userId})> signUp({
+  Future<({String? errorMsg, String? userId})> signUp({
     required String email,
     required String password,
   }) async {
@@ -119,7 +117,7 @@ class AuthRepo {
           .user
           ?.uid;
 
-      return (null, userId: userId);
+      return (errorMsg: null, userId: userId);
     } on FirebaseAuthException catch (e) {
       final errorMsg = const <String, String>{
         'email-already-in-use': "This email's user already exists!",
@@ -127,10 +125,10 @@ class AuthRepo {
         'operation-not-allowed': "Email/password accounts aren't enabled!",
         'weak-password': "Password isn't strong enough!",
       }[e.code];
-      return (errorMsg, userId: null);
+      return (errorMsg: errorMsg, userId: null);
     } catch (e, s) {
       log(_errorMsgSignUp, error: e, stackTrace: s);
-      return (_errorMsgSignUp, userId: null);
+      return (errorMsg: _errorMsgSignUp, userId: null);
     }
   }
 }

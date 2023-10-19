@@ -9,20 +9,68 @@ import 'package:su_thesis_book/utils/utils.dart';
 
 class AppUserRepo implements CrudAbstract<AppUser> {
   //-- Config
+  final _cache = cacheService<List<String>>();
   final _db = FirebaseDatabase.instance.ref('users');
-  final _dbRoles = FirebaseDatabase.instance.ref('roles');
   final _storage = FirebaseStorage.instance.ref('photos');
   final _errorMsgCreate = "Couldn't create the User!";
   final _errorMsgRead = "Couldn't read the User data!";
   final _errorMsgUpdate = "Couldn't update the User!";
   final _errorMsgDelete = "Couldn't delete the User!";
   final _errorMsgNotFound = 'User data not found!';
-  final _errorMsgRole = "Couldn't get role of the index!";
   final _errorMsgUserPhoto = "Couldn't upload the User photo!";
+  // - Roles Config
+  final _dbRoles = FirebaseDatabase.instance.ref('roles');
+  final _errorMsgRoleNotFound = 'User role not found!';
+  final _errorMsgRolesNotFound = 'User roles not found!';
+  final _errorMsgRoleIndex = "Couldn't get index of the role!";
+  final _errorMsgRole = "Couldn't get role of the index!";
+  final _errorMsgRoles = "Couldn't get the user roles!";
+  // - Departments Config
+  final _dbDepartments = FirebaseDatabase.instance.ref('departments');
+  final _errorMsgDepartmentNotFound = 'User department not found!';
+  final _errorMsgDepartmentsNotFound = 'User departments not found!';
+  final _errorMsgDepartmentIndex = "Couldn't get index of the department!";
+  final _errorMsgDepartment = "Couldn't get department of the index!";
+  final _errorMsgDepartments = "Couldn't get the user departments!";
 
   //-- Public APIs
+  /// Get user roles.
+  Future<({String? errorMsg, List<String>? roles})> get roles async {
+    String? errorMsg;
+    if ((_cache['roles'] ?? []).isEmpty) {
+      try {
+        final rolesObj = (await _dbRoles.get()).value;
+        rolesObj != null
+            ? _cache['roles'] = rolesObj.toList<String>()
+            : errorMsg = _errorMsgRolesNotFound;
+      } catch (e, s) {
+        log(_errorMsgRoles, error: e, stackTrace: s);
+        errorMsg = _errorMsgRoles;
+      }
+    }
+    return (errorMsg: errorMsg, roles: _cache['roles']);
+  }
+
+  /// Get user departments.
+  Future<({String? errorMsg, List<String>? departments})>
+      get departments async {
+    String? errorMsg;
+    if ((_cache['departments'] ?? []).isEmpty) {
+      try {
+        final departmentsObj = (await _dbDepartments.get()).value;
+        departmentsObj != null
+            ? _cache['departments'] = departmentsObj.toList<String>()
+            : errorMsg = _errorMsgDepartmentsNotFound;
+      } catch (e, s) {
+        log(_errorMsgDepartments, error: e, stackTrace: s);
+        errorMsg = _errorMsgDepartments;
+      }
+    }
+    return (errorMsg: errorMsg, departments: _cache['departments']);
+  }
+
   /// Upload user photo to Storage and get URL.
-  Future<(String?, {String? photoUrl})> uploadPhoto(
+  Future<({String? errorMsg, String? photoUrl})> uploadPhoto(
     String path, {
     required String userId,
   }) async {
@@ -30,10 +78,10 @@ class AppUserRepo implements CrudAbstract<AppUser> {
       final storageRef = _storage.child('$userId.jpg');
       await storageRef.putFile(File(path));
       final photoUrl = await storageRef.getDownloadURL();
-      return (null, photoUrl: photoUrl);
+      return (errorMsg: null, photoUrl: photoUrl);
     } catch (e, s) {
       log(_errorMsgUserPhoto, error: e, stackTrace: s);
-      return (_errorMsgUserPhoto, photoUrl: null);
+      return (errorMsg: _errorMsgUserPhoto, photoUrl: null);
     }
   }
 
@@ -45,19 +93,8 @@ class AppUserRepo implements CrudAbstract<AppUser> {
   @override
   Future<String?> create(String userId, {required Json value}) async {
     try {
-      // Upload user photo to storage.
-      final uploadRecord =
-          await uploadPhoto(value['photoPath']! as String, userId: userId);
-      final errorMsg = uploadRecord.$1;
-      if (errorMsg != null) return errorMsg;
       // Upload user data to DB.
-      await _db.child(userId).set({
-        'name': value['name'],
-        'email': value['email'],
-        'roleIndex': value['roleIndex'],
-        'phone': value['phone'],
-        'photoUrl': uploadRecord.photoUrl,
-      });
+      await _db.child(userId).set(value);
     } catch (e, s) {
       log(_errorMsgCreate, error: e, stackTrace: s);
       return _errorMsgCreate;

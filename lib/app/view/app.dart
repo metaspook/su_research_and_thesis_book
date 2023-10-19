@@ -14,16 +14,10 @@ class App extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AuthRepo>(
-          create: (context) => const AuthRepo(),
+          create: (context) => AuthRepo(),
         ),
         RepositoryProvider<AppUserRepo>(
           create: (context) => AppUserRepo(),
-        ),
-        RepositoryProvider<RoleRepo>(
-          create: (context) => RoleRepo(),
-        ),
-        RepositoryProvider<DepartmentRepo>(
-          create: (context) => DepartmentRepo(),
         ),
       ],
       child: BlocProvider<AppCubit>(
@@ -44,6 +38,8 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // NOTE: This approach is experimental instead of redirection from router.
+    // need see which one is performant and stable.
     final isAuthenticated =
         context.select((AppCubit cubit) => cubit.state.status.isAuthenticated);
     final initialLocation =

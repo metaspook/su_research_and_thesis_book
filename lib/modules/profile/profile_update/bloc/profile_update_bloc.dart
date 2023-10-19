@@ -88,14 +88,14 @@ class ProfileUpdateBloc extends Bloc<ProfileUpdateEvent, ProfileUpdateState> {
         // Upload updated user photo to storage.
         final uploadRecord =
             await _appUserRepo.uploadPhoto(state.photoPath, userId: userId);
-        final errorMsg = uploadRecord.$1;
-        if (errorMsg == null) {
+
+        if (uploadRecord.errorMsg == null) {
           userData.addAll({'photoUrl': uploadRecord.photoUrl});
         } else {
           emit(
             state.copyWith(
               status: ProfileUpdateStatus.failure,
-              statusMsg: errorMsg,
+              statusMsg: uploadRecord.errorMsg,
             ),
           );
         }
