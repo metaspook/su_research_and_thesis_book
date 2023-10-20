@@ -37,6 +37,7 @@ class ProfileView extends StatelessWidget {
                       'E-mail': user?.email.toStringParseNull(),
                       'Phone': user?.phone.toStringParseNull(),
                       'Role': user?.role.toStringParseNull(),
+                      'Department': user?.department.toStringParseNull(),
                     }.entries)
                       TextFormField(
                         initialValue: e.value,

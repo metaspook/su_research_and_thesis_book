@@ -102,24 +102,30 @@ class AppUserRepo implements CrudAbstract<AppUser> {
     return null;
   }
 
-  /// Get user role by index.
-  Future<String?> roleByIndex(int index) async {
-    final roleObj = (await _dbRoles.child('$index').get()).value;
-    return roleObj?.toString();
-  }
-
   /// Convert database snapshot to model with logic specified .
   Future<AppUser?> snapshotToModel(DataSnapshot snapshot) async {
     final userMap = snapshot.value?.toJson();
-    final userRoleIndex = userMap?['roleIndex'] as int?;
-    if (userMap == null || userRoleIndex == null) return null;
-    final userRole = await roleByIndex(userRoleIndex);
-    final userJson = <String, Object?>{
-      'id': snapshot.key,
-      ...userMap,
-      'role': userRole,
-    };
-    return AppUser.fromJson(userJson);
+
+    if (userMap != null) {
+      final roleIndex = userMap['roleIndex'] as int?;
+      final departmentIndex = userMap['departmentIndex'] as int?;
+
+      if (roleIndex != null && departmentIndex != null) {
+        final userRoles = (await roles).roles;
+        final userDepartments = (await departments).departments;
+
+        if (userRoles != null && userDepartments != null) {
+          final userJson = <String, Object?>{
+            'id': snapshot.key,
+            ...userMap,
+            'role': userRoles[roleIndex],
+            'department': userDepartments[departmentIndex],
+          };
+          return AppUser.fromJson(userJson);
+        }
+      }
+    }
+    return null;
   }
 
   /// Read user data from database.
@@ -127,8 +133,7 @@ class AppUserRepo implements CrudAbstract<AppUser> {
   Future<(String?, {AppUser object})> read(String userId) async {
     try {
       // Download user data from DB.
-      final snapshot = await _db.child(userId).get();
-      final appUser = await snapshotToModel(snapshot);
+      final appUser = await _db.child(userId).get().then(snapshotToModel);
       if (appUser == null) return (_errorMsgNotFound, object: AppUser.empty);
       return (null, object: appUser);
     } catch (e, s) {

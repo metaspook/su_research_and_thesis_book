@@ -11,9 +11,7 @@ class AppUser extends Equatable {
     required this.id,
     this.name,
     this.role,
-    this.roleIndex,
     this.department,
-    this.departmentIndex,
     this.email,
     this.phone,
     this.photoUrl,
@@ -24,9 +22,7 @@ class AppUser extends Equatable {
       id: json['id']! as String,
       name: json['name'] as String?,
       role: json['role'] as String?,
-      roleIndex: json['roleIndex'] as int?,
       department: json['department'] as String?,
-      departmentIndex: json['departmentIndex'] as int?,
       email: json['email'] as String?,
       phone: json['phone'] as String?,
       photoUrl: json['photoUrl'] as String?,
@@ -35,9 +31,7 @@ class AppUser extends Equatable {
 
   final String id;
   final String? role;
-  final int? roleIndex;
   final String? department;
-  final int? departmentIndex;
   final String? name;
   final String? email;
   final String? phone;
@@ -53,9 +47,7 @@ class AppUser extends Equatable {
       'id': id,
       'name': name,
       'role': role,
-      'roleIndex': roleIndex,
       'department': role,
-      'departmentIndex': roleIndex,
       'email': email,
       'phone': phone,
       'photoUrl': photoUrl,
@@ -67,9 +59,7 @@ class AppUser extends Equatable {
         id,
         name,
         role,
-        roleIndex,
         department,
-        departmentIndex,
         email,
         phone,
         photoUrl,
