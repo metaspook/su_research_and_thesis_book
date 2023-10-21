@@ -138,8 +138,6 @@ class _SignUpViewState extends State<SignUpView> {
               selector: (state) => state.roles,
               builder: (context, roles) {
                 return DropdownButtonFormField<String>(
-                  dropdownColor:
-                      context.theme.colorScheme.background.withOpacity(.75),
                   borderRadius: AppThemes.borderRadius,
                   hint: const Text('role...'),
                   onChanged: (role) => bloc.add(SignUpEdited(role: role)),

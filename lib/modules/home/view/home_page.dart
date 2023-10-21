@@ -6,7 +6,7 @@ import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
 // typedef HomeBlocSelector<T> = BlocSelector<HomeCubit, HomeState, T>;
-// typedef ThesesBlocSelector<T> = BlocSelector<ThesesCubit, ThesesState, T>;
+typedef ThesesBlocSelector<T> = BlocSelector<ThesesCubit, ThesesState, T>;
 typedef ThesesBlocListener = BlocListener<ThesesCubit, ThesesState>;
 
 class HomePage extends StatelessWidget {

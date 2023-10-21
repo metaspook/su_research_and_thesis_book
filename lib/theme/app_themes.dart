@@ -62,20 +62,13 @@ sealed class AppThemes {
         backgroundColor: colorScheme.primary.withOpacity(.375),
         textStyle: const TextStyle(fontWeight: FontWeight.w400),
       ),
+      // DropdownMenu Theme
+      // dropdownMenuTheme: const DropdownMenuThemeData(
+      //   inputDecorationTheme: InputDecorationTheme(filled: true),
+      // ),
       // ListTile Theme
       listTileTheme: ListTileThemeData(
         selectedTileColor: colorScheme.outlineVariant,
-      ),
-      // DropdownMenu Theme
-      dropdownMenuTheme: DropdownMenuThemeData(
-        inputDecorationTheme: const InputDecorationTheme(filled: true),
-        menuStyle: MenuStyle(
-          visualDensity: VisualDensity.compact,
-          backgroundColor: const MaterialStatePropertyAll(Colors.black),
-          shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-          ),
-        ),
       ),
     );
 
@@ -91,6 +84,8 @@ sealed class AppThemes {
             themeData.snackBarTheme.backgroundColor?.withOpacity(.25),
         behavior: SnackBarBehavior.floating,
       ),
+      // Canvas Color (linked to dropdownColor etc.)
+      canvasColor: themeData.colorScheme.background.withOpacity(.75),
     );
   }
 

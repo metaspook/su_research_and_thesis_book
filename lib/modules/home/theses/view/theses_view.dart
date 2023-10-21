@@ -11,8 +11,10 @@ class ThesesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theses = context.select((HomeCubit cubit) => cubit.state.theses);
+    final isLoading =
+        context.select((ThesesCubit cubit) => cubit.state.status.isLoading);
     // Handle Null and Empty cases.
-    if (theses == null) return const TranslucentLoader();
+    if (theses == null || isLoading) return const TranslucentLoader();
     if (theses.isEmpty) return context.emptyListText();
     // Handle search query string.
     final search = context.select((ThesesCubit cubit) => cubit.state.search);

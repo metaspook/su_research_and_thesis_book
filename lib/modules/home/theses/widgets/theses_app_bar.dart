@@ -32,35 +32,70 @@ class _ThesesAppBarState extends State<ThesesAppBar> {
 
     return context.sliverAppBar(
       l10n.thesesAppBarTitle,
-      actions: [
-        if (searchMode)
+      bottom: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
           Flexible(
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 4.5,
                 vertical: 6,
               ),
-              child: SearchBar(
-                onChanged: cubit.onChangedSearch,
-                elevation: const MaterialStatePropertyAll(0),
-                hintText: 'Search here...',
-                shape: const MaterialStatePropertyAll(
-                  RoundedRectangleBorder(
-                    borderRadius: AppThemes.borderRadius,
-                  ),
-                ),
-              ),
+              child: searchMode
+                  ? SearchBar(
+                      onChanged: cubit.onChangedSearch,
+                      elevation: const MaterialStatePropertyAll(0),
+                      hintText: 'Search here...',
+                      shape: const MaterialStatePropertyAll(
+                        RoundedRectangleBorder(
+                          borderRadius: AppThemes.borderRadius,
+                        ),
+                      ),
+                    )
+                  : ThesesBlocSelector<List<String>?>(
+                      selector: (state) => state.departments,
+                      builder: (context, departments) {
+                        final department = context.select(
+                          (ThesesCubit cubit) => cubit.state.department,
+                        );
+                        final departmentAll = const ThesesState().department;
+
+                        return DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            padding: AppThemes.viewPadding,
+                            value: department,
+                            borderRadius: AppThemes.borderRadius,
+                            hint: const Text('department...'),
+                            menuMaxHeight: context.mediaQuery.size.height * .5,
+                            items: [
+                              DropdownMenuItem(
+                                value: departmentAll,
+                                child: Text(departmentAll),
+                              ),
+                              if (departments != null)
+                                for (final department in departments)
+                                  DropdownMenuItem(
+                                    value: department,
+                                    child: Text(department),
+                                  ),
+                            ],
+                            onChanged: cubit.onChangedDepartment,
+                          ),
+                        );
+                      },
+                    ),
             ),
           ),
-        IconButton(
-          padding: EdgeInsets.zero,
-          onPressed: cubit.toggleSearch,
-          iconSize: kToolbarHeight * .575,
-          icon: Icon(
-            searchMode ? Icons.cancel_rounded : Icons.search_rounded,
+          IconButton(
+            padding: EdgeInsets.zero,
+            onPressed: cubit.toggleSearch,
+            iconSize: kToolbarHeight * .575,
+            icon: Icon(
+              searchMode ? Icons.cancel_rounded : Icons.search_rounded,
+            ),
           ),
-        ),
-      ],
+        ],
+      ).withToolbarHeight().toPreferredSize(),
     );
   }
 }

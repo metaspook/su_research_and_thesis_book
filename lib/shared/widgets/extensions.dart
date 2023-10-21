@@ -37,6 +37,8 @@ extension CallableWidgetExt on BuildContext {
   }) =>
       SliverAppBar(
         pinned: true,
+        floating: true,
+        // snap: true,
         leading: backButton(),
         centerTitle: centerTitle,
         title: Text(title),
@@ -48,10 +50,12 @@ extension CallableWidgetExt on BuildContext {
 /// PreferredSize Extensions.
 extension PreferredSizeExt on Widget {
   /// Converts to a preferredSizeWidget. If size null, value fallback to Size.fromHeight(kToolbarHeight).
-  PreferredSize toPreferredSize(Size? size) => PreferredSize(
+  PreferredSize toPreferredSize([Size? size]) => PreferredSize(
         preferredSize: size ?? const Size.fromHeight(kToolbarHeight),
         child: ClipRRect(child: this),
       );
+
+  Widget withToolbarHeight() => SizedBox(height: kToolbarHeight, child: this);
 }
 
 /// `requestFocus` Extensions.
