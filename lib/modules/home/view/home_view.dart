@@ -19,11 +19,6 @@ class HomeView extends StatelessWidget {
             : () => context.pushNamed(AppRouter.bookmarks.name!),
       ),
       (
-        label: 'Category',
-        icon: Icons.category_rounded,
-        onPressed: () {},
-      ),
-      (
         label: 'Publishers',
         icon: Icons.group_rounded,
         onPressed: () {},
@@ -34,6 +29,13 @@ class HomeView extends StatelessWidget {
         onPressed: () {},
       ),
       (
+        label: 'Thesis Entry',
+        icon: Icons.upload_file_rounded,
+        onPressed: AppRouter.thesisEntry.name == null
+            ? null
+            : () => context.pushNamed(AppRouter.thesisEntry.name!),
+      ),
+      (
         label: 'Profile',
         icon: Icons.person_rounded,
         onPressed: AppRouter.profile.name == null
@@ -41,7 +43,7 @@ class HomeView extends StatelessWidget {
             : () => context.pushNamed(AppRouter.profile.name!),
       ),
       (
-        label: 'Thesis Entry',
+        label: 'Research Entry',
         icon: Icons.upload_file_rounded,
         onPressed: AppRouter.thesisEntry.name == null
             ? null
@@ -53,11 +55,13 @@ class HomeView extends StatelessWidget {
       padding: AppThemes.verticalPadding * 2,
       children: [
         const ThesisCarousel(),
+        const SizedBox(height: AppThemes.height * 4.5),
+        const ProfileCarousel(),
         GridView.count(
-          padding: AppThemes.verticalPadding * 3,
+          padding: AppThemes.verticalPadding,
           shrinkWrap: true,
           crossAxisCount: 3,
-          childAspectRatio: 1.625,
+          childAspectRatio: 1.425,
           children: [
             for (var i = 0; i < iconButtonRecords.length; i++)
               IconButtonLabeled(
@@ -67,7 +71,6 @@ class HomeView extends StatelessWidget {
               ),
           ],
         ),
-        const ProfileCarousel(),
       ],
     );
   }

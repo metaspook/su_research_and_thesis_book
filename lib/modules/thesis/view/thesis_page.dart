@@ -20,6 +20,14 @@ class ThesisPage extends StatelessWidget {
         leading: context.backButton(),
         centerTitle: true,
         title: Text(thesis.name.toStringParseNull()),
+        actions: [
+          IconButton(
+            padding: EdgeInsets.zero,
+            // alignment: Alignment.center,
+            onPressed: () {},
+            icon: const Icon(Icons.download_rounded),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),

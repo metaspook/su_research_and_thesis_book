@@ -17,13 +17,19 @@ class HomePage extends StatelessWidget {
     final l10n = context.l10n;
     final viewRecords = [
       (
+        label: 'Theses',
+        icon: Icons.folder_rounded,
+        appBar: const ThesesAppBar(),
+        view: const ThesesView(),
+      ),
+      (
         label: 'Home',
         icon: Icons.home_rounded,
         appBar: context.sliverAppBar(l10n.homeAppBarTitle),
         view: const HomeView(),
       ),
       (
-        label: 'Theses',
+        label: 'Researches',
         icon: Icons.folder_rounded,
         appBar: const ThesesAppBar(),
         view: const ThesesView(),

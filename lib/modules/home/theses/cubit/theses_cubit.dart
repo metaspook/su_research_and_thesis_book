@@ -8,12 +8,14 @@ class ThesesCubit extends Cubit<ThesesState> {
   ThesesCubit({
     required AppUserRepo appUserRepo,
     required ThesisRepo thesisRepo,
+    required DepartmentRepo departmentRepo,
   })  : _appUserRepo = appUserRepo,
         _thesisRepo = thesisRepo,
+        _departmentRepo = departmentRepo,
         super(const ThesesState()) {
     //-- Initialize departments.
     emit(state.copyWith(status: ThesesStatus.loading));
-    _appUserRepo.departments.then(
+    _departmentRepo.departments.then(
       (departmentsRecord) => emit(
         state.copyWith(
           status: ThesesStatus.success,
@@ -25,6 +27,7 @@ class ThesesCubit extends Cubit<ThesesState> {
 
   final AppUserRepo _appUserRepo;
   final ThesisRepo _thesisRepo;
+  final DepartmentRepo _departmentRepo;
 
   void toggleSearch() {
     emit(state.copyWith(searchMode: !state.searchMode, search: ''));

@@ -32,15 +32,15 @@ class _ThesesAppBarState extends State<ThesesAppBar> {
 
     return context.sliverAppBar(
       l10n.thesesAppBarTitle,
-      bottom: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Flexible(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 4.5,
-                vertical: 6,
-              ),
+      bottom: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 4.5,
+          vertical: 6,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
               child: searchMode
                   ? SearchBar(
                       onChanged: cubit.onChangedSearch,
@@ -85,16 +85,16 @@ class _ThesesAppBarState extends State<ThesesAppBar> {
                       },
                     ),
             ),
-          ),
-          IconButton(
-            padding: EdgeInsets.zero,
-            onPressed: cubit.toggleSearch,
-            iconSize: kToolbarHeight * .575,
-            icon: Icon(
-              searchMode ? Icons.cancel_rounded : Icons.search_rounded,
+            IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: cubit.toggleSearch,
+              iconSize: kToolbarHeight * .575,
+              icon: Icon(
+                searchMode ? Icons.cancel_rounded : Icons.search_rounded,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ).withToolbarHeight().toPreferredSize(),
     );
   }

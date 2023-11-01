@@ -9,7 +9,7 @@ import 'package:su_thesis_book/utils/utils.dart';
 
 class AppUserRepo implements CrudAbstract<AppUser> {
   //-- Config
-  final _cache = cacheService<List<String>>();
+  // final _cache = CacheService.global();
   final _db = FirebaseDatabase.instance.ref('users');
   final _storage = FirebaseStorage.instance.ref('photos');
   final _errorMsgCreate = "Couldn't create the User!";
@@ -34,40 +34,40 @@ class AppUserRepo implements CrudAbstract<AppUser> {
   final _errorMsgDepartments = "Couldn't get the user departments!";
 
   //-- Public APIs
-  /// Get user roles.
-  Future<({String? errorMsg, List<String>? roles})> get roles async {
-    String? errorMsg;
-    if ((_cache['roles'] ?? []).isEmpty) {
-      try {
-        final rolesObj = (await _dbRoles.get()).value;
-        rolesObj != null
-            ? _cache['roles'] = rolesObj.toList<String>()
-            : errorMsg = _errorMsgRolesNotFound;
-      } catch (e, s) {
-        log(_errorMsgRoles, error: e, stackTrace: s);
-        errorMsg = _errorMsgRoles;
-      }
-    }
-    return (errorMsg: errorMsg, roles: _cache['roles']);
-  }
+  // /// Get user roles.
+  // Future<({String? errorMsg, List<String>? roles})> get roles async {
+  //   String? errorMsg;
+  //   if ((_cache['roles'] ?? []).isEmpty) {
+  //     try {
+  //       final rolesObj = (await _dbRoles.get()).value;
+  //       rolesObj != null
+  //           ? _cache['roles'] = rolesObj.toList<String>()
+  //           : errorMsg = _errorMsgRolesNotFound;
+  //     } catch (e, s) {
+  //       log(_errorMsgRoles, error: e, stackTrace: s);
+  //       errorMsg = _errorMsgRoles;
+  //     }
+  //   }
+  //   return (errorMsg: errorMsg, roles: _cache['roles']);
+  // }
 
-  /// Get user departments.
-  Future<({String? errorMsg, List<String>? departments})>
-      get departments async {
-    String? errorMsg;
-    if ((_cache['departments'] ?? []).isEmpty) {
-      try {
-        final departmentsObj = (await _dbDepartments.get()).value;
-        departmentsObj != null
-            ? _cache['departments'] = departmentsObj.toList<String>()
-            : errorMsg = _errorMsgDepartmentsNotFound;
-      } catch (e, s) {
-        log(_errorMsgDepartments, error: e, stackTrace: s);
-        errorMsg = _errorMsgDepartments;
-      }
-    }
-    return (errorMsg: errorMsg, departments: _cache['departments']);
-  }
+  // /// Get user departments.
+  // Future<({String? errorMsg, List<String>? departments})>
+  //     get departments async {
+  //   String? errorMsg;
+  //   if ((_cache['departments'] ?? []).isEmpty) {
+  //     try {
+  //       final departmentsObj = (await _dbDepartments.get()).value;
+  //       departmentsObj != null
+  //           ? _cache['departments'] = departmentsObj.toList<String>()
+  //           : errorMsg = _errorMsgDepartmentsNotFound;
+  //     } catch (e, s) {
+  //       log(_errorMsgDepartments, error: e, stackTrace: s);
+  //       errorMsg = _errorMsgDepartments;
+  //     }
+  //   }
+  //   return (errorMsg: errorMsg, departments: _cache['departments']);
+  // }
 
   /// Upload user photo to Storage and get URL.
   Future<({String? errorMsg, String? photoUrl})> uploadPhoto(
@@ -89,19 +89,6 @@ class AppUserRepo implements CrudAbstract<AppUser> {
   Future<String?> nameById(String userId) async =>
       (await _db.child('$userId/name').get()).value as String?;
 
-  /// Create user data to database.
-  @override
-  Future<String?> create(String userId, {required Json value}) async {
-    try {
-      // Upload user data to DB.
-      await _db.child(userId).set(value);
-    } catch (e, s) {
-      log(_errorMsgCreate, error: e, stackTrace: s);
-      return _errorMsgCreate;
-    }
-    return null;
-  }
-
   /// Convert database snapshot to model with logic specified .
   Future<AppUser?> snapshotToModel(DataSnapshot snapshot) async {
     final userMap = snapshot.value?.toJson();
@@ -111,8 +98,10 @@ class AppUserRepo implements CrudAbstract<AppUser> {
       final departmentIndex = userMap['departmentIndex'] as int?;
 
       if (roleIndex != null && departmentIndex != null) {
-        final userRoles = (await roles).roles;
-        final userDepartments = (await departments).departments;
+        // final userRoles = (await roles).roles;
+        // final userDepartments = _departments;
+        const userRoles = null;
+        const userDepartments = null;
 
         if (userRoles != null && userDepartments != null) {
           final userJson = <String, Object?>{
@@ -124,6 +113,19 @@ class AppUserRepo implements CrudAbstract<AppUser> {
           return AppUser.fromJson(userJson);
         }
       }
+    }
+    return null;
+  }
+
+  /// Create user data to database.
+  @override
+  Future<String?> create(String userId, {required Json value}) async {
+    try {
+      // Upload user data to DB.
+      await _db.child(userId).set(value);
+    } catch (e, s) {
+      log(_errorMsgCreate, error: e, stackTrace: s);
+      return _errorMsgCreate;
     }
     return null;
   }

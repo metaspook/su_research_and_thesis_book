@@ -9,10 +9,18 @@ import 'package:su_thesis_book/utils/utils.dart';
 part 'app_state.dart';
 
 class AppCubit extends HydratedCubit<AppState> {
-  AppCubit({required AuthRepo authRepo, required AppUserRepo appUserRepo})
-      : _authRepo = authRepo,
+  AppCubit({
+    required AuthRepo authRepo,
+    required AppUserRepo appUserRepo,
+    required DepartmentRepo departmentRepo,
+  })  : _authRepo = authRepo,
         _appUserRepo = appUserRepo,
+        _departmentRepo = departmentRepo,
         super(const AppState()) {
+    //-- Initialize Departments.
+    departmentRepo.departments.then((departmentsRecord) {
+      emit(state.copyWith(departments: departmentsRecord.departments));
+    });
     //-- Initialize Authentication.
     _userSubscription = _authRepo.userStream.listen((user) async {
       // Check authUser from stream.
@@ -42,6 +50,7 @@ class AppCubit extends HydratedCubit<AppState> {
 
   final AuthRepo _authRepo;
   final AppUserRepo _appUserRepo;
+  final DepartmentRepo _departmentRepo;
   late final StreamSubscription<User?> _userSubscription;
 
   void onGetStarted() {

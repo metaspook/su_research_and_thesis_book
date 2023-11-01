@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:su_thesis_book/gen/assets.gen.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
 // Config
@@ -9,6 +11,13 @@ extension CallableWidgetExt on BuildContext {
   ScaffoldMessengerState get scaffoldMessenger => ScaffoldMessenger.of(this);
   // bool get keyboardVisible => MediaQuery.of(this).viewInsets.bottom != 0;
 
+  SvgPicture authBanner() => SvgPicture.asset(
+        Assets.images.placeholderUser01.path,
+        placeholderBuilder: (context) =>
+            const Center(child: CircularProgressIndicator()),
+        semanticsLabel: 'Auth Logo',
+        height: mediaQuery.size.height * .3,
+      );
   Widget emptyListText({String? data, bool hasToolbarHeight = true}) => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -29,22 +38,30 @@ extension CallableWidgetExt on BuildContext {
           icon: const Icon(Icons.arrow_back_ios_rounded),
         )
       : null;
-  Widget sliverAppBar(
+  SliverAppBar sliverAppBar(
     String title, {
     bool centerTitle = true,
     PreferredSizeWidget? bottom,
     List<Widget>? actions,
-  }) =>
-      SliverAppBar(
-        pinned: true,
-        floating: true,
-        // snap: true,
-        leading: backButton(),
-        centerTitle: centerTitle,
-        title: Text(title),
-        bottom: bottom,
-        actions: actions,
-      );
+    Widget? leading,
+  }) {
+    final backBtn = backButton();
+    return SliverAppBar(
+      pinned: true,
+      leading: backBtn == null && leading == null
+          ? null
+          : Row(
+              children: [
+                if (backBtn != null) backBtn,
+                if (leading != null) leading,
+              ],
+            ),
+      centerTitle: centerTitle,
+      title: Text(title),
+      bottom: bottom,
+      actions: actions,
+    );
+  }
 }
 
 /// PreferredSize Extensions.

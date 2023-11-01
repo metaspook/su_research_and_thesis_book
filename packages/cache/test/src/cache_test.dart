@@ -3,6 +3,12 @@ import 'package:test/test.dart';
 
 void main() {
   group('CacheService', () {
+    group('CacheService', () {
+      test('can be instantiated', () {
+        expect(Cache(), isNotNull);
+      });
+    });
+
     test('can write and read a value for a given key', () {
       final cache = Cache();
       const key = '__key__';

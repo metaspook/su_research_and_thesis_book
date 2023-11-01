@@ -1,20 +1,20 @@
 import 'package:equatable/equatable.dart';
 
-class Thesis extends Equatable {
-  const Thesis({
+class Research extends Equatable {
+  const Research({
     required this.id,
     required this.userId,
     this.createdAt,
     this.name,
     this.views,
     this.fileUrl,
-    this.department,
+    this.category,
     this.author,
     this.authorPhotoUrl,
   });
 
-  factory Thesis.fromJson(Map<String, dynamic> json) {
-    return Thesis(
+  factory Research.fromJson(Map<String, dynamic> json) {
+    return Research(
       id: json['id'] as String,
       userId: json['userId'] as String,
       createdAt: json['createdAt'] == null
@@ -23,7 +23,7 @@ class Thesis extends Equatable {
       name: json['name'] as String?,
       views: json['views'] as int?,
       fileUrl: json['fileUrl'] as String?,
-      department: json['department'] as String?,
+      category: json['category'] as String?,
       author: json['author'] as String?,
       authorPhotoUrl: json['authorPhotoUrl'] as String?,
     );
@@ -35,7 +35,7 @@ class Thesis extends Equatable {
   final String? name;
   final int? views;
   final String? fileUrl;
-  final String? department;
+  final String? category;
   final String? author;
   final String? authorPhotoUrl;
 
@@ -47,7 +47,7 @@ class Thesis extends Equatable {
       'name': name,
       'views': views,
       'fileUrl': fileUrl,
-      'department': department,
+      'category': category,
       'author': author,
       'authorPhotoUrl': authorPhotoUrl,
     };
@@ -62,7 +62,7 @@ class Thesis extends Equatable {
       name,
       views,
       fileUrl,
-      department,
+      category,
       author,
       authorPhotoUrl,
     ];

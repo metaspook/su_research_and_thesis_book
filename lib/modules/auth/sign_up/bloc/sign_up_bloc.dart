@@ -9,8 +9,10 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   SignUpBloc({
     required AuthRepo authRepo,
     required AppUserRepo appUserRepo,
+    required DepartmentRepo departmentRepo,
   })  : _authRepo = authRepo,
         _appUserRepo = appUserRepo,
+        _departmentRepo = departmentRepo,
         super(const SignUpState()) {
     //-- Register Event Handlers
     on<SignUpEdited>(_onEdited);
@@ -24,6 +26,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
   final AuthRepo _authRepo;
   final AppUserRepo _appUserRepo;
+  final DepartmentRepo _departmentRepo;
 
   //-- Define Event Handlers
   Future<void> _onEdited(
@@ -56,22 +59,22 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     SignUpFormLoaded event,
     Emitter<SignUpState> emit,
   ) async {
-    emit(state.copyWith(status: SignUpStatus.loading));
-    final rolesRecord = await _appUserRepo.roles;
-    final departmentsRecord = await _appUserRepo.departments;
-    final errorMsg = rolesRecord.errorMsg ?? departmentsRecord.errorMsg;
+    // emit(state.copyWith(status: SignUpStatus.loading));
+    // final rolesRecord = await _appUserRepo.roles;
+    // final departmentsRecord = await _departmentRepo.departments;
+    // final errorMsg = rolesRecord.errorMsg ?? departmentsRecord.errorMsg;
 
-    if (errorMsg == null) {
-      emit(
-        state.copyWith(
-          status: SignUpStatus.initial,
-          roles: rolesRecord.roles,
-          departments: departmentsRecord.departments,
-        ),
-      );
-    } else {
-      emit(state.copyWith(status: SignUpStatus.failure, statusMsg: errorMsg));
-    }
+    // if (errorMsg == null) {
+    //   emit(
+    //     state.copyWith(
+    //       status: SignUpStatus.initial,
+    //       // roles: rolesRecord.roles,
+    //       departments: departmentsRecord.departments,
+    //     ),
+    //   );
+    // } else {
+    //   emit(state.copyWith(status: SignUpStatus.failure, statusMsg: errorMsg));
+    // }
   }
 
   Future<void> _onObscurePasswordToggled(
@@ -99,10 +102,10 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         final roleIndex = state.roles.indexOf(state.role);
         final departmentIndex = state.departments.indexOf(state.department);
         final userObj = {
-          'name': state.name,
-          'email': state.email,
-          'roleIndex': roleIndex,
           'departmentIndex': departmentIndex,
+          'designationIndex': roleIndex,
+          'email': state.email,
+          'name': state.name,
           'phone': state.phone,
           'photoUrl': uploadRecord.photoUrl,
         };
