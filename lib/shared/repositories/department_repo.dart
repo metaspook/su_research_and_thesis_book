@@ -2,11 +2,12 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:firebase_database/firebase_database.dart';
+import 'package:su_thesis_book/shared/services/services.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
 class DepartmentRepo {
   //-- Config
-  final _cache = cacheService<List<String>>();
+  final _cache = const Cache<List<String>>('departments');
   final _db = FirebaseDatabase.instance.ref('departments');
   final _errorMsgDepartmentNotFound = 'User department not found!';
   final _errorMsgDepartmentsNotFound = 'User departments not found!';
@@ -19,17 +20,18 @@ class DepartmentRepo {
   Future<({String? errorMsg, List<String>? departments})>
       get departments async {
     String? errorMsg;
-    if ((_cache['departments'] ?? []).isEmpty) {
+
+    if (_cache.isNullOrEmpty) {
       try {
         final departmentsObj = (await _db.get()).value;
         departmentsObj != null
-            ? _cache['departments'] = departmentsObj.toList<String>()
+            ? _cache.value = departmentsObj.toList<String>()
             : errorMsg = _errorMsgDepartmentsNotFound;
       } catch (e, s) {
         log(_errorMsgDepartments, error: e, stackTrace: s);
         errorMsg = _errorMsgDepartments;
       }
     }
-    return (errorMsg: errorMsg, departments: _cache['departments']);
+    return (errorMsg: errorMsg, departments: _cache.value);
   }
 }
