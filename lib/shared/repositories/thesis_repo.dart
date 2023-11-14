@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:cache/cache.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -12,6 +13,7 @@ class ThesisRepo implements CrudAbstract<Thesis> {
   //-- Config
   final _cacheAuthor = cacheService<String?>();
   final _cacheAuthorPhoto = cacheService<String?>();
+  final _cache = const Cache<List<String>>('theses');
   final _db = FirebaseDatabase.instance.ref('theses');
   final _dbUsers = FirebaseDatabase.instance.ref('users');
   final _storage = FirebaseStorage.instance.ref('theses');
@@ -41,10 +43,7 @@ class ThesisRepo implements CrudAbstract<Thesis> {
   String get newId => _db.push().key ?? uuid;
 
   /// Get author name by userId, retrieve from cache if exist.
-  Future<String?> authorById(String userId) async =>
-      _cacheAuthor[userId] ??
-      (_cacheAuthor[userId] =
-          (await _dbUsers.child('$userId/name').get()).value as String?);
+  Future<String?> authorById(String userId) async => _cacheAuthor[userId];
 
   /// Get author photo by userId, retrieve from cache if exist.
   Future<String?> authorPhotoById(String userId) async =>

@@ -137,12 +137,13 @@ class _SignUpViewState extends State<SignUpView> {
             ),
             // Roles
             SignUpBlocSelector<List<String>>(
-              selector: (state) => state.roles,
+              selector: (state) => state.designations,
               builder: (context, roles) {
                 return DropdownButtonFormField<String>(
                   borderRadius: AppThemes.borderRadius,
-                  hint: const Text('role...'),
-                  onChanged: (role) => bloc.add(SignUpEdited(role: role)),
+                  hint: const Text('designation...'),
+                  onChanged: (role) =>
+                      bloc.add(SignUpEdited(designation: role)),
                   items: [
                     for (final role in roles)
                       DropdownMenuItem<String>(
@@ -158,8 +159,7 @@ class _SignUpViewState extends State<SignUpView> {
               selector: (state) => state.departments,
               builder: (context, departments) {
                 return DropdownButtonFormField<String>(
-                  dropdownColor:
-                      context.theme.colorScheme.background.withOpacity(.75),
+                  menuMaxHeight: AppThemes.menuMaxHeight,
                   borderRadius: AppThemes.borderRadius,
                   hint: const Text('department...'),
                   onChanged: (department) =>
@@ -262,7 +262,7 @@ class _SignUpViewState extends State<SignUpView> {
                     state.phone.isNotEmpty ||
                     state.password.isNotEmpty ||
                     state.photoPath.isNotEmpty ||
-                    state.role.isNotEmpty;
+                    state.designation.isNotEmpty;
                 return ElevatedButton.icon(
                   icon: const Icon(Icons.forward_rounded),
                   label: const Text('Proceed'),

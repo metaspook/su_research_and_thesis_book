@@ -12,25 +12,33 @@ class AppCubit extends HydratedCubit<AppState> {
   AppCubit({
     required AuthRepo authRepo,
     required AppUserRepo appUserRepo,
+    required DesignationRepo designationRepo,
     required DepartmentRepo departmentRepo,
   })  : _authRepo = authRepo,
         _appUserRepo = appUserRepo,
+        _designationRepo = designationRepo,
         _departmentRepo = departmentRepo,
         super(const AppState()) {
+    //-- Initialize Designations.
+    _designationRepo.designations.then((designationsRecord) {
+      emit(state.copyWith(designations: designationsRecord.designations));
+    });
     //-- Initialize Departments.
-    departmentRepo.departments.then((departmentsRecord) {
+    _departmentRepo.departments.then((departmentsRecord) {
       emit(state.copyWith(departments: departmentsRecord.departments));
     });
     //-- Initialize Authentication.
     _userSubscription = _authRepo.userStream.listen((user) async {
       // Check authUser from stream.
+      'Chk here: $user'.doPrint();
       if (user != null) {
         // Get appUser by authUser's id.
         final appUserRecord = await _appUserRepo.read(user.uid);
+        appUserRecord.doPrint();
         final errorMsg = appUserRecord.$1;
         final appUser = appUserRecord.object;
         if (appUser.isNotEmpty) {
-          'user: $user'.doPrint();
+          // 'user: $user'.doPrint();
           emit(AppState(status: AppStatus.authenticated, user: appUser));
         } else {
           emit(state.copyWith(statusMsg: errorMsg));
@@ -50,6 +58,7 @@ class AppCubit extends HydratedCubit<AppState> {
 
   final AuthRepo _authRepo;
   final AppUserRepo _appUserRepo;
+  final DesignationRepo _designationRepo;
   final DepartmentRepo _departmentRepo;
   late final StreamSubscription<User?> _userSubscription;
 

@@ -4,23 +4,16 @@
 [![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
 [![License: MIT][license_badge]][license_link]
 
-A minimalistic in-memory cache service.
+A minimalistic in-memory caching service.
 
 ## Installation 💻
 
 **❗ In order to start using Cache you must have the [Dart SDK][dart_install_link] installed on your machine.**
 
-Add `cache` to your `pubspec.yaml`:
-
-```yaml
-dependencies:
-  cache:
-```
-
-Install it:
+Install via `dart pub add`:
 
 ```sh
-dart pub get
+dart pub add cache
 ```
 
 ---

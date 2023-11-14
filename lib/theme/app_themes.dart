@@ -91,6 +91,7 @@ sealed class AppThemes {
     Colors.blueGrey,
   ];
   static final selectedColorsRandomized = [...selectedColors]..shuffle();
+  static const menuMaxHeight = 287.5;
   static const height = 7.5;
   static const width = 7.5; // this could be different from the height.
   // Paddings
@@ -114,6 +115,10 @@ sealed class AppThemes {
   // Borders
   static const roundedRectangleBorder =
       RoundedRectangleBorder(borderRadius: borderRadius);
+  static const roundedRectangleBottomBorder =
+      RoundedRectangleBorder(borderRadius: bottomRadius);
+  static const roundedRectangleTopBorder =
+      RoundedRectangleBorder(borderRadius: topRadius);
   static const outlineInputBorder = OutlineInputBorder(
     borderRadius: borderRadius,
   );

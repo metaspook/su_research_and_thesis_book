@@ -15,6 +15,7 @@ class AppState extends Equatable {
     this.status = AppStatus.unauthenticated,
     this.statusMsg = '',
     this.user = AppUser.empty,
+    this.designations = const [],
     this.departments = const [],
     this.firstLaunch = true,
   });
@@ -24,6 +25,7 @@ class AppState extends Equatable {
       status: AppStatus.values.byName(json['status'] as String),
       statusMsg: json['statusMsg'] as String,
       user: AppUser.fromJson(json['user'] as Map<String, dynamic>),
+      designations: [for (final e in json['designations'] as List) e as String],
       departments: [for (final e in json['departments'] as List) e as String],
       firstLaunch: json['firstLaunch'] as bool,
     );
@@ -36,6 +38,7 @@ class AppState extends Equatable {
   final AppStatus status;
   final String statusMsg;
   final AppUser user;
+  final List<String> designations;
   final List<String> departments;
   final bool firstLaunch;
 
@@ -43,6 +46,7 @@ class AppState extends Equatable {
     AppStatus? status,
     String? statusMsg,
     AppUser? user,
+    List<String>? designations,
     List<String>? departments,
     bool? firstLaunch,
   }) {
@@ -50,6 +54,7 @@ class AppState extends Equatable {
       status: status ?? this.status,
       statusMsg: statusMsg ?? this.statusMsg,
       user: user ?? this.user,
+      designations: designations ?? this.designations,
       departments: departments ?? this.departments,
       firstLaunch: firstLaunch ?? this.firstLaunch,
     );
@@ -60,6 +65,7 @@ class AppState extends Equatable {
       'status': status.name,
       'statusMsg': statusMsg,
       'user': user.toJson(),
+      'designations': designations,
       'departments': departments,
       'firstLaunch': firstLaunch,
     };
@@ -67,5 +73,5 @@ class AppState extends Equatable {
 
   @override
   List<Object?> get props =>
-      [status, statusMsg, user, departments, firstLaunch];
+      [status, statusMsg, user, designations, departments, firstLaunch];
 }

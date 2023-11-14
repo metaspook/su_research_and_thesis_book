@@ -1,22 +1,48 @@
-/// {@template cache_service}
-/// A minimalistic in-memory cache service.
+// Copyright (c) 2023, Metaspook.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// MIT-style license that can be found in the LICENSE file.
+
+typedef _Json = Map<String, Object?>;
+
+/// {@template intro}
+/// A minimalistic in-memory caching service.
 /// {@endtemplate}
-class Cache {
-  /// {@macro cache_service}
-  Cache() : _cache = <String, Object>{};
+class Cache<T extends Object> {
+  /// {@macro intro}
+  /// * Provides a node of global cache hive.
+  /// * Value type will be `Object` if not specify in place of `T`.
+  /// * Example of a cache instance with key name and value type:
+  /// ```dart
+  /// const Cache<List<String>>('names')
+  /// ```
+  const Cache(String key) : _key = key;
+  final String _key;
+  static _Json? _cacheHive;
+  _Json get _hive => _cacheHive ??= {};
 
-  final Map<String, Object> _cache;
+  /// Whether this node contains the given [value].
+  bool contains(T? value) => _hive.containsValue(value);
 
-  /// Writes the provided [key], [value] pair to the in-memory cache.
-  void write<T extends Object>({required String key, required T value}) {
-    _cache[key] = value;
-  }
+  /// Returns the [value] then remove with its key.
+  T? remove() => _hive.remove(_key) as T?;
 
-  /// Looks up the value for the provided [key].
-  /// Defaults to `null` if no value exists for the provided key.
-  T? read<T extends Object>({required String key}) {
-    final value = _cache[key];
-    if (value is T) return value;
-    return null;
+  /// Reset the global cache hive to null state.
+  static void reset() => _cacheHive = null;
+
+  /// Get or Set the value of cache and passthrough.
+  T? get value => _hive[_key] as T?;
+  set value(T? object) => _hive[_key] = object;
+
+  /// Whether the value is null or empty.
+  bool get isNullOrEmpty {
+    final object = value;
+    if (object is String) {
+      return object.isEmpty;
+    } else if (object is Iterable) {
+      return object.isEmpty;
+    } else if (object is Map) {
+      return object.isEmpty;
+    }
+    return object == null;
   }
 }

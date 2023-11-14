@@ -19,6 +19,9 @@ class App extends StatelessWidget {
         RepositoryProvider<AppUserRepo>(
           create: (context) => AppUserRepo(),
         ),
+        RepositoryProvider<DesignationRepo>(
+          create: (context) => DesignationRepo(),
+        ),
         RepositoryProvider<DepartmentRepo>(
           create: (context) => DepartmentRepo(),
         ),
@@ -27,6 +30,7 @@ class App extends StatelessWidget {
         create: (context) => AppCubit(
           authRepo: context.read<AuthRepo>(),
           appUserRepo: context.read<AppUserRepo>(),
+          designationRepo: context.read<DesignationRepo>(),
           departmentRepo: context.read<DepartmentRepo>(),
         ),
         child: const AppView(),

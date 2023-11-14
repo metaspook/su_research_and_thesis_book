@@ -1,4 +1,4 @@
-/// A minimalistic in-memory cache service.
+/// A minimalistic in-memory caching service.
 library cache;
 
 export 'src/cache.dart';

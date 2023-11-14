@@ -16,7 +16,7 @@ class AuthRepo {
   final _errorMsgUpdatePassword = "Couldn't update the user password!";
 
   //-- Public APIs
-  Stream<User?> get userStream => _auth.authStateChanges();
+  Stream<User?> get userStream => _auth.userChanges();
   User? get currentUser => _auth.currentUser;
 
   Future<String?> updateEmail(String newEmail) async {

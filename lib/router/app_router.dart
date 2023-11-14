@@ -47,9 +47,10 @@ final class AppRouter {
             ),
             BlocProvider<ThesesCubit>(
               create: (context) => ThesesCubit(
-                  appUserRepo: context.read<AppUserRepo>(),
-                  departmentRepo: context.read<DepartmentRepo>(),
-                  thesisRepo: context.read<ThesisRepo>(),),
+                appUserRepo: context.read<AppUserRepo>(),
+                departmentRepo: context.read<DepartmentRepo>(),
+                thesisRepo: context.read<ThesisRepo>(),
+              ),
               child: const ThesesView(),
             ),
           ],
@@ -75,6 +76,7 @@ final class AppRouter {
             create: (context) => SignUpBloc(
               authRepo: context.read<AuthRepo>(),
               appUserRepo: context.read<AppUserRepo>(),
+              designationRepo: context.read<DesignationRepo>(),
               departmentRepo: context.read<DepartmentRepo>(),
             ),
           ),

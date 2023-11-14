@@ -10,7 +10,7 @@ class AppUser extends Equatable {
   const AppUser({
     required this.id,
     this.name,
-    this.role,
+    this.designation,
     this.department,
     this.email,
     this.phone,
@@ -21,7 +21,7 @@ class AppUser extends Equatable {
     return AppUser(
       id: json['id']! as String,
       name: json['name'] as String?,
-      role: json['role'] as String?,
+      designation: json['designation'] as String?,
       department: json['department'] as String?,
       email: json['email'] as String?,
       phone: json['phone'] as String?,
@@ -30,7 +30,7 @@ class AppUser extends Equatable {
   }
 
   final String id;
-  final String? role;
+  final String? designation;
   final String? department;
   final String? name;
   final String? email;
@@ -46,8 +46,8 @@ class AppUser extends Equatable {
     return <String, Object?>{
       'id': id,
       'name': name,
-      'role': role,
-      'department': role,
+      'designation': designation,
+      'department': designation,
       'email': email,
       'phone': phone,
       'photoUrl': photoUrl,
@@ -58,7 +58,7 @@ class AppUser extends Equatable {
   List<Object?> get props => [
         id,
         name,
-        role,
+        designation,
         department,
         email,
         phone,

@@ -9,9 +9,11 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   SignUpBloc({
     required AuthRepo authRepo,
     required AppUserRepo appUserRepo,
+    required DesignationRepo designationRepo,
     required DepartmentRepo departmentRepo,
   })  : _authRepo = authRepo,
         _appUserRepo = appUserRepo,
+        _designationRepo = designationRepo,
         _departmentRepo = departmentRepo,
         super(const SignUpState()) {
     //-- Register Event Handlers
@@ -26,6 +28,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
   final AuthRepo _authRepo;
   final AppUserRepo _appUserRepo;
+  final DesignationRepo _designationRepo;
   final DepartmentRepo _departmentRepo;
 
   //-- Define Event Handlers
@@ -40,7 +43,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         email: event.email,
         password: event.password,
         phone: event.phone,
-        role: event.role,
+        designation: event.designation,
         department: event.department,
       ),
     );
@@ -59,22 +62,22 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     SignUpFormLoaded event,
     Emitter<SignUpState> emit,
   ) async {
-    // emit(state.copyWith(status: SignUpStatus.loading));
-    // final rolesRecord = await _appUserRepo.roles;
-    // final departmentsRecord = await _departmentRepo.departments;
-    // final errorMsg = rolesRecord.errorMsg ?? departmentsRecord.errorMsg;
+    emit(state.copyWith(status: SignUpStatus.loading));
+    final designationsRecord = await _designationRepo.designations;
+    final departmentsRecord = await _departmentRepo.departments;
+    final errorMsg = designationsRecord.errorMsg ?? departmentsRecord.errorMsg;
 
-    // if (errorMsg == null) {
-    //   emit(
-    //     state.copyWith(
-    //       status: SignUpStatus.initial,
-    //       // roles: rolesRecord.roles,
-    //       departments: departmentsRecord.departments,
-    //     ),
-    //   );
-    // } else {
-    //   emit(state.copyWith(status: SignUpStatus.failure, statusMsg: errorMsg));
-    // }
+    if (errorMsg == null) {
+      emit(
+        state.copyWith(
+          status: SignUpStatus.initial,
+          designations: designationsRecord.designations,
+          departments: departmentsRecord.departments,
+        ),
+      );
+    } else {
+      emit(state.copyWith(status: SignUpStatus.failure, statusMsg: errorMsg));
+    }
   }
 
   Future<void> _onObscurePasswordToggled(
@@ -99,7 +102,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       final uploadRecord =
           await _appUserRepo.uploadPhoto(state.photoPath, userId: userId);
       if (uploadRecord.errorMsg == null) {
-        final roleIndex = state.roles.indexOf(state.role);
+        final roleIndex = state.designations.indexOf(state.designation);
         final departmentIndex = state.departments.indexOf(state.department);
         final userObj = {
           'departmentIndex': departmentIndex,
@@ -118,6 +121,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
               statusMsg: 'Success! User signed up.',
             ),
           );
+          // Reload authentication after created.
+          await _authRepo.currentUser?.reload();
         } else {
           emit(
             state.copyWith(
