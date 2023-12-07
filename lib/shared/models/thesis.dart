@@ -1,12 +1,5 @@
 import 'package:equatable/equatable.dart';
-
-typedef Publisher = ({
-  String id,
-  String? name,
-  String? designation,
-  String? department,
-  String? photoUrl
-});
+import 'package:su_thesis_book/shared/models/models.dart';
 
 class Thesis extends Equatable {
   const Thesis({
@@ -40,19 +33,6 @@ class Thesis extends Equatable {
   final int? views;
   final String? fileUrl;
   final String? department;
-
-  // Map<String, dynamic> toJson() {
-  //   return <String, dynamic>{
-  //     'id': id,
-  //     'userId': publisher,
-  //     'createdAt': createdAt?.toString(),
-  //     'name': title,
-  //     'views': views,
-  //     'fileUrl': fileUrl,
-  //     'department': department,
-
-  //   };
-  // }
 
   @override
   List<Object?> get props {

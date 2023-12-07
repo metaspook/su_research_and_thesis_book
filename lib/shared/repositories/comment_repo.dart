@@ -4,7 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
-class CommentRepo implements CrudAbstract<Comment> {
+class CommentRepo implements CRUD<Comment> {
   CommentRepo({required this.thesisId});
 
   final String thesisId;

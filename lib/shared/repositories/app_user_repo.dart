@@ -8,7 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
-class AppUserRepo implements CrudAbstract<AppUser> {
+class AppUserRepo implements CRUD<AppUser> {
   //-- Config
   // final _cache = const Cache<List<Json>>('users');
   final _cacheDesignations = const Cache<List<String>>('designations');

@@ -9,7 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
-class ThesisRepo implements CrudAbstract<Thesis> {
+class ThesisRepo implements CRUD<Thesis> {
   //-- Config
   final _cacheDesignations = const Cache<List<String>>('designations');
   final _cacheDepartments = const Cache<List<String>>('departments');

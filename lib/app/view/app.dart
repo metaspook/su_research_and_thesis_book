@@ -25,6 +25,9 @@ class App extends StatelessWidget {
         RepositoryProvider<DepartmentRepo>(
           create: (context) => DepartmentRepo(),
         ),
+        RepositoryProvider<CategoryRepo>(
+          create: (context) => CategoryRepo(),
+        ),
       ],
       child: BlocProvider<AppCubit>(
         create: (context) => AppCubit(

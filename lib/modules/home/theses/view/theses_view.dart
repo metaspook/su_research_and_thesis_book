@@ -5,6 +5,9 @@ import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
+typedef ThesesBlocSelector<T> = BlocSelector<ThesesCubit, ThesesState, T>;
+typedef ThesesBlocListener = BlocListener<ThesesCubit, ThesesState>;
+
 class ThesesView extends StatelessWidget {
   const ThesesView({super.key});
 

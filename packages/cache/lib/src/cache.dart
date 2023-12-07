@@ -6,11 +6,11 @@ typedef _Json = Map<String, Object?>;
 
 /// {@template intro}
 /// A minimalistic in-memory caching service.
+/// * Value type will be `Object` if not annotated in place of `T`.
 /// {@endtemplate}
 class Cache<T extends Object> {
   /// {@macro intro}
   /// * Provides a node of global cache hive.
-  /// * Value type will be `Object` if not specify in place of `T`.
   /// * Example of a cache instance with key name and value type:
   /// ```dart
   /// const Cache<List<String>>('names')

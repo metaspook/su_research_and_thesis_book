@@ -2,16 +2,18 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:cache/cache.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
-class ResearchRepo implements CrudAbstract<Research> {
+class ResearchRepo implements CRUD<Research> {
   //-- Config
-  final _cacheAuthor = cacheService<String?>();
-  final _cacheAuthorPhoto = cacheService<String?>();
+  final _cacheDesignations = const Cache<List<String>>('designations');
+  final _cacheCategories = const Cache<List<String>>('categories');
+  final _cache = const Cache<List<Research>>('researches');
   final _db = FirebaseDatabase.instance.ref('researches');
   final _dbUsers = FirebaseDatabase.instance.ref('users');
   final _storage = FirebaseStorage.instance.ref('researches');
@@ -20,7 +22,7 @@ class ResearchRepo implements CrudAbstract<Research> {
   final _errorMsgRead = "Couldn't read the Research data!";
   final _errorMsgUpdate = "Couldn't update the Research!";
   final _errorMsgDelete = "Couldn't delete the Research!";
-  // final _errorMsgNotFound = 'Thesis data not found!';
+  // final _errorMsgNotFound = 'Research data not found!';
   final _errorMsgUploadFile = "Couldn't upload the research file!";
   final _errorMsgFilePicker = "Couldn't pick the file!";
   final _errorMsgTempFiles = "Couldn't clear the temporary file!";
@@ -40,42 +42,56 @@ class ResearchRepo implements CrudAbstract<Research> {
   /// Generates a new research id.
   String get newId => _db.push().key ?? uuid;
 
-  /// Get author name by userId, retrieve from cache if exist.
-  Future<String?> authorById(String userId) async =>
-      _cacheAuthor[userId] ??
-      (_cacheAuthor[userId] =
-          (await _dbUsers.child('$userId/name').get()).value as String?);
+  /// Get publisher by userId.
+  Future<Publisher?> publisherById(String id) async {
+    final snapshot = await _dbUsers.child(id).get();
+    final publisherMap = snapshot.value?.toJson();
+    final designationIndex = publisherMap?['designationIndex'] as int?;
+    final categoryIndex = publisherMap?['categoryIndex'] as int?;
 
-  /// Get author photo by userId, retrieve from cache if exist.
-  Future<String?> authorPhotoById(String userId) async =>
-      _cacheAuthorPhoto[userId] ??
-      (_cacheAuthorPhoto[userId] =
-          (await _dbUsers.child('$userId/photoUrl').get()).value as String?);
+    if (designationIndex != null && categoryIndex != null) {
+      final designations = _cacheDesignations.value;
+      final categories = _cacheCategories.value;
+      return (
+        id: snapshot.key,
+        name: publisherMap?['name'],
+        designation: designations?[designationIndex],
+        category: categories?[categoryIndex],
+        photoUrl: publisherMap?['photoUrl'],
+      ) as Publisher;
+    }
+    return null;
+  }
 
-  /// Convert database snapshot to model with logic specified .
+  /// Convert database snapshot to model with logic specified.
   Future<Research?> snapshotToModel(DataSnapshot snapshot) async {
     final researchMap = snapshot.value?.toJson();
     final userId = researchMap?['userId'] as String?;
-    if (researchMap == null || userId == null) return null;
-    final author = await authorById(userId);
-    final authorPhotoUrl = await authorPhotoById(userId);
-    final researchJson = <String, Object?>{
-      'id': snapshot.key,
-      ...researchMap,
-      'author': author,
-      'authorPhotoUrl': authorPhotoUrl,
-    };
-    return Research.fromJson(researchJson);
+    final categoryIndex = researchMap?['categoryIndex'] as int?;
+
+    if (userId != null && categoryIndex != null) {
+      final publisher = await publisherById(userId);
+      final categories = _cacheCategories.value;
+      final researchJson = <String, Object?>{
+        'id': snapshot.key,
+        'publisher': publisher,
+        ...?researchMap,
+        'category': categories?[categoryIndex],
+      };
+      return Research.fromJson(researchJson);
+    }
+    return null;
   }
 
+  /// Emits list of research.
   Stream<List<Research>> get stream => _db.onValue.asyncMap<List<Research>>(
         (event) async {
           final researches = <Research>[];
-          for (final e in event.snapshot.children) {
-            final research = await snapshotToModel(e);
+          for (final snapshot in event.snapshot.children) {
+            final research = await snapshotToModel(snapshot);
             if (research != null) researches.add(research);
           }
-          return researches;
+          return _cache.value = researches;
         },
       );
 

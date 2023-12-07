@@ -1,10 +1,12 @@
 export 'cubit/home_cubit.dart';
+export 'researches/cubit/researches_cubit.dart';
+export 'researches/view/researches_view.dart';
+export 'researches/widgets/researches_app_bar.dart';
 export 'theses/cubit/theses_cubit.dart';
 export 'theses/view/theses_view.dart';
 export 'theses/widgets/theses_app_bar.dart';
-export 'theses/widgets/thesis_category_bar.dart';
 export 'view/home_page.dart';
 export 'view/home_view.dart';
 export 'widgets/profile_carousel.dart';
-export 'widgets/thesis_card.dart';
+export '../../shared/widgets/thesis_card.dart';
 export 'widgets/thesis_carousel.dart';

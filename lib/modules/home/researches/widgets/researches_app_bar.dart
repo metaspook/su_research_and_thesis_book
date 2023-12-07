@@ -5,14 +5,14 @@ import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
-class ThesesAppBar extends StatefulWidget {
-  const ThesesAppBar({super.key});
+class ResearchesAppBar extends StatefulWidget {
+  const ResearchesAppBar({super.key});
 
   @override
-  State<ThesesAppBar> createState() => _ThesesAppBarState();
+  State<ResearchesAppBar> createState() => _ResearchesAppBarState();
 }
 
-class _ThesesAppBarState extends State<ThesesAppBar> {
+class _ResearchesAppBarState extends State<ResearchesAppBar> {
   // TextEditingControllers
   final _searchController = TextEditingController();
 
@@ -25,13 +25,13 @@ class _ThesesAppBarState extends State<ThesesAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<ThesesCubit>();
+    final cubit = context.read<ResearchesCubit>();
     final l10n = context.l10n;
     final searchMode =
-        context.select((ThesesCubit cubit) => cubit.state.searchMode);
+        context.select((ResearchesCubit cubit) => cubit.state.searchMode);
 
     return context.sliverAppBar(
-      l10n.thesesAppBarTitle,
+      l10n.researchesAppBarTitle,
       bottom: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 4.5,
@@ -52,13 +52,13 @@ class _ThesesAppBarState extends State<ThesesAppBar> {
                         ),
                       ),
                     )
-                  : ThesesBlocSelector<List<String>?>(
-                      selector: (state) => state.departments,
-                      builder: (context, departments) {
+                  : ResearchesBlocSelector<List<String>?>(
+                      selector: (state) => state.categories,
+                      builder: (context, categories) {
                         final department = context.select(
-                          (ThesesCubit cubit) => cubit.state.department,
+                          (ResearchesCubit cubit) => cubit.state.category,
                         );
-                        final departmentAll = const ThesesState().department;
+                        final departmentAll = const ResearchesState().category;
 
                         return DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
@@ -72,14 +72,14 @@ class _ThesesAppBarState extends State<ThesesAppBar> {
                                 value: departmentAll,
                                 child: Text(departmentAll),
                               ),
-                              if (departments != null)
-                                for (final department in departments)
+                              if (categories != null)
+                                for (final department in categories)
                                   DropdownMenuItem(
                                     value: department,
                                     child: Text(department),
                                   ),
                             ],
-                            onChanged: cubit.onChangedDepartment,
+                            onChanged: cubit.onChangedCategory,
                           ),
                         );
                       },
