@@ -11,9 +11,9 @@ import 'package:su_thesis_book/utils/utils.dart';
 
 class ThesisRepo implements CrudAbstract<Thesis> {
   //-- Config
-  final _cacheAuthor = cacheService<String?>();
-  final _cacheAuthorPhoto = cacheService<String?>();
-  final _cache = const Cache<List<String>>('theses');
+  final _cacheDesignations = const Cache<List<String>>('designations');
+  final _cacheDepartments = const Cache<List<String>>('departments');
+  final _cache = const Cache<List<Thesis>>('theses');
   final _db = FirebaseDatabase.instance.ref('theses');
   final _dbUsers = FirebaseDatabase.instance.ref('users');
   final _storage = FirebaseStorage.instance.ref('theses');
@@ -42,39 +42,56 @@ class ThesisRepo implements CrudAbstract<Thesis> {
   /// Generates a new thesis id.
   String get newId => _db.push().key ?? uuid;
 
-  /// Get author name by userId, retrieve from cache if exist.
-  Future<String?> authorById(String userId) async => _cacheAuthor[userId];
+  /// Get publisher by userId.
+  Future<Publisher?> publisherById(String id) async {
+    final snapshot = await _dbUsers.child(id).get();
+    final publisherMap = snapshot.value?.toJson();
+    final designationIndex = publisherMap?['designationIndex'] as int?;
+    final departmentIndex = publisherMap?['departmentIndex'] as int?;
 
-  /// Get author photo by userId, retrieve from cache if exist.
-  Future<String?> authorPhotoById(String userId) async =>
-      _cacheAuthorPhoto[userId] ??
-      (_cacheAuthorPhoto[userId] =
-          (await _dbUsers.child('$userId/photoUrl').get()).value as String?);
+    if (designationIndex != null && departmentIndex != null) {
+      final designations = _cacheDesignations.value;
+      final departments = _cacheDepartments.value;
+      return (
+        id: snapshot.key,
+        name: publisherMap?['name'],
+        designation: designations?[designationIndex],
+        department: departments?[departmentIndex],
+        photoUrl: publisherMap?['photoUrl'],
+      ) as Publisher;
+    }
+    return null;
+  }
 
-  /// Convert database snapshot to model with logic specified .
+  /// Convert database snapshot to model with logic specified.
   Future<Thesis?> snapshotToModel(DataSnapshot snapshot) async {
     final thesisMap = snapshot.value?.toJson();
     final userId = thesisMap?['userId'] as String?;
-    if (thesisMap == null || userId == null) return null;
-    final author = await authorById(userId);
-    final authorPhotoUrl = await authorPhotoById(userId);
-    final thesisJson = <String, Object?>{
-      'id': snapshot.key,
-      ...thesisMap,
-      'author': author,
-      'authorPhotoUrl': authorPhotoUrl,
-    };
-    return Thesis.fromJson(thesisJson);
+    final departmentIndex = thesisMap?['departmentIndex'] as int?;
+
+    if (userId != null && departmentIndex != null) {
+      final publisher = await publisherById(userId);
+      final departments = _cacheDepartments.value;
+      final thesisJson = <String, Object?>{
+        'id': snapshot.key,
+        'publisher': publisher,
+        ...?thesisMap,
+        'department': departments?[departmentIndex],
+      };
+      return Thesis.fromJson(thesisJson);
+    }
+    return null;
   }
 
+  /// Emits list of thesis.
   Stream<List<Thesis>> get stream => _db.onValue.asyncMap<List<Thesis>>(
         (event) async {
           final theses = <Thesis>[];
-          for (final e in event.snapshot.children) {
-            final thesis = await snapshotToModel(e);
+          for (final snapshot in event.snapshot.children) {
+            final thesis = await snapshotToModel(snapshot);
             if (thesis != null) theses.add(thesis);
           }
-          return theses;
+          return _cache.value = theses;
         },
       );
 

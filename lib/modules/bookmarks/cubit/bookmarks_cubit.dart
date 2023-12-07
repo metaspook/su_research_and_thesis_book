@@ -15,7 +15,7 @@ class BookmarksCubit extends Cubit<BookmarksState> {
     Future.delayed(const Duration(seconds: 2), () {
       final theses = [
         for (var i = 0; i < 10; i++)
-          Thesis(id: 'uuid', userId: 'userId', name: uuid.substring(25)),
+          Thesis(id: 'uuid', publisher: null, title: uuid.substring(25)),
       ];
       emit(state.copyWith(status: BookmarksStatus.success, theses: theses));
     });

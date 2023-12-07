@@ -4,6 +4,7 @@ import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/extensions.dart';
+import 'package:su_thesis_book/utils/extensions.dart';
 
 class ThesisCard extends StatelessWidget {
   const ThesisCard(
@@ -34,9 +35,9 @@ class ThesisCard extends StatelessWidget {
         onLongPress: onLongPress,
         onTap: onTap ??
             () => context.push(AppRouter.thesis.pathUnderRoot, extra: thesis),
-        leading: HaloAvatar(thesis.authorPhotoUrl),
+        leading: HaloAvatar(thesis.publisher?.photoUrl),
         title: Text(
-          thesis.name ?? 'N/A',
+          thesis.title.toStringParseNull(),
           style: context.theme.textTheme.titleLarge,
         ),
         subtitle: Column(
@@ -50,7 +51,7 @@ class ThesisCard extends StatelessWidget {
                 ),
                 children: [
                   TextSpan(
-                    text: thesis.author ?? 'N/A',
+                    text: thesis.publisher?.name.toStringParseNull(),
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],

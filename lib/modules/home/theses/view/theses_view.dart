@@ -22,7 +22,7 @@ class ThesesView extends StatelessWidget {
         ? theses
         : [
             ...theses.where(
-              (element) => element.name.toStringParseNull().contains(search),
+              (element) => element.title.toStringParseNull().contains(search),
             ),
           ];
 

@@ -19,7 +19,7 @@ class ThesisPage extends StatelessWidget {
       appBar: AppBar(
         leading: context.backButton(),
         centerTitle: true,
-        title: Text(thesis.name.toStringParseNull()),
+        title: Text(thesis.title.toStringParseNull()),
         actions: [
           IconButton(
             padding: EdgeInsets.zero,

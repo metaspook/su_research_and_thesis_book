@@ -10,7 +10,7 @@ import 'package:su_thesis_book/utils/utils.dart';
 
 class AppUserRepo implements CrudAbstract<AppUser> {
   //-- Config
-  final _cache = const Cache<List<Json>>('users');
+  // final _cache = const Cache<List<Json>>('users');
   final _cacheDesignations = const Cache<List<String>>('designations');
   final _cacheDepartments = const Cache<List<String>>('departments');
   final _db = FirebaseDatabase.instance.ref('users');
@@ -54,7 +54,6 @@ class AppUserRepo implements CrudAbstract<AppUser> {
       if (designationIndex != null && departmentIndex != null) {
         final designations = _cacheDesignations.value;
         final departments = _cacheDepartments.value;
-        departments.doPrint();
 
         if (designations != null && departments != null) {
           final userJson = <String, Object?>{

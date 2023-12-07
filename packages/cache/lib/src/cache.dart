@@ -29,7 +29,8 @@ class Cache<T extends Object> {
   /// Reset the global cache hive to null state.
   static void reset() => _cacheHive = null;
 
-  /// Get or Set the value of cache and passthrough.
+  /// Get or Set the value of cache.
+  /// * Supports passthrough.
   T? get value => _hive[_key] as T?;
   set value(T? object) => _hive[_key] = object;
 

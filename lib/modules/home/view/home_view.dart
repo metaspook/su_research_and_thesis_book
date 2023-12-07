@@ -22,6 +22,7 @@ class HomeView extends StatelessWidget {
         label: 'Publishers',
         icon: Icons.group_rounded,
         onPressed: () {},
+        // onPressed: () => context.pushNamed(AppRouter.publishers.name!),
       ),
       (
         label: 'Notifications',
