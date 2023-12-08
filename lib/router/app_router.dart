@@ -12,7 +12,7 @@ final class AppRouter {
             bookmarks,
             thesisEntry,
             passwordReset,
-            // publishers,
+            publishers,
           ],
           initialLocation: initialLocation,
           // navigatorKey: navigatorKey,
@@ -128,29 +128,27 @@ final class AppRouter {
   );
 
   // Publishers
-  // static final publishers = GoRoute(
-  //   name: 'publishers',
-  //   path: '/publishers',
-  //   builder: (context, state) {
-  //     return MultiRepositoryProvider(
-  //       providers: [
-  //         RepositoryProvider<ThesisRepo>(
-  //           create: (context) => ThesisRepo(),
-  //         ),
-  //         // Research
-  //         // RepositoryProvider(
-  //         //   create: (context) => SubjectRepository(),
-  //         // ),
-  //       ],
-  //       child: BlocProvider<PublishersCubit>(
-  //         create: (context) => PublishersCubit(
-  //           thesisRepo: context.read<ThesisRepo>(),
-  //         ),
-  //         child: const PublishersPage(),
-  //       ),
-  //     );
-  //   },
-  // );
+  static final publishers = GoRoute(
+    name: 'publishers',
+    path: '/publishers',
+    builder: (context, state) {
+      final papers = state.extra! as Papers;
+      return MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider<ThesisRepo>(
+            create: (context) => ThesisRepo(),
+          ),
+          RepositoryProvider(
+            create: (context) => ResearchRepo(),
+          ),
+        ],
+        child: BlocProvider<PublishersCubit>(
+          create: (context) => PublishersCubit(papers: papers),
+          child: const PublishersPage(),
+        ),
+      );
+    },
+  );
 
   // Thesis
   static final thesis = GoRoute(

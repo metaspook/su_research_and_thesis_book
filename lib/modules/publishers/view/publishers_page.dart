@@ -1,27 +1,19 @@
-import 'package:cache/cache.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:su_thesis_book/l10n/l10n.dart';
-import 'package:su_thesis_book/shared/models/models.dart';
+import 'package:su_thesis_book/modules/publishers/publishers.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 import 'package:su_thesis_book/utils/utils.dart';
+
+typedef PublishersBlocSelector<T>
+    = BlocSelector<PublishersCubit, PublishersState, T>;
 
 class PublishersPage extends StatelessWidget {
   const PublishersPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    const cache = Cache<List<Thesis>>('theses');
-    cache.value.doPrint('Cache: ');
-    FirebaseDatabase.instance
-        .ref('theses')
-        // .child('ownerId')
-        // .equalTo('ownerId')
-        // .orderByKey()
-        .get()
-        .then((value) => print('GO: $value'));
-
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
@@ -30,13 +22,22 @@ class PublishersPage extends StatelessWidget {
             centerTitle: false,
           ),
         ],
-        body: ListView.builder(
-          padding: AppThemes.viewPadding,
-          physics: const BouncingScrollPhysics(),
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            // final thesis = theses[index];
-            return const Text('HEllo');
+        body: PublishersBlocSelector<List<Publisher>?>(
+          selector: (state) => state.publishers,
+          builder: (context, publishers) {
+            // Handle Null and Empty cases.
+            return publishers == null
+                ? const TranslucentLoader()
+                : publishers.isEmpty
+                    ? context.emptyListText()
+                    : ListView.builder(
+                        padding: AppThemes.viewPadding,
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: publishers.length,
+                        itemBuilder: (context, index) {
+                          return PublisherCard(publishers[index]);
+                        },
+                      );
           },
         ),
       ),

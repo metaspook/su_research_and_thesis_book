@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:su_thesis_book/utils/utils.dart';
 
 class IconButtonLabeled extends StatelessWidget {
   const IconButtonLabeled(this.record, {super.key, this.color, this.size});
-  final ({IconData icon, String label, void Function()? onPressed}) record;
+  final IconButtonRecord record;
   final Color? color;
   final double? size;
 

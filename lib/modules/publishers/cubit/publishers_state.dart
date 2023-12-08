@@ -12,29 +12,45 @@ enum PublishersStatus {
       this == PublishersStatus.success || this == PublishersStatus.failure;
 }
 
-class PublishersState extends Equatable {
+final class PublishersState extends Equatable {
   const PublishersState({
     this.status = PublishersStatus.initial,
     this.statusMsg = '',
+    this.theses,
+    this.researches,
     this.publishers,
   });
 
   final PublishersStatus status;
   final String statusMsg;
+  final List<Thesis>? theses;
+  final List<Research>? researches;
   final List<Publisher>? publishers;
 
   PublishersState copyWith({
     PublishersStatus? status,
     String? statusMsg,
+    List<Thesis>? theses,
+    List<Research>? researches,
     List<Publisher>? publishers,
   }) {
     return PublishersState(
       status: status ?? this.status,
       statusMsg: statusMsg ?? this.statusMsg,
-      publishers: publishers ?? publishers,
+      theses: theses ?? this.theses,
+      researches: researches ?? this.researches,
+      publishers: publishers ?? this.publishers,
     );
   }
 
   @override
-  List<Object?> get props => [status, statusMsg, publishers];
+  List<Object?> get props {
+    return [
+      status,
+      statusMsg,
+      theses,
+      researches,
+      publishers,
+    ];
+  }
 }

@@ -52,6 +52,7 @@ class HomeCubit extends Cubit<HomeState> {
   @override
   Future<void> close() {
     _thesesSubscription.cancel();
+    _researchesSubscription.cancel();
     return super.close();
   }
 }

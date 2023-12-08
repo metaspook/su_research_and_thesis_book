@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:su_thesis_book/shared/models/models.dart';
+import 'package:su_thesis_book/utils/utils.dart';
 
 class Research extends Equatable {
   const Research({

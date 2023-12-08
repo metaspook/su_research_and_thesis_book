@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
+import 'package:su_thesis_book/utils/utils.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final iconButtonRecords =
-        <({IconData icon, String label, void Function()? onPressed})>[
+    final theses = context.select((HomeCubit cubit) => cubit.state.theses);
+    final researches =
+        context.select((HomeCubit cubit) => cubit.state.researches);
+    final iconButtonRecords = <IconButtonRecord>[
       (
         label: 'Bookmarks',
         icon: Icons.bookmark_rounded,
@@ -21,8 +25,10 @@ class HomeView extends StatelessWidget {
       (
         label: 'Publishers',
         icon: Icons.group_rounded,
-        onPressed: () {},
-        // onPressed: () => context.pushNamed(AppRouter.publishers.name!),
+        onPressed: () => context.pushNamed(
+              AppRouter.publishers.name!,
+              extra: (theses: theses, researches: researches),
+            ),
       ),
       (
         label: 'Notifications',
