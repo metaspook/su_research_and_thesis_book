@@ -27,6 +27,16 @@ typedef Publisher = ({
   String? photoUrl
 });
 
+extension ToJsonExt on Publisher {
+  Json toJson() => <String, Object?>{
+        'id': id,
+        'name': name,
+        'designation': designation,
+        'department': department,
+        'photoUrl': photoUrl,
+      };
+}
+
 typedef IconButtonRecord = ({
   IconData icon,
   String label,

@@ -145,13 +145,7 @@ class ResearchRepo implements CRUD<Research> {
   }
 
   @override
-  Future<String?> delete(String id) async {
-    // TODO: implement delete
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<(String?, {Research? object})> read(String id) {
+  Future<(String?, Research)> read(String id) {
     // TODO: implement read
     throw UnimplementedError();
   }
@@ -165,5 +159,11 @@ class ResearchRepo implements CRUD<Research> {
       return _errorMsgUpdate;
     }
     return null;
+  }
+
+  @override
+  Future<String?> delete(String id) async {
+    // TODO: implement delete
+    throw UnimplementedError();
   }
 }

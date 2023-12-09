@@ -79,13 +79,7 @@ class CommentRepo implements CRUD<Comment> {
   }
 
   @override
-  Future<String?> delete(String id) {
-    // TODO: implement delete
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<(String?, {Comment? object})> read(String id) {
+  Future<(String?, Comment)> read(String id) {
     // TODO: implement read
     throw UnimplementedError();
   }
@@ -93,6 +87,12 @@ class CommentRepo implements CRUD<Comment> {
   @override
   Future<String?> update(String id, {required Json value}) {
     // TODO: implement update
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String?> delete(String id) {
+    // TODO: implement delete
     throw UnimplementedError();
   }
 }

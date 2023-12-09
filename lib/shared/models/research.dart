@@ -34,6 +34,18 @@ class Research extends Equatable {
   final String? fileUrl;
   final String? category;
 
+  Json toJson() {
+    return <String, dynamic>{
+      'id': id,
+      'publisher': publisher?.toJson(),
+      'createdAt': createdAt.toString(),
+      'title': title,
+      'views': views,
+      'fileUrl': fileUrl,
+      'category': category,
+    };
+  }
+
   @override
   List<Object?> get props {
     return [

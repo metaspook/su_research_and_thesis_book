@@ -34,6 +34,18 @@ class Thesis extends Equatable {
   final String? fileUrl;
   final String? department;
 
+  Json toJson() {
+    return <String, dynamic>{
+      'id': id,
+      'publisher': publisher?.toJson(),
+      'createdAt': createdAt.toString(),
+      'title': title,
+      'views': views,
+      'fileUrl': fileUrl,
+      'department': department,
+    };
+  }
+
   @override
   List<Object?> get props {
     return [

@@ -145,13 +145,7 @@ class ThesisRepo implements CRUD<Thesis> {
   }
 
   @override
-  Future<String?> delete(String id) async {
-    // TODO: implement delete
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<(String?, {Thesis? object})> read(String id) {
+  Future<(String?, Thesis)> read(String id) {
     // TODO: implement read
     throw UnimplementedError();
   }
@@ -165,5 +159,11 @@ class ThesisRepo implements CRUD<Thesis> {
       return _errorMsgUpdate;
     }
     return null;
+  }
+
+  @override
+  Future<String?> delete(String id) async {
+    // TODO: implement delete
+    throw UnimplementedError();
   }
 }

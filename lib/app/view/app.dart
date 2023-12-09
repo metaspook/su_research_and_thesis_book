@@ -28,6 +28,12 @@ class App extends StatelessWidget {
         RepositoryProvider<CategoryRepo>(
           create: (context) => CategoryRepo(),
         ),
+        RepositoryProvider<ThesisRepo>(
+          create: (context) => ThesisRepo(),
+        ),
+        RepositoryProvider<ResearchRepo>(
+          create: (context) => ResearchRepo(),
+        ),
       ],
       child: BlocProvider<AppCubit>(
         create: (context) => AppCubit(
@@ -35,6 +41,8 @@ class App extends StatelessWidget {
           appUserRepo: context.read<AppUserRepo>(),
           designationRepo: context.read<DesignationRepo>(),
           departmentRepo: context.read<DepartmentRepo>(),
+          thesisRepo: context.read<ThesisRepo>(),
+          researchRepo: context.read<ResearchRepo>(),
         ),
         child: const AppView(),
       ),
@@ -54,7 +62,7 @@ class AppView extends StatelessWidget {
     final isAuthenticated =
         context.select((AppCubit cubit) => cubit.state.status.isAuthenticated);
     final initialLocation =
-        isAuthenticated ? AppRouter.home.path : AppRouter.auth.path;
+        isAuthenticated ? AppRouter.publisher.path : AppRouter.auth.path;
     final router = AppRouter(initialLocation: initialLocation);
 
     return MaterialApp.router(

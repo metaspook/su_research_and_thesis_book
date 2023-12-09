@@ -17,6 +17,8 @@ class AppState extends Equatable {
     this.user = AppUser.empty,
     this.designations = const [],
     this.departments = const [],
+    this.theses = const [],
+    this.researches = const [],
     this.firstLaunch = true,
   });
 
@@ -27,6 +29,8 @@ class AppState extends Equatable {
       user: AppUser.fromJson(json['user'] as Map<String, dynamic>),
       designations: [for (final e in json['designations'] as List) e as String],
       departments: [for (final e in json['departments'] as List) e as String],
+      theses: [for (final e in json['theses'] as List) e as Thesis],
+      researches: [for (final e in json['researches'] as List) e as Research],
       firstLaunch: json['firstLaunch'] as bool,
     );
   }
@@ -40,7 +44,33 @@ class AppState extends Equatable {
   final AppUser user;
   final List<String> designations;
   final List<String> departments;
+  final List<Thesis>? theses;
+  final List<Research>? researches;
   final bool firstLaunch;
+
+  List<Publisher>? get publishers => (theses == null || researches == null)
+      ? null
+      : <Publisher>[
+          // These
+          for (final e in theses!)
+            if (e.publisher != null) e.publisher!,
+          // Research
+          for (final e in researches!)
+            if (e.publisher != null) e.publisher!,
+        ];
+
+  Json toJson() {
+    return <String, dynamic>{
+      'status': status.name,
+      'statusMsg': statusMsg,
+      'user': user.toJson(),
+      'designations': designations,
+      'departments': departments,
+      'theses': theses?.map((e) => e.toJson()).toList(),
+      'researches': researches?.map((e) => e.toJson()).toList(),
+      'firstLaunch': firstLaunch,
+    };
+  }
 
   AppState copyWith({
     AppStatus? status,
@@ -48,6 +78,8 @@ class AppState extends Equatable {
     AppUser? user,
     List<String>? designations,
     List<String>? departments,
+    List<Thesis>? theses,
+    List<Research>? researches,
     bool? firstLaunch,
   }) {
     return AppState(
@@ -56,22 +88,23 @@ class AppState extends Equatable {
       user: user ?? this.user,
       designations: designations ?? this.designations,
       departments: departments ?? this.departments,
+      theses: theses ?? this.theses,
+      researches: researches ?? this.researches,
       firstLaunch: firstLaunch ?? this.firstLaunch,
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'status': status.name,
-      'statusMsg': statusMsg,
-      'user': user.toJson(),
-      'designations': designations,
-      'departments': departments,
-      'firstLaunch': firstLaunch,
-    };
-  }
-
   @override
-  List<Object?> get props =>
-      [status, statusMsg, user, designations, departments, firstLaunch];
+  List<Object?> get props {
+    return [
+      status,
+      statusMsg,
+      user,
+      designations,
+      departments,
+      theses,
+      researches,
+      firstLaunch,
+    ];
+  }
 }

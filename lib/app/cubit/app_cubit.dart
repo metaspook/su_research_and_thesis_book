@@ -14,10 +14,14 @@ class AppCubit extends HydratedCubit<AppState> {
     required AppUserRepo appUserRepo,
     required DesignationRepo designationRepo,
     required DepartmentRepo departmentRepo,
+    required ThesisRepo thesisRepo,
+    required ResearchRepo researchRepo,
   })  : _authRepo = authRepo,
         _appUserRepo = appUserRepo,
         _designationRepo = designationRepo,
         _departmentRepo = departmentRepo,
+        _thesisRepo = thesisRepo,
+        _researchRepo = researchRepo,
         super(const AppState()) {
     //-- Initialize Designations.
     _designationRepo.designations.then((designationsRecord) {
@@ -29,23 +33,34 @@ class AppCubit extends HydratedCubit<AppState> {
     });
     //-- Initialize Authentication.
     _userSubscription = _authRepo.userStream.listen((user) async {
-      // Check authUser from stream.
-      'Chk here: $user'.doPrint();
       if (user != null) {
-        // Get appUser by authUser's id.
-        final appUserRecord = await _appUserRepo.read(user.uid);
-        appUserRecord.doPrint();
-        final errorMsg = appUserRecord.$1;
-        final appUser = appUserRecord.object;
+        // Logic after User is authenticated.
+        final (errorMsg, appUser) = await _appUserRepo.read(user.uid);
         if (appUser.isNotEmpty) {
-          // 'user: $user'.doPrint();
+          // Logic after User is authenticated and data exists.
           emit(AppState(status: AppStatus.authenticated, user: appUser));
+          //-- Initialize Theses data subscription.
+          _thesesSubscription = _thesisRepo.stream.listen((theses) async {
+            if (theses.isNotEmpty) {
+              emit(state.copyWith(theses: theses));
+            }
+          });
+          //-- Initialize Researches data subscription.
+          _researchesSubscription =
+              _researchRepo.stream.listen((researches) async {
+            if (researches.isNotEmpty) {
+              emit(
+                state.copyWith(researches: researches),
+              );
+            }
+          });
         } else {
+          // Logic after User is authenticated but data isn't exists.
+          await _authRepo.signOut();
           emit(state.copyWith(statusMsg: errorMsg));
-          // Sign out authUser because user data not found.
-          // await _authRepo.signOut();
         }
       } else {
+        await clear();
         emit(
           state.copyWith(
             status: AppStatus.unauthenticated,
@@ -61,6 +76,10 @@ class AppCubit extends HydratedCubit<AppState> {
   final DesignationRepo _designationRepo;
   final DepartmentRepo _departmentRepo;
   late final StreamSubscription<User?> _userSubscription;
+  final ThesisRepo _thesisRepo;
+  final ResearchRepo _researchRepo;
+  late final StreamSubscription<List<Thesis>> _thesesSubscription;
+  late final StreamSubscription<List<Research>> _researchesSubscription;
 
   void onGetStarted() {
     emit(state.copyWith(firstLaunch: false));
@@ -79,6 +98,8 @@ class AppCubit extends HydratedCubit<AppState> {
   @override
   Future<void> close() {
     _userSubscription.cancel();
+    _thesesSubscription.cancel();
+    _researchesSubscription.cancel();
     return super.close();
   }
 }

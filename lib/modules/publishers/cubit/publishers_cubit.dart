@@ -6,13 +6,13 @@ import 'package:su_thesis_book/utils/utils.dart';
 part 'publishers_state.dart';
 
 class PublishersCubit extends Cubit<PublishersState> {
-  PublishersCubit({required Papers papers}) : super(const PublishersState()) {
-    emit(state.copyWith(status: PublishersStatus.loading));
-    emit(
-      state.copyWith(
-        status: PublishersStatus.success,
-        publishers: papers.publishers,
-      ),
-    );
+  PublishersCubit() : super(const PublishersState()) {
+    // emit(state.copyWith(status: PublishersStatus.loading));
+    // emit(
+    //   state.copyWith(
+    //     status: PublishersStatus.success,
+    //     // publishers: papers.publishers,
+    //   ),
+    // );
   }
 }

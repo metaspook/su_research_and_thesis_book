@@ -82,17 +82,16 @@ class AppUserRepo implements CRUD<AppUser> {
     return null;
   }
 
-  /// Read user data from database.
   @override
-  Future<(String? errorMsg, {AppUser object})> read(String userId) async {
+  Future<(String?, AppUser)> read(String userId) async {
     try {
       // Download user data from DB.
       final appUser = await _db.child(userId).get().then(snapshotToModel);
-      if (appUser == null) return (_errorMsgNotFound, object: AppUser.empty);
-      return (null, object: appUser);
+      if (appUser == null) return (_errorMsgNotFound, AppUser.empty);
+      return (null, appUser);
     } catch (e, s) {
       log(_errorMsgRead, error: e, stackTrace: s);
-      return (_errorMsgRead, object: AppUser.empty);
+      return (_errorMsgRead, AppUser.empty);
     }
   }
 
