@@ -43,7 +43,7 @@ class Connectivator {
   /// * Value `false`  indicates error or negative result, you can call
   /// [statusMsg] method in this case.
   /// {@endtemplate}
-  Future<bool> isNetConnected() async => await _connectivity
+  Future<bool> isNetConnected() => _connectivity
           .checkConnectivity()
           .then(_parseConnectivityResult)
           .onError<PlatformException>((e, s) {

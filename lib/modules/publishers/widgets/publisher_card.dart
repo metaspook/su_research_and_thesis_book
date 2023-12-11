@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/extensions.dart';
 import 'package:su_thesis_book/utils/utils.dart';
@@ -25,7 +26,8 @@ class PublisherCard extends StatelessWidget {
         selected: selected,
         // shape: selected ? AppThemes.outlineInputBorder : null,
         onLongPress: onLongPress,
-        onTap: () {},
+        onTap: () =>
+            context.pushNamed(AppRouter.publisher.name!, extra: publisher),
         // onTap: onTap ??
         //     () => context.push(AppRouter.thesis.pathUnderRoot, extra: thesis),
         leading: HaloAvatar(publisher.photoUrl),

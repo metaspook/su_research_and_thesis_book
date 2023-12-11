@@ -23,22 +23,20 @@ class PublishersPage extends StatelessWidget {
             centerTitle: false,
           ),
         ],
-        body: AppBlocSelector<List<Publisher>?>(
+        body: AppBlocSelector<List<Publisher>>(
           selector: (state) => state.publishers,
           builder: (context, publishers) {
             // Handle Null and Empty cases.
-            return publishers == null
+            return publishers.isEmpty
                 ? const TranslucentLoader()
-                : publishers.isEmpty
-                    ? context.emptyListText()
-                    : ListView.builder(
-                        padding: AppThemes.viewPadding,
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: publishers.length,
-                        itemBuilder: (context, index) {
-                          return PublisherCard(publishers[index]);
-                        },
-                      );
+                : ListView.builder(
+                    padding: AppThemes.viewPadding,
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: publishers.length,
+                    itemBuilder: (context, index) {
+                      return PublisherCard(publishers[index]);
+                    },
+                  );
           },
         ),
       ),

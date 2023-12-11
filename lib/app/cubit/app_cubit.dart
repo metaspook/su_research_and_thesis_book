@@ -23,6 +23,8 @@ class AppCubit extends HydratedCubit<AppState> {
         _thesisRepo = thesisRepo,
         _researchRepo = researchRepo,
         super(const AppState()) {
+    // _connectivitySubscription =
+
     //-- Initialize Designations.
     _designationRepo.designations.then((designationsRecord) {
       emit(state.copyWith(designations: designationsRecord.designations));
@@ -78,6 +80,7 @@ class AppCubit extends HydratedCubit<AppState> {
   late final StreamSubscription<User?> _userSubscription;
   final ThesisRepo _thesisRepo;
   final ResearchRepo _researchRepo;
+  late final StreamSubscription<bool> _connectivitySubscription;
   late final StreamSubscription<List<Thesis>> _thesesSubscription;
   late final StreamSubscription<List<Research>> _researchesSubscription;
 

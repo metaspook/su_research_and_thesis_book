@@ -19,6 +19,16 @@ extension NumberExt on num {
   int get length => toString().length;
 }
 
+/// List Extensions
+extension ListExt<T> on List<T> {
+  List<T> get unique => [...toSet()];
+}
+
+/// Iterable Extensions
+extension IterableExt<T> on Iterable<T> {
+  Iterable<T> get unique => [...toSet()];
+}
+
 /// Object Extensions.
 extension ObjectExt on Object {
   /// A list representation of this object.
@@ -59,12 +69,25 @@ extension NullableObjectExt on Object? {
     }
   }
 
-  void mark([int level = 3]) {
-    if (kDebugMode) {
-      final code = switch (level) { 0 => 36, 1 => 33, 2 => 31, _ => 32 };
-      final text = '\x1B[${code}mMark: ${toString()}\x1B[0m';
-      // ignore: avoid_print
-      RegExp('.{1,800}').allMatches(text).map((m) => m.group(0)).forEach(print);
-    }
-  }
+  // void mark([int level = 3]) {
+  //   if (kDebugMode) {
+  //     final code = switch (level) { 0 => 36, 1 => 33, 2 => 31, _ => 32 };
+  //     final text = '\x1B[${code}mMark: ${toString()}\x1B[0m';
+  //     // ignore: avoid_print
+  //     RegExp('.{1,800}').allMatches(text).map((m) => m.group(0)).forEach(print);
+  //   }
+  // }
+
+  /// Whether this object is null or empty String/Iterable/Map.
+  // bool get isNullOrEmpty {
+  //   final obj = this;
+  //   if (obj is String) {
+  //     return obj.isEmpty;
+  //   } else if (obj is Iterable) {
+  //     return obj.isEmpty;
+  //   } else if (obj is Map) {
+  //     return obj.isEmpty;
+  //   }
+  //   return obj == null;
+  // }
 }

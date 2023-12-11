@@ -48,16 +48,16 @@ class AppState extends Equatable {
   final List<Research>? researches;
   final bool firstLaunch;
 
-  List<Publisher>? get publishers => (theses == null || researches == null)
-      ? null
-      : <Publisher>[
-          // These
+  List<Publisher> get publishers => <Publisher>[
+        // These
+        if (theses != null)
           for (final e in theses!)
             if (e.publisher != null) e.publisher!,
-          // Research
+        // Research
+        if (researches != null)
           for (final e in researches!)
             if (e.publisher != null) e.publisher!,
-        ];
+      ].unique;
 
   Json toJson() {
     return <String, dynamic>{

@@ -62,3 +62,10 @@ class Thesis extends Equatable {
   @override
   bool get stringify => true;
 }
+
+// extension PublishersExt on List<Thesis> {
+//   List<Publisher> get publishers => <Publisher>[
+//         for (final e in this)
+//           if (e.publisher != null) e.publisher!,
+//       ];
+// }

@@ -9,10 +9,18 @@ class PdfViewer extends StatefulWidget {
   /// `MediaQuery.of(context).size.height`.
   ///
   /// Out of range values will have unexpected effects.
-  const PdfViewer(this.source, {this.type = PdfSourceType.url, super.key});
+  const PdfViewer(
+    this.source, {
+    this.type = PdfSourceType.url,
+    super.key,
+    this.whenDone,
+  });
 
   final String source;
   final PdfSourceType type;
+
+  /// Usable with PdfSourceType.url
+  final void Function(String filePath)? whenDone;
   // final double heightPercent;
   // this.heightPercent = .8225,
   // 'https://css4.pub/2015/usenix/example.pdf'
@@ -51,7 +59,8 @@ class _PdfViewerState extends State<PdfViewer> {
           switch (widget.type) {
             PdfSourceType.asset => pdf.fromAsset(widget.source),
             PdfSourceType.path => pdf.fromPath(widget.source),
-            PdfSourceType.url => pdf.cachedFromUrl(widget.source),
+            PdfSourceType.url =>
+              pdf.cachedFromUrl(widget.source, whenDone: widget.whenDone),
           },
           Row(
             mainAxisAlignment: MainAxisAlignment.end,

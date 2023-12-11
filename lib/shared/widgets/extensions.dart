@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:su_thesis_book/gen/assets.gen.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
 // Config
-// <implement here, if any>
+SvgPicture? _authBanner;
 
 /// Callable Widget Extensions.
 extension CallableWidgetExt on BuildContext {
   ScaffoldMessengerState get scaffoldMessenger => ScaffoldMessenger.of(this);
+  FocusScopeNode get focusScope => FocusScope.of(this);
   // bool get keyboardVisible => MediaQuery.of(this).viewInsets.bottom != 0;
 
-  SvgPicture authBanner() => SvgPicture.asset(
-        Assets.images.placeholderUser01.path,
-        placeholderBuilder: (context) =>
-            const Center(child: CircularProgressIndicator()),
-        semanticsLabel: 'Auth Logo',
-        height: mediaQuery.size.height * .3,
-      );
+  // SvgPicture authBanner() => _authBanner ??= SvgPicture.asset(
+  //       Assets.images.signinBanner01,
+  //       placeholderBuilder: (context) =>
+  //           const Center(child: CircularProgressIndicator()),
+  //       semanticsLabel: 'Auth Logo',
+  //       height: mediaQuery.size.height * .3,
+  //     );
   Widget emptyListText({String? data, bool hasToolbarHeight = true}) => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -44,24 +44,42 @@ extension CallableWidgetExt on BuildContext {
     PreferredSizeWidget? bottom,
     List<Widget>? actions,
     Widget? leading,
+    bool automaticallyImplyLeading = true,
   }) {
     final backBtn = backButton();
     return SliverAppBar(
+      automaticallyImplyLeading: automaticallyImplyLeading,
       pinned: true,
+      floating: true,
+      snap: true,
       leading: backBtn == null && leading == null
           ? null
           : Row(
               children: [
-                if (backBtn != null) backBtn,
+                if (backBtn != null && automaticallyImplyLeading) backBtn,
                 if (leading != null) leading,
               ],
             ),
+      // expandedHeight: 220,
+      // flexibleSpace: FlexibleSpaceBar(
+      //   centerTitle: true,
+      //   title: Text(title),
+      //   background: Image.asset(
+      //     Assets.images.mathematics01.path,
+      //     fit: BoxFit.cover,
+      //   ),
+      // ),
       centerTitle: centerTitle,
       title: Text(title),
       bottom: bottom,
       actions: actions,
     );
   }
+}
+
+extension ToBoldExt on TextStyle {
+  TextStyle toBold([FontWeight fontWeight = FontWeight.bold]) =>
+      copyWith(fontWeight: fontWeight);
 }
 
 /// PreferredSize Extensions.

@@ -24,7 +24,9 @@ final class AppRouter {
           //       .doPrint();
           //   return status.isAuthenticated ? null : '/auth';
           // },
-        );
+        ) {
+    config.routeInformationProvider.value.uri.doPrint('Current Route: ');
+  }
 
   // final GlobalKey<NavigatorState>? navigatorKey;
   final String? initialLocation;
@@ -133,20 +135,7 @@ final class AppRouter {
     name: 'publishers',
     path: '/publishers',
     builder: (context, state) {
-      return MultiRepositoryProvider(
-        providers: [
-          RepositoryProvider<ThesisRepo>(
-            create: (context) => ThesisRepo(),
-          ),
-          RepositoryProvider(
-            create: (context) => ResearchRepo(),
-          ),
-        ],
-        child: BlocProvider<PublishersCubit>(
-          create: (context) => PublishersCubit(),
-          child: const PublishersPage(),
-        ),
-      );
+      return const PublishersPage();
     },
   );
 
@@ -155,20 +144,8 @@ final class AppRouter {
     name: 'publisher',
     path: '/publisher',
     builder: (context, state) {
-      return MultiRepositoryProvider(
-        providers: [
-          RepositoryProvider<ThesisRepo>(
-            create: (context) => ThesisRepo(),
-          ),
-          RepositoryProvider(
-            create: (context) => ResearchRepo(),
-          ),
-        ],
-        child: BlocProvider<PublishersCubit>(
-          create: (context) => PublishersCubit(),
-          child: const PublisherPage(),
-        ),
-      );
+      final publisher = state.extra! as Publisher;
+      return PublisherPage(publisher: publisher);
     },
   );
 
@@ -177,7 +154,6 @@ final class AppRouter {
     name: 'thesis',
     path: 'thesis',
     builder: (context, state) {
-      'Current Route: ${state.fullPath}'.doPrint();
       final thesis = state.extra! as Thesis;
       return RepositoryProvider<ThesisRepo>(
         create: (context) => ThesisRepo(),
