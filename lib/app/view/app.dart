@@ -1,7 +1,6 @@
-import 'package:connectivator/connectivator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:su_thesis_book/app/cubit/app_cubit.dart';
+import 'package:su_thesis_book/app/app.dart';
 import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
@@ -40,10 +39,6 @@ class App extends StatelessWidget {
         create: (context) => AppCubit(
           authRepo: context.read<AuthRepo>(),
           appUserRepo: context.read<AppUserRepo>(),
-          designationRepo: context.read<DesignationRepo>(),
-          departmentRepo: context.read<DepartmentRepo>(),
-          thesisRepo: context.read<ThesisRepo>(),
-          researchRepo: context.read<ResearchRepo>(),
         ),
         child: const AppView(),
       ),
@@ -58,13 +53,12 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Connectivator().isNetConnected().then(print);
     // NOTE: This approach is experimental instead of redirection from router.
     // need see which one is performant and stable.
     final isAuthenticated =
         context.select((AppCubit cubit) => cubit.state.status.isAuthenticated);
     final initialLocation =
-        isAuthenticated ? AppRouter.publishers.path : AppRouter.auth.path;
+        isAuthenticated ? AppRouter.home.path : AppRouter.auth.path;
     final router = AppRouter(initialLocation: initialLocation);
 
     return MaterialApp.router(

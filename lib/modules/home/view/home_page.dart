@@ -5,7 +5,10 @@ import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
-// typedef HomeBlocSelector<T> = BlocSelector<HomeCubit, HomeState, T>;
+class HomeCubit extends Cubit<int> {
+  HomeCubit() : super(1);
+  void onDestinationSelected(int index) => emit(index);
+}
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -34,8 +37,7 @@ class HomePage extends StatelessWidget {
       ),
     ];
     final cubit = context.read<HomeCubit>();
-    final viewIndex =
-        context.select((HomeCubit cubit) => cubit.state.viewIndex);
+    final viewIndex = context.select((HomeCubit cubit) => cubit.state);
 
     return Scaffold(
       body: NestedScrollView(
@@ -58,12 +60,6 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      // floatingActionButton: FloatingActionButton.extended(
-      //   label: const Text('Add Thesis'),
-      //   icon: const Icon(Icons.playlist_add_outlined),
-      //   onPressed: () => ThesisEntryDialog.show(context),
-      // ),
     );
   }
 }

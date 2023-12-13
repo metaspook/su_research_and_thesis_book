@@ -84,16 +84,19 @@ class ResearchRepo implements CRUD<Research> {
   }
 
   /// Emits list of research.
-  Stream<List<Research>> get stream => _db.onValue.asyncMap<List<Research>>(
-        (event) async {
-          final researches = <Research>[];
-          for (final snapshot in event.snapshot.children) {
-            final research = await snapshotToModel(snapshot);
-            if (research != null) researches.add(research);
-          }
-          return _cache.value = researches;
-        },
-      );
+  Stream<List<Research>> get stream async* {
+    if (_cache.value != null) yield _cache.value!;
+    yield* _db.onValue.asyncMap<List<Research>>(
+      (event) async {
+        final researches = <Research>[];
+        for (final snapshot in event.snapshot.children) {
+          final research = await snapshotToModel(snapshot);
+          if (research != null) researches.add(research);
+        }
+        return _cache.value = researches;
+      },
+    );
+  }
 
   /// Upload research file to Storage and get URL.
   Future<({String? errorMsg, String? fileUrl})> uploadFile(String path) async {

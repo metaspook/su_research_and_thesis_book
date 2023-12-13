@@ -9,6 +9,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
+typedef ThesesRecord = (String?, List<Thesis>?);
+
 class ThesisRepo implements CRUD<Thesis> {
   //-- Config
   final _cacheDesignations = const Cache<List<String>>('designations');
@@ -18,6 +20,8 @@ class ThesisRepo implements CRUD<Thesis> {
   final _dbUsers = FirebaseDatabase.instance.ref('users');
   final _storage = FirebaseStorage.instance.ref('theses');
   final _filePicker = FilePicker.platform;
+  final _errorMsgThesesNotFound = 'Theses not found!';
+  final _errorMsgTheses = "Couldn't get the theses!";
   final _errorMsgCreate = "Couldn't create the Thesis!";
   final _errorMsgRead = "Couldn't read the Thesis data!";
   final _errorMsgUpdate = "Couldn't update the Thesis!";
@@ -84,16 +88,19 @@ class ThesisRepo implements CRUD<Thesis> {
   }
 
   /// Emits list of thesis.
-  Stream<List<Thesis>> get stream => _db.onValue.asyncMap<List<Thesis>>(
-        (event) async {
-          final theses = <Thesis>[];
-          for (final snapshot in event.snapshot.children) {
-            final thesis = await snapshotToModel(snapshot);
-            if (thesis != null) theses.add(thesis);
-          }
-          return _cache.value = theses;
-        },
-      );
+  Stream<List<Thesis>> get stream async* {
+    if (_cache.value != null) yield _cache.value!;
+    yield* _db.onValue.asyncMap<List<Thesis>>(
+      (event) async {
+        final theses = <Thesis>[];
+        for (final snapshot in event.snapshot.children) {
+          final thesis = await snapshotToModel(snapshot);
+          if (thesis != null) theses.add(thesis);
+        }
+        return _cache.value = theses;
+      },
+    );
+  }
 
   /// Upload thesis file to Storage and get URL.
   Future<({String? errorMsg, String? fileUrl})> uploadFile(String path) async {

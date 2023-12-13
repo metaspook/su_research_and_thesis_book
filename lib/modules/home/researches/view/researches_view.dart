@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:su_thesis_book/app/app.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
-import 'package:su_thesis_book/theme/theme.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
 typedef ResearchesBlocSelector<T>
@@ -14,12 +14,9 @@ class ResearchesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var researches =
-        context.select((HomeCubit cubit) => cubit.state.researches);
-    final isLoading =
-        context.select((ResearchesCubit cubit) => cubit.state.status.isLoading);
+    var researches = context.select((AppCubit cubit) => cubit.state.researches);
     // Handle Null and Empty cases.
-    if (researches == null || isLoading) return const TranslucentLoader();
+    if (researches == null) return const TranslucentLoader();
     if (researches.isEmpty) return context.emptyListText();
     // Handle search query string.
     final search =
@@ -28,15 +25,9 @@ class ResearchesView extends StatelessWidget {
         ? researches
         : [
             ...researches.where(
-              (element) => element.title.toStringParseNull().contains(search),
+              (research) => research.title.toStringParseNull().contains(search),
             ),
           ];
-
-    return ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      padding: AppThemes.viewPadding,
-      itemCount: researches.length,
-      itemBuilder: (context, index) => ResearchCard(researches![index]),
-    );
+    return ResearcherListView(researches);
   }
 }

@@ -1,5 +1,12 @@
 import 'package:su_thesis_book/utils/utils.dart';
 
+abstract class BaseRepo<T> {
+  // Future<String?> create(String id, {required Json value});
+  // Future<(String?, T)> read(String id);
+  // Future<String?> update(String id, {required Json value});
+  Stream<(String?, T)> get designations;
+}
+
 /// CRUD operations abstract to implement on repository.
 abstract class CRUD<T> {
   /// Creates data.

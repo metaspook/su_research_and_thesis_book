@@ -9,18 +9,13 @@ class DepartmentRepo {
   //-- Config
   final _cache = const Cache<List<String>>('departments');
   final _db = FirebaseDatabase.instance.ref('departments');
-  final _errorMsgDepartmentNotFound = 'User department not found!';
-  final _errorMsgDepartmentsNotFound = 'User departments not found!';
-  final _errorMsgDepartmentIndex = "Couldn't get index of the department!";
-  final _errorMsgDepartment = "Couldn't get department of the index!";
-  final _errorMsgDepartments = "Couldn't get the user departments!";
+  final _errorMsgDepartmentsNotFound = 'Departments not found!';
+  final _errorMsgDepartments = "Couldn't get the departments!";
 
   //-- Public APIs
-  /// Get departments.
-  Future<({String? errorMsg, List<String>? departments})>
-      get departments async {
+  /// Get list of departments.
+  Future<(String?, List<String>?)> get departments async {
     String? errorMsg;
-
     if (_cache.isNullOrEmpty) {
       try {
         final departmentsObj = (await _db.get()).value;
@@ -32,6 +27,6 @@ class DepartmentRepo {
         errorMsg = _errorMsgDepartments;
       }
     }
-    return (errorMsg: errorMsg, departments: _cache.value);
+    return (errorMsg, _cache.value);
   }
 }

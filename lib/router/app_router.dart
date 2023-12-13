@@ -52,17 +52,10 @@ final class AppRouter {
         child: MultiBlocProvider(
           providers: [
             BlocProvider<HomeCubit>(
-              create: (context) => HomeCubit(
-                thesisRepo: context.read<ThesisRepo>(),
-                researchRepo: context.read<ResearchRepo>(),
-              ),
+              create: (context) => HomeCubit(),
             ),
             BlocProvider<ThesesCubit>(
-              create: (context) => ThesesCubit(
-                appUserRepo: context.read<AppUserRepo>(),
-                departmentRepo: context.read<DepartmentRepo>(),
-                thesisRepo: context.read<ThesisRepo>(),
-              ),
+              create: (context) => ThesesCubit(),
               child: const ThesesView(),
             ),
             BlocProvider<ResearchesCubit>(

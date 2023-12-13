@@ -6,10 +6,6 @@ enum ThesesStatus {
   loading,
   success,
   failure;
-
-  bool get isLoading => this == ThesesStatus.loading;
-  bool get hasMessage =>
-      this == ThesesStatus.success || this == ThesesStatus.failure;
 }
 
 class ThesesState extends Equatable {
@@ -19,7 +15,6 @@ class ThesesState extends Equatable {
     this.searchMode = false,
     this.search = '',
     this.department = 'All',
-    this.departments,
   });
 
   final ThesesStatus status;
@@ -27,7 +22,6 @@ class ThesesState extends Equatable {
   final bool searchMode;
   final String search;
   final String department;
-  final List<String>? departments;
 
   ThesesState copyWith({
     ThesesStatus? status,
@@ -35,7 +29,6 @@ class ThesesState extends Equatable {
     bool? searchMode,
     String? search,
     String? department,
-    List<String>? departments,
   }) {
     return ThesesState(
       status: status ?? this.status,
@@ -43,11 +36,10 @@ class ThesesState extends Equatable {
       searchMode: searchMode ?? this.searchMode,
       search: search ?? this.search,
       department: department ?? this.department,
-      departments: departments ?? this.departments,
     );
   }
 
   @override
   List<Object?> get props =>
-      [status, statusMsg, searchMode, search, department, departments];
+      [status, statusMsg, searchMode, search, department];
 }

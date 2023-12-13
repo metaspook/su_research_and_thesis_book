@@ -9,17 +9,13 @@ class CategoryRepo {
   //-- Config
   final _cache = const Cache<List<String>>('categories');
   final _db = FirebaseDatabase.instance.ref('categories');
-  final _errorMsgCategoryNotFound = 'User category not found!';
-  final _errorMsgCategoriesNotFound = 'User categories not found!';
-  final _errorMsgCategoryIndex = "Couldn't get index of the category!";
-  final _errorMsgCategory = "Couldn't get category of the index!";
-  final _errorMsgCategories = "Couldn't get the user categories!";
+  final _errorMsgCategoriesNotFound = 'Categories not found!';
+  final _errorMsgCategories = "Couldn't get the categories!";
 
   //-- Public APIs
-  /// Get categories.
-  Future<({String? errorMsg, List<String>? categories})> get categories async {
+  /// Get list of categories.
+  Future<(String?, List<String>?)> get categories async {
     String? errorMsg;
-
     if (_cache.isNullOrEmpty) {
       try {
         final categoriesObj = (await _db.get()).value;
@@ -31,6 +27,6 @@ class CategoryRepo {
         errorMsg = _errorMsgCategories;
       }
     }
-    return (errorMsg: errorMsg, categories: _cache.value);
+    return (errorMsg, _cache.value);
   }
 }

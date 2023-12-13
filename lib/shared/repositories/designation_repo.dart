@@ -9,16 +9,12 @@ class DesignationRepo {
   //-- Config
   final _cache = const Cache<List<String>>('designations');
   final _db = FirebaseDatabase.instance.ref('designations');
-  final _errorMsgDesignationNotFound = 'User designation not found!';
-  final _errorMsgDesignationsNotFound = 'User designations not found!';
-  final _errorMsgDesignationIndex = "Couldn't get index of the designation!";
-  final _errorMsgDesignation = "Couldn't get designation of the index!";
-  final _errorMsgDesignations = "Couldn't get the user designations!";
+  final _errorMsgDesignationsNotFound = 'Designations not found!';
+  final _errorMsgDesignations = "Couldn't get the designations!";
 
   //-- Public APIs
-  /// Get designations.
-  Future<({String? errorMsg, List<String>? designations})>
-      get designations async {
+  /// Get list of designation.
+  Future<(String?, List<String>?)> get designations async {
     String? errorMsg;
     if (_cache.isNullOrEmpty) {
       try {
@@ -31,6 +27,6 @@ class DesignationRepo {
         errorMsg = _errorMsgDesignations;
       }
     }
-    return (errorMsg: errorMsg, designations: _cache.value);
+    return (errorMsg, _cache.value);
   }
 }
