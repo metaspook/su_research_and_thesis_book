@@ -5,14 +5,14 @@ import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
-class ResearchesAppBar extends StatefulWidget {
-  const ResearchesAppBar({super.key});
+class ResearchesNavAppBar extends StatefulWidget {
+  const ResearchesNavAppBar({super.key});
 
   @override
-  State<ResearchesAppBar> createState() => _ResearchesAppBarState();
+  State<ResearchesNavAppBar> createState() => _ResearchesNavAppBarState();
 }
 
-class _ResearchesAppBarState extends State<ResearchesAppBar> {
+class _ResearchesNavAppBarState extends State<ResearchesNavAppBar> {
   // TextEditingControllers
   final _searchController = TextEditingController();
 
@@ -25,10 +25,10 @@ class _ResearchesAppBarState extends State<ResearchesAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<ResearchesCubit>();
+    final cubit = context.read<ResearchesNavCubit>();
     final l10n = context.l10n;
     final searchMode =
-        context.select((ResearchesCubit cubit) => cubit.state.searchMode);
+        context.select((ResearchesNavCubit cubit) => cubit.state.searchMode);
 
     return context.sliverAppBar(
       l10n.researchesAppBarTitle,
@@ -52,13 +52,14 @@ class _ResearchesAppBarState extends State<ResearchesAppBar> {
                         ),
                       ),
                     )
-                  : ResearchesBlocSelector<List<String>?>(
+                  : ResearchesNavBlocSelector<List<String>?>(
                       selector: (state) => state.categories,
                       builder: (context, categories) {
                         final department = context.select(
-                          (ResearchesCubit cubit) => cubit.state.category,
+                          (ResearchesNavCubit cubit) => cubit.state.category,
                         );
-                        final departmentAll = const ResearchesState().category;
+                        final departmentAll =
+                            const ResearchesNavCubit().category;
 
                         return DropdownButtonHideUnderline(
                           child: DropdownButton<String>(

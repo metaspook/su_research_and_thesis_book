@@ -1,6 +1,6 @@
-part of 'theses_cubit.dart';
+part of 'theses_nav_cubit.dart';
 
-enum ThesesStatus {
+enum ThesesNavStatus {
   initial,
   editing,
   loading,
@@ -8,29 +8,29 @@ enum ThesesStatus {
   failure;
 }
 
-class ThesesState extends Equatable {
-  const ThesesState({
-    this.status = ThesesStatus.initial,
+class ThesesNavState extends Equatable {
+  const ThesesNavState({
+    this.status = ThesesNavStatus.initial,
     this.statusMsg = '',
     this.searchMode = false,
     this.search = '',
     this.department = 'All',
   });
 
-  final ThesesStatus status;
+  final ThesesNavStatus status;
   final String statusMsg;
   final bool searchMode;
   final String search;
   final String department;
 
-  ThesesState copyWith({
-    ThesesStatus? status,
+  ThesesNavState copyWith({
+    ThesesNavStatus? status,
     String? statusMsg,
     bool? searchMode,
     String? search,
     String? department,
   }) {
-    return ThesesState(
+    return ThesesNavState(
       status: status ?? this.status,
       statusMsg: statusMsg ?? this.statusMsg,
       searchMode: searchMode ?? this.searchMode,

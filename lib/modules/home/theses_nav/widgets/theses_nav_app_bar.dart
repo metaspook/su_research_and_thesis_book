@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:su_thesis_book/app/app.dart';
 import 'package:su_thesis_book/l10n/l10n.dart';
-import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
-class ThesesAppBar extends StatefulWidget {
-  const ThesesAppBar({super.key});
+class ThesesNavAppBar extends StatefulWidget {
+  const ThesesNavAppBar({super.key});
 
   @override
-  State<ThesesAppBar> createState() => _ThesesAppBarState();
+  State<ThesesNavAppBar> createState() => _ThesesNavAppBarState();
 }
 
-class _ThesesAppBarState extends State<ThesesAppBar> {
+class _ThesesNavAppBarState extends State<ThesesNavAppBar> {
   // TextEditingControllers
   final _searchController = TextEditingController();
 

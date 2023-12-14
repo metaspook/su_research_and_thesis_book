@@ -47,6 +47,22 @@ class App extends StatelessWidget {
 }
 
 typedef AppBlocSelector<T> = BlocSelector<AppCubit, AppState, T>;
+typedef CategoriesBlocSelector<T>
+    = BlocSelector<CategoriesCubit, CategoriesState, T>;
+typedef CategoriesBlocListener = BlocListener<CategoriesCubit, CategoriesState>;
+typedef DepartmentsBlocSelector<T>
+    = BlocSelector<DepartmentsCubit, DepartmentsState, T>;
+typedef DepartmentsBlocListener
+    = BlocListener<DepartmentsCubit, DepartmentsState>;
+typedef DesignationsBlocSelector<T>
+    = BlocSelector<DesignationsCubit, DesignationsState, T>;
+typedef DesignationsBlocListener
+    = BlocListener<DesignationsCubit, DesignationsState>;
+typedef ResearchesBlocSelector<T>
+    = BlocSelector<ResearchesCubit, ResearchesState, T>;
+typedef ResearchesBlocListener = BlocListener<ResearchesCubit, ResearchesState>;
+typedef ThesesBlocSelector<T> = BlocSelector<ThesesCubit, ThesesState, T>;
+typedef ThesesBlocListener = BlocListener<ThesesCubit, ThesesState>;
 
 class AppView extends StatelessWidget {
   const AppView({super.key});

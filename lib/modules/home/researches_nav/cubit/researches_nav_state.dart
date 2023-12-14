@@ -1,20 +1,21 @@
-part of 'researches_cubit.dart';
+part of 'home_researches_cubit.dart';
 
-enum ResearchesStatus {
+enum ResearchesNavStatus {
   initial,
   editing,
   loading,
   success,
   failure;
 
-  bool get isLoading => this == ResearchesStatus.loading;
+  bool get isLoading => this == ResearchesNavStatus.loading;
   bool get hasMessage =>
-      this == ResearchesStatus.success || this == ResearchesStatus.failure;
+      this == ResearchesNavStatus.success ||
+      this == ResearchesNavStatus.failure;
 }
 
-class ResearchesState extends Equatable {
-  const ResearchesState({
-    this.status = ResearchesStatus.initial,
+class ResearchesNavState extends Equatable {
+  const ResearchesNavState({
+    this.status = ResearchesNavStatus.initial,
     this.statusMsg = '',
     this.searchMode = false,
     this.search = '',
@@ -22,22 +23,22 @@ class ResearchesState extends Equatable {
     this.categories,
   });
 
-  final ResearchesStatus status;
+  final ResearchesNavStatus status;
   final String statusMsg;
   final bool searchMode;
   final String search;
   final String category;
   final List<String>? categories;
 
-  ResearchesState copyWith({
-    ResearchesStatus? status,
+  ResearchesNavState copyWith({
+    ResearchesNavStatus? status,
     String? statusMsg,
     bool? searchMode,
     String? search,
     String? category,
     List<String>? categories,
   }) {
-    return ResearchesState(
+    return ResearchesNavState(
       status: status ?? this.status,
       statusMsg: statusMsg ?? this.statusMsg,
       searchMode: searchMode ?? this.searchMode,

@@ -20,8 +20,8 @@ class HomePage extends StatelessWidget {
       (
         label: 'Theses',
         icon: Icons.folder_rounded,
-        appBar: const ThesesAppBar(),
-        view: const ThesesView(),
+        appBar: const ThesesNavAppBar(),
+        view: const ThesesNavView(),
       ),
       (
         label: 'Home',
@@ -32,8 +32,8 @@ class HomePage extends StatelessWidget {
       (
         label: 'Researches',
         icon: Icons.folder_rounded,
-        appBar: const ResearchesAppBar(),
-        view: const ResearchesView(),
+        appBar: const ResearchesNavAppBar(),
+        view: const ResearchesNavView(),
       ),
     ];
     final cubit = context.read<HomeCubit>();

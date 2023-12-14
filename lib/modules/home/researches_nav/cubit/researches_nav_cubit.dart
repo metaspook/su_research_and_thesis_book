@@ -2,23 +2,23 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
 
-part 'researches_state.dart';
+part 'researches_nav_state.dart';
 
-class ResearchesCubit extends Cubit<ResearchesState> {
-  ResearchesCubit({
+class ResearchesNavCubit extends Cubit<ResearchesNavState> {
+  ResearchesNavCubit({
     required AppUserRepo appUserRepo,
     required ResearchRepo researchRepo,
     required CategoryRepo categoryRepo,
   })  : _appUserRepo = appUserRepo,
         _researchRepo = researchRepo,
         _categoryRepo = categoryRepo,
-        super(const ResearchesState()) {
+        super(const ResearchesNavState()) {
     //-- Initialize categories.
-    emit(state.copyWith(status: ResearchesStatus.loading));
+    emit(state.copyWith(status: ResearchesNavStatus.loading));
     _categoryRepo.categories.then(
       (categoriesRecord) => emit(
         state.copyWith(
-          status: ResearchesStatus.success,
+          status: ResearchesNavStatus.success,
           categories: categoriesRecord.categories,
         ),
       ),

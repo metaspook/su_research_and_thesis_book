@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:su_thesis_book/app/app.dart';
-import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
-import 'package:su_thesis_book/utils/utils.dart';
 
-typedef ThesesBlocSelector<T> = BlocSelector<ThesesCubit, ThesesState, T>;
-typedef ThesesBlocListener = BlocListener<ThesesCubit, ThesesState>;
+typedef ThesesNavBlocSelector<T> = BlocSelector<ThesesCubit, ThesesState, T>;
+typedef ThesesNavBlocListener = BlocListener<ThesesCubit, ThesesState>;
 
-class ThesesView extends StatelessWidget {
-  const ThesesView({super.key});
+class ThesesNavView extends StatelessWidget {
+  const ThesesNavView({super.key});
 
   @override
   Widget build(BuildContext context) {
