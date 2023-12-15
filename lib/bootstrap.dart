@@ -36,6 +36,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   // Add cross-flavor configuration here
   EquatableConfig.stringify = true;
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  //-- Preserve splash screen while app initializes.
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   //-- Firebase config
   await Firebase.initializeApp(
