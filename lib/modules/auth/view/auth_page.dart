@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
@@ -11,11 +12,22 @@ typedef SignUpBlocSelector<T> = BlocSelector<SignUpBloc, SignUpState, T>;
 typedef SignUpBlocListener = BlocListener<SignUpBloc, SignUpState>;
 typedef SignUpBlocConsumer = BlocConsumer<SignUpBloc, SignUpState>;
 
-class AuthPage extends StatelessWidget {
+class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
 
   static Route<void> route() {
     return MaterialPageRoute<void>(builder: (_) => const AuthPage());
+  }
+
+  @override
+  State<AuthPage> createState() => _AuthPageState();
+}
+
+class _AuthPageState extends State<AuthPage> {
+  @override
+  void initState() {
+    super.initState();
+    FlutterNativeSplash.remove();
   }
 
   @override
