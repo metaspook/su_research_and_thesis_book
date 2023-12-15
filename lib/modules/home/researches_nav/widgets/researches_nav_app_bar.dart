@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:su_thesis_book/app/app.dart';
 import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
@@ -52,20 +53,20 @@ class _ResearchesNavAppBarState extends State<ResearchesNavAppBar> {
                         ),
                       ),
                     )
-                  : ResearchesNavBlocSelector<List<String>?>(
+                  : CategoriesBlocSelector<List<String>?>(
                       selector: (state) => state.categories,
                       builder: (context, categories) {
-                        final department = context.select(
+                        final category = context.select(
                           (ResearchesNavCubit cubit) => cubit.state.category,
                         );
                         final departmentAll =
-                            const ResearchesNavCubit().category;
+                            const ResearchesNavState().category;
 
                         return DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             menuMaxHeight: AppThemes.menuMaxHeight,
                             padding: AppThemes.viewPadding,
-                            value: department,
+                            value: category,
                             borderRadius: AppThemes.borderRadius,
                             hint: const Text('department...'),
                             items: [

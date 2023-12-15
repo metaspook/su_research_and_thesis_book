@@ -4,7 +4,8 @@
     "counterAppBarTitle": "Contador",
     "bookmarkAppBarTitle": "Bookmarks",
     "publishersAppBarTitle": "Publishers",
-    "thesesAppBarTitle": "Browse Theses",
     "researchesAppBarTitle": "Browse Researches",
+    "researchEntryAppBarTitle": "Research Entry",
+    "thesesAppBarTitle": "Browse Theses",
     "thesisEntryAppBarTitle": "Thesis Entry"
 }

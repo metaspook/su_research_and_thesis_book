@@ -13,20 +13,20 @@ final class SignUpEdited extends SignUpEvent {
     this.email,
     this.password,
     this.phone,
-    this.designation,
-    this.department,
+    this.designationIndex,
+    this.departmentIndex,
   });
 
   final String? name;
   final String? email;
   final String? password;
   final String? phone;
-  final String? designation;
-  final String? department;
+  final int? designationIndex;
+  final int? departmentIndex;
 
   @override
   List<Object?> get props =>
-      [name, email, password, phone, designation, department];
+      [name, email, password, phone, designationIndex, departmentIndex];
 }
 
 final class SignUpPhotoPicked extends SignUpEvent {
@@ -37,10 +37,6 @@ final class SignUpPhotoPicked extends SignUpEvent {
 
   @override
   List<Object?> get props => [photoPath, statusMsg];
-}
-
-final class SignUpFormLoaded extends SignUpEvent {
-  const SignUpFormLoaded();
 }
 
 final class SignUpObscurePasswordToggled extends SignUpEvent {

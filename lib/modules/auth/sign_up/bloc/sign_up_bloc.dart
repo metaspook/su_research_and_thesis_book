@@ -9,27 +9,18 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   SignUpBloc({
     required AuthRepo authRepo,
     required AppUserRepo appUserRepo,
-    required DesignationRepo designationRepo,
-    required DepartmentRepo departmentRepo,
   })  : _authRepo = authRepo,
         _appUserRepo = appUserRepo,
-        _designationRepo = designationRepo,
-        _departmentRepo = departmentRepo,
         super(const SignUpState()) {
     //-- Register Event Handlers
     on<SignUpEdited>(_onEdited);
     on<SignUpPhotoPicked>(_onPhotoPicked);
     on<SignUpProceeded>(_onProceeded);
     on<SignUpObscurePasswordToggled>(_onObscurePasswordToggled);
-    on<SignUpFormLoaded>(_onFormLoaded);
-    //-- Initial Event Handlers
-    add(const SignUpFormLoaded());
   }
 
   final AuthRepo _authRepo;
   final AppUserRepo _appUserRepo;
-  final DesignationRepo _designationRepo;
-  final DepartmentRepo _departmentRepo;
 
   //-- Define Event Handlers
   Future<void> _onEdited(
@@ -43,8 +34,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         email: event.email,
         password: event.password,
         phone: event.phone,
-        designation: event.designation,
-        department: event.department,
+        designationIndex: event.designationIndex,
+        departmentIndex: event.departmentIndex,
       ),
     );
   }
@@ -56,28 +47,6 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     emit(
       state.copyWith(photoPath: event.photoPath, statusMsg: event.statusMsg),
     );
-  }
-
-  Future<void> _onFormLoaded(
-    SignUpFormLoaded event,
-    Emitter<SignUpState> emit,
-  ) async {
-    emit(state.copyWith(status: SignUpStatus.loading));
-    final designationsRecord = await _designationRepo.designations;
-    final departmentsRecord = await _departmentRepo.departments;
-    final errorMsg = designationsRecord.errorMsg ?? departmentsRecord.errorMsg;
-
-    if (errorMsg == null) {
-      emit(
-        state.copyWith(
-          status: SignUpStatus.initial,
-          designations: designationsRecord.designations,
-          departments: departmentsRecord.departments,
-        ),
-      );
-    } else {
-      emit(state.copyWith(status: SignUpStatus.failure, statusMsg: errorMsg));
-    }
   }
 
   Future<void> _onObscurePasswordToggled(
@@ -102,11 +71,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       final uploadRecord =
           await _appUserRepo.uploadPhoto(state.photoPath, userId: userId);
       if (uploadRecord.errorMsg == null) {
-        final roleIndex = state.designations.indexOf(state.designation);
-        final departmentIndex = state.departments.indexOf(state.department);
         final userObj = {
-          'departmentIndex': departmentIndex,
-          'designationIndex': roleIndex,
+          'departmentIndex': state.departmentIndex,
+          'designationIndex': state.designationIndex,
           'email': state.email,
           'name': state.name,
           'phone': state.phone,

@@ -16,6 +16,7 @@ final class AppRouter {
             publisher,
           ],
           initialLocation: initialLocation,
+          navigatorKey: GlobalKey<NavigatorState>(),
           // navigatorKey: navigatorKey,
           // redirect: (context, state) {
           //   // AppStatus prevStatus;
@@ -38,33 +39,30 @@ final class AppRouter {
     name: 'home',
     path: '/',
     // redirect: _redirect,
-    routes: <RouteBase>[thesis],
+    routes: <RouteBase>[thesis, research],
     builder: (context, state) {
       return MultiRepositoryProvider(
         providers: [
-          RepositoryProvider<ThesisRepo>(
-            create: (context) => ThesisRepo(),
-          ),
           RepositoryProvider<ResearchRepo>(
             create: (context) => ResearchRepo(),
+          ),
+          RepositoryProvider<ThesisRepo>(
+            create: (context) => ThesisRepo(),
           ),
         ],
         child: MultiBlocProvider(
           providers: [
-            BlocProvider<HomeCubit>(
-              create: (context) => HomeCubit(),
-            ),
-            BlocProvider<ThesesCubit>(
-              create: (context) => ThesesCubit(),
-              child: const ThesesView(),
-            ),
             BlocProvider<ResearchesCubit>(
               create: (context) => ResearchesCubit(
-                appUserRepo: context.read<AppUserRepo>(),
-                categoryRepo: context.read<CategoryRepo>(),
+                authRepo: context.read<AuthRepo>(),
                 researchRepo: context.read<ResearchRepo>(),
               ),
-              child: const ResearchesView(),
+            ),
+            BlocProvider<ThesesCubit>(
+              create: (context) => ThesesCubit(
+                authRepo: context.read<AuthRepo>(),
+                thesisRepo: context.read<ThesisRepo>(),
+              ),
             ),
           ],
           child: const HomePage(),
@@ -89,8 +87,6 @@ final class AppRouter {
             create: (context) => SignUpBloc(
               authRepo: context.read<AuthRepo>(),
               appUserRepo: context.read<AppUserRepo>(),
-              designationRepo: context.read<DesignationRepo>(),
-              departmentRepo: context.read<DepartmentRepo>(),
             ),
           ),
         ],
@@ -142,10 +138,31 @@ final class AppRouter {
     },
   );
 
+  // Research
+  static final research = GoRoute(
+    name: 'research',
+    path: 'research',
+    // routes: <RouteBase>[comments],
+    builder: (context, state) {
+      final research = state.extra! as Research;
+      return RepositoryProvider<ResearchRepo>(
+        create: (context) => ResearchRepo(),
+        child: BlocProvider<ResearchCubit>(
+          create: (context) => ResearchCubit(
+            researchRepo: context.read<ResearchRepo>(),
+            research: research,
+          ),
+          child: ResearchPage(research: research),
+        ),
+      );
+    },
+  );
+
   // Thesis
   static final thesis = GoRoute(
     name: 'thesis',
     path: 'thesis',
+    // routes: <RouteBase>[comments],
     builder: (context, state) {
       final thesis = state.extra! as Thesis;
       return RepositoryProvider<ThesisRepo>(
@@ -159,27 +176,26 @@ final class AppRouter {
         ),
       );
     },
-    routes: <RouteBase>[comments],
   );
 
   // Comments
-  static final comments = GoRoute(
-    name: 'comments',
-    path: 'comments',
-    builder: (context, state) {
-      'Current Route: ${state.fullPath}'.doPrint();
-      final thesis = state.extra! as Thesis;
-      return RepositoryProvider<CommentRepo>(
-        create: (context) => CommentRepo(thesisId: thesis.id),
-        child: BlocProvider<CommentsCubit>(
-          create: (context) => CommentsCubit(
-            commentRepo: context.read<CommentRepo>(),
-          ),
-          child: CommentsPage(thesis: thesis),
-        ),
-      );
-    },
-  );
+  // static final comments = GoRoute(
+  //   name: 'comments',
+  //   path: 'comments',
+  //   builder: (context, state) {
+  //     'Current Route: ${state.fullPath}'.doPrint();
+  //     final thesis = state.extra! as Thesis;
+  //     return RepositoryProvider<CommentRepo>(
+  //       create: (context) => CommentRepo(thesisId: thesis.id),
+  //       child: BlocProvider<CommentsCubit>(
+  //         create: (context) => CommentsCubit(
+  //           commentRepo: context.read<CommentRepo>(),
+  //         ),
+  //         child: CommentsPage(thesis: thesis),
+  //       ),
+  //     );
+  //   },
+  // );
 
   // Bookmarks
   static final bookmarks = GoRoute(

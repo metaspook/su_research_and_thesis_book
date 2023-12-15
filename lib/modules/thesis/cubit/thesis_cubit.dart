@@ -12,7 +12,7 @@ class ThesisCubit extends Cubit<ThesisState> {
   ThesisCubit({required ThesisRepo thesisRepo, required Thesis thesis})
       : _thesisRepo = thesisRepo,
         super(ThesisState(thesis: thesis)) {
-    //-- Increment Theses views.
+    //-- Increment Thesis views.
     incrementViews(state.thesis);
   }
 

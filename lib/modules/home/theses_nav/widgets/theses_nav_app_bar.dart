@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:su_thesis_book/app/app.dart';
 import 'package:su_thesis_book/l10n/l10n.dart';
+import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
@@ -25,10 +26,10 @@ class _ThesesNavAppBarState extends State<ThesesNavAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<ThesesCubit>();
+    final cubit = context.read<ThesesNavCubit>();
     final l10n = context.l10n;
     final searchMode =
-        context.select((ThesesCubit cubit) => cubit.state.searchMode);
+        context.select((ThesesNavCubit cubit) => cubit.state.searchMode);
 
     return context.sliverAppBar(
       l10n.thesesAppBarTitle,
@@ -52,13 +53,13 @@ class _ThesesNavAppBarState extends State<ThesesNavAppBar> {
                         ),
                       ),
                     )
-                  : AppBlocSelector<List<String>?>(
+                  : DepartmentsBlocSelector<List<String>?>(
                       selector: (state) => state.departments,
                       builder: (context, departments) {
                         final department = context.select(
-                          (ThesesCubit cubit) => cubit.state.department,
+                          (ThesesNavCubit cubit) => cubit.state.department,
                         );
-                        final departmentAll = const ThesesState().department;
+                        final departmentAll = const ThesesNavState().department;
 
                         return DropdownButtonHideUnderline(
                           child: DropdownButton<String>(

@@ -20,10 +20,8 @@ final class SignUpState extends Equatable {
     this.email = '',
     this.password = '',
     this.phone = '',
-    this.designation = '',
-    this.designations = const <String>[],
-    this.department = '',
-    this.departments = const <String>[],
+    this.designationIndex = 0,
+    this.departmentIndex = 0,
     this.photoPath = '',
     this.obscurePassword = true,
   });
@@ -34,10 +32,8 @@ final class SignUpState extends Equatable {
   final String email;
   final String password;
   final String phone;
-  final String designation;
-  final List<String> designations;
-  final String department;
-  final List<String> departments;
+  final int designationIndex;
+  final int departmentIndex;
   final String photoPath;
   final bool obscurePassword;
 
@@ -48,10 +44,8 @@ final class SignUpState extends Equatable {
     String? email,
     String? password,
     String? phone,
-    String? designation,
-    List<String>? designations,
-    String? department,
-    List<String>? departments,
+    int? designationIndex,
+    int? departmentIndex,
     String? photoPath,
     bool? obscurePassword,
   }) {
@@ -62,10 +56,8 @@ final class SignUpState extends Equatable {
       email: email ?? this.email,
       password: password ?? this.password,
       phone: phone ?? this.phone,
-      designation: designation ?? this.designation,
-      designations: designations ?? this.designations,
-      department: department ?? this.department,
-      departments: departments ?? this.departments,
+      designationIndex: designationIndex ?? this.designationIndex,
+      departmentIndex: departmentIndex ?? this.departmentIndex,
       photoPath: photoPath ?? this.photoPath,
       obscurePassword: obscurePassword ?? this.obscurePassword,
     );
@@ -80,10 +72,8 @@ final class SignUpState extends Equatable {
       email,
       password,
       phone,
-      designation,
-      designations,
-      department,
-      departments,
+      designationIndex,
+      departmentIndex,
       photoPath,
       obscurePassword,
     ];

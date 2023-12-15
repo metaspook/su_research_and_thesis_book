@@ -5,10 +5,6 @@ import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/modules/publishers/publishers.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
-import 'package:su_thesis_book/utils/utils.dart';
-
-typedef PublishersBlocSelector<T>
-    = BlocSelector<PublishersCubit, PublishersState, T>;
 
 class PublishersPage extends StatelessWidget {
   const PublishersPage({super.key});
@@ -23,10 +19,17 @@ class PublishersPage extends StatelessWidget {
             centerTitle: false,
           ),
         ],
-        body: AppBlocSelector<List<Publisher>>(
-          selector: (state) => state.publishers,
-          builder: (context, publishers) {
-            // Handle Null and Empty cases.
+        body: Builder(
+          builder: (context) {
+            final thesisPublishers =
+                context.select((ThesesCubit cubit) => cubit.state.publishers);
+            final researchPublishers = context
+                .select((ResearchesCubit cubit) => cubit.state.publishers);
+            final publishers = [
+              if (thesisPublishers != null) ...thesisPublishers,
+              if (researchPublishers != null) ...researchPublishers,
+            ];
+
             return publishers.isEmpty
                 ? const TranslucentLoader()
                 : ListView.builder(

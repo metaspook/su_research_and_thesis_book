@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
-class HomeCubit extends Cubit<int> {
-  HomeCubit() : super(1);
-  void onDestinationSelected(int index) => emit(index);
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class _HomePageState extends State<HomePage> {
+  int viewIndex = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +37,6 @@ class HomePage extends StatelessWidget {
         view: const ResearchesNavView(),
       ),
     ];
-    final cubit = context.read<HomeCubit>();
-    final viewIndex = context.select((HomeCubit cubit) => cubit.state);
 
     return Scaffold(
       body: NestedScrollView(
@@ -50,7 +49,7 @@ class HomePage extends StatelessWidget {
         borderRadius: AppThemes.topRadius,
         child: NavigationBar(
           selectedIndex: viewIndex,
-          onDestinationSelected: cubit.onDestinationSelected,
+          onDestinationSelected: (index) => setState(() => viewIndex = index),
           destinations: [
             for (final viewRecord in viewRecords)
               NavigationDestination(

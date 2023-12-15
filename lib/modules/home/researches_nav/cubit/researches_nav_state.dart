@@ -1,17 +1,6 @@
-part of 'home_researches_cubit.dart';
+part of 'researches_nav_cubit.dart';
 
-enum ResearchesNavStatus {
-  initial,
-  editing,
-  loading,
-  success,
-  failure;
-
-  bool get isLoading => this == ResearchesNavStatus.loading;
-  bool get hasMessage =>
-      this == ResearchesNavStatus.success ||
-      this == ResearchesNavStatus.failure;
-}
+enum ResearchesNavStatus { initial, editing }
 
 class ResearchesNavState extends Equatable {
   const ResearchesNavState({
@@ -20,7 +9,6 @@ class ResearchesNavState extends Equatable {
     this.searchMode = false,
     this.search = '',
     this.category = 'All',
-    this.categories,
   });
 
   final ResearchesNavStatus status;
@@ -28,7 +16,6 @@ class ResearchesNavState extends Equatable {
   final bool searchMode;
   final String search;
   final String category;
-  final List<String>? categories;
 
   ResearchesNavState copyWith({
     ResearchesNavStatus? status,
@@ -36,7 +23,6 @@ class ResearchesNavState extends Equatable {
     bool? searchMode,
     String? search,
     String? category,
-    List<String>? categories,
   }) {
     return ResearchesNavState(
       status: status ?? this.status,
@@ -44,11 +30,9 @@ class ResearchesNavState extends Equatable {
       searchMode: searchMode ?? this.searchMode,
       search: search ?? this.search,
       category: category ?? this.category,
-      categories: categories ?? this.categories,
     );
   }
 
   @override
-  List<Object?> get props =>
-      [status, statusMsg, searchMode, search, category, categories];
+  List<Object?> get props => [status, statusMsg, searchMode, search, category];
 }

@@ -3,6 +3,7 @@ import 'dart:io' show File;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropicker/image_cropicker.dart';
+import 'package:su_thesis_book/app/app.dart';
 import 'package:su_thesis_book/gen/assets.gen.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
@@ -61,8 +62,11 @@ class _SignUpViewState extends State<SignUpView> {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<SignUpBloc>();
-    final isLoading = context
-        .select((SignUpBloc bloc) => bloc.state.status == SignUpStatus.loading);
+    final departments =
+        context.select((DepartmentsCubit cubit) => cubit.state.departments);
+    final designations =
+        context.select((DesignationsCubit cubit) => cubit.state.designations);
+    final isLoading = departments == null || designations == null;
 
     return TranslucentLoader(
       enabled: isLoading,
@@ -135,44 +139,51 @@ class _SignUpViewState extends State<SignUpView> {
               decoration: const InputDecoration(hintText: 'phone...'),
               onChanged: (value) => bloc.add(SignUpEdited(phone: value)),
             ),
-            // Roles
-            SignUpBlocSelector<List<String>>(
+            // Designations.
+            DesignationsBlocSelector<List<String>?>(
               selector: (state) => state.designations,
-              builder: (context, roles) {
+              builder: (context, designations) {
                 return DropdownButtonFormField<String>(
                   borderRadius: AppThemes.borderRadius,
                   hint: const Text('designation...'),
-                  onChanged: (role) =>
-                      bloc.add(SignUpEdited(designation: role)),
-                  items: [
-                    for (final role in roles)
-                      DropdownMenuItem<String>(
-                        value: role,
-                        child: Text(role),
-                      ),
-                  ],
+                  onChanged: (designation) => bloc.add(
+                    SignUpEdited(
+                      designationIndex: designation == null
+                          ? null
+                          : designations?.indexOf(designation),
+                    ),
+                  ),
+                  items: designations
+                      ?.map<DropdownMenuItem<String>>(
+                        (designation) => DropdownMenuItem<String>(
+                          value: designation,
+                          child: Text(designation),
+                        ),
+                      )
+                      .toList(),
                 );
               },
             ),
-            // Department
-            SignUpBlocSelector<List<String>>(
-              selector: (state) => state.departments,
-              builder: (context, departments) {
-                return DropdownButtonFormField<String>(
-                  menuMaxHeight: AppThemes.menuMaxHeight,
-                  borderRadius: AppThemes.borderRadius,
-                  hint: const Text('department...'),
-                  onChanged: (department) =>
-                      bloc.add(SignUpEdited(department: department)),
-                  items: [
-                    for (final department in departments)
-                      DropdownMenuItem<String>(
-                        value: department,
-                        child: Text(department),
-                      ),
-                  ],
-                );
-              },
+            // Departments
+            DropdownButtonFormField<String>(
+              menuMaxHeight: AppThemes.menuMaxHeight,
+              borderRadius: AppThemes.borderRadius,
+              hint: const Text('department...'),
+              onChanged: (department) => bloc.add(
+                SignUpEdited(
+                  departmentIndex: department == null
+                      ? null
+                      : departments?.indexOf(department),
+                ),
+              ),
+              items: departments
+                  ?.map<DropdownMenuItem<String>>(
+                    (department) => DropdownMenuItem<String>(
+                      value: department,
+                      child: Text(department),
+                    ),
+                  )
+                  .toList(),
             ),
             const SizedBox(height: AppThemes.height * 4),
             Row(
@@ -261,8 +272,7 @@ class _SignUpViewState extends State<SignUpView> {
                     state.email.isNotEmpty ||
                     state.phone.isNotEmpty ||
                     state.password.isNotEmpty ||
-                    state.photoPath.isNotEmpty ||
-                    state.designation.isNotEmpty;
+                    state.photoPath.isNotEmpty;
                 return ElevatedButton.icon(
                   icon: const Icon(Icons.forward_rounded),
                   label: const Text('Proceed'),

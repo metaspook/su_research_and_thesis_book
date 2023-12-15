@@ -6,6 +6,7 @@ import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
+// Provide Global Blocs/Cubits and Repositories from here those don't need authentication.
 class App extends StatelessWidget {
   const App({super.key});
 
@@ -19,11 +20,11 @@ class App extends StatelessWidget {
         RepositoryProvider<AppUserRepo>(
           create: (context) => AppUserRepo(),
         ),
-        RepositoryProvider<DesignationRepo>(
-          create: (context) => DesignationRepo(),
-        ),
         RepositoryProvider<DepartmentRepo>(
           create: (context) => DepartmentRepo(),
+        ),
+        RepositoryProvider<DesignationRepo>(
+          create: (context) => DesignationRepo(),
         ),
         RepositoryProvider<CategoryRepo>(
           create: (context) => CategoryRepo(),
@@ -35,11 +36,25 @@ class App extends StatelessWidget {
           create: (context) => ResearchRepo(),
         ),
       ],
-      child: BlocProvider<AppCubit>(
-        create: (context) => AppCubit(
-          authRepo: context.read<AuthRepo>(),
-          appUserRepo: context.read<AppUserRepo>(),
-        ),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AppCubit>(
+            create: (context) => AppCubit(
+              authRepo: context.read<AuthRepo>(),
+              appUserRepo: context.read<AppUserRepo>(),
+            ),
+          ),
+          BlocProvider<DepartmentsCubit>(
+            create: (context) => DepartmentsCubit(
+              departmentRepo: context.read<DepartmentRepo>(),
+            ),
+          ),
+          BlocProvider<DesignationsCubit>(
+            create: (context) => DesignationsCubit(
+              designationRepo: context.read<DesignationRepo>(),
+            ),
+          ),
+        ],
         child: const AppView(),
       ),
     );
