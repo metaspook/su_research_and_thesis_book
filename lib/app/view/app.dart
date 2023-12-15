@@ -26,15 +26,6 @@ class App extends StatelessWidget {
         RepositoryProvider<DesignationRepo>(
           create: (context) => DesignationRepo(),
         ),
-        RepositoryProvider<CategoryRepo>(
-          create: (context) => CategoryRepo(),
-        ),
-        RepositoryProvider<ThesisRepo>(
-          create: (context) => ThesisRepo(),
-        ),
-        RepositoryProvider<ResearchRepo>(
-          create: (context) => ResearchRepo(),
-        ),
       ],
       child: MultiBlocProvider(
         providers: [

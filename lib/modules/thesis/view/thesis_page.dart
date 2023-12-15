@@ -10,7 +10,6 @@ typedef ThesisBlocListener = BlocListener<ThesisCubit, ThesisState>;
 
 class ThesisPage extends StatelessWidget {
   const ThesisPage({required this.thesis, super.key});
-
   final Thesis thesis;
 
   @override

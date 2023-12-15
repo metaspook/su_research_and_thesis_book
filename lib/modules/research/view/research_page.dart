@@ -10,7 +10,6 @@ typedef ResearchBlocListener = BlocListener<ResearchCubit, ResearchState>;
 
 class ResearchPage extends StatelessWidget {
   const ResearchPage({required this.research, super.key});
-
   final Research research;
 
   @override

@@ -15,10 +15,6 @@ typedef SignUpBlocConsumer = BlocConsumer<SignUpBloc, SignUpState>;
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
 
-  static Route<void> route() {
-    return MaterialPageRoute<void>(builder: (_) => const AuthPage());
-  }
-
   @override
   State<AuthPage> createState() => _AuthPageState();
 }

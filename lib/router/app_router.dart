@@ -1,8 +1,7 @@
 part of 'router.dart';
 
 final class AppRouter {
-  // AppRouter({this.initialLocation, this.navigatorKey})
-  AppRouter({this.initialLocation})
+  AppRouter({this.initialLocation, this.navigatorKey})
       : config = GoRouter(
           //-- Register routes
           routes: <RouteBase>[
@@ -16,30 +15,44 @@ final class AppRouter {
             publisher,
           ],
           initialLocation: initialLocation,
-          navigatorKey: GlobalKey<NavigatorState>(),
-          // navigatorKey: navigatorKey,
-          // redirect: (context, state) {
-          //   // AppStatus prevStatus;
-          //   final status = context.watch<AppCubit>().state.status;
-          //   'Path: ${state.path}, isAuthenticated: ${status.isAuthenticated}'
-          //       .doPrint();
-          //   return status.isAuthenticated ? null : '/auth';
-          // },
+          navigatorKey: navigatorKey,
         ) {
     config.routeInformationProvider.value.uri.doPrint('Current Route: ');
   }
 
-  // final GlobalKey<NavigatorState>? navigatorKey;
+  final GlobalKey<NavigatorState>? navigatorKey;
   final String? initialLocation;
   final GoRouter config;
 
   //-- Define routes
+  // Auth
+  static final auth = GoRoute(
+    name: 'auth',
+    path: '/auth',
+    builder: (context, state) {
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider<SignInBloc>(
+            create: (context) => SignInBloc(
+              authRepo: context.read<AuthRepo>(),
+            ),
+          ),
+          BlocProvider<SignUpBloc>(
+            create: (context) => SignUpBloc(
+              authRepo: context.read<AuthRepo>(),
+              appUserRepo: context.read<AppUserRepo>(),
+            ),
+          ),
+        ],
+        child: const AuthPage(),
+      );
+    },
+  );
+
   // Home
   static final home = GoRoute(
     name: 'home',
     path: '/',
-    // redirect: _redirect,
-    routes: <RouteBase>[thesis, research],
     builder: (context, state) {
       return MultiRepositoryProvider(
         providers: [
@@ -70,27 +83,20 @@ final class AppRouter {
       );
     },
   );
-  // Auth
-  static final auth = GoRoute(
-    name: 'auth',
-    path: '/auth',
-    // redirect: _redirect,
+
+  // Bookmarks
+  static final bookmarks = GoRoute(
+    name: 'bookmarks',
+    path: '/bookmarks',
     builder: (context, state) {
-      return MultiBlocProvider(
-        providers: [
-          BlocProvider<SignInBloc>(
-            create: (context) => SignInBloc(
-              authRepo: context.read<AuthRepo>(),
-            ),
+      return RepositoryProvider<ThesisRepo>(
+        create: (context) => ThesisRepo(),
+        child: BlocProvider<BookmarksCubit>(
+          create: (context) => BookmarksCubit(
+            thesisRepo: context.read<ThesisRepo>(),
           ),
-          BlocProvider<SignUpBloc>(
-            create: (context) => SignUpBloc(
-              authRepo: context.read<AuthRepo>(),
-              appUserRepo: context.read<AppUserRepo>(),
-            ),
-          ),
-        ],
-        child: const AuthPage(),
+          child: const BookmarksPage(),
+        ),
       );
     },
   );
@@ -119,15 +125,6 @@ final class AppRouter {
     },
   );
 
-  // Publishers
-  static final publishers = GoRoute(
-    name: 'publishers',
-    path: '/publishers',
-    builder: (context, state) {
-      return const PublishersPage();
-    },
-  );
-
   // Publisher
   static final publisher = GoRoute(
     name: 'publisher',
@@ -138,11 +135,19 @@ final class AppRouter {
     },
   );
 
+  // Publishers
+  static final publishers = GoRoute(
+    name: 'publishers',
+    path: '/publishers',
+    builder: (context, state) {
+      return const PublishersPage();
+    },
+  );
+
   // Research
   static final research = GoRoute(
     name: 'research',
-    path: 'research',
-    // routes: <RouteBase>[comments],
+    path: '/research',
     builder: (context, state) {
       final research = state.extra! as Research;
       return RepositoryProvider<ResearchRepo>(
@@ -158,11 +163,34 @@ final class AppRouter {
     },
   );
 
+  // Research Entry
+  static final researchEntry = GoRoute(
+    name: 'researchEntry',
+    path: '/research_entry',
+    builder: (context, state) {
+      return MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider<CategoryRepo>(
+            create: (context) => CategoryRepo(),
+          ),
+          RepositoryProvider<ResearchRepo>(
+            create: (context) => ResearchRepo(),
+          ),
+        ],
+        child: BlocProvider<ResearchEntryCubit>(
+          create: (context) => ResearchEntryCubit(
+            researchRepo: context.read<ResearchRepo>(),
+          ),
+          child: const ResearchEntryPage(),
+        ),
+      );
+    },
+  );
+
   // Thesis
   static final thesis = GoRoute(
     name: 'thesis',
-    path: 'thesis',
-    // routes: <RouteBase>[comments],
+    path: '/thesis',
     builder: (context, state) {
       final thesis = state.extra! as Thesis;
       return RepositoryProvider<ThesisRepo>(
@@ -173,6 +201,40 @@ final class AppRouter {
             thesis: thesis,
           ),
           child: ThesisPage(thesis: thesis),
+        ),
+      );
+    },
+  );
+
+  // Thesis Entry
+  static final thesisEntry = GoRoute(
+    name: 'thesisEntry',
+    path: '/thesis_entry',
+    builder: (context, state) {
+      return RepositoryProvider<ThesisRepo>(
+        create: (context) => ThesisRepo(),
+        child: BlocProvider<ThesisEntryCubit>(
+          create: (context) => ThesisEntryCubit(
+            thesisRepo: context.read<ThesisRepo>(),
+          ),
+          child: const ThesisEntryPage(),
+        ),
+      );
+    },
+  );
+
+  // Password Reset
+  static final passwordReset = GoRoute(
+    name: 'passwordReset',
+    path: '/password_reset',
+    builder: (context, state) {
+      return RepositoryProvider<AuthRepo>(
+        create: (context) => AuthRepo(),
+        child: BlocProvider<PasswordResetBloc>(
+          create: (context) => PasswordResetBloc(
+            authRepo: context.read<AuthRepo>(),
+          ),
+          child: const PasswordResetPage(),
         ),
       );
     },
@@ -196,78 +258,8 @@ final class AppRouter {
   //     );
   //   },
   // );
-
-  // Bookmarks
-  static final bookmarks = GoRoute(
-    name: 'bookmarks',
-    path: '/bookmarks',
-    builder: (context, state) {
-      'Current Route: ${state.fullPath}'.doPrint();
-      return RepositoryProvider<ThesisRepo>(
-        create: (context) => ThesisRepo(),
-        child: BlocProvider<BookmarksCubit>(
-          create: (context) => BookmarksCubit(
-            thesisRepo: context.read<ThesisRepo>(),
-          ),
-          child: const BookmarksPage(),
-        ),
-      );
-    },
-  );
-
-  // Thesis Entry
-  static final thesisEntry = GoRoute(
-    name: 'thesisEntry',
-    path: '/thesis_entry',
-    builder: (context, state) {
-      'Current Route: ${state.fullPath}'.doPrint();
-      return RepositoryProvider<ThesisRepo>(
-        create: (context) => ThesisRepo(),
-        child: BlocProvider<ThesisEntryCubit>(
-          create: (context) => ThesisEntryCubit(
-            thesisRepo: context.read<ThesisRepo>(),
-          ),
-          child: const ThesisEntryPage(),
-        ),
-      );
-    },
-  );
-
-  // Thesis Entry
-  static final passwordReset = GoRoute(
-    name: 'passwordReset',
-    path: '/password_reset',
-    builder: (context, state) {
-      'Current Route: ${state.fullPath}'.doPrint();
-      return RepositoryProvider<AuthRepo>(
-        create: (context) => AuthRepo(),
-        child: BlocProvider<PasswordResetBloc>(
-          create: (context) => PasswordResetBloc(
-            authRepo: context.read<AuthRepo>(),
-          ),
-          child: const PasswordResetPage(),
-        ),
-      );
-    },
-  );
-
-  // static FutureOr<String?> _redirect(
-  //   BuildContext context,
-  //   GoRouterState state,
-  // ) {
-  //   // AppStatus prevStatus;
-  //   final status = context.watch<AppCubit>().state.status;
-  //   'Path: ${state.path}, isAuthenticated: ${status.isAuthenticated}'.doPrint();
-  //   if (state.path == '/auth' && status.isAuthenticated) {
-  //     return '/';
-  //   } else if (state.path != '/auth' && status.isUnauthenticated) {
-  //     return '/auth';
-  //   }
-
-  //   return null;
-  // }
 }
 
-extension GoRouteExt on GoRoute {
-  String get pathUnderRoot => '/$path';
-}
+// extension GoRouteExt on GoRoute {
+//   String get pathUnderRoot => '/$path';
+// }

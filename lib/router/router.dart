@@ -10,6 +10,7 @@ import 'package:su_thesis_book/modules/profile/profile.dart';
 import 'package:su_thesis_book/modules/publisher/publisher.dart';
 import 'package:su_thesis_book/modules/publishers/publishers.dart';
 import 'package:su_thesis_book/modules/research/research.dart';
+import 'package:su_thesis_book/modules/research_entry/research_entry.dart';
 import 'package:su_thesis_book/modules/thesis/thesis.dart';
 import 'package:su_thesis_book/modules/thesis_entry/thesis_entry.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
