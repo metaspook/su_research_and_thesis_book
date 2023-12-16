@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "homeAppBarTitle": "SU Thesis Book",
+    "homeAppBarTitle": "SU Research N Thesis",
     "@homeAppBarTitle": {
         "description": "Text shown in the AppBar of the Home Page"
     },

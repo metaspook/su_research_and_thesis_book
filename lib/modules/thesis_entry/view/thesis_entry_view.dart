@@ -12,6 +12,8 @@ class ThesisEntryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final departments =
+        context.select((DepartmentsCubit cubit) => cubit.state.departments);
     final l10n = context.l10n;
     final cubit = context.read<ThesisEntryCubit>();
 
@@ -76,6 +78,7 @@ class ThesisEntryView extends StatelessWidget {
                 const SizedBox(height: AppThemes.height * 2),
                 // Thesis View
                 DropdownButtonFormField<String>(
+                  menuMaxHeight: AppThemes.menuMaxHeight,
                   dropdownColor:
                       context.theme.colorScheme.background.withOpacity(.75),
                   decoration: const InputDecoration(
@@ -84,19 +87,15 @@ class ThesisEntryView extends StatelessWidget {
                     border: AppThemes.outlineInputBorder,
                   ),
                   borderRadius: AppThemes.borderRadius,
-                  // hint: const Text('role...'),
-                  onChanged: (role) {},
-                  items: [
-                    for (final role in [
-                      'Computer Science',
-                      'Electrical',
-                      'Electronics',
-                    ])
-                      DropdownMenuItem<String>(
-                        value: role,
-                        child: Text(role),
-                      ),
-                  ],
+                  onChanged: (department) {},
+                  items: departments
+                      ?.map<DropdownMenuItem<String>>(
+                        (department) => DropdownMenuItem<String>(
+                          value: department,
+                          child: Text(department),
+                        ),
+                      )
+                      .toList(),
                 ),
                 const SizedBox(height: AppThemes.height * 2),
                 // Thesis Preview

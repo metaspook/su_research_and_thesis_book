@@ -1,17 +1,20 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/theme/theme.dart';
+import 'package:su_thesis_book/utils/extensions.dart';
 
 class ThesisCarousel extends StatefulWidget {
-  const ThesisCarousel({super.key});
+  const ThesisCarousel(this.theses, {super.key});
+  final List<Thesis> theses;
 
   @override
   State<StatefulWidget> createState() => _ThesisCarouselState();
 }
 
 class _ThesisCarouselState extends State<ThesisCarousel> {
-  int _current = 0;
   final CarouselController _controller = CarouselController();
+  int _current = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -61,68 +64,69 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
       ],
     );
   }
+
+  List<Widget> get _imageSliders => [
+        for (var i = 0; i < 6; i++)
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.symmetric(
+              horizontal: AppThemes.width,
+              vertical: AppThemes.height,
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            decoration: BoxDecoration(
+              color: AppThemes.selectedColorsRandomized[i],
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: AppThemes.selectedColorsRandomized[i].withOpacity(0.5),
+                  blurRadius: 5,
+                  spreadRadius: 1.75,
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.theses[i].title.toStringParseNull(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      widget.theses[i].publisher!.name.toStringParseNull(),
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 17.5,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '${widget.theses[i].publisher!.designation.toStringParseNull()} | ${widget.theses[i].publisher!.department.toStringParseNull()}',
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 15,
+                      ),
+                    ),
+                    Text(
+                      widget.theses[i].description.toStringParseNull(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+      ];
 }
 
-final List<Widget> _imageSliders = [
-  for (var i = 0; i < 6; i++)
-    Container(
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(
-        horizontal: AppThemes.width,
-        vertical: AppThemes.height,
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      decoration: BoxDecoration(
-        color: AppThemes.selectedColorsRandomized[i],
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: AppThemes.selectedColorsRandomized[i].withOpacity(0.5),
-            blurRadius: 5,
-            spreadRadius: 1.75,
-          ),
-        ],
-      ),
-      child: const Column(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'A New Cryptography',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                'Raifur Rahman',
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 17.5,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                'Professor | Computer Science',
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 15,
-                ),
-              ),
-              Text(
-                'A thesis, or dissertation, is a document submitted in support of candidature for an academic degree',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    ),
-];
 
 // Container(
 //               decoration: const BoxDecoration(

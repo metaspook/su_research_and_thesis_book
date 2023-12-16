@@ -12,6 +12,8 @@ class ResearchEntryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final categories =
+        context.select((CategoriesCubit cubit) => cubit.state.categories);
     final l10n = context.l10n;
     final cubit = context.read<ResearchEntryCubit>();
 
@@ -76,27 +78,24 @@ class ResearchEntryView extends StatelessWidget {
                 const SizedBox(height: AppThemes.height * 2),
                 // Research View
                 DropdownButtonFormField<String>(
+                  menuMaxHeight: AppThemes.menuMaxHeight,
                   dropdownColor:
                       context.theme.colorScheme.background.withOpacity(.75),
                   decoration: const InputDecoration(
-                    label: Text('Department'),
+                    label: Text('Category'),
                     filled: true,
                     border: AppThemes.outlineInputBorder,
                   ),
                   borderRadius: AppThemes.borderRadius,
-                  // hint: const Text('role...'),
-                  onChanged: (role) {},
-                  items: [
-                    for (final role in [
-                      'Computer Science',
-                      'Electrical',
-                      'Electronics',
-                    ])
-                      DropdownMenuItem<String>(
-                        value: role,
-                        child: Text(role),
-                      ),
-                  ],
+                  onChanged: (category) {},
+                  items: categories
+                      ?.map<DropdownMenuItem<String>>(
+                        (category) => DropdownMenuItem<String>(
+                          value: category,
+                          child: Text(category),
+                        ),
+                      )
+                      .toList(),
                 ),
                 const SizedBox(height: AppThemes.height * 2),
                 // Research Preview

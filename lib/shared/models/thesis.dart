@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
-class Thesis extends Equatable {
+final class Thesis extends Equatable {
   const Thesis({
     required this.id,
     required this.publisher,
@@ -10,6 +10,7 @@ class Thesis extends Equatable {
     this.views,
     this.fileUrl,
     this.department,
+    this.description,
   });
 
   factory Thesis.fromJson(Map<String, dynamic> json) {
@@ -23,6 +24,7 @@ class Thesis extends Equatable {
       views: json['views'] as int?,
       fileUrl: json['fileUrl'] as String?,
       department: json['department'] as String?,
+      description: json['description'] as String?,
     );
   }
 
@@ -33,6 +35,7 @@ class Thesis extends Equatable {
   final int? views;
   final String? fileUrl;
   final String? department;
+  final String? description;
 
   Json toJson() {
     return <String, dynamic>{
@@ -43,6 +46,7 @@ class Thesis extends Equatable {
       'views': views,
       'fileUrl': fileUrl,
       'department': department,
+      'description': description,
     };
   }
 
@@ -56,11 +60,9 @@ class Thesis extends Equatable {
       views,
       fileUrl,
       department,
+      description,
     ];
   }
-
-  @override
-  bool get stringify => true;
 }
 
 // extension PublishersExt on List<Thesis> {

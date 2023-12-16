@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
     final viewRecords = [
       (
         label: 'Theses',
-        icon: Icons.folder_rounded,
+        icon: Icons.library_books_outlined,
         appBar: const ThesesNavAppBar(),
         view: const ThesesNavView(),
       ),
@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
       ),
       (
         label: 'Researches',
-        icon: Icons.folder_rounded,
+        icon: Icons.library_books_outlined,
         appBar: const ResearchesNavAppBar(),
         view: const ResearchesNavView(),
       ),

@@ -5,14 +5,17 @@ final class AppRouter {
       : config = GoRouter(
           //-- Register routes
           routes: <RouteBase>[
-            home,
             auth,
-            profile,
+            home,
             bookmarks,
-            thesisEntry,
             passwordReset,
-            publishers,
+            profile,
             publisher,
+            publishers,
+            research,
+            researchEntry,
+            thesis,
+            thesisEntry,
           ],
           initialLocation: initialLocation,
           navigatorKey: navigatorKey,
@@ -56,6 +59,9 @@ final class AppRouter {
     builder: (context, state) {
       return MultiRepositoryProvider(
         providers: [
+          RepositoryProvider<CategoryRepo>(
+            create: (context) => CategoryRepo(),
+          ),
           RepositoryProvider<ResearchRepo>(
             create: (context) => ResearchRepo(),
           ),
@@ -65,6 +71,12 @@ final class AppRouter {
         ],
         child: MultiBlocProvider(
           providers: [
+            BlocProvider<CategoriesCubit>(
+              create: (context) => CategoriesCubit(
+                authRepo: context.read<AuthRepo>(),
+                categoryRepo: context.read<CategoryRepo>(),
+              ),
+            ),
             BlocProvider<ResearchesCubit>(
               create: (context) => ResearchesCubit(
                 authRepo: context.read<AuthRepo>(),
@@ -76,6 +88,12 @@ final class AppRouter {
                 authRepo: context.read<AuthRepo>(),
                 thesisRepo: context.read<ThesisRepo>(),
               ),
+            ),
+            BlocProvider<ResearchesNavCubit>(
+              create: (context) => ResearchesNavCubit(),
+            ),
+            BlocProvider<ThesesNavCubit>(
+              create: (context) => ThesesNavCubit(),
             ),
           ],
           child: const HomePage(),
@@ -96,6 +114,23 @@ final class AppRouter {
             thesisRepo: context.read<ThesisRepo>(),
           ),
           child: const BookmarksPage(),
+        ),
+      );
+    },
+  );
+
+  // Password Reset
+  static final passwordReset = GoRoute(
+    name: 'passwordReset',
+    path: '/password_reset',
+    builder: (context, state) {
+      return RepositoryProvider<AuthRepo>(
+        create: (context) => AuthRepo(),
+        child: BlocProvider<PasswordResetBloc>(
+          create: (context) => PasswordResetBloc(
+            authRepo: context.read<AuthRepo>(),
+          ),
+          child: const PasswordResetPage(),
         ),
       );
     },
@@ -177,10 +212,20 @@ final class AppRouter {
             create: (context) => ResearchRepo(),
           ),
         ],
-        child: BlocProvider<ResearchEntryCubit>(
-          create: (context) => ResearchEntryCubit(
-            researchRepo: context.read<ResearchRepo>(),
-          ),
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<CategoriesCubit>(
+              create: (context) => CategoriesCubit(
+                authRepo: context.read<AuthRepo>(),
+                categoryRepo: context.read<CategoryRepo>(),
+              ),
+            ),
+            BlocProvider<ResearchEntryCubit>(
+              create: (context) => ResearchEntryCubit(
+                researchRepo: context.read<ResearchRepo>(),
+              ),
+            ),
+          ],
           child: const ResearchEntryPage(),
         ),
       );
@@ -218,23 +263,6 @@ final class AppRouter {
             thesisRepo: context.read<ThesisRepo>(),
           ),
           child: const ThesisEntryPage(),
-        ),
-      );
-    },
-  );
-
-  // Password Reset
-  static final passwordReset = GoRoute(
-    name: 'passwordReset',
-    path: '/password_reset',
-    builder: (context, state) {
-      return RepositoryProvider<AuthRepo>(
-        create: (context) => AuthRepo(),
-        child: BlocProvider<PasswordResetBloc>(
-          create: (context) => PasswordResetBloc(
-            authRepo: context.read<AuthRepo>(),
-          ),
-          child: const PasswordResetPage(),
         ),
       );
     },

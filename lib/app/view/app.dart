@@ -5,6 +5,7 @@ import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
 import 'package:su_thesis_book/theme/theme.dart';
+import 'package:su_thesis_book/utils/utils.dart';
 
 // Provide Global Blocs/Cubits and Repositories from here those don't need authentication.
 class App extends StatelessWidget {
@@ -14,35 +15,35 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<AuthRepo>(
-          create: (context) => AuthRepo(),
-        ),
-        RepositoryProvider<AppUserRepo>(
-          create: (context) => AppUserRepo(),
-        ),
         RepositoryProvider<DepartmentRepo>(
           create: (context) => DepartmentRepo(),
         ),
         RepositoryProvider<DesignationRepo>(
           create: (context) => DesignationRepo(),
         ),
+        RepositoryProvider<AuthRepo>(
+          create: (context) => AuthRepo(),
+        ),
+        RepositoryProvider<AppUserRepo>(
+          create: (context) => AppUserRepo(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<AppCubit>(
-            create: (context) => AppCubit(
-              authRepo: context.read<AuthRepo>(),
-              appUserRepo: context.read<AppUserRepo>(),
-            ),
-          ),
           BlocProvider<DepartmentsCubit>(
             create: (context) => DepartmentsCubit(
               departmentRepo: context.read<DepartmentRepo>(),
-            ),
+            )..initialize(),
           ),
           BlocProvider<DesignationsCubit>(
             create: (context) => DesignationsCubit(
               designationRepo: context.read<DesignationRepo>(),
+            )..initialize(),
+          ),
+          BlocProvider<AppCubit>(
+            create: (context) => AppCubit(
+              authRepo: context.read<AuthRepo>(),
+              appUserRepo: context.read<AppUserRepo>(),
             ),
           ),
         ],
@@ -75,10 +76,14 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context
+      ..read<DepartmentsCubit>()
+      ..read<DesignationsCubit>();
     // NOTE: This approach is experimental instead of redirection from router.
     // need see which one is performant and stable.
-    final isAuthenticated =
-        context.select((AppCubit cubit) => cubit.state.status.isAuthenticated);
+    final isAuthenticated = context
+        .select((AppCubit cubit) => cubit.state.status.isAuthenticated)
+      ..doPrint();
     final initialLocation =
         isAuthenticated ? AppRouter.home.path : AppRouter.auth.path;
     final router = AppRouter(initialLocation: initialLocation);

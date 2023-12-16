@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:su_thesis_book/app/app.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
@@ -48,33 +50,36 @@ class HomeView extends StatelessWidget {
       (
         label: 'Research Entry',
         icon: Icons.upload_file_rounded,
-        onPressed: AppRouter.thesisEntry.name == null
+        onPressed: AppRouter.researchEntry.name == null
             ? null
-            : () => context.pushNamed(AppRouter.thesisEntry.name!),
+            : () => context.pushNamed(AppRouter.researchEntry.name!),
       ),
     ];
+    final theses = context.select((ThesesCubit cubit) => cubit.state.theses);
 
-    return ListView(
-      padding: AppThemes.verticalPadding * 2,
-      children: [
-        const ThesisCarousel(),
-        const SizedBox(height: AppThemes.height * 4.5),
-        const ProfileCarousel(),
-        GridView.count(
-          padding: AppThemes.verticalPadding,
-          shrinkWrap: true,
-          crossAxisCount: 3,
-          childAspectRatio: 1.425,
-          children: [
-            for (var i = 0; i < iconButtonRecords.length; i++)
-              IconButtonLabeled(
-                iconButtonRecords[i],
-                // color: AppThemes.selectedColors[i],
-                size: context.mediaQuery.size.shortestSide * .09,
+    return theses == null
+        ? const TranslucentLoader()
+        : ListView(
+            padding: AppThemes.verticalPadding * 2,
+            children: [
+              ThesisCarousel(theses),
+              const SizedBox(height: AppThemes.height * 4.5),
+              const ProfileCarousel(),
+              GridView.count(
+                padding: AppThemes.verticalPadding,
+                shrinkWrap: true,
+                crossAxisCount: 3,
+                childAspectRatio: 1.425,
+                children: [
+                  for (var i = 0; i < iconButtonRecords.length; i++)
+                    IconButtonLabeled(
+                      iconButtonRecords[i],
+                      color: AppThemes.selectedColors[i],
+                      size: context.mediaQuery.size.shortestSide * .09,
+                    ),
+                ],
               ),
-          ],
-        ),
-      ],
-    );
+            ],
+          );
   }
 }
