@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:su_thesis_book/app/app.dart';
 import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/modules/research_entry/research_entry.dart';
+import 'package:su_thesis_book/modules/thesis_entry/thesis_entry.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 import 'package:su_thesis_book/utils/utils.dart';
@@ -132,6 +133,43 @@ class ResearchEntryView extends StatelessWidget {
                       ],
                     );
                   },
+                ),
+                const SizedBox(height: AppThemes.height * 2),
+                // Upload button
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: ThesisEntryBlocListener(
+                    listenWhen: (previous, current) =>
+                        current.status.hasMessage,
+                    listener: (context, state) {
+                      final snackBar = SnackBar(
+                        clipBehavior: Clip.none,
+                        content: Text(state.statusMsg),
+                      );
+                      context.scaffoldMessenger.showSnackBar(snackBar);
+                    },
+                    child: Builder(
+                      builder: (context) {
+                        final userId = context.select(
+                          (AppCubit cubit) => cubit.state.user.id,
+                        );
+                        final enabled = context.select(
+                          (ResearchEntryCubit cubit) =>
+                              cubit.state.pdfPath.isNotEmpty &&
+                              cubit.state.researchName.isNotEmpty,
+                        );
+                        return ElevatedButton.icon(
+                          label: const Text('Upload'),
+                          icon: const Icon(
+                            Icons.upload_file_rounded,
+                          ),
+                          onPressed: enabled
+                              ? () => cubit.upload(userId: userId)
+                              : null,
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ],
             ),

@@ -57,47 +57,16 @@ final class AppRouter {
     name: 'home',
     path: '/',
     builder: (context, state) {
-      return MultiRepositoryProvider(
+      return MultiBlocProvider(
         providers: [
-          RepositoryProvider<CategoryRepo>(
-            create: (context) => CategoryRepo(),
+          BlocProvider<ResearchesNavCubit>(
+            create: (context) => ResearchesNavCubit(),
           ),
-          RepositoryProvider<ResearchRepo>(
-            create: (context) => ResearchRepo(),
-          ),
-          RepositoryProvider<ThesisRepo>(
-            create: (context) => ThesisRepo(),
+          BlocProvider<ThesesNavCubit>(
+            create: (context) => ThesesNavCubit(),
           ),
         ],
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider<CategoriesCubit>(
-              create: (context) => CategoriesCubit(
-                authRepo: context.read<AuthRepo>(),
-                categoryRepo: context.read<CategoryRepo>(),
-              )..initialize(),
-            ),
-            BlocProvider<ResearchesCubit>(
-              create: (context) => ResearchesCubit(
-                authRepo: context.read<AuthRepo>(),
-                researchRepo: context.read<ResearchRepo>(),
-              ),
-            ),
-            BlocProvider<ThesesCubit>(
-              create: (context) => ThesesCubit(
-                authRepo: context.read<AuthRepo>(),
-                thesisRepo: context.read<ThesisRepo>(),
-              ),
-            ),
-            BlocProvider<ResearchesNavCubit>(
-              create: (context) => ResearchesNavCubit(),
-            ),
-            BlocProvider<ThesesNavCubit>(
-              create: (context) => ThesesNavCubit(),
-            ),
-          ],
-          child: const HomePage(),
-        ),
+        child: const HomePage(),
       );
     },
   );
@@ -107,14 +76,11 @@ final class AppRouter {
     name: 'bookmarks',
     path: '/bookmarks',
     builder: (context, state) {
-      return RepositoryProvider<ThesisRepo>(
-        create: (context) => ThesisRepo(),
-        child: BlocProvider<BookmarksCubit>(
-          create: (context) => BookmarksCubit(
-            thesisRepo: context.read<ThesisRepo>(),
-          ),
-          child: const BookmarksPage(),
+      return BlocProvider<BookmarksCubit>(
+        create: (context) => BookmarksCubit(
+          thesisRepo: context.read<ThesisRepo>(),
         ),
+        child: const BookmarksPage(),
       );
     },
   );
@@ -124,14 +90,11 @@ final class AppRouter {
     name: 'passwordReset',
     path: '/password_reset',
     builder: (context, state) {
-      return RepositoryProvider<AuthRepo>(
-        create: (context) => AuthRepo(),
-        child: BlocProvider<PasswordResetBloc>(
-          create: (context) => PasswordResetBloc(
-            authRepo: context.read<AuthRepo>(),
-          ),
-          child: const PasswordResetPage(),
+      return BlocProvider<PasswordResetBloc>(
+        create: (context) => PasswordResetBloc(
+          authRepo: context.read<AuthRepo>(),
         ),
+        child: const PasswordResetPage(),
       );
     },
   );
@@ -166,33 +129,7 @@ final class AppRouter {
     path: '/publisher',
     builder: (context, state) {
       final publisher = state.extra! as Publisher;
-      return MultiRepositoryProvider(
-        providers: [
-          RepositoryProvider<ResearchRepo>(
-            create: (context) => ResearchRepo(),
-          ),
-          RepositoryProvider<ThesisRepo>(
-            create: (context) => ThesisRepo(),
-          ),
-        ],
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider<ResearchesCubit>(
-              create: (context) => ResearchesCubit(
-                authRepo: context.read<AuthRepo>(),
-                researchRepo: context.read<ResearchRepo>(),
-              ),
-            ),
-            BlocProvider<ThesesCubit>(
-              create: (context) => ThesesCubit(
-                authRepo: context.read<AuthRepo>(),
-                thesisRepo: context.read<ThesisRepo>(),
-              ),
-            ),
-          ],
-          child: PublisherPage(publisher: publisher),
-        ),
-      );
+      return PublisherPage(publisher: publisher);
     },
   );
 
@@ -201,33 +138,7 @@ final class AppRouter {
     name: 'publishers',
     path: '/publishers',
     builder: (context, state) {
-      return MultiRepositoryProvider(
-        providers: [
-          RepositoryProvider<ResearchRepo>(
-            create: (context) => ResearchRepo(),
-          ),
-          RepositoryProvider<ThesisRepo>(
-            create: (context) => ThesisRepo(),
-          ),
-        ],
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider<ResearchesCubit>(
-              create: (context) => ResearchesCubit(
-                authRepo: context.read<AuthRepo>(),
-                researchRepo: context.read<ResearchRepo>(),
-              ),
-            ),
-            BlocProvider<ThesesCubit>(
-              create: (context) => ThesesCubit(
-                authRepo: context.read<AuthRepo>(),
-                thesisRepo: context.read<ThesisRepo>(),
-              ),
-            ),
-          ],
-          child: const PublishersPage(),
-        ),
-      );
+      return const PublishersPage();
     },
   );
 
@@ -237,15 +148,12 @@ final class AppRouter {
     path: '/research',
     builder: (context, state) {
       final research = state.extra! as Research;
-      return RepositoryProvider<ResearchRepo>(
-        create: (context) => ResearchRepo(),
-        child: BlocProvider<ResearchCubit>(
-          create: (context) => ResearchCubit(
-            researchRepo: context.read<ResearchRepo>(),
-            research: research,
-          ),
-          child: ResearchPage(research: research),
+      return BlocProvider<ResearchCubit>(
+        create: (context) => ResearchCubit(
+          researchRepo: context.read<ResearchRepo>(),
+          research: research,
         ),
+        child: ResearchPage(research: research),
       );
     },
   );
@@ -255,31 +163,11 @@ final class AppRouter {
     name: 'researchEntry',
     path: '/research_entry',
     builder: (context, state) {
-      return MultiRepositoryProvider(
-        providers: [
-          RepositoryProvider<CategoryRepo>(
-            create: (context) => CategoryRepo(),
-          ),
-          RepositoryProvider<ResearchRepo>(
-            create: (context) => ResearchRepo(),
-          ),
-        ],
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider<CategoriesCubit>(
-              create: (context) => CategoriesCubit(
-                authRepo: context.read<AuthRepo>(),
-                categoryRepo: context.read<CategoryRepo>(),
-              ),
-            ),
-            BlocProvider<ResearchEntryCubit>(
-              create: (context) => ResearchEntryCubit(
-                researchRepo: context.read<ResearchRepo>(),
-              ),
-            ),
-          ],
-          child: const ResearchEntryPage(),
+      return BlocProvider<ResearchEntryCubit>(
+        create: (context) => ResearchEntryCubit(
+          researchRepo: context.read<ResearchRepo>(),
         ),
+        child: const ResearchEntryPage(),
       );
     },
   );
@@ -290,15 +178,12 @@ final class AppRouter {
     path: '/thesis',
     builder: (context, state) {
       final thesis = state.extra! as Thesis;
-      return RepositoryProvider<ThesisRepo>(
-        create: (context) => ThesisRepo(),
-        child: BlocProvider<ThesisCubit>(
-          create: (context) => ThesisCubit(
-            thesisRepo: context.read<ThesisRepo>(),
-            thesis: thesis,
-          ),
-          child: ThesisPage(thesis: thesis),
+      return BlocProvider<ThesisCubit>(
+        create: (context) => ThesisCubit(
+          thesisRepo: context.read<ThesisRepo>(),
+          thesis: thesis,
         ),
+        child: ThesisPage(thesis: thesis),
       );
     },
   );
@@ -308,14 +193,11 @@ final class AppRouter {
     name: 'thesisEntry',
     path: '/thesis_entry',
     builder: (context, state) {
-      return RepositoryProvider<ThesisRepo>(
-        create: (context) => ThesisRepo(),
-        child: BlocProvider<ThesisEntryCubit>(
-          create: (context) => ThesisEntryCubit(
-            thesisRepo: context.read<ThesisRepo>(),
-          ),
-          child: const ThesisEntryPage(),
+      return BlocProvider<ThesisEntryCubit>(
+        create: (context) => ThesisEntryCubit(
+          thesisRepo: context.read<ThesisRepo>(),
         ),
+        child: const ThesisEntryPage(),
       );
     },
   );

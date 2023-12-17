@@ -40,32 +40,32 @@ class PublisherCard extends StatelessWidget {
           children: [
             Text.rich(
               TextSpan(
-                text: 'Author: ',
+                text: 'Designation: ',
                 style: context.theme.textTheme.titleMedium?.copyWith(
                   color: context.theme.badgeTheme.backgroundColor,
                 ),
-                children: const [
-                  // TextSpan(
-                  //   text: thesis.publisher?.name.toStringParseNull(),
-                  //   style: const TextStyle(fontWeight: FontWeight.bold),
-                  // ),
+                children: [
+                  TextSpan(
+                    text: publisher.designation,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
             ),
-            // Text.rich(
-            //   TextSpan(
-            //     text: 'Posted: ',
-            //     style: context.theme.textTheme.titleMedium?.copyWith(
-            //       color: theme.badgeTheme.backgroundColor,
-            //     ),
-            //     children: [
-            //       TextSpan(
-            //         text: dateStr,
-            //         style: const TextStyle(fontWeight: FontWeight.bold),
-            //       ),
-            //     ],
-            //   ),
-            // ),
+            Text.rich(
+              TextSpan(
+                text: 'Department: ',
+                style: context.theme.textTheme.titleMedium?.copyWith(
+                  color: context.theme.badgeTheme.backgroundColor,
+                ),
+                children: [
+                  TextSpan(
+                    text: publisher.department,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
         trailing: const Column(),

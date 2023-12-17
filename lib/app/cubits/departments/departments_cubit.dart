@@ -8,19 +8,15 @@ part 'departments_state.dart';
 class DepartmentsCubit extends HydratedCubit<DepartmentsState> {
   DepartmentsCubit({required DepartmentRepo departmentRepo})
       : _departmentRepo = departmentRepo,
-        super(const DepartmentsState());
-
-  final DepartmentRepo _departmentRepo;
-
-  /// Initialize Departments data.
-  void initialize() {
+        super(const DepartmentsState()) {
+    //--Initialize Departments data.
     _departmentRepo.departments.then((record) {
       final (errorMsg, departments) = record;
-      emit(state.copyWith(
-          statusMsg: errorMsg,
-          departments: departments..doPrint('DEPARTMENTS: ')));
+      emit(state.copyWith(statusMsg: errorMsg, departments: departments));
     });
   }
+
+  final DepartmentRepo _departmentRepo;
 
   @override
   DepartmentsState? fromJson(Map<String, dynamic> json) {

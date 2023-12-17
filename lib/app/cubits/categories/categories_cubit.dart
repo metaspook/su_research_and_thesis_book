@@ -24,12 +24,13 @@ class CategoriesCubit extends HydratedCubit<CategoriesState> {
     //-- Initialize Authentication subscription.
     _userSubscription = _authRepo.userStream.listen((user) async {
       if (user != null) {
-        // Logic after User is authenticated.
-        //-- Initialize Categories data.
+        // Authenticated: Initialize Categories data.
         final (errorMsg, categories) = await _categoryRepo.categories;
         emit(state.copyWith(statusMsg: errorMsg, categories: categories));
       } else {
+        // Unauthenticated: Reset cached and current state.
         await clear();
+        emit(const CategoriesState());
       }
     });
   }

@@ -16,14 +16,15 @@ class ThesesCubit extends HydratedCubit<ThesesState> {
     //-- Initialize Authentication subscription.
     _userSubscription = _authRepo.userStream.listen((user) async {
       if (user != null) {
-        // Logic after User is authenticated.
-        //-- Initialize Theses data subscription.
+        // Authenticated: Initialize Theses data.
         _thesesSubscription = _thesisRepo.stream.listen((theses) async {
           emit(state.copyWith(theses: theses));
         });
       } else {
+        // Unauthenticated: Reset cached and current state.
         await _thesesSubscription.cancel();
         await clear();
+        emit(const ThesesState());
       }
     });
   }

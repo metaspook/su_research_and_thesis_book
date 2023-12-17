@@ -34,7 +34,7 @@ class ResearchCard extends StatelessWidget {
         // shape: selected ? AppThemes.outlineInputBorder : null,
         onLongPress: onLongPress,
         onTap: onTap ??
-            () => context.push(AppRouter.research.name!, extra: research),
+            () => context.pushNamed(AppRouter.research.name!, extra: research),
         // onTap: onTap ??
         //     () =>
         //         context.push(AppRouter.research.pathUnderRoot, extra: research),

@@ -36,47 +36,14 @@ class ThesisEntryView extends StatelessWidget {
                   validator: Validator.name,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   onChanged: cubit.onChangedThesisName,
-                  decoration: InputDecoration(
-                    suffixIcon: ThesisEntryBlocListener(
-                      listenWhen: (previous, current) =>
-                          current.status.hasMessage,
-                      listener: (context, state) {
-                        final snackBar = SnackBar(
-                          clipBehavior: Clip.none,
-                          content: Text(state.statusMsg),
-                        );
-                        context.scaffoldMessenger.showSnackBar(snackBar);
-                      },
-                      child: Builder(
-                        builder: (context) {
-                          final userId = context.select(
-                            (AppCubit cubit) => cubit.state.user.id,
-                          );
-                          final enabled = context.select(
-                            (ThesisEntryCubit cubit) =>
-                                cubit.state.pdfPath.isNotEmpty &&
-                                cubit.state.thesisName.isNotEmpty,
-                          );
-                          // Upload button
-                          return TextButton.icon(
-                            label: const Text('Upload'),
-                            icon: const Icon(
-                              Icons.upload_file_rounded,
-                            ),
-                            onPressed: enabled
-                                ? () => cubit.upload(userId: userId)
-                                : null,
-                          );
-                        },
-                      ),
-                    ),
+                  decoration: const InputDecoration(
                     filled: true,
                     border: AppThemes.outlineInputBorder,
-                    label: const Text('Thesis Name'),
+                    label: Text('Thesis Name'),
                   ),
                 ),
                 const SizedBox(height: AppThemes.height * 2),
-                // Thesis View
+                // Thesis Department
                 DropdownButtonFormField<String>(
                   menuMaxHeight: AppThemes.menuMaxHeight,
                   dropdownColor:
@@ -98,6 +65,18 @@ class ThesisEntryView extends StatelessWidget {
                       .toList(),
                 ),
                 const SizedBox(height: AppThemes.height * 2),
+                // Thesis Description
+                TextField(
+                  maxLength: 150,
+                  maxLines: 4,
+                  decoration: const InputDecoration(
+                    label: Text('Description'),
+                    filled: true,
+                    border: AppThemes.outlineInputBorder,
+                  ),
+                  onChanged: (department) {},
+                ),
+                const SizedBox(height: AppThemes.height * 1.5),
                 // Thesis Preview
                 ThesisEntryBlocSelector<String>(
                   selector: (state) => state.pdfPath,
@@ -132,6 +111,43 @@ class ThesisEntryView extends StatelessWidget {
                       ],
                     );
                   },
+                ),
+                const SizedBox(height: AppThemes.height * 2),
+                // Upload button
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: ThesisEntryBlocListener(
+                    listenWhen: (previous, current) =>
+                        current.status.hasMessage,
+                    listener: (context, state) {
+                      final snackBar = SnackBar(
+                        clipBehavior: Clip.none,
+                        content: Text(state.statusMsg),
+                      );
+                      context.scaffoldMessenger.showSnackBar(snackBar);
+                    },
+                    child: Builder(
+                      builder: (context) {
+                        final userId = context.select(
+                          (AppCubit cubit) => cubit.state.user.id,
+                        );
+                        final enabled = context.select(
+                          (ThesisEntryCubit cubit) =>
+                              cubit.state.pdfPath.isNotEmpty &&
+                              cubit.state.thesisName.isNotEmpty,
+                        );
+                        return ElevatedButton.icon(
+                          label: const Text('Upload'),
+                          icon: const Icon(
+                            Icons.upload_file_rounded,
+                          ),
+                          onPressed: enabled
+                              ? () => cubit.upload(userId: userId)
+                              : null,
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ],
             ),

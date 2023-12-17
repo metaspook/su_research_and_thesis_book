@@ -18,15 +18,16 @@ class ResearchesCubit extends HydratedCubit<ResearchesState> {
     //-- Initialize Authentication subscription.
     _userSubscription = _authRepo.userStream.listen((user) async {
       if (user != null) {
-        // Logic after User is authenticated.
-        //-- Initialize Researches data subscription.
+        // Authenticated: Initialize Researches data.
         _researchesSubscription =
             _researchRepo.stream.listen((researches) async {
           emit(state.copyWith(researches: researches));
         });
       } else {
+        // Unauthenticated: Reset cached and current state.
         await _researchesSubscription.cancel();
         await clear();
+        emit(const ResearchesState());
       }
     });
   }
