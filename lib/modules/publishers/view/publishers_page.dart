@@ -5,6 +5,7 @@ import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/modules/publishers/publishers.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
+import 'package:su_thesis_book/utils/extensions.dart';
 
 class PublishersPage extends StatelessWidget {
   const PublishersPage({super.key});
@@ -28,7 +29,7 @@ class PublishersPage extends StatelessWidget {
             final publishers = [
               if (thesisPublishers != null) ...thesisPublishers,
               if (researchPublishers != null) ...researchPublishers,
-            ];
+            ].unique;
 
             return publishers.isEmpty
                 ? const TranslucentLoader()

@@ -166,7 +166,33 @@ final class AppRouter {
     path: '/publisher',
     builder: (context, state) {
       final publisher = state.extra! as Publisher;
-      return PublisherPage(publisher: publisher);
+      return MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider<ResearchRepo>(
+            create: (context) => ResearchRepo(),
+          ),
+          RepositoryProvider<ThesisRepo>(
+            create: (context) => ThesisRepo(),
+          ),
+        ],
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<ResearchesCubit>(
+              create: (context) => ResearchesCubit(
+                authRepo: context.read<AuthRepo>(),
+                researchRepo: context.read<ResearchRepo>(),
+              ),
+            ),
+            BlocProvider<ThesesCubit>(
+              create: (context) => ThesesCubit(
+                authRepo: context.read<AuthRepo>(),
+                thesisRepo: context.read<ThesisRepo>(),
+              ),
+            ),
+          ],
+          child: PublisherPage(publisher: publisher),
+        ),
+      );
     },
   );
 
@@ -175,7 +201,33 @@ final class AppRouter {
     name: 'publishers',
     path: '/publishers',
     builder: (context, state) {
-      return const PublishersPage();
+      return MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider<ResearchRepo>(
+            create: (context) => ResearchRepo(),
+          ),
+          RepositoryProvider<ThesisRepo>(
+            create: (context) => ThesisRepo(),
+          ),
+        ],
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<ResearchesCubit>(
+              create: (context) => ResearchesCubit(
+                authRepo: context.read<AuthRepo>(),
+                researchRepo: context.read<ResearchRepo>(),
+              ),
+            ),
+            BlocProvider<ThesesCubit>(
+              create: (context) => ThesesCubit(
+                authRepo: context.read<AuthRepo>(),
+                thesisRepo: context.read<ThesisRepo>(),
+              ),
+            ),
+          ],
+          child: const PublishersPage(),
+        ),
+      );
     },
   );
 

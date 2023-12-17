@@ -85,7 +85,7 @@ class AppView extends StatelessWidget {
         .select((AppCubit cubit) => cubit.state.status.isAuthenticated)
       ..doPrint();
     final initialLocation =
-        isAuthenticated ? AppRouter.home.path : AppRouter.auth.path;
+        isAuthenticated ? AppRouter.publishers.path : AppRouter.auth.path;
     final router = AppRouter(initialLocation: initialLocation);
 
     return MaterialApp.router(
