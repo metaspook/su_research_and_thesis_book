@@ -56,13 +56,16 @@ class HomeView extends StatelessWidget {
       ),
     ];
     final theses = context.select((ThesesCubit cubit) => cubit.state.theses);
-
-    return theses == null
+    final researches =
+        context.select((ResearchesCubit cubit) => cubit.state.researches);
+    theses?.first.publisher.doPrint('Theses Publisher: ');
+    researches?.first.publisher.doPrint('Research Publisher: ');
+    return theses == null || researches == null
         ? const TranslucentLoader()
         : ListView(
             padding: AppThemes.verticalPadding * 2,
             children: [
-              ThesisCarousel(theses),
+              ThesisCarousel(theses: theses, researches: researches),
               const SizedBox(height: AppThemes.height * 4.5),
               const ProfileCarousel(),
               GridView.count(

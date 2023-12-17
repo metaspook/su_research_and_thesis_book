@@ -5,8 +5,42 @@ import 'package:su_thesis_book/theme/theme.dart';
 import 'package:su_thesis_book/utils/extensions.dart';
 
 class ThesisCarousel extends StatefulWidget {
-  const ThesisCarousel(this.theses, {super.key});
+  const ThesisCarousel({
+    required this.theses,
+    required this.researches,
+    super.key,
+  });
   final List<Thesis> theses;
+  final List<Research> researches;
+
+  List<String> get titles => <String>[
+        for (var i = 0; i < 3; i++) theses[i].title.toStringParseNull(),
+        for (var i = 0; i < 3; i++) researches[i].title.toStringParseNull(),
+      ];
+
+  List<String> get publisherNames => <String>[
+        for (var i = 0; i < 3; i++)
+          theses[i].publisher!.name.toStringParseNull(),
+        for (var i = 0; i < 3; i++)
+          researches[i].publisher!.name.toStringParseNull(),
+      ];
+  List<String> get designations => <String>[
+        for (var i = 0; i < 3; i++)
+          theses[i].publisher!.designation.toStringParseNull(),
+        for (var i = 0; i < 3; i++)
+          researches[i].publisher!.designation.toStringParseNull(),
+      ];
+  List<String> get departments => <String>[
+        for (var i = 0; i < 3; i++)
+          theses[i].publisher!.department.toStringParseNull(),
+        for (var i = 0; i < 3; i++)
+          researches[i].publisher!.department.toStringParseNull(),
+      ];
+  List<String> get descriptions => <String>[
+        for (var i = 0; i < 3; i++) theses[i].description.toStringParseNull(),
+        for (var i = 0; i < 3; i++)
+          researches[i].description.toStringParseNull(),
+      ];
 
   @override
   State<StatefulWidget> createState() => _ThesisCarouselState();
@@ -91,7 +125,7 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.theses[i].title.toStringParseNull(),
+                      widget.titles[i],
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -99,7 +133,7 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
                       ),
                     ),
                     Text(
-                      widget.theses[i].publisher!.name.toStringParseNull(),
+                      widget.publisherNames[i],
                       style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 17.5,
@@ -107,14 +141,14 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
                       ),
                     ),
                     Text(
-                      '${widget.theses[i].publisher!.designation.toStringParseNull()} | ${widget.theses[i].publisher!.department.toStringParseNull()}',
+                      '${widget.designations[i]} | ${widget.departments[i]}',
                       style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 15,
                       ),
                     ),
                     Text(
-                      widget.theses[i].description.toStringParseNull(),
+                      widget.descriptions[i],
                       style: const TextStyle(
                         color: Colors.white,
                       ),

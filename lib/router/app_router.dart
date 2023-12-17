@@ -75,7 +75,7 @@ final class AppRouter {
               create: (context) => CategoriesCubit(
                 authRepo: context.read<AuthRepo>(),
                 categoryRepo: context.read<CategoryRepo>(),
-              ),
+              )..initialize(),
             ),
             BlocProvider<ResearchesCubit>(
               create: (context) => ResearchesCubit(

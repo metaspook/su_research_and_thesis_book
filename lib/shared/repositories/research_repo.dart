@@ -13,6 +13,7 @@ class ResearchRepo implements CRUD<Research> {
   //-- Config
   final _cacheDesignations = const Cache<List<String>>('designations');
   final _cacheCategories = const Cache<List<String>>('categories');
+  final _cacheDepartments = const Cache<List<String>>('departments');
   final _cache = const Cache<List<Research>>('researches');
   final _db = FirebaseDatabase.instance.ref('researches');
   final _dbUsers = FirebaseDatabase.instance.ref('users');
@@ -47,16 +48,16 @@ class ResearchRepo implements CRUD<Research> {
     final snapshot = await _dbUsers.child(id).get();
     final publisherMap = snapshot.value?.toJson();
     final designationIndex = publisherMap?['designationIndex'] as int?;
-    final categoryIndex = publisherMap?['categoryIndex'] as int?;
+    final departmentIndex = publisherMap?['departmentIndex'] as int?;
 
-    if (designationIndex != null && categoryIndex != null) {
+    if (designationIndex != null && departmentIndex != null) {
       final designations = _cacheDesignations.value;
-      final categories = _cacheCategories.value;
+      final departments = _cacheDepartments.value;
       return (
         id: snapshot.key,
         name: publisherMap?['name'],
         designation: designations?[designationIndex],
-        category: categories?[categoryIndex],
+        department: departments?[departmentIndex],
         photoUrl: publisherMap?['photoUrl'],
       ) as Publisher;
     }
