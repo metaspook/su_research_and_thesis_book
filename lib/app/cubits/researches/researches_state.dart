@@ -18,7 +18,9 @@ class ResearchesState extends Equatable {
 
   factory ResearchesState.fromJson(Map<String, dynamic> json) {
     return ResearchesState(
-      researches: [for (final e in json['researches'] as List) e as Research],
+      researches: [
+        for (final e in json['researches'] as List) Research.fromJson(e as Json)
+      ],
     );
   }
 
@@ -35,7 +37,7 @@ class ResearchesState extends Equatable {
 
   Json toJson() {
     return <String, dynamic>{
-      'researches': researches?.map((e) => e.toJson()).toList(),
+      'researches': researches?.map<Json>((e) => e.toJson()).toList(),
     };
   }
 

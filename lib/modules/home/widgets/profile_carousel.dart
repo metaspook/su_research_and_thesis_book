@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/widgets/halo_avatar.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 import 'package:su_thesis_book/utils/utils.dart';

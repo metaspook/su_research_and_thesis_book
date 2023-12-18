@@ -18,7 +18,9 @@ class ThesesState extends Equatable {
 
   factory ThesesState.fromJson(Map<String, dynamic> json) {
     return ThesesState(
-      theses: [for (final e in json['theses'] as List) e as Thesis],
+      theses: [
+        for (final e in json['theses'] as List) Thesis.fromJson(e as Json)
+      ],
     );
   }
 
@@ -35,7 +37,7 @@ class ThesesState extends Equatable {
 
   Json toJson() {
     return <String, dynamic>{
-      'theses': theses?.map((e) => e.toJson()).toList(),
+      'theses': theses?.map<Json>((e) => e.toJson()).toList(),
     };
   }
 

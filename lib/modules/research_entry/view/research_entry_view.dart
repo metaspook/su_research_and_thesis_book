@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:su_thesis_book/app/app.dart';
-import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/modules/research_entry/research_entry.dart';
 import 'package:su_thesis_book/modules/thesis_entry/thesis_entry.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
@@ -13,19 +12,22 @@ class ResearchEntryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categories =
-        context.select((CategoriesCubit cubit) => cubit.state.categories);
-    final l10n = context.l10n;
-    final cubit = context.read<ResearchEntryCubit>();
+    // final categories = context
+    //     .select((CategoriesCubit cubit) => cubit.state.categories)
+    //   ..doPrint('CATEGORIES: ');
+    // final l10n = context.l10n;
+    // final cubit = context.read<ResearchEntryCubit>();
+    return Container();
 
     return NestedScrollView(
       headerSliverBuilder: (context, innerBoxIsScrolled) =>
-          [context.sliverAppBar(l10n.researchEntryAppBarTitle)],
+          [const SliverAppBar()],
       body: ResearchEntryBlocSelector<bool>(
         selector: (state) => state.status.isLoading,
         builder: (context, isLoading) {
           return TranslucentLoader(
             enabled: isLoading,
+            // enabled: categories == null || isLoading,
             child: ListView(
               padding: const EdgeInsets.symmetric(
                 horizontal: AppThemes.width * 1.5,
@@ -36,7 +38,7 @@ class ResearchEntryView extends StatelessWidget {
                 TextFormField(
                   validator: Validator.name,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  onChanged: cubit.onChangedResearchName,
+                  // onChanged: cubit.onChangedResearchName,
                   decoration: InputDecoration(
                     suffixIcon: ResearchEntryBlocListener(
                       listenWhen: (previous, current) =>
@@ -64,9 +66,11 @@ class ResearchEntryView extends StatelessWidget {
                             icon: const Icon(
                               Icons.upload_file_rounded,
                             ),
-                            onPressed: enabled
-                                ? () => cubit.upload(userId: userId)
-                                : null,
+                            onPressed:
+                                // enabled
+                                //     ? () => cubit.upload(userId: userId)
+                                // :
+                                null,
                           );
                         },
                       ),
@@ -78,26 +82,26 @@ class ResearchEntryView extends StatelessWidget {
                 ),
                 const SizedBox(height: AppThemes.height * 2),
                 // Research View
-                DropdownButtonFormField<String>(
-                  menuMaxHeight: AppThemes.menuMaxHeight,
-                  dropdownColor:
-                      context.theme.colorScheme.background.withOpacity(.75),
-                  decoration: const InputDecoration(
-                    label: Text('Category'),
-                    filled: true,
-                    border: AppThemes.outlineInputBorder,
-                  ),
-                  borderRadius: AppThemes.borderRadius,
-                  onChanged: (category) {},
-                  items: categories
-                      ?.map<DropdownMenuItem<String>>(
-                        (category) => DropdownMenuItem<String>(
-                          value: category,
-                          child: Text(category),
-                        ),
-                      )
-                      .toList(),
-                ),
+                // DropdownButtonFormField<String>(
+                //   menuMaxHeight: AppThemes.menuMaxHeight,
+                //   dropdownColor:
+                //       context.theme.colorScheme.background.withOpacity(.75),
+                //   decoration: const InputDecoration(
+                //     label: Text('Category'),
+                //     filled: true,
+                //     border: AppThemes.outlineInputBorder,
+                //   ),
+                //   borderRadius: AppThemes.borderRadius,
+                //   onChanged: (category) {},
+                //   items: categories
+                //       ?.map<DropdownMenuItem<String>>(
+                //         (category) => DropdownMenuItem<String>(
+                //           value: category,
+                //           child: Text(category),
+                //         ),
+                //       )
+                //       .toList(),
+                // ),
                 const SizedBox(height: AppThemes.height * 2),
                 // Research Preview
                 ResearchEntryBlocSelector<String>(
@@ -121,15 +125,15 @@ class ResearchEntryView extends StatelessWidget {
                             type: PdfSourceType.path,
                           ),
                         // Pick/Change PDF button
-                        TextButton.icon(
-                          onPressed: cubit.pick,
-                          icon: const Icon(
-                            Icons.file_present_rounded,
-                          ),
-                          label: Text(
-                            pdfPath.isEmpty ? 'Pick PDF' : 'Change',
-                          ),
-                        ),
+                        // TextButton.icon(
+                        //   onPressed: cubit.pick,
+                        //   icon: const Icon(
+                        //     Icons.file_present_rounded,
+                        //   ),
+                        //   label: Text(
+                        //     pdfPath.isEmpty ? 'Pick PDF' : 'Change',
+                        //   ),
+                        // ),
                       ],
                     );
                   },
@@ -163,9 +167,11 @@ class ResearchEntryView extends StatelessWidget {
                           icon: const Icon(
                             Icons.upload_file_rounded,
                           ),
-                          onPressed: enabled
-                              ? () => cubit.upload(userId: userId)
-                              : null,
+                          onPressed:
+                              // enabled
+                              //     ? () => cubit.upload(userId: userId)
+                              //     :
+                              null,
                         );
                       },
                     ),

@@ -13,14 +13,7 @@ class CategoriesCubit extends HydratedCubit<CategoriesState> {
     required CategoryRepo categoryRepo,
   })  : _authRepo = authRepo,
         _categoryRepo = categoryRepo,
-        super(const CategoriesState());
-
-  final AuthRepo _authRepo;
-  final CategoryRepo _categoryRepo;
-  late final StreamSubscription<User?> _userSubscription;
-
-  /// Initialize Categories data.
-  void initialize() {
+        super(const CategoriesState()) {
     //-- Initialize Authentication subscription.
     _userSubscription = _authRepo.userStream.listen((user) async {
       if (user != null) {
@@ -34,6 +27,10 @@ class CategoriesCubit extends HydratedCubit<CategoriesState> {
       }
     });
   }
+
+  final AuthRepo _authRepo;
+  final CategoryRepo _categoryRepo;
+  late final StreamSubscription<User?> _userSubscription;
 
   @override
   CategoriesState? fromJson(Map<String, dynamic> json) {

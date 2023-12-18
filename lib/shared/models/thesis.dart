@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
 final class Thesis extends Equatable {
@@ -13,13 +14,13 @@ final class Thesis extends Equatable {
     this.description,
   });
 
-  factory Thesis.fromJson(Map<String, dynamic> json) {
+  factory Thesis.fromJson(Json json) {
     return Thesis(
-      id: json['id'] as String,
-      publisher: json['publisher'] as Publisher?,
+      id: json['id']! as String,
+      publisher: Publisher.fromJson(json['publisher']! as Json),
       createdAt: json['createdAt'] == null
           ? null
-          : DateTime.tryParse(json['createdAt'] as String),
+          : DateTime.tryParse(json['createdAt']! as String),
       title: json['title'] as String?,
       views: json['views'] as int?,
       fileUrl: json['fileUrl'] as String?,

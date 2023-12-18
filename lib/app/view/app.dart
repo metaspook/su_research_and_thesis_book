@@ -85,11 +85,11 @@ class AppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Initialize global blocs those above authentication.
-    final isAuthenticated =
-        context.select((AppCubit cubit) => cubit.state.status.isAuthenticated);
     context
       ..read<DepartmentsCubit>()
       ..read<DesignationsCubit>();
+    final isAuthenticated =
+        context.select((AppCubit cubit) => cubit.state.status.isAuthenticated);
     // NOTE: This 'initialLocation' approach is experimental instead of
     // redirection from router, need see which one is performant and stable.
     final initialLocation =

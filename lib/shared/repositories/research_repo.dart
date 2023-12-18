@@ -53,13 +53,13 @@ class ResearchRepo implements CRUD<Research> {
     if (designationIndex != null && departmentIndex != null) {
       final designations = _cacheDesignations.value;
       final departments = _cacheDepartments.value;
-      return (
-        id: snapshot.key,
-        name: publisherMap?['name'],
+      return Publisher(
+        id: snapshot.key!,
+        name: publisherMap?['name'] as String?,
         designation: designations?[designationIndex],
         department: departments?[departmentIndex],
-        photoUrl: publisherMap?['photoUrl'],
-      ) as Publisher;
+        photoUrl: publisherMap?['photoUrl'] as String?,
+      );
     }
     return null;
   }
@@ -75,7 +75,7 @@ class ResearchRepo implements CRUD<Research> {
       final categories = _cacheCategories.value;
       final researchJson = <String, Object?>{
         'id': snapshot.key,
-        'publisher': publisher,
+        'publisher': publisher?.toJson(),
         ...?researchMap,
         'category': categories?[categoryIndex],
       };
