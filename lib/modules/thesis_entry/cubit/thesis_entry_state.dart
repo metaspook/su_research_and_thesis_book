@@ -16,29 +16,38 @@ final class ThesisEntryState extends Equatable {
   const ThesisEntryState({
     this.status = ThesisEntryStatus.initial,
     this.statusMsg = '',
-    this.thesisName = '',
+    this.title = '',
+    this.departmentIndex = 0,
+    this.description = '',
     this.pdfPath = '',
   });
 
   final ThesisEntryStatus status;
   final String statusMsg;
-  final String thesisName;
+  final String title;
+  final int departmentIndex;
+  final String description;
   final String pdfPath;
 
   ThesisEntryState copyWith({
     ThesisEntryStatus? status,
     String? statusMsg,
-    String? thesisName,
+    String? title,
+    int? departmentIndex,
+    String? description,
     String? pdfPath,
   }) {
     return ThesisEntryState(
       status: status ?? this.status,
       statusMsg: statusMsg ?? this.statusMsg,
-      thesisName: thesisName ?? this.thesisName,
+      title: title ?? this.title,
+      departmentIndex: departmentIndex ?? this.departmentIndex,
+      description: description ?? this.description,
       pdfPath: pdfPath ?? this.pdfPath,
     );
   }
 
   @override
-  List<Object> get props => [status, statusMsg, thesisName, pdfPath];
+  List<Object> get props =>
+      [status, statusMsg, title, departmentIndex, description, pdfPath];
 }

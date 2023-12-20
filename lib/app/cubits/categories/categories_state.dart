@@ -18,8 +18,6 @@ class CategoriesState extends Equatable {
 
   factory CategoriesState.fromJson(Map<String, dynamic> json) {
     return CategoriesState(
-      status: CategoriesStatus.values.byName(json['status'] as String),
-      statusMsg: json['statusMsg'] as String,
       categories: [for (final e in json['categories'] as List) e as String],
     );
   }
@@ -31,8 +29,6 @@ class CategoriesState extends Equatable {
 
   Json toJson() {
     return <String, dynamic>{
-      'status': status.name,
-      'statusMsg': statusMsg,
       'categories': categories,
     };
   }

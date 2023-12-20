@@ -78,7 +78,7 @@ final class AppRouter {
     builder: (context, state) {
       return BlocProvider<BookmarksCubit>(
         create: (context) => BookmarksCubit(
-          thesisRepo: context.read<ThesisRepo>(),
+          bookmarkRepo: context.read<BookmarkRepo>(),
         ),
         child: const BookmarksPage(),
       );

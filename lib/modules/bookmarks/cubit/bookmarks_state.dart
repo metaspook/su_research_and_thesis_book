@@ -19,6 +19,8 @@ class BookmarksState extends Equatable {
     this.removeMode = false,
     this.theses,
     this.selectedTheses = const [],
+    this.researchIds = const [],
+    this.thesisIds = const [],
   });
 
   final BookmarksStatus status;
@@ -26,6 +28,8 @@ class BookmarksState extends Equatable {
   final bool removeMode;
   final List<Thesis>? theses;
   final List<Thesis> selectedTheses;
+  final List<String> researchIds;
+  final List<String> thesisIds;
 
   BookmarksState copyWith({
     BookmarksStatus? status,
@@ -33,6 +37,8 @@ class BookmarksState extends Equatable {
     bool? removeMode,
     List<Thesis>? theses,
     List<Thesis>? selectedTheses,
+    List<String>? researchIds,
+    List<String>? thesisIds,
   }) {
     return BookmarksState(
       status: status ?? this.status,
@@ -40,10 +46,19 @@ class BookmarksState extends Equatable {
       removeMode: removeMode ?? this.removeMode,
       theses: theses ?? this.theses,
       selectedTheses: selectedTheses ?? this.selectedTheses,
+      researchIds: researchIds ?? this.researchIds,
+      thesisIds: thesisIds ?? this.thesisIds,
     );
   }
 
   @override
-  List<Object?> get props =>
-      [status, statusMsg, removeMode, theses, selectedTheses];
+  List<Object?> get props => [
+        status,
+        statusMsg,
+        removeMode,
+        theses,
+        selectedTheses,
+        researchIds,
+        thesisIds,
+      ];
 }

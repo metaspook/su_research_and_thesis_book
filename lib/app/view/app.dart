@@ -13,12 +13,17 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
+      // Provide repositories for blocs from more than one module depends on.
+      // local repositories should be provided from routes.
       providers: [
         RepositoryProvider<AppUserRepo>(
           create: (context) => AppUserRepo(),
         ),
         RepositoryProvider<AuthRepo>(
           create: (context) => AuthRepo(),
+        ),
+        RepositoryProvider<BookmarkRepo>(
+          create: (context) => BookmarkRepo(),
         ),
         RepositoryProvider<DepartmentRepo>(
           create: (context) => DepartmentRepo(),
@@ -37,11 +42,18 @@ class App extends StatelessWidget {
         ),
       ],
       child: MultiBlocProvider(
+        // Provide blocs for widgets from more than one module depends on,
+        // local blocs should be provided from routes.
         providers: [
           BlocProvider<AppCubit>(
             create: (context) => AppCubit(
               authRepo: context.read<AuthRepo>(),
               appUserRepo: context.read<AppUserRepo>(),
+            ),
+          ),
+          BlocProvider<CategoriesCubit>(
+            create: (context) => CategoriesCubit(
+              categoryRepo: context.read<CategoryRepo>(),
             ),
           ),
           BlocProvider<DepartmentsCubit>(
@@ -52,12 +64,6 @@ class App extends StatelessWidget {
           BlocProvider<DesignationsCubit>(
             create: (context) => DesignationsCubit(
               designationRepo: context.read<DesignationRepo>(),
-            ),
-          ),
-          BlocProvider<CategoriesCubit>(
-            create: (context) => CategoriesCubit(
-              authRepo: context.read<AuthRepo>(),
-              categoryRepo: context.read<CategoryRepo>(),
             ),
           ),
           BlocProvider<ResearchesCubit>(
@@ -116,6 +122,8 @@ typedef DepartmentsBlocSelector<T>
     = BlocSelector<DepartmentsCubit, DepartmentsState, T>;
 typedef DesignationsBlocSelector<T>
     = BlocSelector<DesignationsCubit, DesignationsState, T>;
+typedef PaperTypesBlocSelector<T>
+    = BlocSelector<PaperTypesCubit, PaperTypesState, T>;
 typedef ResearchesBlocSelector<T>
     = BlocSelector<ResearchesCubit, ResearchesState, T>;
 typedef ThesesBlocSelector<T> = BlocSelector<ThesesCubit, ThesesState, T>;

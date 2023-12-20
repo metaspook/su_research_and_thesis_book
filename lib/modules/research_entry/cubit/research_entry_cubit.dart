@@ -12,8 +12,16 @@ class ResearchEntryCubit extends Cubit<ResearchEntryState> {
 
   final ResearchRepo _researchRepo;
 
-  void onChangedResearchName(String value) {
-    emit(state.copyWith(researchName: value));
+  void onChangedTitle(String value) {
+    emit(state.copyWith(title: value));
+  }
+
+  void onChangedCategory(int? value) {
+    emit(state.copyWith(categoryIndex: value));
+  }
+
+  void onChangedDescription(String? value) {
+    emit(state.copyWith(description: value));
   }
 
   Future<void> pick() async {
@@ -38,8 +46,10 @@ class ResearchEntryCubit extends Cubit<ResearchEntryState> {
       final researchId = _researchRepo.newId;
       final researchObj = {
         'userId': userId,
+        'categoryIndex': state.categoryIndex,
         'createdAt': timestamp,
-        'name': state.researchName,
+        'description': state.description,
+        'title': state.title,
         'views': 0,
         'fileUrl': uploadRecord.fileUrl,
       };

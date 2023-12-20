@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
@@ -7,9 +9,19 @@ import 'package:su_thesis_book/utils/functions.dart';
 part 'bookmarks_state.dart';
 
 class BookmarksCubit extends Cubit<BookmarksState> {
-  BookmarksCubit({required ThesisRepo thesisRepo})
-      : _thesisRepo = thesisRepo,
+  BookmarksCubit({required BookmarkRepo bookmarkRepo})
+      : _bookmarkRepo = bookmarkRepo,
         super(const BookmarksState()) {
+    //-- Initialize Research Bookmark subscription.
+    _researchIdsSubscription =
+        _bookmarkRepo.ids(BookmarkType.research).listen((researchIds) async {
+      emit(state.copyWith(researchIds: researchIds));
+    });
+    //-- Initialize Thesis Bookmark subscription.
+    _thesisIdsSubscription =
+        _bookmarkRepo.ids(BookmarkType.thesis).listen((thesisIds) async {
+      emit(state.copyWith(thesisIds: thesisIds));
+    });
     // final thesis = Thesis(id: uuid, userId: 'userId');
     emit(state.copyWith(status: BookmarksStatus.loading));
     Future.delayed(const Duration(seconds: 2), () {
@@ -21,7 +33,9 @@ class BookmarksCubit extends Cubit<BookmarksState> {
     });
   }
 
-  final ThesisRepo _thesisRepo;
+  final BookmarkRepo _bookmarkRepo;
+  late final StreamSubscription<List<String>> _researchIdsSubscription;
+  late final StreamSubscription<List<String>> _thesisIdsSubscription;
 
   void onSelectionToggled(Thesis thesis) {
     final selectedThesis = [...state.selectedTheses];
@@ -66,5 +80,12 @@ class BookmarksCubit extends Cubit<BookmarksState> {
         selectedTheses: const [],
       ),
     );
+  }
+
+  @override
+  Future<void> close() {
+    _researchIdsSubscription.cancel();
+    _thesisIdsSubscription.cancel();
+    return super.close();
   }
 }

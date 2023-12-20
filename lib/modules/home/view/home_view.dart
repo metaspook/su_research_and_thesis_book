@@ -68,7 +68,10 @@ class HomeView extends StatelessWidget {
         : ListView(
             padding: AppThemes.verticalPadding * 2,
             children: [
-              ThesisCarousel(theses: theses, researches: researches),
+              ThesisCarousel(
+                theses: theses.reversed.toList(),
+                researches: researches.reversed.toList(),
+              ),
               const SizedBox(height: AppThemes.height * 4.5),
               ProfileCarousel(
                 publishers: [

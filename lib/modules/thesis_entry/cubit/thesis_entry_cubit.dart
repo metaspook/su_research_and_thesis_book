@@ -12,8 +12,16 @@ class ThesisEntryCubit extends Cubit<ThesisEntryState> {
 
   final ThesisRepo _thesisRepo;
 
-  void onChangedThesisName(String value) {
-    emit(state.copyWith(thesisName: value));
+  void onChangedTitle(String value) {
+    emit(state.copyWith(title: value));
+  }
+
+  void onChangedDepartment(int? value) {
+    emit(state.copyWith(departmentIndex: value));
+  }
+
+  void onChangedDescription(String? value) {
+    emit(state.copyWith(description: value));
   }
 
   Future<void> pick() async {
@@ -39,7 +47,9 @@ class ThesisEntryCubit extends Cubit<ThesisEntryState> {
       final thesisObj = {
         'userId': userId,
         'createdAt': timestamp,
-        'name': state.thesisName,
+        'departmentIndex': state.departmentIndex,
+        'description': state.description,
+        'title': state.title,
         'views': 0,
         'fileUrl': uploadRecord.fileUrl,
       };

@@ -31,20 +31,20 @@ class ThesisEntryView extends StatelessWidget {
                 vertical: AppThemes.height * 3,
               ),
               children: [
-                // Thesis Name
+                // Thesis Title
                 TextFormField(
                   validator: Validator.name,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  onChanged: cubit.onChangedThesisName,
+                  onChanged: cubit.onChangedTitle,
                   decoration: const InputDecoration(
                     filled: true,
                     border: AppThemes.outlineInputBorder,
-                    label: Text('Thesis Name'),
+                    label: Text('Title'),
                   ),
                 ),
                 const SizedBox(height: AppThemes.height * 2),
                 // Thesis Department
-                DropdownButtonFormField<String>(
+                DropdownButtonFormField<int>(
                   menuMaxHeight: AppThemes.menuMaxHeight,
                   dropdownColor:
                       context.theme.colorScheme.background.withOpacity(.75),
@@ -54,11 +54,11 @@ class ThesisEntryView extends StatelessWidget {
                     border: AppThemes.outlineInputBorder,
                   ),
                   borderRadius: AppThemes.borderRadius,
-                  onChanged: (department) {},
+                  onChanged: cubit.onChangedDepartment,
                   items: departments
-                      ?.map<DropdownMenuItem<String>>(
-                        (department) => DropdownMenuItem<String>(
-                          value: department,
+                      ?.map<DropdownMenuItem<int>>(
+                        (department) => DropdownMenuItem<int>(
+                          value: departments.indexOf(department),
                           child: Text(department),
                         ),
                       )
@@ -74,7 +74,7 @@ class ThesisEntryView extends StatelessWidget {
                     filled: true,
                     border: AppThemes.outlineInputBorder,
                   ),
-                  onChanged: (department) {},
+                  onChanged: cubit.onChangedDescription,
                 ),
                 const SizedBox(height: AppThemes.height * 1.5),
                 // Thesis Preview
@@ -134,7 +134,7 @@ class ThesisEntryView extends StatelessWidget {
                         final enabled = context.select(
                           (ThesisEntryCubit cubit) =>
                               cubit.state.pdfPath.isNotEmpty &&
-                              cubit.state.thesisName.isNotEmpty,
+                              cubit.state.title.isNotEmpty,
                         );
                         return ElevatedButton.icon(
                           label: const Text('Upload'),
