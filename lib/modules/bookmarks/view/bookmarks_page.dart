@@ -1,25 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/modules/bookmarks/bookmarks.dart';
-import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
-typedef BookmarksBlocSelector<T>
-    = BlocSelector<BookmarksResearchesCubit, BookmarksResearchesState, T>;
+// typedef BookmarksBlocSelector<T>
+//     = BlocSelector<BookmarksResearchesCubit, BookmarksResearchesState, T>;
 
 class BookmarksPage extends StatelessWidget {
   const BookmarksPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final cubit = context.read<BookmarksResearchesCubit>();
-    // final selectedTheses =
-    //     context.select((BookmarksCubit cubit) => cubit.state.selectedTheses);
-    // final selectedThesesIsEmpty = selectedTheses.isEmpty;
-
-    // final thesesNullOrEmpty = theses == null || theses.isEmpty;
+    final viewIndex = context.select((BookmarksCubit cubit) => cubit.state);
     const tabBar = TabBar(
       splashBorderRadius: AppThemes.borderRadius,
       tabs: [Tab(text: 'Thesis'), Tab(text: 'Researches')],
@@ -30,80 +22,17 @@ class BookmarksPage extends StatelessWidget {
       child: Scaffold(
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            context.sliverAppBar(
-              l10n.bookmarkAppBarTitle,
-              centerTitle: false,
-              bottom: tabBar,
-              actions: [
-                // Select All button.
-                // IconButton(
-                //   padding: EdgeInsets.zero,
-                //   onPressed: thesesNullOrEmpty || theses == selectedTheses
-                //       ? null
-                //       : cubit.onAllSelected,
-                //   iconSize: kToolbarHeight * .575,
-                //   icon: const Icon(
-                //     Icons.select_all_rounded,
-                //   ),
-                // ),
-                // Deselect All button.
-                // IconButton(
-                //   padding: EdgeInsets.zero,
-                //   onPressed:
-                //       selectedThesesIsEmpty ? null : cubit.onAllDeselected,
-                //   iconSize: kToolbarHeight * .575,
-                //   icon: const Icon(
-                //     Icons.deselect_rounded,
-                //   ),
-                // ),
-                // Remove button.
-                // IconButton(
-                //   padding: EdgeInsets.zero,
-                //   onPressed: selectedThesesIsEmpty
-                //       ? null
-                //       : theses == selectedTheses
-                //           ? cubit.onAllRemoved
-                //           : cubit.onRemoved,
-                //   iconSize: kToolbarHeight * .575,
-                //   icon: Icon(
-                //     selectedThesesIsEmpty
-                //         ? Icons.remove_circle_outline_rounded
-                //         : Icons.remove_circle_rounded,
-                //   ),
-                // ),
-              ],
-            ),
+            [
+              const BookmarksThesesAppBar(tabBar: tabBar),
+              const BookmarksResearchesAppBar(tabBar: tabBar),
+            ][viewIndex],
           ],
-          // body:
           body: const TabBarView(
             children: [
               BookmarksThesesView(),
               BookmarksResearchesView(),
-              // BookmarksResearchesView(researches: researches ?? []),
             ],
           ),
-          // // Handle Null and Empty cases.
-          // theses == null
-          //     ? const TranslucentLoader()
-          //     : theses.isEmpty
-          //         ? context.emptyListText()
-          //         : ListView.builder(
-          //             padding: AppThemes.viewPadding,
-          //             physics: const BouncingScrollPhysics(),
-          //             itemCount: theses.length,
-          //             itemBuilder: (context, index) {
-          //               final thesis = theses[index];
-          //               return ThesisCard(
-          //                 thesis,
-          //                 selected: selectedTheses.contains(thesis),
-          //                 onTap: selectedThesesIsEmpty
-          //                     ? null
-          //                     : () => cubit.onSelectionToggled(thesis),
-          //                 onLongPress: () =>
-          //                     cubit.onSelectionToggled(thesis),
-          //               );
-          //             },
-          //           ),
         ),
       ),
     );

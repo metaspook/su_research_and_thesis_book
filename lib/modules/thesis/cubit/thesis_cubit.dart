@@ -9,14 +9,19 @@ import 'package:su_thesis_book/shared/repositories/repositories.dart';
 part 'thesis_state.dart';
 
 class ThesisCubit extends Cubit<ThesisState> {
-  ThesisCubit({required ThesisRepo thesisRepo, required Thesis thesis})
-      : _thesisRepo = thesisRepo,
+  ThesisCubit({
+    required BookmarkRepo bookmarkRepo,
+    required ThesisRepo thesisRepo,
+    required Thesis thesis,
+  })  : _thesisRepo = thesisRepo,
+        _bookmarkRepo = bookmarkRepo,
         super(ThesisState(thesis: thesis)) {
     //-- Increment Thesis views.
     incrementViews(state.thesis);
   }
 
   final ThesisRepo _thesisRepo;
+  final BookmarkRepo _bookmarkRepo;
   static bool _firstView = true;
 
   /// Increment Thesis view count.
@@ -35,6 +40,27 @@ class ThesisCubit extends Cubit<ThesisState> {
           ),
         );
       }
+    }
+  }
+
+  Future<void> onPressedBookmark() async {
+    final paper = (type: PaperType.thesis, id: state.thesis.id);
+    final errorMsg = await _bookmarkRepo.addBookmark(paper);
+
+    if (errorMsg == null) {
+      emit(
+        state.copyWith(
+          status: ThesisStatus.success,
+          statusMsg: 'Bookmarked successfully!',
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          status: ThesisStatus.failure,
+          statusMsg: errorMsg,
+        ),
+      );
     }
   }
 

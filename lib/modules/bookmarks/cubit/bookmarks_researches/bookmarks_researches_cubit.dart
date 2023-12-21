@@ -8,18 +8,27 @@ import 'package:su_thesis_book/shared/repositories/repositories.dart';
 part 'bookmarks_researches_state.dart';
 
 class BookmarksResearchesCubit extends Cubit<BookmarksResearchesState> {
-  BookmarksResearchesCubit({required BookmarkRepo bookmarkRepo})
-      : _bookmarkRepo = bookmarkRepo,
+  BookmarksResearchesCubit({
+    required ResearchRepo researchRepo,
+    required BookmarkRepo bookmarkRepo,
+  })  : _bookmarkRepo = bookmarkRepo,
+        _researchRepo = researchRepo,
         super(const BookmarksResearchesState()) {
-    //-- Initialize Research Bookmark subscription.
+    // Initialize Research Bookmark subscription.
     _researchIdsSubscription =
         _bookmarkRepo.ids(PaperType.research).listen((researchIds) async {
-      emit(state.copyWith(researchIds: researchIds));
+      //-- Parse bookmarked researches.
+      final bookmarkedResearch = await _researchRepo.stream.first.then(
+        (researches) =>
+            researches.where((e) => researchIds.contains(e.id)).toList(),
+      );
+      emit(state.copyWith(researches: bookmarkedResearch));
     });
   }
 
   final BookmarkRepo _bookmarkRepo;
   late final StreamSubscription<List<String>> _researchIdsSubscription;
+  final ResearchRepo _researchRepo;
 
   void onSelectionToggled(Research research) {
     final selectedResearch = [...state.selectedResearches];

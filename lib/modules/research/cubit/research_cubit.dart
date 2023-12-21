@@ -9,21 +9,27 @@ import 'package:su_thesis_book/shared/repositories/repositories.dart';
 part 'research_state.dart';
 
 class ResearchCubit extends Cubit<ResearchState> {
-  ResearchCubit(
-      {required ResearchRepo researchRepo, required Research research,})
-      : _researchRepo = researchRepo,
+  ResearchCubit({
+    required ResearchRepo researchRepo,
+    required BookmarkRepo bookmarkRepo,
+    required Research research,
+  })  : _researchRepo = researchRepo,
+        _bookmarkRepo = bookmarkRepo,
         super(ResearchState(research: research)) {
     //-- Increment Researches views.
     incrementViews(state.research);
   }
 
   final ResearchRepo _researchRepo;
+  final BookmarkRepo _bookmarkRepo;
   static bool _firstView = true;
 
   /// Increment Research view count.
   /// * Increment only once if `firstView` is `true`.
-  Future<void> incrementViews(Research research,
-      {bool firstView = true,}) async {
+  Future<void> incrementViews(
+    Research research, {
+    bool firstView = true,
+  }) async {
     if (_firstView == firstView) {
       final value = {'views': (research.views ?? 0) + 1};
       final errorMsg = await _researchRepo.update(research.id, value: value);
@@ -37,6 +43,27 @@ class ResearchCubit extends Cubit<ResearchState> {
           ),
         );
       }
+    }
+  }
+
+  Future<void> onPressedBookmark() async {
+    final paper = (type: PaperType.research, id: state.research.id);
+    final errorMsg = await _bookmarkRepo.addBookmark(paper);
+
+    if (errorMsg == null) {
+      emit(
+        state.copyWith(
+          status: ResearchStatus.success,
+          statusMsg: 'Bookmarked successfully!',
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          status: ResearchStatus.failure,
+          statusMsg: errorMsg,
+        ),
+      );
     }
   }
 

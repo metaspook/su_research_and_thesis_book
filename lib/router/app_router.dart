@@ -80,14 +80,19 @@ final class AppRouter {
     builder: (context, state) {
       return MultiBlocProvider(
         providers: [
+          BlocProvider<BookmarksCubit>(
+            create: (context) => BookmarksCubit(),
+          ),
           BlocProvider<BookmarksResearchesCubit>(
             create: (context) => BookmarksResearchesCubit(
               bookmarkRepo: context.read<BookmarkRepo>(),
+              researchRepo: context.read<ResearchRepo>(),
             ),
           ),
           BlocProvider<BookmarksThesesCubit>(
             create: (context) => BookmarksThesesCubit(
               bookmarkRepo: context.read<BookmarkRepo>(),
+              thesisRepo: context.read<ThesisRepo>(),
             ),
           ),
         ],
@@ -176,6 +181,7 @@ final class AppRouter {
       return BlocProvider<ResearchCubit>(
         create: (context) => ResearchCubit(
           researchRepo: context.read<ResearchRepo>(),
+          bookmarkRepo: context.read<BookmarkRepo>(),
           research: research,
         ),
         child: ResearchPage(research: research),
@@ -206,6 +212,7 @@ final class AppRouter {
       return BlocProvider<ThesisCubit>(
         create: (context) => ThesisCubit(
           thesisRepo: context.read<ThesisRepo>(),
+          bookmarkRepo: context.read<BookmarkRepo>(),
           thesis: thesis,
         ),
         child: ThesisPage(thesis: thesis),
