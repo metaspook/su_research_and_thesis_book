@@ -32,8 +32,8 @@ class HomeView extends StatelessWidget {
       (
         label: 'Notifications',
         icon: Icons.notifications_rounded,
-        onPressed: () {},
-        // onPressed: () => context.pushNamed(AppRouter.notifications.name!),
+        // onPressed: () {},
+        onPressed: () => context.pushNamed(AppRouter.notifications.name!),
       ),
       (
         label: 'Thesis Entry',

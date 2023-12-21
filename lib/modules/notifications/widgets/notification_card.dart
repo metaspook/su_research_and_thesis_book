@@ -45,9 +45,7 @@ class NotificationCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              Random().nextBool()
-                  ? 'New Student enrolled!'
-                  : 'Live class scheduled!',
+              Random().nextBool() ? 'New Thesis added!' : 'New comment!',
               overflow: TextOverflow.ellipsis,
             ),
             const Icon(Icons.swap_horizontal_circle_outlined),

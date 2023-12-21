@@ -9,7 +9,7 @@ final class AppRouter {
             home,
             bookmarks,
             comments,
-            // notifications,
+            notifications,
             passwordReset,
             profile,
             publisher,
@@ -97,18 +97,18 @@ final class AppRouter {
   );
 
   // // Notifications
-  // static final notifications = GoRoute(
-  //   name: 'notifications',
-  //   path: '/notifications',
-  //   builder: (context, state) {
-  //     return BlocProvider<NotificationsCubit>(
-  //       create: (context) => NotificationsCubit(
-  //           // n: context.read<BookmarkRepo>(),
-  //           ),
-  //       child: const NotificationsPage(),
-  //     );
-  //   },
-  // );
+  static final notifications = GoRoute(
+    name: 'notifications',
+    path: '/notifications',
+    builder: (context, state) {
+      return BlocProvider<NotificationsCubit>(
+        create: (context) => NotificationsCubit(
+            // n: context.read<BookmarkRepo>(),
+            ),
+        child: const NotificationsPage(),
+      );
+    },
+  );
 
   // Password Reset
   static final passwordReset = GoRoute(
