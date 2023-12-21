@@ -66,6 +66,13 @@ class App extends StatelessWidget {
               designationRepo: context.read<DesignationRepo>(),
             ),
           ),
+          // BlocProvider<NotificationsCubit>(
+          //   create: (context) => NotificationsCubit(
+
+          //     researchRepo: context.read<ResearchRepo>(),
+          //     thesisRepo: context.read<ThesisRepo>(),
+          //   ),
+          // ),
           BlocProvider<ResearchesCubit>(
             create: (context) => ResearchesCubit(
               authRepo: context.read<AuthRepo>(),

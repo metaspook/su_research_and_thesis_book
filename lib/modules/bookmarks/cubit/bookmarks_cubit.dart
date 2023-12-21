@@ -14,12 +14,12 @@ class BookmarksCubit extends Cubit<BookmarksState> {
         super(const BookmarksState()) {
     //-- Initialize Research Bookmark subscription.
     _researchIdsSubscription =
-        _bookmarkRepo.ids(BookmarkType.research).listen((researchIds) async {
+        _bookmarkRepo.ids(PaperType.research).listen((researchIds) async {
       emit(state.copyWith(researchIds: researchIds));
     });
     //-- Initialize Thesis Bookmark subscription.
     _thesisIdsSubscription =
-        _bookmarkRepo.ids(BookmarkType.thesis).listen((thesisIds) async {
+        _bookmarkRepo.ids(PaperType.thesis).listen((thesisIds) async {
       emit(state.copyWith(thesisIds: thesisIds));
     });
     // final thesis = Thesis(id: uuid, userId: 'userId');

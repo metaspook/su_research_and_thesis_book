@@ -1,9 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:su_thesis_book/app/app.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
 import 'package:su_thesis_book/modules/bookmarks/bookmarks.dart';
+import 'package:su_thesis_book/modules/comments/comments.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/modules/password_reset/password_reset.dart';
 import 'package:su_thesis_book/modules/profile/profile.dart';

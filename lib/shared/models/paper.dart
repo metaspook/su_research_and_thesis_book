@@ -3,6 +3,7 @@ enum PaperType {
   thesis('Thesis');
 
   const PaperType(this.title);
-  // const Paper.f(this.title) =>;
   final String title;
 }
+
+typedef Paper = ({PaperType type, String id});

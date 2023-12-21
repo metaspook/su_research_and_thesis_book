@@ -7,9 +7,8 @@ import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
 class CommentsPage extends StatefulWidget {
-  const CommentsPage({required this.thesis, super.key});
-
-  final Thesis thesis;
+  const CommentsPage({required this.paper, super.key});
+  final Paper paper;
 
   @override
   State<CommentsPage> createState() => _CommentsPageState();
@@ -94,7 +93,7 @@ class _CommentsPageState extends State<CommentsPage> {
                             if (_commentController.text.isNotEmpty) {
                               cubit.send(
                                 userId: userId,
-                                thesisId: widget.thesis.id,
+                                paperId: widget.paper.id,
                                 commentStr: _commentController.text,
                               );
                               _commentController.clear();

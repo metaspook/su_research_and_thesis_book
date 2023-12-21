@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:su_thesis_book/app/app.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
 import 'package:su_thesis_book/router/router.dart';
+import 'package:su_thesis_book/shared/repositories/repositories.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 import 'package:su_thesis_book/utils/utils.dart';
@@ -32,6 +33,7 @@ class HomeView extends StatelessWidget {
         label: 'Notifications',
         icon: Icons.notifications_rounded,
         onPressed: () {},
+        // onPressed: () => context.pushNamed(AppRouter.notifications.name!),
       ),
       (
         label: 'Thesis Entry',
@@ -62,6 +64,10 @@ class HomeView extends StatelessWidget {
         context.select((ThesesCubit cubit) => cubit.state.publishers);
     final researchPublishers =
         context.select((ResearchesCubit cubit) => cubit.state.publishers);
+
+    ThesisRepo().stream2.listen((event) {
+      event.doPrint('THESIS: ');
+    });
 
     return theses == null || researches == null
         ? const TranslucentLoader()

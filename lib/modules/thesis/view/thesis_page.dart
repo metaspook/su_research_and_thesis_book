@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:su_thesis_book/modules/thesis/cubit/thesis_cubit.dart';
+import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
@@ -67,10 +68,10 @@ class ThesisPage extends StatelessWidget {
                       TextButton.icon(
                         onPressed: () => Future.wait([
                           cubit.incrementViews(thesis, firstView: false),
-                          // context.pushNamed(
-                          //   AppRouter.comments.name!,
-                          //   extra: thesis,
-                          // ),
+                          context.pushNamed(
+                            AppRouter.comments.name!,
+                            extra: (type: PaperType.thesis, id: thesis.id),
+                          ),
                         ]),
                         icon: const Icon(Icons.comment_outlined),
                         label: const Text('Comments'),

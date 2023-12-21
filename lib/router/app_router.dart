@@ -8,6 +8,8 @@ final class AppRouter {
             auth,
             home,
             bookmarks,
+            comments,
+            // notifications,
             passwordReset,
             profile,
             publisher,
@@ -84,6 +86,20 @@ final class AppRouter {
       );
     },
   );
+
+  // // Notifications
+  // static final notifications = GoRoute(
+  //   name: 'notifications',
+  //   path: '/notifications',
+  //   builder: (context, state) {
+  //     return BlocProvider<NotificationsCubit>(
+  //       create: (context) => NotificationsCubit(
+  //           // n: context.read<BookmarkRepo>(),
+  //           ),
+  //       child: const NotificationsPage(),
+  //     );
+  //   },
+  // );
 
   // Password Reset
   static final passwordReset = GoRoute(
@@ -203,23 +219,22 @@ final class AppRouter {
   );
 
   // Comments
-  // static final comments = GoRoute(
-  //   name: 'comments',
-  //   path: 'comments',
-  //   builder: (context, state) {
-  //     'Current Route: ${state.fullPath}'.doPrint();
-  //     final thesis = state.extra! as Thesis;
-  //     return RepositoryProvider<CommentRepo>(
-  //       create: (context) => CommentRepo(thesisId: thesis.id),
-  //       child: BlocProvider<CommentsCubit>(
-  //         create: (context) => CommentsCubit(
-  //           commentRepo: context.read<CommentRepo>(),
-  //         ),
-  //         child: CommentsPage(thesis: thesis),
-  //       ),
-  //     );
-  //   },
-  // );
+  static final comments = GoRoute(
+    name: 'comments',
+    path: '/comments',
+    builder: (context, state) {
+      final paper = state.extra! as Paper;
+      return RepositoryProvider<CommentRepo>(
+        create: (context) => CommentRepo(paper: paper),
+        child: BlocProvider<CommentsCubit>(
+          create: (context) => CommentsCubit(
+            commentRepo: context.read<CommentRepo>(),
+          ),
+          child: CommentsPage(paper: paper),
+        ),
+      );
+    },
+  );
 }
 
 // extension GoRouteExt on GoRoute {

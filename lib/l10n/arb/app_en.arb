@@ -6,6 +6,7 @@
     },
     "counterAppBarTitle": "Counter",
     "bookmarkAppBarTitle": "Bookmarks",
+    "notificationsAppBarTitle": "Notifications",
     "publishersAppBarTitle": "Publishers",
     "researchesAppBarTitle": "Browse Researches",
     "researchEntryAppBarTitle": "Research Entry",

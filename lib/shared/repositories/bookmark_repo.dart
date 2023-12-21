@@ -4,15 +4,8 @@ import 'dart:developer';
 import 'package:cache/cache.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/utils/utils.dart';
-
-enum BookmarkType {
-  research('Research'),
-  thesis('Thesis');
-
-  const BookmarkType(this.title);
-  final String title;
-}
 
 class BookmarkRepo {
   //-- Config
@@ -27,7 +20,7 @@ class BookmarkRepo {
 
   //-- Public APIs
   Future<String?> addBookmark(
-    BookmarkType type, {
+    PaperType type, {
     required String theseId,
   }) async {
     final value = {'parentId': theseId, 'userId': _currentUserId};
@@ -41,7 +34,7 @@ class BookmarkRepo {
   }
 
   Future<String?> removeBookmark(
-    BookmarkType type, {
+    PaperType type, {
     required String id,
   }) async {
     try {
@@ -54,7 +47,7 @@ class BookmarkRepo {
   }
 
   /// Emits list of bookmarked id.
-  Stream<List<String>> ids(BookmarkType type) async* {
+  Stream<List<String>> ids(PaperType type) async* {
     if (_cache.value?[type.name] != null) yield _cache.value![type.name]!;
 
     yield* _db

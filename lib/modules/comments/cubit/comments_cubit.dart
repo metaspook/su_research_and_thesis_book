@@ -28,14 +28,14 @@ class CommentsCubit extends Cubit<CommentsState> {
 
   Future<void> send({
     required String userId,
-    required String thesisId,
+    required String paperId,
     required String commentStr,
   }) async {
     emit(state.copyWith(status: CommentsStatus.loading));
     // Upload thesis file to storage.
     final commentId = _commentRepo.newId;
     final commentObj = {
-      'thesisId': thesisId,
+      'parentId': paperId,
       'userId': userId,
       'createdAt': timestamp,
       'content': commentStr.trim(),

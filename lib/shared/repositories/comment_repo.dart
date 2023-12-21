@@ -5,10 +5,8 @@ import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
 class CommentRepo implements CRUD<Comment> {
-  CommentRepo({required this.thesisId});
-
-  final String thesisId;
-
+  CommentRepo({required this.paper});
+  final Paper paper;
   //-- Config
   final _cacheAuthor = cacheService<String?>();
   final _cacheAuthorPhoto = cacheService<String?>();
@@ -53,8 +51,9 @@ class CommentRepo implements CRUD<Comment> {
   }
 
   Stream<List<Comment>> get stream => _db
-          .orderByChild('thesisId')
-          .equalTo(thesisId)
+          .child(paper.type.name)
+          .orderByChild('parentId')
+          .equalTo(paper.id)
           .onValue
           .asyncMap<List<Comment>>(
         (event) async {
@@ -70,7 +69,7 @@ class CommentRepo implements CRUD<Comment> {
   @override
   Future<String?> create(String id, {required Json value}) async {
     try {
-      await _db.child(id).set(value);
+      await _db.child(paper.type.name).child(id).set(value);
     } catch (e, s) {
       log(_errorMsgCreate, error: e, stackTrace: s);
       return _errorMsgCreate;
