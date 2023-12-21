@@ -6,7 +6,7 @@ import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
 typedef BookmarksBlocSelector<T>
-    = BlocSelector<BookmarksCubit, BookmarksState, T>;
+    = BlocSelector<BookmarksResearchesCubit, BookmarksResearchesState, T>;
 
 class BookmarksPage extends StatelessWidget {
   const BookmarksPage({super.key});
@@ -14,7 +14,7 @@ class BookmarksPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final cubit = context.read<BookmarksCubit>();
+    final cubit = context.read<BookmarksResearchesCubit>();
     // final selectedTheses =
     //     context.select((BookmarksCubit cubit) => cubit.state.selectedTheses);
     // final selectedThesesIsEmpty = selectedTheses.isEmpty;

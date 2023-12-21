@@ -78,10 +78,19 @@ final class AppRouter {
     name: 'bookmarks',
     path: '/bookmarks',
     builder: (context, state) {
-      return BlocProvider<BookmarksCubit>(
-        create: (context) => BookmarksCubit(
-          bookmarkRepo: context.read<BookmarkRepo>(),
-        ),
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider<BookmarksResearchesCubit>(
+            create: (context) => BookmarksResearchesCubit(
+              bookmarkRepo: context.read<BookmarkRepo>(),
+            ),
+          ),
+          BlocProvider<BookmarksThesesCubit>(
+            create: (context) => BookmarksThesesCubit(
+              bookmarkRepo: context.read<BookmarkRepo>(),
+            ),
+          ),
+        ],
         child: const BookmarksPage(),
       );
     },

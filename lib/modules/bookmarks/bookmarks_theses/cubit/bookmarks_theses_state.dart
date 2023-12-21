@@ -1,52 +1,49 @@
-part of 'bookmarks_cubit.dart';
+part of 'bookmarks_theses_cubit.dart';
 
-enum BookmarksStatus {
+enum BookmarksThesesStatus {
   initial,
   selecting,
   loading,
   success,
   failure;
 
-  bool get isLoading => this == BookmarksStatus.loading;
+  bool get isLoading => this == BookmarksThesesStatus.loading;
   bool get hasMessage =>
-      this == BookmarksStatus.success || this == BookmarksStatus.failure;
+      this == BookmarksThesesStatus.success ||
+      this == BookmarksThesesStatus.failure;
 }
 
-class BookmarksState extends Equatable {
-  const BookmarksState({
-    this.status = BookmarksStatus.initial,
+class BookmarksThesesState extends Equatable {
+  const BookmarksThesesState({
+    this.status = BookmarksThesesStatus.initial,
     this.statusMsg = '',
     this.removeMode = false,
     this.theses,
     this.selectedTheses = const [],
-    this.researchIds = const [],
     this.thesisIds = const [],
   });
 
-  final BookmarksStatus status;
+  final BookmarksThesesStatus status;
   final String statusMsg;
   final bool removeMode;
   final List<Thesis>? theses;
   final List<Thesis> selectedTheses;
-  final List<String> researchIds;
   final List<String> thesisIds;
 
-  BookmarksState copyWith({
-    BookmarksStatus? status,
+  BookmarksThesesState copyWith({
+    BookmarksThesesStatus? status,
     String? statusMsg,
     bool? removeMode,
     List<Thesis>? theses,
     List<Thesis>? selectedTheses,
-    List<String>? researchIds,
     List<String>? thesisIds,
   }) {
-    return BookmarksState(
+    return BookmarksThesesState(
       status: status ?? this.status,
       statusMsg: statusMsg ?? this.statusMsg,
       removeMode: removeMode ?? this.removeMode,
       theses: theses ?? this.theses,
       selectedTheses: selectedTheses ?? this.selectedTheses,
-      researchIds: researchIds ?? this.researchIds,
       thesisIds: thesisIds ?? this.thesisIds,
     );
   }
@@ -58,7 +55,6 @@ class BookmarksState extends Equatable {
         removeMode,
         theses,
         selectedTheses,
-        researchIds,
         thesisIds,
       ];
 }

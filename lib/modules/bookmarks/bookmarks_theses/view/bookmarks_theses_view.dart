@@ -11,7 +11,7 @@ class BookmarksThesesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final thesisIds =
-        context.select((BookmarksCubit cubit) => cubit.state.thesisIds);
+        context.select((BookmarksThesesCubit cubit) => cubit.state.thesisIds);
     final theses = context
         .select((ThesesCubit cubit) => cubit.state.theses)
         ?.where((e) => thesisIds.contains(e.id))

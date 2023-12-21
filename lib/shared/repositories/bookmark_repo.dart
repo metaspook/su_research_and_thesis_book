@@ -9,23 +9,26 @@ import 'package:su_thesis_book/utils/utils.dart';
 
 class BookmarkRepo {
   //-- Config
-  final _cache = const Cache<Map<String, List<String>>>('bookmarks');
+  final _cacheThesisBookmarks = const Cache<List<String>>('thesis_bookmarks');
+  final _cacheResearchBookmarks =
+      const Cache<List<String>>('research_bookmarks');
   final _db = FirebaseDatabase.instance.ref('bookmarks');
-  final _currentUserId = FirebaseAuth.instance.currentUser?.uid;
   final _errorMsgAdd = "Couldn't add the bookmark!";
   final _errorMsgRemove = "Couldn't remove the bookmark!";
 
+  String? get _currentUserId => FirebaseAuth.instance.currentUser?.uid;
+  Cache<List<String>> _cache(PaperType type) => [
+        _cacheResearchBookmarks,
+        _cacheThesisBookmarks,
+      ][type.index];
   // Generates a new id.
   String get _newId => _db.push().key ?? uuid;
 
   //-- Public APIs
-  Future<String?> addBookmark(
-    PaperType type, {
-    required String theseId,
-  }) async {
-    final value = {'parentId': theseId, 'userId': _currentUserId};
+  Future<String?> addBookmark(Paper paper) async {
+    final value = {'parentId': paper.id, 'userId': _currentUserId};
     try {
-      await _db.child('${type.name}/$_newId').set(value);
+      await _db.child('${paper.type.name}/$_newId').set(value);
     } catch (e, s) {
       log(_errorMsgAdd, error: e, stackTrace: s);
       return _errorMsgAdd;
@@ -33,12 +36,9 @@ class BookmarkRepo {
     return null;
   }
 
-  Future<String?> removeBookmark(
-    PaperType type, {
-    required String id,
-  }) async {
+  Future<String?> removeBookmark(Paper paper) async {
     try {
-      await _db.child('${type.name}/$id').remove();
+      await _db.child('${paper.type.name}/${paper.id}').remove();
     } catch (e, s) {
       log(_errorMsgRemove, error: e, stackTrace: s);
       return _errorMsgRemove;
@@ -48,7 +48,7 @@ class BookmarkRepo {
 
   /// Emits list of bookmarked id.
   Stream<List<String>> ids(PaperType type) async* {
-    if (_cache.value?[type.name] != null) yield _cache.value![type.name]!;
+    if (_cache(type).value != null) yield _cache(type).value!;
 
     yield* _db
         .child(type.name)
@@ -57,13 +57,13 @@ class BookmarkRepo {
         .onValue
         .map<List<String>>(
       (event) {
-        final thesisIds = <String>[];
+        final paperIds = <String>[];
         for (final snapshot in event.snapshot.children) {
           final bookmarkMap = snapshot.value?.toJson();
-          final thesisId = bookmarkMap?['parentId'] as String?;
-          if (thesisId != null) thesisIds.add(thesisId);
+          final paperId = bookmarkMap?['parentId'] as String?;
+          if (paperId != null) paperIds.add(paperId);
         }
-        return _cache.value![type.name] = thesisIds;
+        return _cache(type).value = paperIds;
       },
     );
   }
