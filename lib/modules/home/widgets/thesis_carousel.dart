@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 import 'package:su_thesis_book/utils/extensions.dart';
@@ -13,42 +14,59 @@ class ThesisCarousel extends StatefulWidget {
   final List<Thesis> theses;
   final List<Research> researches;
 
-  List<String> get titles => <String>[
-        for (var i = 0; i < 3; i++) theses[i].title.toStringParseNull(),
-        for (var i = 0; i < 3; i++) researches[i].title.toStringParseNull(),
-      ];
-
-  List<String> get publisherNames => <String>[
-        for (var i = 0; i < 3; i++)
-          theses[i].publisher!.name.toStringParseNull(),
-        for (var i = 0; i < 3; i++)
-          researches[i].publisher!.name.toStringParseNull(),
-      ];
-  List<String> get designations => <String>[
-        for (var i = 0; i < 3; i++)
-          theses[i].publisher!.designation.toStringParseNull(),
-        for (var i = 0; i < 3; i++)
-          researches[i].publisher!.designation.toStringParseNull(),
-      ];
-  List<String> get departments => <String>[
-        for (var i = 0; i < 3; i++)
-          theses[i].publisher!.department.toStringParseNull(),
-        for (var i = 0; i < 3; i++)
-          researches[i].publisher!.department.toStringParseNull(),
-      ];
-  List<String> get descriptions => <String>[
-        for (var i = 0; i < 3; i++) theses[i].description.toStringParseNull(),
-        for (var i = 0; i < 3; i++)
-          researches[i].description.toStringParseNull(),
-      ];
-
   @override
   State<StatefulWidget> createState() => _ThesisCarouselState();
 }
 
+typedef PaperCarouselRecord = ({
+  String title,
+  String publisherName,
+  String designation,
+  String department,
+  String description,
+  void Function()? onTap
+});
+
 class _ThesisCarouselState extends State<ThesisCarousel> {
   final CarouselController _controller = CarouselController();
+  late final List<PaperCarouselRecord> records;
   int _current = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    records = [
+      for (var i = 0; i < 3; i++)
+        (
+          title: widget.theses[i].title.toStringParseNull(),
+          publisherName: widget.theses[i].publisher!.name.toStringParseNull(),
+          designation:
+              widget.theses[i].publisher!.designation.toStringParseNull(),
+          department:
+              widget.theses[i].publisher!.department.toStringParseNull(),
+          description: widget.theses[i].description.toStringParseNull(),
+          onTap: () => context.pushNamed(
+                AppRouter.thesis.name!,
+                extra: widget.theses[i],
+              ),
+        ),
+      for (var i = 0; i < 3; i++)
+        (
+          title: widget.researches[i].title.toStringParseNull(),
+          publisherName:
+              widget.researches[i].publisher!.name.toStringParseNull(),
+          designation:
+              widget.researches[i].publisher!.designation.toStringParseNull(),
+          department:
+              widget.researches[i].publisher!.department.toStringParseNull(),
+          description: widget.researches[i].description.toStringParseNull(),
+          onTap: () => context.pushNamed(
+                AppRouter.thesis.name!,
+                extra: widget.researches[i],
+              ),
+        ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,61 +119,65 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
 
   List<Widget> get _imageSliders => [
         for (var i = 0; i < 6; i++)
-          Container(
-            width: double.infinity,
-            margin: const EdgeInsets.symmetric(
-              horizontal: AppThemes.width,
-              vertical: AppThemes.height,
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            decoration: BoxDecoration(
-              color: AppThemes.selectedColorsRandomized[i],
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: AppThemes.selectedColorsRandomized[i].withOpacity(0.5),
-                  blurRadius: 5,
-                  spreadRadius: 1.75,
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.titles[i],
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+          GestureDetector(
+            onTap: records[i].onTap,
+            child: Container(
+              width: double.infinity,
+              margin: const EdgeInsets.symmetric(
+                horizontal: AppThemes.width,
+                vertical: AppThemes.height,
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              decoration: BoxDecoration(
+                color: AppThemes.selectedColorsRandomized[i],
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color:
+                        AppThemes.selectedColorsRandomized[i].withOpacity(0.5),
+                    blurRadius: 5,
+                    spreadRadius: 1.75,
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        records[i].title,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text(
-                      widget.publisherNames[i],
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 17.5,
-                        fontWeight: FontWeight.bold,
+                      Text(
+                        records[i].publisherName,
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 17.5,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text(
-                      '${widget.designations[i]} | ${widget.departments[i]}',
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 15,
+                      Text(
+                        '${records[i].designation} | ${records[i].department}',
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 15,
+                        ),
                       ),
-                    ),
-                    Text(
-                      widget.descriptions[i],
-                      style: const TextStyle(
-                        color: Colors.white,
+                      Text(
+                        records[i].description,
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
       ];
