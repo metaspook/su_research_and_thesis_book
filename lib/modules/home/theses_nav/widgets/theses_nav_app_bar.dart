@@ -63,21 +63,21 @@ class _ThesesNavAppBarState extends State<ThesesNavAppBar> {
 
                         return DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
+                            isExpanded: true,
                             menuMaxHeight: AppThemes.menuMaxHeight,
                             padding: AppThemes.viewPadding,
                             value: department,
                             borderRadius: AppThemes.borderRadius,
-                            hint: const Text('department...'),
                             items: [
                               DropdownMenuItem(
                                 value: departmentAll,
-                                child: Text(departmentAll),
+                                child: Flexible(child: Text(departmentAll)),
                               ),
                               if (departments != null)
                                 for (final department in departments)
                                   DropdownMenuItem(
                                     value: department,
-                                    child: Text(department),
+                                    child: Flexible(child: Text(department)),
                                   ),
                             ],
                             onChanged: cubit.onChangedDepartment,

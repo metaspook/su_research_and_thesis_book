@@ -30,6 +30,11 @@ class ResearchCard extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+        dense: true,
+        visualDensity: const VisualDensity(
+          horizontal: VisualDensity.minimumDensity,
+        ),
         selected: selected,
         // shape: selected ? AppThemes.outlineInputBorder : null,
         onLongPress: onLongPress,
@@ -41,7 +46,7 @@ class ResearchCard extends StatelessWidget {
         leading: HaloAvatar(research.publisher?.photoUrl),
         title: Text(
           research.title.toStringParseNull(),
-          style: context.theme.textTheme.titleLarge,
+          style: context.theme.textTheme.titleMedium,
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,13 +54,16 @@ class ResearchCard extends StatelessWidget {
             Text.rich(
               TextSpan(
                 text: 'Author: ',
-                style: context.theme.textTheme.titleMedium?.copyWith(
+                style: context.theme.textTheme.titleSmall?.copyWith(
                   color: theme.badgeTheme.backgroundColor,
                 ),
                 children: [
                   TextSpan(
                     text: research.publisher?.name.toStringParseNull(),
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),
@@ -63,13 +71,16 @@ class ResearchCard extends StatelessWidget {
             Text.rich(
               TextSpan(
                 text: 'Posted: ',
-                style: context.theme.textTheme.titleMedium?.copyWith(
+                style: context.theme.textTheme.titleSmall?.copyWith(
                   color: theme.badgeTheme.backgroundColor,
                 ),
                 children: [
                   TextSpan(
                     text: dateStr,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),

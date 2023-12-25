@@ -64,6 +64,7 @@ class _ResearchesNavAppBarState extends State<ResearchesNavAppBar> {
 
                         return DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
+                            isExpanded: true,
                             menuMaxHeight: AppThemes.menuMaxHeight,
                             padding: AppThemes.viewPadding,
                             value: category,

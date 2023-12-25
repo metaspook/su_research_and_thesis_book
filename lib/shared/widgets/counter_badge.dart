@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:su_thesis_book/theme/theme.dart';
 import 'package:su_thesis_book/utils/extensions.dart';
 
 class CounterBadge extends StatelessWidget {
@@ -23,6 +24,7 @@ class CounterBadge extends StatelessWidget {
       label: Text.rich(
         TextSpan(
           text: '$label: ',
+          style: context.theme.textTheme.labelSmall,
           children: [
             TextSpan(
               text: count.toStringParseNull(),
