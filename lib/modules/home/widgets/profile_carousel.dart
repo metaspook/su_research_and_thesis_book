@@ -25,11 +25,13 @@ class _ProfileCarouselState extends State<ProfileCarousel> {
           items: _imageSliders,
           carouselController: _controller,
           options: CarouselOptions(
-            aspectRatio: 2.5,
+            aspectRatio: context.mediaQuery.size.aspectRatio * 6,
             autoPlay: true,
             autoPlayInterval: const Duration(seconds: 2),
             reverse: true,
-            viewportFraction: .3,
+            // viewportFraction: .3,
+            viewportFraction: .265,
+            // height: context.mediaQuery.size.height * .175,
           ),
         ),
       ],
@@ -43,22 +45,29 @@ class _ProfileCarouselState extends State<ProfileCarousel> {
               padding: const EdgeInsets.all(8),
               child: Column(
                 // crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisSize: MainAxisSize.min,
                 children: [
                   HaloAvatar(publisher.photoUrl),
                   const SizedBox(height: AppThemes.height),
                   Text(
                     publisher.designation.toStringParseNull(),
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontStyle: FontStyle.italic),
+                    overflow: TextOverflow.ellipsis,
+                    style: context.theme.textTheme.labelMedium
+                        ?.copyWith(fontStyle: FontStyle.italic),
                   ),
                   Text(
                     publisher.name.toStringParseNull(),
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis,
+                    style: context.theme.textTheme.labelLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   Text(
                     publisher.department.toStringParseNull(),
                     textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.theme.textTheme.labelMedium,
                   ),
                 ],
               ),
