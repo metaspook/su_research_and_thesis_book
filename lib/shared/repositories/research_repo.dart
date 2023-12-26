@@ -84,6 +84,14 @@ class ResearchRepo implements CRUD<Research> {
     return null;
   }
 
+  Future<Research?> researchById(String id) async {
+    final researches = await stream.first;
+    for (final research in researches) {
+      if (research.id == id) return research;
+    }
+    return null;
+  }
+
   /// Emits list of research.
   Stream<List<Research>> get stream async* {
     if (_cache.value != null) yield _cache.value!;

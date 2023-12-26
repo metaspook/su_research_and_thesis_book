@@ -53,11 +53,7 @@ class BookmarksResearchesAppBar extends StatelessWidget {
         // Remove button.
         IconButton(
           padding: EdgeInsets.zero,
-          onPressed: selectedResearchesIsEmpty
-              ? null
-              : researches == selectedResearches
-                  ? cubit.onAllRemoved
-                  : cubit.onRemoved,
+          onPressed: selectedResearchesIsEmpty ? null : cubit.onRemoved,
           iconSize: kToolbarHeight * .575,
           icon: Icon(
             selectedResearchesIsEmpty

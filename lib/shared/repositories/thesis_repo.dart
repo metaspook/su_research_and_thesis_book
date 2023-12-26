@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:cache/cache.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
@@ -15,6 +16,7 @@ class ThesisRepo implements CRUD<Thesis> {
   //-- Config
   final _cacheDesignations = const Cache<List<String>>('designations');
   final _cacheDepartments = const Cache<List<String>>('departments');
+  final _dbBookmarks = FirebaseDatabase.instance.ref('bookmarks/thesis');
   final _cache = const Cache<List<Thesis>>('theses');
   final _db = FirebaseDatabase.instance.ref('theses');
   final _dbUsers = FirebaseDatabase.instance.ref('users');
@@ -41,6 +43,8 @@ class ThesisRepo implements CRUD<Thesis> {
         ? (errorMsg: _errorMsgFilePicker, result: null)
         : (errorMsg: null, result: result);
   }
+
+  String? get _currentUserId => FirebaseAuth.instance.currentUser?.uid;
 
   //-- Public APIs
   /// Generates a new thesis id.
@@ -72,6 +76,15 @@ class ThesisRepo implements CRUD<Thesis> {
     final thesisMap = snapshot.value?.toJson();
     final userId = thesisMap?['userId'] as String?;
     final departmentIndex = thesisMap?['departmentIndex'] as int?;
+    // (await _dbBookmarks
+    //         .orderByChild('userId')
+    //         .equalTo(_currentUserId)
+    //         .orderByChild('parentId')
+    //         .equalTo(snapshot.key)
+    //         .once())
+    //     .snapshot
+    //     .value
+    //     .doPrint('HAYHAY: ');
 
     if (userId != null && departmentIndex != null) {
       final publisher = await publisherById(userId);
@@ -83,6 +96,14 @@ class ThesisRepo implements CRUD<Thesis> {
         'department': departments?[departmentIndex],
       };
       return Thesis.fromJson(thesisJson);
+    }
+    return null;
+  }
+
+  Future<Thesis?> thesisById(String id) async {
+    final theses = await stream.first;
+    for (final thesis in theses) {
+      if (thesis.id == id) return thesis;
     }
     return null;
   }

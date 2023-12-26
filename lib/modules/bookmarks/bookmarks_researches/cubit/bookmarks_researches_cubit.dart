@@ -15,19 +15,32 @@ class BookmarksResearchesCubit extends Cubit<BookmarksResearchesState> {
         _researchRepo = researchRepo,
         super(const BookmarksResearchesState()) {
     // Initialize Research Bookmark subscription.
-    _researchIdsSubscription =
-        _bookmarkRepo.ids(PaperType.research).listen((researchIds) async {
+    _researchBookmarksSubscription = _bookmarkRepo
+        .streamByType(PaperType.research)
+        .listen((researchBookmarks) async {
       //-- Parse bookmarked researches.
-      final bookmarkedResearch = await _researchRepo.stream.first.then(
-        (researches) =>
-            researches.where((e) => researchIds.contains(e.id)).toList(),
+      final bookmarkedResearchIds =
+          researchBookmarks.map((bookmark) => bookmark.paperId);
+
+      final bookmarkedResearches = <Research>[];
+      for (final bookmarkedResearchId in bookmarkedResearchIds) {
+        final bookmarkedResearch =
+            await _researchRepo.researchById(bookmarkedResearchId);
+        if (bookmarkedResearch != null) {
+          bookmarkedResearches.add(bookmarkedResearch);
+        }
+      }
+      emit(
+        state.copyWith(
+          researches: bookmarkedResearches,
+          researchBookmarks: researchBookmarks,
+        ),
       );
-      emit(state.copyWith(researches: bookmarkedResearch));
     });
   }
 
   final BookmarkRepo _bookmarkRepo;
-  late final StreamSubscription<List<String>> _researchIdsSubscription;
+  late final StreamSubscription<List<Bookmark>> _researchBookmarksSubscription;
   final ResearchRepo _researchRepo;
 
   void onSelectionToggled(Research research) {
@@ -44,16 +57,23 @@ class BookmarksResearchesCubit extends Cubit<BookmarksResearchesState> {
     );
   }
 
-  void onRemoved() {
+  Future<void> onRemoved() async {
+    emit(state.copyWith(status: BookmarksResearchesStatus.loading));
     final selectedResearches = [...state.selectedResearches];
-    final researches = [...state.researches!]
-      ..removeWhere(selectedResearches.remove);
-    emit(
-      state.copyWith(
-        researches: researches,
-        selectedResearches: selectedResearches,
-      ),
-    );
+    for (final research in state.selectedResearches) {
+      final paper = (type: PaperType.research, id: research.id);
+      await _bookmarkRepo.removeBookmark(paper).then((value) {
+        selectedResearches.remove(research);
+      });
+    }
+    selectedResearches.length < state.selectedResearches.length
+        ? emit(
+            state.copyWith(
+              status: BookmarksResearchesStatus.success,
+              selectedResearches: selectedResearches,
+            ),
+          )
+        : emit(state.copyWith(status: BookmarksResearchesStatus.failure));
   }
 
   void onAllSelected() {
@@ -74,19 +94,9 @@ class BookmarksResearchesCubit extends Cubit<BookmarksResearchesState> {
     );
   }
 
-  void onAllRemoved() {
-    emit(
-      state.copyWith(
-        status: BookmarksResearchesStatus.initial,
-        researches: const [],
-        selectedResearches: const [],
-      ),
-    );
-  }
-
   @override
   Future<void> close() {
-    _researchIdsSubscription.cancel();
+    _researchBookmarksSubscription.cancel();
     return super.close();
   }
 }

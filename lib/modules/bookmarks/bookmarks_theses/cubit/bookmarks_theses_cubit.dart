@@ -15,18 +15,40 @@ class BookmarksThesesCubit extends Cubit<BookmarksThesesState> {
         _thesisRepo = thesisRepo,
         super(const BookmarksThesesState()) {
     // Initialize Thesis Bookmark subscription.
-    _thesisIdsSubscription =
-        _bookmarkRepo.ids(PaperType.thesis).listen((thesisIds) async {
-      //-- Parse bookmarked theses.
-      final bookmarkedThesis = await _thesisRepo.stream.first.then(
-        (theses) => theses.where((e) => thesisIds.contains(e.id)).toList(),
+    // _thesisIdsSubscription =
+    //     _bookmarkRepo.ids(PaperType.thesis).listen((thesisIds) async {
+    //   //-- Parse bookmarked theses.
+    //   final bookmarkedThesis = await _thesisRepo.stream.first.then(
+    //     (theses) => theses.where((e) => thesisIds.contains(e.id)).toList(),
+    //   );
+    //   emit(state.copyWith(theses: bookmarkedThesis));
+    // });
+    _thesisIdsSubscription = _bookmarkRepo
+        .streamByType(PaperType.thesis)
+        .listen((thesisBookmarks) async {
+      //-- Parse bookmarked researches.
+      final bookmarkedResearchIds =
+          thesisBookmarks.map((bookmark) => bookmark.paperId);
+
+      final bookmarkedTheses = <Thesis>[];
+      for (final bookmarkedTHesisId in bookmarkedResearchIds) {
+        final bookmarkedThesis =
+            await _thesisRepo.thesisById(bookmarkedTHesisId);
+        if (bookmarkedThesis != null) {
+          bookmarkedTheses.add(bookmarkedThesis);
+        }
+      }
+      emit(
+        state.copyWith(
+          theses: bookmarkedTheses,
+          thesisBookmarks: thesisBookmarks,
+        ),
       );
-      emit(state.copyWith(theses: bookmarkedThesis));
     });
   }
 
   final BookmarkRepo _bookmarkRepo;
-  late final StreamSubscription<List<String>> _thesisIdsSubscription;
+  late final StreamSubscription<List<Bookmark>> _thesisIdsSubscription;
   final ThesisRepo _thesisRepo;
 
   void onSelectionToggled(Thesis thesis) {
@@ -44,17 +66,23 @@ class BookmarksThesesCubit extends Cubit<BookmarksThesesState> {
   }
 
   Future<void> onRemoved() async {
+    emit(state.copyWith(status: BookmarksThesesStatus.loading));
     final selectedTheses = [...state.selectedTheses];
-
     for (final thesis in state.selectedTheses) {
       final paper = (type: PaperType.thesis, id: thesis.id);
       await _bookmarkRepo.removeBookmark(paper).then((value) {
         selectedTheses.remove(thesis);
       });
     }
-
-    // final theses = state.theses?.toList()?..removeWhere(selectedTheses.remove);
-    emit(state.copyWith(selectedTheses: selectedTheses));
+    // checking length if removed any item.
+    selectedTheses.length < state.selectedTheses.length
+        ? emit(
+            state.copyWith(
+              status: BookmarksThesesStatus.success,
+              selectedTheses: selectedTheses,
+            ),
+          )
+        : emit(state.copyWith(status: BookmarksThesesStatus.failure));
   }
 
   void onAllSelected() {
@@ -70,16 +98,6 @@ class BookmarksThesesCubit extends Cubit<BookmarksThesesState> {
     emit(
       state.copyWith(
         status: BookmarksThesesStatus.initial,
-        selectedTheses: const [],
-      ),
-    );
-  }
-
-  void onAllRemoved() {
-    emit(
-      state.copyWith(
-        status: BookmarksThesesStatus.initial,
-        theses: const [],
         selectedTheses: const [],
       ),
     );

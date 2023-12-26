@@ -11,15 +11,20 @@ class BookmarksResearchesView extends StatelessWidget {
   Widget build(BuildContext context) {
     context.read<BookmarksCubit>().getViewIndex(1);
     final cubit = context.read<BookmarksResearchesCubit>();
+    final isLoading = context.select(
+        (BookmarksResearchesCubit cubit) => cubit.state.status.isLoading);
     final researches = context
         .select((BookmarksResearchesCubit cubit) => cubit.state.researches);
+    final researchBookmarks = context.select(
+      (BookmarksResearchesCubit cubit) => cubit.state.researchBookmarks,
+    );
     final selectedResearches = context.select(
       (BookmarksResearchesCubit cubit) => cubit.state.selectedResearches,
     );
 
     final selectedResearchesIsEmpty = selectedResearches.isEmpty;
 
-    return researches == null
+    return researches == null || isLoading
         ? const TranslucentLoader()
         : researches.isEmpty
             ? context.emptyListText()

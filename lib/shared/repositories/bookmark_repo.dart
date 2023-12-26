@@ -9,15 +9,15 @@ import 'package:su_thesis_book/utils/utils.dart';
 
 class BookmarkRepo {
   //-- Config
-  final _cacheThesisBookmarks = const Cache<List<String>>('thesis_bookmarks');
+  final _cacheThesisBookmarks = const Cache<List<Bookmark>>('thesis_bookmarks');
   final _cacheResearchBookmarks =
-      const Cache<List<String>>('research_bookmarks');
+      const Cache<List<Bookmark>>('research_bookmarks');
   final _db = FirebaseDatabase.instance.ref('bookmarks');
   final _errorMsgAdd = "Couldn't add the bookmark!";
   final _errorMsgRemove = "Couldn't remove the bookmark!";
 
   String? get _currentUserId => FirebaseAuth.instance.currentUser?.uid;
-  Cache<List<String>> _cache(PaperType type) => [
+  Cache<List<Bookmark>> _cache(PaperType type) => [
         _cacheResearchBookmarks,
         _cacheThesisBookmarks,
       ][type.index];
@@ -37,17 +37,40 @@ class BookmarkRepo {
   }
 
   Future<String?> removeBookmark(Paper paper) async {
-    try {
-      await _db.child('${paper.type.name}/${paper.id}').remove();
-    } catch (e, s) {
-      log(_errorMsgRemove, error: e, stackTrace: s);
-      return _errorMsgRemove;
+    final bookmark = await bookmarkByPaper(paper);
+    if (bookmark != null) {
+      try {
+        await _db.child('${paper.type.name}/${bookmark.id}').remove();
+      } catch (e, s) {
+        log(_errorMsgRemove, error: e, stackTrace: s);
+        return _errorMsgRemove;
+      }
+    }
+    return null;
+  }
+
+  /// Convert database snapshot to model with logic specified.
+  Bookmark? snapshotToModel(DataSnapshot snapshot) {
+    final bookmarkMap = snapshot.value?.toJson();
+    if (bookmarkMap == null) return null;
+    final bookmarkJson = <String, dynamic>{
+      'id': snapshot.key,
+      'paperId': bookmarkMap['parentId'],
+      'userId': bookmarkMap['userId'],
+    };
+    return Bookmark.fromJson(bookmarkJson);
+  }
+
+  Future<Bookmark?> bookmarkByPaper(Paper paper) async {
+    final bookmarks = await streamByType(paper.type).first;
+    for (final bookmark in bookmarks) {
+      if (bookmark.paperId == paper.id) return bookmark;
     }
     return null;
   }
 
   /// Emits list of bookmarked id.
-  Stream<List<String>> ids(PaperType type) async* {
+  Stream<List<Bookmark>> streamByType(PaperType type) async* {
     if (_cache(type).value != null) yield _cache(type).value!;
 
     yield* _db
@@ -55,15 +78,14 @@ class BookmarkRepo {
         .orderByChild('userId')
         .equalTo(_currentUserId)
         .onValue
-        .map<List<String>>(
+        .map<List<Bookmark>>(
       (event) {
-        final paperIds = <String>[];
+        final bookmarks = <Bookmark>[];
         for (final snapshot in event.snapshot.children) {
-          final bookmarkMap = snapshot.value?.toJson();
-          final paperId = bookmarkMap?['parentId'] as String?;
-          if (paperId != null) paperIds.add(paperId);
+          final bookmark = snapshotToModel(snapshot);
+          if (bookmark != null) bookmarks.add(bookmark);
         }
-        return _cache(type).value = paperIds;
+        return _cache(type).value = bookmarks;
       },
     );
   }

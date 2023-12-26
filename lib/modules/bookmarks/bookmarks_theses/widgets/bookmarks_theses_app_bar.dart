@@ -52,11 +52,7 @@ class BookmarksThesesAppBar extends StatelessWidget {
         // Remove button.
         IconButton(
           padding: EdgeInsets.zero,
-          onPressed: selectedThesesIsEmpty
-              ? null
-              : theses == selectedTheses
-                  ? cubit.onAllRemoved
-                  : cubit.onRemoved,
+          onPressed: selectedThesesIsEmpty ? null : cubit.onRemoved,
           iconSize: kToolbarHeight * .575,
           icon: Icon(
             selectedThesesIsEmpty
