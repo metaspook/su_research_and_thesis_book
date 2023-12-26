@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
-import 'package:su_thesis_book/utils/extensions.dart';
 
 part 'sign_up_event.dart';
 part 'sign_up_state.dart';
@@ -106,15 +105,29 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         final errorMsg = await _appUserRepo.create(userId, value: userObj);
         if (errorMsg == null) {
           // Reload authentication after created.
-          _authRepo.currentUser.doPrint('BIG PROBLEM: ');
-          await _authRepo.currentUser?.reload();
-          _authRepo.currentUser.doPrint('BIG PROBLEM: ');
+          // _authRepo.currentUser.doPrint('BIG PROBLEM: ');
+          //this worked once with _auth.userChanges() but not now.
+          // await _authRepo.currentUser?.reload();
+          // _authRepo.currentUser.doPrint('BIG PROBLEM: ');
           emit(
             state.copyWith(
               status: SignUpStatus.success,
               statusMsg: 'Success! User signed up.',
             ),
           );
+          //NOTE: It's a workaround due to not auto sign-in and route to home.
+          final errorMsg = await _authRepo.signIn(
+            email: state.email,
+            password: state.password,
+          );
+          if (errorMsg != null) {
+            emit(
+              state.copyWith(
+                status: SignUpStatus.failure,
+                statusMsg: errorMsg,
+              ),
+            );
+          }
         } else {
           emit(
             state.copyWith(
