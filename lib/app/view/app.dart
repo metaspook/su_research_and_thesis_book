@@ -5,6 +5,7 @@ import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
 import 'package:su_thesis_book/theme/theme.dart';
+import 'package:su_thesis_book/utils/extensions.dart';
 
 // Provide global blocs and repositories from here.
 class App extends StatelessWidget {
@@ -103,6 +104,7 @@ class AppView extends StatelessWidget {
       ..read<DesignationsCubit>();
     final isAuthenticated =
         context.select((AppCubit cubit) => cubit.state.status.isAuthenticated);
+    isAuthenticated.doPrint('BIG PROBLEM: ');
     // NOTE: This 'initialLocation' approach is experimental instead of
     // redirection from router, need see which one is performant and stable.
     final initialLocation =
@@ -129,6 +131,12 @@ typedef DepartmentsBlocSelector<T>
     = BlocSelector<DepartmentsCubit, DepartmentsState, T>;
 typedef DesignationsBlocSelector<T>
     = BlocSelector<DesignationsCubit, DesignationsState, T>;
+
+typedef DepartmentsBlocListener
+    = BlocListener<DepartmentsCubit, DepartmentsState>;
+typedef DesignationsBlocListener
+    = BlocListener<DesignationsCubit, DesignationsState>;
+
 typedef PaperTypesBlocSelector<T>
     = BlocSelector<PaperTypesCubit, PaperTypesState, T>;
 typedef ResearchesBlocSelector<T>

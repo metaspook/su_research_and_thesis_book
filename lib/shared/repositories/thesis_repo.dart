@@ -123,20 +123,6 @@ class ThesisRepo implements CRUD<Thesis> {
     );
   }
 
-  Stream<Thesis?> get stream2 async* {
-    // if (_cache.value != null) yield _cache.value!;
-    yield* _db.onChildAdded.asyncMap<Thesis?>(
-      (event) async {
-        // final theses = <Thesis>[];
-        // for (final snapshot in event.snapshot.children) {
-        final thesis = await snapshotToModel(event.snapshot.children.last);
-        // if (thesis != null) theses.add(thesis);
-        // }
-        return thesis;
-      },
-    );
-  }
-
   /// Upload thesis file to Storage and get URL.
   Future<({String? errorMsg, String? fileUrl})> uploadFile(String path) async {
     try {

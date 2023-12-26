@@ -8,12 +8,12 @@ export 'package:firebase_auth/firebase_auth.dart'
 
 class AuthRepo {
   //-- Config
-  final _auth = FirebaseAuth.instance;
   final _errorMsgSignIn = "Couldn't sign-in the user!";
   final _errorMsgSignUp = "Couldn't sign-up the user!";
   final _errorMsgSignOut = "Couldn't sign-out the user!";
   final _errorMsgUpdateEmail = "Couldn't update the user email!";
   final _errorMsgUpdatePassword = "Couldn't update the user password!";
+  FirebaseAuth get _auth => FirebaseAuth.instance;
 
   //-- Public APIs
   Stream<User?> get userStream => _auth.userChanges();

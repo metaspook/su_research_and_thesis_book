@@ -8,9 +8,6 @@ import 'package:su_thesis_book/theme/theme.dart';
 typedef SignInBlocSelector<T> = BlocSelector<SignInBloc, SignInState, T>;
 typedef SignInBlocListener = BlocListener<SignInBloc, SignInState>;
 typedef SignInBlocConsumer = BlocConsumer<SignInBloc, SignInState>;
-typedef SignUpBlocSelector<T> = BlocSelector<SignUpBloc, SignUpState, T>;
-typedef SignUpBlocListener = BlocListener<SignUpBloc, SignUpState>;
-typedef SignUpBlocConsumer = BlocConsumer<SignUpBloc, SignUpState>;
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});

@@ -18,7 +18,6 @@ class AppCubit extends HydratedCubit<AppState> {
       if (user != null) {
         // Logic after User is authenticated.
         final (errorMsg, appUser) = await _appUserRepo.read(user.uid);
-
         if (appUser.isNotEmpty) {
           // Logic after User is authenticated and data exists.
           emit(AppState(status: AppStatus.authenticated, user: appUser));

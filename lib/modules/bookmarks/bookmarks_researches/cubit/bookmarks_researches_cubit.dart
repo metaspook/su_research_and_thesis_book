@@ -66,6 +66,7 @@ class BookmarksResearchesCubit extends Cubit<BookmarksResearchesState> {
         selectedResearches.remove(research);
       });
     }
+    // checking length if removed any item.
     selectedResearches.length < state.selectedResearches.length
         ? emit(
             state.copyWith(

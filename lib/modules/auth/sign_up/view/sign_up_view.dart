@@ -11,6 +11,8 @@ import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
+typedef SignUpBlocSelector<T> = BlocSelector<SignUpBloc, SignUpState, T>;
+
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
 
@@ -62,231 +64,252 @@ class _SignUpViewState extends State<SignUpView> {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<SignUpBloc>();
+    final isLoading =
+        context.select((SignUpBloc cubit) => cubit.state.status.isLoading);
     final departments =
         context.select((DepartmentsCubit cubit) => cubit.state.departments);
     final designations =
         context.select((DesignationsCubit cubit) => cubit.state.designations);
-    final isLoading = departments == null || designations == null;
+    final viewIsLoading =
+        departments == null || designations == null || isLoading;
 
-    return TranslucentLoader(
-      enabled: isLoading,
-      child: Form(
-        key: _signUpFormKey,
-        child: ListView(
-          padding: AppThemes.viewPadding * 2,
-          children: [
-            // Name
-            TextFormField(
-              controller: _nameController,
-              focusNode: _nameFocusNode,
-              validator: Validator.name,
-              onFieldSubmitted: _emailFocusNode.onSubmitted,
-              keyboardType: TextInputType.name,
-              decoration: const InputDecoration(
-                hintText: 'name...',
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<SignUpBloc, SignUpState>(
+          listenWhen: (previous, current) =>
+              previous.statusMsg != current.statusMsg,
+          listener: (context, state) {
+            final snackBar = SnackBar(content: Text(state.statusMsg!));
+            context.scaffoldMessenger.showSnackBar(snackBar);
+          },
+        ),
+        DesignationsBlocListener(
+          listenWhen: (previous, current) => current.hasMessage,
+          listener: (context, state) {
+            final snackBar = SnackBar(content: Text(state.statusMsg!));
+            context.scaffoldMessenger.showSnackBar(snackBar);
+          },
+        ),
+        DepartmentsBlocListener(
+          listenWhen: (previous, current) => current.hasMessage,
+          listener: (context, state) {
+            final snackBar = SnackBar(content: Text(state.statusMsg!));
+            context.scaffoldMessenger.showSnackBar(snackBar);
+          },
+        ),
+      ],
+      child: TranslucentLoader(
+        enabled: viewIsLoading,
+        child: Form(
+          key: _signUpFormKey,
+          child: ListView(
+            padding: AppThemes.viewPadding * 2,
+            children: [
+              // Name
+              TextFormField(
+                controller: _nameController,
+                focusNode: _nameFocusNode,
+                validator: Validator.name,
+                onFieldSubmitted: _emailFocusNode.onSubmitted,
+                keyboardType: TextInputType.name,
+                decoration: const InputDecoration(
+                  hintText: 'name...',
+                ),
+                onChanged: (value) => bloc.add(SignUpEdited(name: value)),
               ),
-              onChanged: (value) => bloc.add(SignUpEdited(name: value)),
-            ),
-            // E-mail
-            TextFormField(
-              controller: _emailController,
-              focusNode: _emailFocusNode,
-              validator: Validator.email,
-              onFieldSubmitted: _passwordFocusNode.onSubmitted,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(hintText: 'email...'),
-              onChanged: (value) => bloc.add(SignUpEdited(email: value)),
-            ),
-            // Password
-            Builder(
-              builder: (context) {
-                final isEmptyPassword = context
-                    .select((SignUpBloc bloc) => bloc.state.password.isEmpty);
-                final obscurePassword = context
-                    .select((SignUpBloc bloc) => bloc.state.obscurePassword);
+              // E-mail
+              TextFormField(
+                controller: _emailController,
+                focusNode: _emailFocusNode,
+                validator: Validator.email,
+                onFieldSubmitted: _passwordFocusNode.onSubmitted,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(hintText: 'email...'),
+                onChanged: (value) => bloc.add(SignUpEdited(email: value)),
+              ),
+              // Password
+              Builder(
+                builder: (context) {
+                  final isEmptyPassword = context
+                      .select((SignUpBloc bloc) => bloc.state.password.isEmpty);
+                  final obscurePassword = context
+                      .select((SignUpBloc bloc) => bloc.state.obscurePassword);
 
-                return TextFormField(
-                  controller: _passwordController,
-                  focusNode: _passwordFocusNode,
-                  validator: Validator.password,
-                  onFieldSubmitted: _phoneFocusNode.onSubmitted,
-                  keyboardType: TextInputType.visiblePassword,
-                  obscureText: obscurePassword,
-                  decoration: InputDecoration(
-                    hintText: 'password...',
-                    suffixIcon: IconButton(
-                      onPressed: isEmptyPassword
-                          ? null
-                          : () =>
-                              bloc.add(const SignUpObscurePasswordToggled()),
-                      icon: Icon(
-                        obscurePassword
-                            ? Icons.visibility_rounded
-                            : Icons.visibility_off_rounded,
-                      ),
-                    ),
-                  ),
-                  onChanged: (value) => bloc.add(SignUpEdited(password: value)),
-                );
-              },
-            ),
-            // Phone
-            TextFormField(
-              controller: _phoneController,
-              focusNode: _phoneFocusNode,
-              validator: Validator.phone,
-              keyboardType: TextInputType.phone,
-              decoration: const InputDecoration(hintText: 'phone...'),
-              onChanged: (value) => bloc.add(SignUpEdited(phone: value)),
-            ),
-            // Designations.
-            DesignationsBlocSelector<List<String>?>(
-              selector: (state) => state.designations,
-              builder: (context, designations) {
-                return DropdownButtonFormField<String>(
-                  borderRadius: AppThemes.borderRadius,
-                  hint: const Text('designation...'),
-                  onChanged: (designation) => bloc.add(
-                    SignUpEdited(
-                      designationIndex: designation == null
-                          ? null
-                          : designations?.indexOf(designation),
-                    ),
-                  ),
-                  items: designations
-                      ?.map<DropdownMenuItem<String>>(
-                        (designation) => DropdownMenuItem<String>(
-                          value: designation,
-                          child: Text(designation),
+                  return TextFormField(
+                    controller: _passwordController,
+                    focusNode: _passwordFocusNode,
+                    validator: Validator.password,
+                    onFieldSubmitted: _phoneFocusNode.onSubmitted,
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: obscurePassword,
+                    decoration: InputDecoration(
+                      hintText: 'password...',
+                      suffixIcon: IconButton(
+                        onPressed: isEmptyPassword
+                            ? null
+                            : () =>
+                                bloc.add(const SignUpObscurePasswordToggled()),
+                        icon: Icon(
+                          obscurePassword
+                              ? Icons.visibility_rounded
+                              : Icons.visibility_off_rounded,
                         ),
-                      )
-                      .toList(),
-                );
-              },
-            ),
-            // Departments
-            DropdownButtonFormField<String>(
-              menuMaxHeight: AppThemes.menuMaxHeight,
-              borderRadius: AppThemes.borderRadius,
-              hint: const Text('department...'),
-              onChanged: (department) => bloc.add(
-                SignUpEdited(
-                  departmentIndex: department == null
-                      ? null
-                      : departments?.indexOf(department),
-                ),
+                      ),
+                    ),
+                    onChanged: (value) =>
+                        bloc.add(SignUpEdited(password: value)),
+                  );
+                },
               ),
-              items: departments
-                  ?.map<DropdownMenuItem<String>>(
-                    (department) => DropdownMenuItem<String>(
-                      value: department,
-                      child: Text(department),
-                    ),
-                  )
-                  .toList(),
-            ),
-            const SizedBox(height: AppThemes.height * 4),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Image Card
-                Card(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: AppThemes.borderRadius,
-                  ),
-                  clipBehavior: Clip.hardEdge,
-                  child: Container(
-                    height: context.mediaQuery.size.longestSide * .225,
-                    width: context.mediaQuery.size.shortestSide * .45,
-                    padding: const EdgeInsets.all(8),
-                    child: SignUpBlocSelector<String>(
-                      selector: (state) => state.photoPath,
-                      builder: (context, photoPath) {
-                        return ClipRRect(
-                          borderRadius: AppThemes.borderRadius,
-                          child: photoPath.isEmpty
-                              ? Assets.images.placeholderUser01
-                                  .image(fit: BoxFit.cover)
-                              : Image.file(
-                                  File(photoPath),
-                                  fit: BoxFit.cover,
-                                ),
-                        );
-                      },
-                    ),
+              // Phone
+              TextFormField(
+                controller: _phoneController,
+                focusNode: _phoneFocusNode,
+                validator: Validator.phone,
+                keyboardType: TextInputType.phone,
+                decoration: const InputDecoration(hintText: 'phone...'),
+                onChanged: (value) => bloc.add(SignUpEdited(phone: value)),
+              ),
+              // Designations.
+              DropdownButtonFormField<String>(
+                borderRadius: AppThemes.borderRadius,
+                hint: const Text('designation...'),
+                onChanged: (designation) => bloc.add(
+                  SignUpEdited(
+                    designationIndex: designation == null
+                        ? null
+                        : designations?.indexOf(designation),
                   ),
                 ),
-                const SizedBox(width: AppThemes.height * 4),
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      // Camera Button
-                      ElevatedButton.icon(
-                        icon: const Icon(Icons.camera_alt_rounded),
-                        label: const Text('Camera'),
-                        onPressed: () async {
-                          final photoPath =
-                              await imageCropicker.path(ImageSource.camera);
-                          final statusMsg = imageCropicker.statusMsg;
-                          bloc.add(
-                            SignUpPhotoPicked(
-                              photoPath,
-                              statusMsg: statusMsg,
-                            ),
+                items: designations
+                    ?.map<DropdownMenuItem<String>>(
+                      (designation) => DropdownMenuItem<String>(
+                        value: designation,
+                        child: Text(designation),
+                      ),
+                    )
+                    .toList(),
+              ),
+              // Departments
+              DropdownButtonFormField<String>(
+                menuMaxHeight: AppThemes.menuMaxHeight,
+                borderRadius: AppThemes.borderRadius,
+                hint: const Text('department...'),
+                onChanged: (department) => bloc.add(
+                  SignUpEdited(
+                    departmentIndex: department == null
+                        ? null
+                        : departments?.indexOf(department),
+                  ),
+                ),
+                items: departments
+                    ?.map<DropdownMenuItem<String>>(
+                      (department) => DropdownMenuItem<String>(
+                        value: department,
+                        child: Text(department),
+                      ),
+                    )
+                    .toList(),
+              ),
+              const SizedBox(height: AppThemes.height * 4),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Image Card
+                  Card(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: AppThemes.borderRadius,
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    child: Container(
+                      height: context.mediaQuery.size.longestSide * .225,
+                      width: context.mediaQuery.size.shortestSide * .45,
+                      padding: const EdgeInsets.all(8),
+                      child: SignUpBlocSelector<String>(
+                        selector: (state) => state.photoPath,
+                        builder: (context, photoPath) {
+                          return ClipRRect(
+                            borderRadius: AppThemes.borderRadius,
+                            child: photoPath.isEmpty
+                                ? Assets.images.placeholderUser01
+                                    .image(fit: BoxFit.cover)
+                                : Image.file(
+                                    File(photoPath),
+                                    fit: BoxFit.cover,
+                                  ),
                           );
                         },
                       ),
-                      const SizedBox(height: AppThemes.height * 4),
-                      // Gallery Button
-                      ElevatedButton.icon(
-                        icon: const Icon(Icons.photo_library_rounded),
-                        label: const Text('Gallery'),
-                        onPressed: () async {
-                          final photoPath =
-                              await imageCropicker.path(ImageSource.gallery);
-                          final statusMsg = imageCropicker.statusMsg;
-                          bloc.add(
-                            SignUpPhotoPicked(
-                              photoPath,
-                              statusMsg: statusMsg,
-                            ),
-                          );
-                        },
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppThemes.height * 4),
-            // Proceed button
-            SignUpBlocConsumer(
-              listenWhen: (previous, current) => current.status.hasMessage,
-              listener: (context, state) {
-                final snackBar = SnackBar(content: Text(state.statusMsg));
-                context.scaffoldMessenger.showSnackBar(snackBar);
-              },
-              builder: (context, state) {
-                final enabled = state.name.isNotEmpty ||
-                    state.email.isNotEmpty ||
-                    state.phone.isNotEmpty ||
-                    state.password.isNotEmpty ||
-                    state.photoPath.isNotEmpty;
-                return ElevatedButton.icon(
-                  icon: const Icon(Icons.forward_rounded),
-                  label: const Text('Proceed'),
-                  onPressed: enabled
-                      ? () {
-                          final valid =
-                              _signUpFormKey.currentState?.validate() ?? false;
-                          if (valid) bloc.add(const SignUpProceeded());
-                        }
-                      : null,
-                );
-              },
-            ),
-          ],
+                  const SizedBox(width: AppThemes.height * 4),
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Camera Button
+                        ElevatedButton.icon(
+                          icon: const Icon(Icons.camera_alt_rounded),
+                          label: const Text('Camera'),
+                          onPressed: () async {
+                            final photoPath =
+                                await imageCropicker.path(ImageSource.camera);
+                            final statusMsg = imageCropicker.statusMsg;
+                            bloc.add(
+                              SignUpPhotoPicked(
+                                photoPath,
+                                statusMsg: statusMsg,
+                              ),
+                            );
+                          },
+                        ),
+                        const SizedBox(height: AppThemes.height * 4),
+                        // Gallery Button
+                        ElevatedButton.icon(
+                          icon: const Icon(Icons.photo_library_rounded),
+                          label: const Text('Gallery'),
+                          onPressed: () async {
+                            final photoPath =
+                                await imageCropicker.path(ImageSource.gallery);
+                            final statusMsg = imageCropicker.statusMsg;
+                            bloc.add(
+                              SignUpPhotoPicked(
+                                photoPath,
+                                statusMsg: statusMsg,
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: AppThemes.height * 4),
+              // Proceed button
+              BlocBuilder<SignUpBloc, SignUpState>(
+                builder: (context, state) {
+                  final enabled = state.name.isNotEmpty ||
+                      state.email.isNotEmpty ||
+                      state.phone.isNotEmpty ||
+                      state.password.isNotEmpty ||
+                      state.photoPath.isNotEmpty;
+                  return ElevatedButton.icon(
+                    icon: const Icon(Icons.forward_rounded),
+                    label: const Text('Proceed'),
+                    onPressed: enabled
+                        ? () {
+                            final valid =
+                                _signUpFormKey.currentState?.validate() ??
+                                    false;
+                            if (valid) bloc.add(const SignUpProceeded());
+                          }
+                        : null,
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

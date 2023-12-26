@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
+import 'package:su_thesis_book/utils/extensions.dart';
 
 part 'sign_up_event.dart';
 part 'sign_up_state.dart';
@@ -13,6 +14,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         _appUserRepo = appUserRepo,
         super(const SignUpState()) {
     //-- Register Event Handlers
+    // on<SignUpStarted>(_onStarted);
     on<SignUpEdited>(_onEdited);
     on<SignUpPhotoPicked>(_onPhotoPicked);
     on<SignUpProceeded>(_onProceeded);
@@ -23,6 +25,27 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   final AppUserRepo _appUserRepo;
 
   //-- Define Event Handlers
+  // Future<void> _onStarted(
+  //   SignUpStarted event,
+  //   Emitter<SignUpState> emit,
+  // ) async {
+  //   emit(state.copyWith(status: SignUpStatus.loading));
+  //   event.designations != null || event.departments != null
+  //       ? emit(
+  //           state.copyWith(
+  //             status: SignUpStatus.success,
+  //             designations: event.designations,
+  //             departments: event.departments,
+  //           ),
+  //         )
+  //       : emit(
+  //           state.copyWith(
+  //             status: SignUpStatus.failure,
+  //             statusMsg: event.errorMsg,
+  //           ),
+  //         );
+  // }
+
   Future<void> _onEdited(
     SignUpEdited event,
     Emitter<SignUpState> emit,
@@ -82,14 +105,16 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         // Create user data in database.
         final errorMsg = await _appUserRepo.create(userId, value: userObj);
         if (errorMsg == null) {
+          // Reload authentication after created.
+          _authRepo.currentUser.doPrint('BIG PROBLEM: ');
+          await _authRepo.currentUser?.reload();
+          _authRepo.currentUser.doPrint('BIG PROBLEM: ');
           emit(
             state.copyWith(
               status: SignUpStatus.success,
               statusMsg: 'Success! User signed up.',
             ),
           );
-          // Reload authentication after created.
-          await _authRepo.currentUser?.reload();
         } else {
           emit(
             state.copyWith(
