@@ -45,6 +45,7 @@ class ResearchEntryView extends StatelessWidget {
                 const SizedBox(height: AppThemes.height * 2),
                 // Research Category
                 DropdownButtonFormField<int>(
+                  isExpanded: true,
                   menuMaxHeight: AppThemes.menuMaxHeight,
                   dropdownColor:
                       context.theme.colorScheme.background.withOpacity(.75),

@@ -45,6 +45,7 @@ class ThesisEntryView extends StatelessWidget {
                 const SizedBox(height: AppThemes.height * 2),
                 // Thesis Department
                 DropdownButtonFormField<int>(
+                  isExpanded: true,
                   menuMaxHeight: AppThemes.menuMaxHeight,
                   dropdownColor:
                       context.theme.colorScheme.background.withOpacity(.75),
