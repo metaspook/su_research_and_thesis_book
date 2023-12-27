@@ -149,40 +149,37 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
                 children: [
                   Text(
                     records[i].title,
+                    overflow: TextOverflow.ellipsis,
                     style: context.theme.textTheme.titleMedium?.copyWith(
-                      color: AppThemes.selectedColorsRandomized[i],
+                      fontWeight: FontWeight.bold,
+                      color: context.theme.textTheme.titleMedium?.color
+                          ?.withOpacity(.75),
                     ),
-                    // style: const TextStyle(
-                    //   color: Colors.white,
-                    //   fontSize: 20,
-                    //   fontWeight: FontWeight.bold,
-                    // ),
                   ),
                   Text(
                     records[i].publisherName,
-                    style: context.theme.textTheme.titleSmall,
-
-                    //  const TextStyle(
-                    //   color: Colors.white70,
-                    //   fontSize: 17.5,
-                    //   fontWeight: FontWeight.bold,
-                    // ),
+                    overflow: TextOverflow.ellipsis,
+                    style: context.theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: context.theme.textTheme.titleSmall?.color
+                          ?.withOpacity(.5),
+                    ),
                   ),
                   Text(
                     '${records[i].designation} | ${records[i].department}',
-                    style: context.theme.textTheme.titleSmall,
-                    // style: const TextStyle(
-                    //   color: Colors.white70,
-                    //   fontSize: 15,
-                    // ),
+                    overflow: TextOverflow.ellipsis,
+                    style: context.theme.textTheme.titleSmall?.copyWith(
+                      color: context.theme.textTheme.titleSmall?.color
+                          ?.withOpacity(.75),
+                    ),
                   ),
                   Text(
                     records[i].description,
-                    style: context.theme.textTheme.titleSmall,
-                    maxLines: 2,
-                    // style: const TextStyle(
-                    //   color: Colors.white,
-                    // ),
+                    overflow: TextOverflow.ellipsis,
+                    style: context.theme.textTheme.titleSmall?.copyWith(
+                      color: context.theme.textTheme.titleSmall?.color
+                          ?.withOpacity(.5),
+                    ),
                   ),
                 ],
               ),
