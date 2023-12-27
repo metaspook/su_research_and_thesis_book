@@ -61,7 +61,7 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
               widget.researches[i].publisher!.department.toStringParseNull(),
           description: widget.researches[i].description.toStringParseNull(),
           onTap: () => context.pushNamed(
-                AppRouter.thesis.name!,
+                AppRouter.research.name!,
                 extra: widget.researches[i],
               ),
         ),
