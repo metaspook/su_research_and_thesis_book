@@ -71,13 +71,13 @@ class _ThesesNavAppBarState extends State<ThesesNavAppBar> {
                             items: [
                               DropdownMenuItem(
                                 value: departmentAll,
-                                child: Flexible(child: Text(departmentAll)),
+                                child: Text(departmentAll),
                               ),
                               if (departments != null)
                                 for (final department in departments)
                                   DropdownMenuItem(
                                     value: department,
-                                    child: Flexible(child: Text(department)),
+                                    child: Text(department),
                                   ),
                             ],
                             onChanged: cubit.onChangedDepartment,

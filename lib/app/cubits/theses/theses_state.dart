@@ -13,19 +13,21 @@ class ThesesState extends Equatable {
   const ThesesState({
     this.status = ThesesStatus.initial,
     this.statusMsg,
+    this.notify = false,
     this.theses,
   });
 
   factory ThesesState.fromJson(Map<String, dynamic> json) {
     return ThesesState(
       theses: [
-        for (final e in json['theses'] as List) Thesis.fromJson(e as Json)
+        for (final e in json['theses'] as List) Thesis.fromJson(e as Json),
       ],
     );
   }
 
   final ThesesStatus status;
   final String? statusMsg;
+  final bool notify;
   final List<Thesis>? theses;
   bool get hasMessage => statusMsg != null;
   List<Publisher>? get publishers => theses == null
@@ -44,11 +46,13 @@ class ThesesState extends Equatable {
   ThesesState copyWith({
     ThesesStatus? status,
     String? statusMsg,
+    bool? notify,
     List<Thesis>? theses,
   }) {
     return ThesesState(
       status: status ?? this.status,
       statusMsg: statusMsg ?? this.statusMsg,
+      notify: notify ?? this.notify,
       theses: theses ?? this.theses,
     );
   }
@@ -58,6 +62,7 @@ class ThesesState extends Equatable {
     return [
       status,
       statusMsg,
+      notify,
       theses,
     ];
   }

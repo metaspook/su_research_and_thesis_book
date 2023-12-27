@@ -59,8 +59,7 @@ class _ResearchesNavAppBarState extends State<ResearchesNavAppBar> {
                         final category = context.select(
                           (ResearchesNavCubit cubit) => cubit.state.category,
                         );
-                        final departmentAll =
-                            const ResearchesNavState().category;
+                        final categoryAll = const ResearchesNavState().category;
 
                         return DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
@@ -69,17 +68,16 @@ class _ResearchesNavAppBarState extends State<ResearchesNavAppBar> {
                             padding: AppThemes.viewPadding,
                             value: category,
                             borderRadius: AppThemes.borderRadius,
-                            hint: const Text('department...'),
                             items: [
                               DropdownMenuItem(
-                                value: departmentAll,
-                                child: Text(departmentAll),
+                                value: categoryAll,
+                                child: Text(categoryAll),
                               ),
                               if (categories != null)
-                                for (final department in categories)
+                                for (final category in categories)
                                   DropdownMenuItem(
-                                    value: department,
-                                    child: Text(department),
+                                    value: category,
+                                    child: Text(category),
                                   ),
                             ],
                             onChanged: cubit.onChangedCategory,
