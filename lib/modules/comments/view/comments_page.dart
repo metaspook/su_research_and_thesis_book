@@ -32,13 +32,7 @@ class _CommentsPageState extends State<CommentsPage> {
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          // AppBar
-          SliverAppBar(
-            pinned: true,
-            leading: context.backButton(),
-            centerTitle: true,
-            title: const Text('Comments'),
-          ),
+          context.sliverAppBar('Comments'),
         ],
         body: Stack(
           alignment: Alignment.bottomCenter,
@@ -51,21 +45,20 @@ class _CommentsPageState extends State<CommentsPage> {
                 final comments = context
                     .select((CommentsCubit cubit) => cubit.state.comments);
 
-                return comments.isEmpty
-                    ? context.emptyListText()
-                    : TranslucentLoader(
-                        enabled: isLoading,
-                        child: ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          padding: const EdgeInsets.all(5),
-                          // keyboardDismissBehavior:
-                          //     ScrollViewKeyboardDismissBehavior.onDrag,
-                          itemCount: comments.length,
-                          itemBuilder: (context, index) {
-                            return CommentCard(comments[index]);
-                          },
-                        ),
-                      );
+                return isLoading || comments == null
+                    ? const TranslucentLoader()
+                    : comments.isEmpty
+                        ? context.emptyListText()
+                        : ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            padding: const EdgeInsets.all(5),
+                            // keyboardDismissBehavior:
+                            //     ScrollViewKeyboardDismissBehavior.onDrag,
+                            itemCount: comments.length,
+                            itemBuilder: (context, index) {
+                              return CommentCard(comments[index]);
+                            },
+                          );
               },
             ),
             Card(

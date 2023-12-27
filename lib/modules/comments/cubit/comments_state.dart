@@ -8,20 +8,18 @@ enum CommentsStatus {
   failure;
 
   bool get isLoading => this == CommentsStatus.loading;
-  bool get hasMessage =>
-      this == CommentsStatus.success || this == CommentsStatus.failure;
 }
 
 final class CommentsState extends Equatable {
   const CommentsState({
     this.status = CommentsStatus.initial,
-    this.statusMsg = '',
-    this.comments = const [],
+    this.statusMsg,
+    this.comments,
   });
 
   final CommentsStatus status;
-  final String statusMsg;
-  final List<Comment> comments;
+  final String? statusMsg;
+  final List<Comment>? comments;
 
   CommentsState copyWith({
     CommentsStatus? status,
@@ -36,5 +34,5 @@ final class CommentsState extends Equatable {
   }
 
   @override
-  List<Object> get props => [status, statusMsg, comments];
+  List<Object?> get props => [status, statusMsg, comments];
 }
