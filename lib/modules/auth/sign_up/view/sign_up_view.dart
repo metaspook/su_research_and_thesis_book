@@ -172,6 +172,7 @@ class _SignUpViewState extends State<SignUpView> {
               ),
               // Designations.
               DropdownButtonFormField<String>(
+                isExpanded: true,
                 borderRadius: AppThemes.borderRadius,
                 hint: const Text('designation...'),
                 onChanged: (designation) => bloc.add(
@@ -192,6 +193,7 @@ class _SignUpViewState extends State<SignUpView> {
               ),
               // Departments
               DropdownButtonFormField<String>(
+                isExpanded: true,
                 menuMaxHeight: AppThemes.menuMaxHeight,
                 borderRadius: AppThemes.borderRadius,
                 hint: const Text('department...'),

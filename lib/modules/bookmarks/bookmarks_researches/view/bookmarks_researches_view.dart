@@ -12,7 +12,7 @@ class BookmarksResearchesView extends StatelessWidget {
     context.read<BookmarksCubit>().getViewIndex(1);
     final cubit = context.read<BookmarksResearchesCubit>();
     final isLoading = context.select(
-        (BookmarksResearchesCubit cubit) => cubit.state.status.isLoading);
+        (BookmarksResearchesCubit cubit) => cubit.state.status.isLoading,);
     final researches = context
         .select((BookmarksResearchesCubit cubit) => cubit.state.researches);
     final researchBookmarks = context.select(

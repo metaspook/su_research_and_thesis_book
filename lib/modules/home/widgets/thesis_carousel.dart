@@ -82,6 +82,7 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
             enlargeCenterPage: true,
             enlargeStrategy: CenterPageEnlargeStrategy.zoom,
             viewportFraction: .9,
+            aspectRatio: context.mediaQuery.size.aspectRatio * 4,
             onPageChanged: (index, reason) {
               setState(() {
                 _current = index;
@@ -129,8 +130,11 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
               ),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               decoration: BoxDecoration(
-                color: AppThemes.selectedColorsRandomized[i],
-                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: AppThemes.selectedColorsRandomized[i],
+                  width: 2,
+                ),
+                borderRadius: AppThemes.borderRadius,
                 boxShadow: [
                   BoxShadow(
                     color:
@@ -141,40 +145,44 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
                 ],
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        records[i].title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        records[i].publisherName,
-                        style: const TextStyle(
-                          color: Colors.white70,
-                          fontSize: 17.5,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        '${records[i].designation} | ${records[i].department}',
-                        style: const TextStyle(
-                          color: Colors.white70,
-                          fontSize: 15,
-                        ),
-                      ),
-                      Text(
-                        records[i].description,
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    records[i].title,
+                    style: context.theme.textTheme.titleMedium?.copyWith(
+                      color: AppThemes.selectedColorsRandomized[i],
+                    ),
+                    // style: const TextStyle(
+                    //   color: Colors.white,
+                    //   fontSize: 20,
+                    //   fontWeight: FontWeight.bold,
+                    // ),
+                  ),
+                  Text(
+                    records[i].publisherName,
+                    style: context.theme.textTheme.titleSmall,
+
+                    //  const TextStyle(
+                    //   color: Colors.white70,
+                    //   fontSize: 17.5,
+                    //   fontWeight: FontWeight.bold,
+                    // ),
+                  ),
+                  Text(
+                    '${records[i].designation} | ${records[i].department}',
+                    style: context.theme.textTheme.titleSmall,
+                    // style: const TextStyle(
+                    //   color: Colors.white70,
+                    //   fontSize: 15,
+                    // ),
+                  ),
+                  Text(
+                    records[i].description,
+                    style: context.theme.textTheme.titleSmall,
+                    maxLines: 2,
+                    // style: const TextStyle(
+                    //   color: Colors.white,
+                    // ),
                   ),
                 ],
               ),
