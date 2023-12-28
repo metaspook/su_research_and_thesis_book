@@ -1,27 +1,28 @@
-import 'package:cache/cache.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'dart:async';
 
-class NotificationsRepo {
+import 'package:cache/cache.dart';
+import 'package:su_thesis_book/shared/models/models.dart';
+
+class NotificationRepo {
   //-- Config
-  final _cache = const Cache<List<String>>('designations');
-  final _dbTheses = FirebaseDatabase.instance.ref('theses');
-  final _dbResearches = FirebaseDatabase.instance.ref('researches');
+  final _cache = const Cache<List<String>>('notifications');
   final _errorMsgDesignationsNotFound = 'Designations not found!';
   final _errorMsgDesignations = "Couldn't get the designations!";
+  final _controller = StreamController<List<NotificationRecord>>();
 
   //-- Public APIs
-  /// Get list of designation.
-  // Stream<List<Thesis>> get stream async* {
+  /// Emit list of notification.
+  Stream<List<NotificationRecord>> get stream => _controller.stream;
 
-  //   yield* _dbTheses.onValue.asyncMap<List<Thesis>>(
-  //     (event) async {
-  //       final theses = <Thesis>[];
-  //       for (final snapshot in event.snapshot.children) {
-  //         final thesis = await snapshotToModel(snapshot);
-  //         if (thesis != null) theses.add(thesis);
-  //       }
-  //       return _cache.value = theses;
-  //     },
-  //   );
-  // }
+  Future<void> add(NotificationRecord record) async {
+    final notificationRecords = await _controller.stream.first
+      ..add(record);
+    _controller.add(notificationRecords);
+  }
+
+  Future<void> remove(NotificationRecord record) async {
+    final notificationRecords = await _controller.stream.first
+      ..remove(record);
+    _controller.add(notificationRecords);
+  }
 }
