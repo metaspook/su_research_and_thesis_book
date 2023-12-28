@@ -106,12 +106,7 @@ final class AppRouter {
     name: 'notifications',
     path: '/notifications',
     builder: (context, state) {
-      return BlocProvider<NotificationsCubit>(
-        create: (context) => NotificationsCubit(
-            // n: context.read<BookmarkRepo>(),
-            ),
-        child: const NotificationsPage(),
-      );
+      return const NotificationsPage();
     },
   );
 
@@ -244,6 +239,7 @@ final class AppRouter {
         create: (context) => CommentRepo(paper: paper),
         child: BlocProvider<CommentsCubit>(
           create: (context) => CommentsCubit(
+            notificationRepo: context.read<NotificationRepo>(),
             commentRepo: context.read<CommentRepo>(),
           ),
           child: CommentsPage(paper: paper),

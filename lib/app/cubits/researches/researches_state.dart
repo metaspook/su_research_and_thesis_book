@@ -19,7 +19,8 @@ class ResearchesState extends Equatable {
   factory ResearchesState.fromJson(Map<String, dynamic> json) {
     return ResearchesState(
       researches: [
-        for (final e in json['researches'] as List) Research.fromJson(e as Json)
+        for (final e in json['researches'] as List)
+          Research.fromJson(e as Json),
       ],
     );
   }

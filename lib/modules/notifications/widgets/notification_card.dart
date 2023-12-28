@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/theme/theme.dart';
+import 'package:su_thesis_book/utils/utils.dart';
 
 class NotificationCard extends StatelessWidget {
   const NotificationCard(
-      // this.thesis,
-      {
-    required this.record, // this.selected = false,
+    this.record, {
+// this.selected = false,
     // this.onTap,
     // this.onLongPress,
     super.key,
@@ -63,7 +63,7 @@ class NotificationCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  record.userName,
+                  record.userName.toStringParseNull(),
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
@@ -71,7 +71,7 @@ class NotificationCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  record.paperName,
+                  record.paperName.toStringParseNull(),
                   overflow: TextOverflow.ellipsis,
                 ),
               ],

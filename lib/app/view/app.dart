@@ -23,6 +23,9 @@ class App extends StatelessWidget {
         RepositoryProvider<AuthRepo>(
           create: (context) => AuthRepo(),
         ),
+        RepositoryProvider<NotificationRepo>(
+          create: (context) => NotificationRepo(),
+        ),
         RepositoryProvider<BookmarkRepo>(
           create: (context) => BookmarkRepo(),
         ),
@@ -52,6 +55,11 @@ class App extends StatelessWidget {
               appUserRepo: context.read<AppUserRepo>(),
             ),
           ),
+          BlocProvider<NotificationsCubit>(
+            create: (context) => NotificationsCubit(
+              notificationRepo: context.read<NotificationRepo>(),
+            ),
+          ),
           BlocProvider<CategoriesCubit>(
             create: (context) => CategoriesCubit(
               categoryRepo: context.read<CategoryRepo>(),
@@ -67,22 +75,17 @@ class App extends StatelessWidget {
               designationRepo: context.read<DesignationRepo>(),
             ),
           ),
-          // BlocProvider<NotificationsCubit>(
-          //   create: (context) => NotificationsCubit(
-
-          //     researchRepo: context.read<ResearchRepo>(),
-          //     thesisRepo: context.read<ThesisRepo>(),
-          //   ),
-          // ),
           BlocProvider<ResearchesCubit>(
             create: (context) => ResearchesCubit(
               authRepo: context.read<AuthRepo>(),
+              notificationRepo: context.read<NotificationRepo>(),
               researchRepo: context.read<ResearchRepo>(),
             ),
           ),
           BlocProvider<ThesesCubit>(
             create: (context) => ThesesCubit(
               authRepo: context.read<AuthRepo>(),
+              notificationRepo: context.read<NotificationRepo>(),
               thesisRepo: context.read<ThesisRepo>(),
             ),
           ),

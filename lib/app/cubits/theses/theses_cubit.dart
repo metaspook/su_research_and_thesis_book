@@ -9,8 +9,12 @@ import 'package:su_thesis_book/utils/utils.dart';
 part 'theses_state.dart';
 
 class ThesesCubit extends HydratedCubit<ThesesState> {
-  ThesesCubit({required AuthRepo authRepo, required ThesisRepo thesisRepo})
-      : _authRepo = authRepo,
+  ThesesCubit({
+    required AuthRepo authRepo,
+    required NotificationRepo notificationRepo,
+    required ThesisRepo thesisRepo,
+  })  : _authRepo = authRepo,
+        _notificationRepo = notificationRepo,
         _thesisRepo = thesisRepo,
         super(const ThesesState()) {
     //-- Initialize Authentication subscription.
@@ -18,9 +22,19 @@ class ThesesCubit extends HydratedCubit<ThesesState> {
       if (user != null) {
         // Authenticated: Initialize Theses data.
         _thesesSubscription = _thesisRepo.stream.listen((theses) async {
-          if (state.notify) 'NEW THESIS ADDED: ${theses.last}'.doPrint();
-          final notify = state.notify ? null : true;
-          emit(state.copyWith(notify: notify, theses: theses));
+          if (state.notify) {
+            'NEW THESIS ADDED: ${theses.last}'.doPrint();
+            final record = (
+              type: NotificationType.thesis,
+              paperName: theses.last.title,
+              userName: theses.last.publisher?.name
+            );
+            await notificationRepo.add(record).then((_) {
+              emit(state.copyWith(theses: theses));
+            });
+          } else {
+            emit(state.copyWith(notify: true, theses: theses));
+          }
         });
       } else {
         // Unauthenticated: Reset cached and current state.
@@ -32,6 +46,7 @@ class ThesesCubit extends HydratedCubit<ThesesState> {
   }
 
   final AuthRepo _authRepo;
+  final NotificationRepo _notificationRepo;
   final ThesisRepo _thesisRepo;
   late final StreamSubscription<User?> _userSubscription;
   late final StreamSubscription<List<Thesis>> _thesesSubscription;

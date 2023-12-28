@@ -9,8 +9,11 @@ import 'package:su_thesis_book/utils/utils.dart';
 part 'comments_state.dart';
 
 class CommentsCubit extends Cubit<CommentsState> {
-  CommentsCubit({required CommentRepo commentRepo})
-      : _commentRepo = commentRepo,
+  CommentsCubit({
+    required NotificationRepo notificationRepo,
+    required CommentRepo commentRepo,
+  })  : _notificationRepo = notificationRepo,
+        _commentRepo = commentRepo,
         super(const CommentsState()) {
     //-- Comments data subscription.
     emit(state.copyWith(status: CommentsStatus.loading));
@@ -23,6 +26,7 @@ class CommentsCubit extends Cubit<CommentsState> {
     });
   }
 
+  final NotificationRepo _notificationRepo;
   final CommentRepo _commentRepo;
   late final StreamSubscription<List<Comment>> _commentsSubscription;
 

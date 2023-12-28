@@ -22,5 +22,6 @@ typedef Papers = ({List<Research>? researches, List<Thesis>? theses});
 typedef IconButtonRecord = ({
   IconData icon,
   String label,
+  Color color,
   void Function()? onPressed
 });

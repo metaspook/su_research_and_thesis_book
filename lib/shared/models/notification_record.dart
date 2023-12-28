@@ -9,6 +9,6 @@ enum NotificationType {
 
 typedef NotificationRecord = ({
   NotificationType type,
-  String paperName,
-  String userName
+  String? paperName,
+  String? userName
 });

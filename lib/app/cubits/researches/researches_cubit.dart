@@ -11,8 +11,10 @@ part 'researches_state.dart';
 class ResearchesCubit extends HydratedCubit<ResearchesState> {
   ResearchesCubit({
     required AuthRepo authRepo,
+    required NotificationRepo notificationRepo,
     required ResearchRepo researchRepo,
   })  : _authRepo = authRepo,
+        _notificationRepo = notificationRepo,
         _researchRepo = researchRepo,
         super(const ResearchesState()) {
     //-- Initialize Authentication subscription.
@@ -33,6 +35,7 @@ class ResearchesCubit extends HydratedCubit<ResearchesState> {
   }
 
   final AuthRepo _authRepo;
+  final NotificationRepo _notificationRepo;
   final ResearchRepo _researchRepo;
   late final StreamSubscription<User?> _userSubscription;
   late final StreamSubscription<List<Research>> _researchesSubscription;

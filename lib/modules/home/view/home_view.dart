@@ -18,6 +18,7 @@ class HomeView extends StatelessWidget {
     final iconButtonRecords = <IconButtonRecord>[
       (
         label: 'Bookmarks',
+        color: Colors.cyan,
         icon: Icons.bookmark_rounded,
         onPressed: AppRouter.bookmarks.name == null
             ? null
@@ -26,17 +27,20 @@ class HomeView extends StatelessWidget {
       (
         label: 'Publishers',
         icon: Icons.group_rounded,
+        color: Colors.pink,
         onPressed: () => context.pushNamed(AppRouter.publishers.name!),
       ),
       (
         label: 'Notifications',
         icon: Icons.notifications_rounded,
+        color: Colors.amber,
         // onPressed: () {},
         onPressed: () => context.pushNamed(AppRouter.notifications.name!),
       ),
       (
         label: 'Thesis Entry',
         icon: Icons.upload_file_rounded,
+        color: Colors.orange,
         onPressed: AppRouter.thesisEntry.name == null
             ? null
             : () => context.pushNamed(AppRouter.thesisEntry.name!),
@@ -44,6 +48,7 @@ class HomeView extends StatelessWidget {
       (
         label: 'Profile',
         icon: Icons.person_rounded,
+        color: Colors.blue,
         onPressed: AppRouter.profile.name == null
             ? null
             : () => context.pushNamed(AppRouter.profile.name!),
@@ -51,6 +56,7 @@ class HomeView extends StatelessWidget {
       (
         label: 'Research Entry',
         icon: Icons.upload_file_rounded,
+        color: Colors.green,
         onPressed: AppRouter.researchEntry.name == null
             ? null
             : () => context.pushNamed(AppRouter.researchEntry.name!),
@@ -87,11 +93,35 @@ class HomeView extends StatelessWidget {
                 childAspectRatio: 1.425,
                 children: [
                   for (var i = 0; i < iconButtonRecords.length; i++)
-                    IconButtonLabeled(
-                      iconButtonRecords[i],
-                      color: AppThemes.selectedColors[i],
-                      size: context.mediaQuery.size.shortestSide * .09,
-                    ),
+                    if (i == 2)
+                      Stack(
+                        alignment: AlignmentDirectional.center,
+                        children: [
+                          Positioned(
+                            top: 12.5,
+                            right: 22.5,
+                            child: Badge.count(
+                              count: 10,
+                              backgroundColor: Colors.transparent,
+                              largeSize: 20,
+                              textColor: context
+                                  .theme.colorScheme.inversePrimary
+                                  .withOpacity(.85),
+                              textStyle: context.theme.textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          IconButtonLabeled(
+                            iconButtonRecords[i],
+                            size: context.mediaQuery.size.shortestSide * .09,
+                          ),
+                        ],
+                      )
+                    else
+                      IconButtonLabeled(
+                        iconButtonRecords[i],
+                        size: context.mediaQuery.size.shortestSide * .09,
+                      ),
                 ],
               ),
             ],

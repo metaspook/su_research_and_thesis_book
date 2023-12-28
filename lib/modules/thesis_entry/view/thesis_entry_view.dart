@@ -117,37 +117,25 @@ class ThesisEntryView extends StatelessWidget {
                 // Upload button
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: ThesisEntryBlocListener(
-                    listenWhen: (previous, current) =>
-                        current.status.hasMessage,
-                    listener: (context, state) {
-                      final snackBar = SnackBar(
-                        clipBehavior: Clip.none,
-                        content: Text(state.statusMsg),
+                  child: Builder(
+                    builder: (context) {
+                      final userId = context.select(
+                        (AppCubit cubit) => cubit.state.user.id,
                       );
-                      context.scaffoldMessenger.showSnackBar(snackBar);
+                      final enabled = context.select(
+                        (ThesisEntryCubit cubit) =>
+                            cubit.state.pdfPath.isNotEmpty &&
+                            cubit.state.title.isNotEmpty,
+                      );
+                      return ElevatedButton.icon(
+                        label: const Text('Upload'),
+                        icon: const Icon(
+                          Icons.upload_file_rounded,
+                        ),
+                        onPressed:
+                            enabled ? () => cubit.upload(userId: userId) : null,
+                      );
                     },
-                    child: Builder(
-                      builder: (context) {
-                        final userId = context.select(
-                          (AppCubit cubit) => cubit.state.user.id,
-                        );
-                        final enabled = context.select(
-                          (ThesisEntryCubit cubit) =>
-                              cubit.state.pdfPath.isNotEmpty &&
-                              cubit.state.title.isNotEmpty,
-                        );
-                        return ElevatedButton.icon(
-                          label: const Text('Upload'),
-                          icon: const Icon(
-                            Icons.upload_file_rounded,
-                          ),
-                          onPressed: enabled
-                              ? () => cubit.upload(userId: userId)
-                              : null,
-                        );
-                      },
-                    ),
                   ),
                 ),
               ],
