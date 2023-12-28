@@ -15,10 +15,7 @@ class PublishersPage extends StatelessWidget {
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          context.sliverAppBar(
-            context.l10n.publishersAppBarTitle,
-            centerTitle: false,
-          ),
+          context.sliverAppBar(context.l10n.publishersAppBarTitle),
         ],
         body: Builder(
           builder: (context) {

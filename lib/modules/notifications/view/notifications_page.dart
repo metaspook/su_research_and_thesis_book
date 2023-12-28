@@ -15,6 +15,7 @@ class NotificationsPage extends StatelessWidget {
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           context.sliverAppBar(
             context.l10n.notificationsAppBarTitle,
+            centerTitle: false,
             bottom: ClipRRect(
               borderRadius: AppThemes.bottomRadius,
               child: Container(
@@ -26,7 +27,7 @@ class NotificationsPage extends StatelessWidget {
                   style: context.theme.textTheme.labelSmall,
                 ),
               ),
-            ).toPreferredSize(const Size.fromHeight(kToolbarHeight * .30)),
+            ).toPreferredSize(const Size.fromHeight(kToolbarHeight * .5)),
             actions: [
               Padding(
                 padding: const EdgeInsets.only(right: AppThemes.width * .6),
@@ -46,8 +47,9 @@ class NotificationsPage extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text(
+                                Text(
                                   'Dismiss all notifications?',
+                                  style: context.theme.textTheme.titleLarge,
                                 ),
                                 IconButton(
                                   onPressed: context.pop,
