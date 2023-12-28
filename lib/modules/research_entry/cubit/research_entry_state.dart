@@ -8,15 +8,12 @@ enum ResearchEntryStatus {
   failure;
 
   bool get isLoading => this == ResearchEntryStatus.loading;
-  bool get hasMessage =>
-      this == ResearchEntryStatus.success ||
-      this == ResearchEntryStatus.failure;
 }
 
 final class ResearchEntryState extends Equatable {
   const ResearchEntryState({
     this.status = ResearchEntryStatus.initial,
-    this.statusMsg = '',
+    this.statusMsg,
     this.title = '',
     this.categoryIndex = 0,
     this.description = '',
@@ -24,7 +21,7 @@ final class ResearchEntryState extends Equatable {
   });
 
   final ResearchEntryStatus status;
-  final String statusMsg;
+  final String? statusMsg;
   final String title;
   final int categoryIndex;
   final String description;
@@ -49,6 +46,6 @@ final class ResearchEntryState extends Equatable {
   }
 
   @override
-  List<Object> get props =>
+  List<Object?> get props =>
       [status, statusMsg, title, categoryIndex, description, pdfPath];
 }

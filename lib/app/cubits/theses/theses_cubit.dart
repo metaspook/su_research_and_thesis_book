@@ -14,7 +14,6 @@ class ThesesCubit extends HydratedCubit<ThesesState> {
     required NotificationRepo notificationRepo,
     required ThesisRepo thesisRepo,
   })  : _authRepo = authRepo,
-        _notificationRepo = notificationRepo,
         _thesisRepo = thesisRepo,
         super(const ThesesState()) {
     //-- Initialize Authentication subscription.
@@ -22,19 +21,17 @@ class ThesesCubit extends HydratedCubit<ThesesState> {
       if (user != null) {
         // Authenticated: Initialize Theses data.
         _thesesSubscription = _thesisRepo.stream.listen((theses) async {
+          // process notification if new data.
           if (state.notify) {
-            'NEW THESIS ADDED: ${theses.last}'.doPrint();
             final record = (
               type: NotificationType.thesis,
               paperName: theses.last.title,
               userName: theses.last.publisher?.name
             );
-            await notificationRepo.add(record).then((_) {
-              emit(state.copyWith(theses: theses));
-            });
-          } else {
-            emit(state.copyWith(notify: true, theses: theses));
+            await notificationRepo.add(record);
           }
+          final notify = state.notify ? null : true;
+          emit(state.copyWith(notify: notify, theses: theses));
         });
       } else {
         // Unauthenticated: Reset cached and current state.
@@ -46,20 +43,16 @@ class ThesesCubit extends HydratedCubit<ThesesState> {
   }
 
   final AuthRepo _authRepo;
-  final NotificationRepo _notificationRepo;
   final ThesisRepo _thesisRepo;
   late final StreamSubscription<User?> _userSubscription;
   late final StreamSubscription<List<Thesis>> _thesesSubscription;
 
   @override
-  ThesesState? fromJson(Map<String, dynamic> json) {
-    return ThesesState.fromJson(json);
-  }
+  ThesesState? fromJson(Map<String, dynamic> json) =>
+      ThesesState.fromJson(json);
 
   @override
-  Map<String, dynamic>? toJson(ThesesState state) {
-    return state.toJson();
-  }
+  Map<String, dynamic>? toJson(ThesesState state) => state.toJson();
 
   @override
   Future<void> close() {

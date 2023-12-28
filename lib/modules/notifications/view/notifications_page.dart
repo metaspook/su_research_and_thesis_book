@@ -20,7 +20,7 @@ class NotificationsPage extends StatelessWidget {
           const NotificationsAppBar(),
         ],
         body: NotificationsBlocSelector<List<NotificationRecord>>(
-          selector: (state) => state.notificationRecords,
+          selector: (state) => state.records,
           builder: (context, notificationRecords) {
             return notificationRecords.isEmpty
                 ? context.emptyListText()

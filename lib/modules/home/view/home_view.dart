@@ -100,15 +100,22 @@ class HomeView extends StatelessWidget {
                           Positioned(
                             top: 12.5,
                             right: 22.5,
-                            child: Badge.count(
-                              count: 10,
-                              backgroundColor: Colors.transparent,
-                              largeSize: 20,
-                              textColor: context
-                                  .theme.colorScheme.inversePrimary
-                                  .withOpacity(.85),
-                              textStyle: context.theme.textTheme.titleMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            child: BlocSelector<NotificationsCubit,
+                                NotificationsState, int>(
+                              selector: (state) =>
+                                  state.records.length,
+                              builder: (context, notificationsCount) {
+                                return Badge.count(
+                                  count: notificationsCount,
+                                  backgroundColor: Colors.transparent,
+                                  largeSize: 20,
+                                  textColor: context
+                                      .theme.colorScheme.inversePrimary
+                                      .withOpacity(.85),
+                                  textStyle: context.theme.textTheme.titleMedium
+                                      ?.copyWith(fontWeight: FontWeight.bold),
+                                );
+                              },
                             ),
                           ),
                           IconButtonLabeled(

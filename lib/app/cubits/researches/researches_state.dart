@@ -13,6 +13,7 @@ class ResearchesState extends Equatable {
   const ResearchesState({
     this.status = ResearchesStatus.initial,
     this.statusMsg,
+    this.notify = false,
     this.researches,
   });
 
@@ -27,8 +28,8 @@ class ResearchesState extends Equatable {
 
   final ResearchesStatus status;
   final String? statusMsg;
+  final bool notify;
   final List<Research>? researches;
-  bool get hasMessage => statusMsg != null;
   List<Publisher>? get publishers => researches == null
       ? null
       : <Publisher>[
@@ -45,11 +46,13 @@ class ResearchesState extends Equatable {
   ResearchesState copyWith({
     ResearchesStatus? status,
     String? statusMsg,
+    bool? notify,
     List<Research>? researches,
   }) {
     return ResearchesState(
       status: status ?? this.status,
       statusMsg: statusMsg ?? this.statusMsg,
+      notify: notify ?? this.notify,
       researches: researches ?? this.researches,
     );
   }
@@ -59,6 +62,7 @@ class ResearchesState extends Equatable {
     return [
       status,
       statusMsg,
+      notify,
       researches,
     ];
   }

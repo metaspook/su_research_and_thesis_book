@@ -14,7 +14,6 @@ class ResearchesCubit extends HydratedCubit<ResearchesState> {
     required NotificationRepo notificationRepo,
     required ResearchRepo researchRepo,
   })  : _authRepo = authRepo,
-        _notificationRepo = notificationRepo,
         _researchRepo = researchRepo,
         super(const ResearchesState()) {
     //-- Initialize Authentication subscription.
@@ -23,7 +22,17 @@ class ResearchesCubit extends HydratedCubit<ResearchesState> {
         // Authenticated: Initialize Researches data.
         _researchesSubscription =
             _researchRepo.stream.listen((researches) async {
-          emit(state.copyWith(researches: researches));
+          // process notification if new data.
+          if (state.notify) {
+            final record = (
+              type: NotificationType.research,
+              paperName: researches.last.title,
+              userName: researches.last.publisher?.name
+            );
+            await notificationRepo.add(record);
+          }
+          final notify = state.notify ? null : true;
+          emit(state.copyWith(notify: notify, researches: researches));
         });
       } else {
         // Unauthenticated: Reset cached and current state.
@@ -35,20 +44,16 @@ class ResearchesCubit extends HydratedCubit<ResearchesState> {
   }
 
   final AuthRepo _authRepo;
-  final NotificationRepo _notificationRepo;
   final ResearchRepo _researchRepo;
   late final StreamSubscription<User?> _userSubscription;
   late final StreamSubscription<List<Research>> _researchesSubscription;
 
   @override
-  ResearchesState? fromJson(Map<String, dynamic> json) {
-    return ResearchesState.fromJson(json);
-  }
+  ResearchesState? fromJson(Map<String, dynamic> json) =>
+      ResearchesState.fromJson(json);
 
   @override
-  Map<String, dynamic>? toJson(ResearchesState state) {
-    return state.toJson();
-  }
+  Map<String, dynamic>? toJson(ResearchesState state) => state.toJson();
 
   @override
   Future<void> close() {
