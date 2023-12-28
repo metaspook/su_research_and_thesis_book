@@ -45,6 +45,7 @@ class ThesisCard extends StatelessWidget {
         leading: HaloAvatar(thesis.publisher?.photoUrl),
         title: Text(
           thesis.title.toStringParseNull(),
+          overflow: TextOverflow.ellipsis,
           style: context.theme.textTheme.titleMedium,
         ),
         subtitle: Column(
@@ -53,35 +54,31 @@ class ThesisCard extends StatelessWidget {
             Text.rich(
               TextSpan(
                 text: 'Author: ',
-                style: context.theme.textTheme.titleSmall?.copyWith(
-                  color: theme.badgeTheme.backgroundColor,
-                ),
                 children: [
                   TextSpan(
                     text: thesis.publisher?.name.toStringParseNull(),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
+              ),
+              overflow: TextOverflow.ellipsis,
+              style: context.theme.textTheme.titleSmall?.copyWith(
+                color: context.theme.badgeTheme.backgroundColor,
               ),
             ),
             Text.rich(
               TextSpan(
                 text: 'Posted: ',
-                style: context.theme.textTheme.titleSmall?.copyWith(
-                  color: theme.badgeTheme.backgroundColor,
-                ),
                 children: [
                   TextSpan(
                     text: dateStr,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
+              ),
+              overflow: TextOverflow.ellipsis,
+              style: context.theme.textTheme.titleSmall?.copyWith(
+                color: context.theme.badgeTheme.backgroundColor,
               ),
             ),
           ],

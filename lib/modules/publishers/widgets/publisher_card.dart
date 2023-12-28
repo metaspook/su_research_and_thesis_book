@@ -24,6 +24,11 @@ class PublisherCard extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+        dense: true,
+        visualDensity: const VisualDensity(
+          horizontal: VisualDensity.minimumDensity,
+        ),
         selected: selected,
         // shape: selected ? AppThemes.outlineInputBorder : null,
         onLongPress: onLongPress,
@@ -34,42 +39,46 @@ class PublisherCard extends StatelessWidget {
         leading: HaloAvatar(publisher.photoUrl),
         title: Text(
           publisher.name.toStringParseNull(),
-          style: context.theme.textTheme.titleLarge,
+          overflow: TextOverflow.ellipsis,
+          style: context.theme.textTheme.titleMedium,
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Designation
             Text.rich(
               TextSpan(
                 text: 'Designation: ',
-                style: context.theme.textTheme.titleMedium?.copyWith(
-                  color: context.theme.badgeTheme.backgroundColor,
-                ),
                 children: [
                   TextSpan(
-                    text: publisher.designation,
+                    text: publisher.designation.toStringParseNull(),
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
+              overflow: TextOverflow.ellipsis,
+              style: context.theme.textTheme.titleSmall?.copyWith(
+                color: context.theme.badgeTheme.backgroundColor,
+              ),
             ),
+            // Department
             Text.rich(
               TextSpan(
                 text: 'Department: ',
-                style: context.theme.textTheme.titleMedium?.copyWith(
-                  color: context.theme.badgeTheme.backgroundColor,
-                ),
                 children: [
                   TextSpan(
-                    text: publisher.department,
+                    text: publisher.department.toStringParseNull(),
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
+              ),
+              overflow: TextOverflow.ellipsis,
+              style: context.theme.textTheme.titleSmall?.copyWith(
+                color: context.theme.badgeTheme.backgroundColor,
               ),
             ),
           ],
         ),
-        trailing: const Column(),
       ),
     );
   }

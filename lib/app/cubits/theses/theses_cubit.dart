@@ -19,7 +19,8 @@ class ThesesCubit extends HydratedCubit<ThesesState> {
         // Authenticated: Initialize Theses data.
         _thesesSubscription = _thesisRepo.stream.listen((theses) async {
           if (state.notify) 'NEW THESIS ADDED: ${theses.last}'.doPrint();
-          emit(state.copyWith(theses: theses));
+          final notify = state.notify ? null : true;
+          emit(state.copyWith(notify: notify, theses: theses));
         });
       } else {
         // Unauthenticated: Reset cached and current state.
