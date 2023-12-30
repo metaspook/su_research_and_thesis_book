@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:su_thesis_book/app/app.dart';
 import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
@@ -9,6 +11,8 @@ class NotificationsAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<NotificationsCubit>();
+
     return context.sliverAppBar(
       context.l10n.notificationsAppBarTitle,
       centerTitle: false,
@@ -63,7 +67,10 @@ class NotificationsAppBar extends StatelessWidget {
                         children: [
                           Expanded(
                             child: ElevatedButton(
-                              onPressed: () => context.pop(),
+                              onPressed: () {
+                                cubit.onAllDismissed();
+                                context.pop();
+                              },
                               child: const Text('Proceed'),
                             ),
                           ),

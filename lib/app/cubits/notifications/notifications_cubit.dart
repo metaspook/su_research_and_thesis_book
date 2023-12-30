@@ -4,7 +4,6 @@ import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
-import 'package:su_thesis_book/utils/utils.dart';
 
 part 'notifications_state.dart';
 
@@ -21,6 +20,15 @@ class NotificationsCubit extends HydratedCubit<NotificationsState> {
   final NotificationRepo _notificationRepo;
   late final StreamSubscription<List<NotificationRecord>>
       _notificationsSubscription;
+
+  void onDismissed(NotificationRecord record) {
+    final records = [...state.records]..remove(record);
+    emit(state.copyWith(records: records));
+  }
+
+  void onAllDismissed() {
+    emit(state.copyWith(records: []));
+  }
 
   @override
   NotificationsState? fromJson(Map<String, dynamic> json) =>

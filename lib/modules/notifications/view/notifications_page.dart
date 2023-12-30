@@ -14,6 +14,8 @@ class NotificationsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<NotificationsCubit>();
+
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
@@ -32,6 +34,7 @@ class NotificationsPage extends StatelessWidget {
                       final record = notificationRecords[index];
                       return Dismissible(
                         key: Key(index.toString()),
+                        onDismissed: (_) => cubit.onDismissed(index),
                         child: NotificationCard(record),
                       );
                     },
