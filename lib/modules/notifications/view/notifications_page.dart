@@ -34,7 +34,7 @@ class NotificationsPage extends StatelessWidget {
                       final record = notificationRecords[index];
                       return Dismissible(
                         key: Key(index.toString()),
-                        onDismissed: (_) => cubit.onDismissed(index),
+                        onDismissed: (_) => cubit.onDismissed(record),
                         child: NotificationCard(record),
                       );
                     },

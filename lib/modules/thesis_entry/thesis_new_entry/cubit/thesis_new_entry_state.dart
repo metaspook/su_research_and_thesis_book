@@ -1,18 +1,18 @@
-part of 'thesis_entry_cubit.dart';
+part of 'thesis_new_entry_cubit.dart';
 
-enum ThesisEntryStatus {
+enum ThesisNewEntryStatus {
   initial,
   editing,
   loading,
   success,
   failure;
 
-  bool get isLoading => this == ThesisEntryStatus.loading;
+  bool get isLoading => this == ThesisNewEntryStatus.loading;
 }
 
-final class ThesisEntryState extends Equatable {
-  const ThesisEntryState({
-    this.status = ThesisEntryStatus.initial,
+final class ThesisNewEntryState extends Equatable {
+  const ThesisNewEntryState({
+    this.status = ThesisNewEntryStatus.initial,
     this.statusMsg,
     this.title = '',
     this.departmentIndex = 0,
@@ -20,22 +20,22 @@ final class ThesisEntryState extends Equatable {
     this.pdfPath = '',
   });
 
-  final ThesisEntryStatus status;
+  final ThesisNewEntryStatus status;
   final String? statusMsg;
   final String title;
   final int departmentIndex;
   final String description;
   final String pdfPath;
 
-  ThesisEntryState copyWith({
-    ThesisEntryStatus? status,
+  ThesisNewEntryState copyWith({
+    ThesisNewEntryStatus? status,
     String? statusMsg,
     String? title,
     int? departmentIndex,
     String? description,
     String? pdfPath,
   }) {
-    return ThesisEntryState(
+    return ThesisNewEntryState(
       status: status ?? this.status,
       statusMsg: statusMsg ?? this.statusMsg,
       title: title ?? this.title,

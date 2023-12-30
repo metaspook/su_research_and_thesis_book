@@ -191,7 +191,12 @@ class ThesisRepo implements CRUD<Thesis> {
 
   @override
   Future<String?> delete(String id) async {
-    // TODO: implement delete
-    throw UnimplementedError();
+    try {
+      await _db.child(id).remove();
+    } catch (e, s) {
+      log(_errorMsgDelete, error: e, stackTrace: s);
+      return _errorMsgDelete;
+    }
+    return null;
   }
 }

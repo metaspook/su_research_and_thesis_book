@@ -3,12 +3,12 @@ import 'package:equatable/equatable.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
-part 'thesis_entry_state.dart';
+part 'thesis_new_entry_state.dart';
 
-class ThesisEntryCubit extends Cubit<ThesisEntryState> {
-  ThesisEntryCubit({required ThesisRepo thesisRepo})
+class ThesisNewEntryCubit extends Cubit<ThesisNewEntryState> {
+  ThesisNewEntryCubit({required ThesisRepo thesisRepo})
       : _thesisRepo = thesisRepo,
-        super(const ThesisEntryState());
+        super(const ThesisNewEntryState());
 
   final ThesisRepo _thesisRepo;
 
@@ -31,7 +31,7 @@ class ThesisEntryCubit extends Cubit<ThesisEntryState> {
     } else {
       emit(
         state.copyWith(
-          status: ThesisEntryStatus.failure,
+          status: ThesisNewEntryStatus.failure,
           statusMsg: pickRecord.errorMsg,
         ),
       );
@@ -39,7 +39,7 @@ class ThesisEntryCubit extends Cubit<ThesisEntryState> {
   }
 
   Future<void> upload({required String userId}) async {
-    emit(state.copyWith(status: ThesisEntryStatus.loading));
+    emit(state.copyWith(status: ThesisNewEntryStatus.loading));
     // Upload thesis file to storage.
     final uploadRecord = await _thesisRepo.uploadFile(state.pdfPath);
     if (uploadRecord.errorMsg == null) {
@@ -58,14 +58,14 @@ class ThesisEntryCubit extends Cubit<ThesisEntryState> {
       if (errorMsg == null) {
         emit(
           state.copyWith(
-            status: ThesisEntryStatus.success,
+            status: ThesisNewEntryStatus.success,
             statusMsg: 'Success! Thesis uploaded.',
           ),
         );
       } else {
         emit(
           state.copyWith(
-            status: ThesisEntryStatus.failure,
+            status: ThesisNewEntryStatus.failure,
             statusMsg: errorMsg,
           ),
         );
@@ -73,7 +73,7 @@ class ThesisEntryCubit extends Cubit<ThesisEntryState> {
     } else {
       emit(
         state.copyWith(
-          status: ThesisEntryStatus.failure,
+          status: ThesisNewEntryStatus.failure,
           statusMsg: uploadRecord.errorMsg,
         ),
       );

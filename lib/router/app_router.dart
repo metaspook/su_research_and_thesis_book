@@ -220,10 +220,19 @@ final class AppRouter {
     name: 'thesisEntry',
     path: '/thesis_entry',
     builder: (context, state) {
-      return BlocProvider<ThesisEntryCubit>(
-        create: (context) => ThesisEntryCubit(
-          thesisRepo: context.read<ThesisRepo>(),
-        ),
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider<ThesisNewEntryCubit>(
+            create: (context) => ThesisNewEntryCubit(
+              thesisRepo: context.read<ThesisRepo>(),
+            ),
+          ),
+          BlocProvider<ThesisEntriesCubit>(
+            create: (context) => ThesisEntriesCubit(
+              thesisRepo: context.read<ThesisRepo>(),
+            ),
+          ),
+        ],
         child: const ThesisEntryPage(),
       );
     },

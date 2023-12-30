@@ -30,6 +30,9 @@ class ThesesState extends Equatable {
   final bool notify;
   final List<Thesis>? theses;
   bool get hasMessage => statusMsg != null;
+  List<Thesis>? thesesOfPublisher(String id) =>
+      theses?.where((thesis) => thesis.publisher?.id == id).toList();
+
   List<Publisher>? get publishers => theses == null
       ? null
       : <Publisher>[
