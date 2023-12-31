@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:su_thesis_book/gen/assets.gen.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 
 // Config
@@ -11,13 +12,13 @@ extension CallableWidgetExt on BuildContext {
   FocusScopeNode get focusScope => FocusScope.of(this);
   // bool get keyboardVisible => MediaQuery.of(this).viewInsets.bottom != 0;
 
-  // SvgPicture authBanner() => _authBanner ??= SvgPicture.asset(
-  //       Assets.images.signinBanner01,
-  //       placeholderBuilder: (context) =>
-  //           const Center(child: CircularProgressIndicator()),
-  //       semanticsLabel: 'Auth Logo',
-  //       height: mediaQuery.size.height * .3,
-  //     );
+  SvgPicture authBanner() => _authBanner ??= SvgPicture.asset(
+        Assets.images.signinBanner01,
+        placeholderBuilder: (context) =>
+            const Center(child: CircularProgressIndicator()),
+        semanticsLabel: 'Auth Logo',
+        height: mediaQuery.size.height * .3,
+      );
   Widget emptyListText({String? data, bool hasToolbarHeight = true}) => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

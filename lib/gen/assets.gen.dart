@@ -12,16 +12,56 @@ import 'package:flutter/widgets.dart';
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/launcher_icon.png
+  AssetGenImage get launcherIcon =>
+      const AssetGenImage('assets/images/launcher_icon.png');
+
+  /// File path: assets/images/launcher_icon_background.png
+  AssetGenImage get launcherIconBackground =>
+      const AssetGenImage('assets/images/launcher_icon_background.png');
+
+  /// File path: assets/images/launcher_icon_foreground.png
+  AssetGenImage get launcherIconForeground =>
+      const AssetGenImage('assets/images/launcher_icon_foreground.png');
+
+  /// File path: assets/images/logo_01_transparent.svg
+  String get logo01Transparent => 'assets/images/logo_01_transparent.svg';
+
   /// File path: assets/images/placeholder_user_01.jpg
   AssetGenImage get placeholderUser01 =>
       const AssetGenImage('assets/images/placeholder_user_01.jpg');
 
+  /// File path: assets/images/placeholder_user_01_dark.jpg
+  AssetGenImage get placeholderUser01Dark =>
+      const AssetGenImage('assets/images/placeholder_user_01_dark.jpg');
+
+  /// File path: assets/images/placeholder_user_01_dark_glow.jpg
+  AssetGenImage get placeholderUser01DarkGlow =>
+      const AssetGenImage('assets/images/placeholder_user_01_dark_glow.jpg');
+
+  /// File path: assets/images/placeholder_user_01_invert.jpg
+  AssetGenImage get placeholderUser01Invert =>
+      const AssetGenImage('assets/images/placeholder_user_01_invert.jpg');
+
+  /// File path: assets/images/signin_banner_01.svg
+  String get signinBanner01 => 'assets/images/signin_banner_01.svg';
+
   /// List of all assets
-  List<AssetGenImage> get values => [placeholderUser01];
+  List<dynamic> get values => [
+        launcherIcon,
+        launcherIconBackground,
+        launcherIconForeground,
+        logo01Transparent,
+        placeholderUser01,
+        placeholderUser01Dark,
+        placeholderUser01DarkGlow,
+        placeholderUser01Invert,
+        signinBanner01
+      ];
 }
 
 class Assets {
-  const Assets._();
+  Assets._();
 
   static const $AssetsImagesGen images = $AssetsImagesGen();
 }

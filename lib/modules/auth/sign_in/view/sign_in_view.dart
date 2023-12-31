@@ -54,7 +54,8 @@ class _SignInViewState extends State<SignInView> {
         child: ListView(
           padding: AppThemes.viewPadding * 2,
           children: [
-            const SizedBox(height: AppThemes.height * 2),
+            const SizedBox(height: AppThemes.height),
+            context.authBanner(),
             // E-mail
             TextFormField(
               controller: _emailController,

@@ -111,7 +111,7 @@ class AppView extends StatelessWidget {
     // NOTE: This 'initialLocation' approach is experimental instead of
     // redirection from router, need see which one is performant and stable.
     final initialLocation =
-        isAuthenticated ? AppRouter.thesisEntry.path : AppRouter.auth.path;
+        isAuthenticated ? AppRouter.auth.path : AppRouter.auth.path;
     final router = AppRouter(initialLocation: initialLocation);
 
     return MaterialApp.router(
