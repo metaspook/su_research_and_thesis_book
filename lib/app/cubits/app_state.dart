@@ -20,9 +20,9 @@ class AppState extends Equatable {
   // const AppState.unauthenticated() : this._();
 
   factory AppState.fromJson(Map<String, dynamic> json) {
-    final userJson = Map<String, dynamic>.from(json['user'] as Map);
+    // final userJson = Map<String, dynamic>.from(json['user'] as Map);
     return AppState(
-      user: AppUser.fromJson(userJson),
+      user: AppUser.fromJson(json['user'] as Map<String, dynamic>),
       firstLaunch: json['firstLaunch'] as bool,
     );
   }

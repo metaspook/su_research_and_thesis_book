@@ -30,6 +30,8 @@ class ResearchesState extends Equatable {
   final String? statusMsg;
   final bool notify;
   final List<Research>? researches;
+  List<Research>? researchesOfPublisher(String id) =>
+      researches?.where((research) => research.publisher?.id == id).toList();
   List<Publisher>? get publishers => researches == null
       ? null
       : <Publisher>[

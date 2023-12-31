@@ -104,17 +104,13 @@ class AppView extends StatelessWidget {
     context
       ..read<DepartmentsCubit>()
       ..read<DesignationsCubit>();
-    final firstLaunch =
-        context.select((AppCubit cubit) => cubit.state.firstLaunch);
+
     final isAuthenticated =
         context.select((AppCubit cubit) => cubit.state.status.isAuthenticated);
     // NOTE: This 'initialLocation' approach is experimental instead of
     // redirection from router, need see which one is performant and stable.
-    final initialLocation = firstLaunch
-        ? AppRouter.auth.path
-        : isAuthenticated
-            ? AppRouter.auth.path
-            : AppRouter.auth.path;
+    final initialLocation =
+        isAuthenticated ? AppRouter.home.path : AppRouter.auth.path;
     final router = AppRouter(initialLocation: initialLocation);
 
     return MaterialApp.router(

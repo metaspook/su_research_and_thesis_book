@@ -3,12 +3,12 @@ import 'package:equatable/equatable.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
-part 'research_entry_state.dart';
+part 'research_new_entry_state.dart';
 
-class ResearchEntryCubit extends Cubit<ResearchEntryState> {
-  ResearchEntryCubit({required ResearchRepo researchRepo})
+class ResearchNewEntryCubit extends Cubit<ResearchNewEntryState> {
+  ResearchNewEntryCubit({required ResearchRepo researchRepo})
       : _researchRepo = researchRepo,
-        super(const ResearchEntryState());
+        super(const ResearchNewEntryState());
 
   final ResearchRepo _researchRepo;
 
@@ -16,8 +16,8 @@ class ResearchEntryCubit extends Cubit<ResearchEntryState> {
     emit(state.copyWith(title: value));
   }
 
-  void onChangedCategory(int? value) {
-    emit(state.copyWith(categoryIndex: value));
+  void onChangedDepartment(int? value) {
+    emit(state.copyWith(departmentIndex: value));
   }
 
   void onChangedDescription(String? value) {
@@ -31,7 +31,7 @@ class ResearchEntryCubit extends Cubit<ResearchEntryState> {
     } else {
       emit(
         state.copyWith(
-          status: ResearchEntryStatus.failure,
+          status: ResearchNewEntryStatus.failure,
           statusMsg: pickRecord.errorMsg,
         ),
       );
@@ -39,15 +39,15 @@ class ResearchEntryCubit extends Cubit<ResearchEntryState> {
   }
 
   Future<void> upload({required String userId}) async {
-    emit(state.copyWith(status: ResearchEntryStatus.loading));
+    emit(state.copyWith(status: ResearchNewEntryStatus.loading));
     // Upload research file to storage.
     final uploadRecord = await _researchRepo.uploadFile(state.pdfPath);
     if (uploadRecord.errorMsg == null) {
       final researchId = _researchRepo.newId;
       final researchObj = {
         'userId': userId,
-        'categoryIndex': state.categoryIndex,
         'createdAt': timestamp,
+        'departmentIndex': state.departmentIndex,
         'description': state.description,
         'title': state.title,
         'views': 0,
@@ -59,14 +59,14 @@ class ResearchEntryCubit extends Cubit<ResearchEntryState> {
       if (errorMsg == null) {
         emit(
           state.copyWith(
-            status: ResearchEntryStatus.success,
+            status: ResearchNewEntryStatus.success,
             statusMsg: 'Success! Research uploaded.',
           ),
         );
       } else {
         emit(
           state.copyWith(
-            status: ResearchEntryStatus.failure,
+            status: ResearchNewEntryStatus.failure,
             statusMsg: errorMsg,
           ),
         );
@@ -74,7 +74,7 @@ class ResearchEntryCubit extends Cubit<ResearchEntryState> {
     } else {
       emit(
         state.copyWith(
-          status: ResearchEntryStatus.failure,
+          status: ResearchNewEntryStatus.failure,
           statusMsg: uploadRecord.errorMsg,
         ),
       );

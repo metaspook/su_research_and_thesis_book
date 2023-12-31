@@ -9,7 +9,6 @@ final class AppRouter {
             bookmarks,
             comments,
             home,
-            landing,
             notifications,
             passwordReset,
             profile,
@@ -102,15 +101,6 @@ final class AppRouter {
     },
   );
 
-  // Landing
-  static final landing = GoRoute(
-    name: 'landing',
-    path: '/landing',
-    builder: (context, state) {
-      return const LandingPage();
-    },
-  );
-
   // // Notifications
   static final notifications = GoRoute(
     name: 'notifications',
@@ -199,10 +189,19 @@ final class AppRouter {
     name: 'researchEntry',
     path: '/research_entry',
     builder: (context, state) {
-      return BlocProvider<ResearchEntryCubit>(
-        create: (context) => ResearchEntryCubit(
-          researchRepo: context.read<ResearchRepo>(),
-        ),
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider<ResearchNewEntryCubit>(
+            create: (context) => ResearchNewEntryCubit(
+              researchRepo: context.read<ResearchRepo>(),
+            ),
+          ),
+          BlocProvider<ResearchEntriesCubit>(
+            create: (context) => ResearchEntriesCubit(
+              researchRepo: context.read<ResearchRepo>(),
+            ),
+          ),
+        ],
         child: const ResearchEntryPage(),
       );
     },
