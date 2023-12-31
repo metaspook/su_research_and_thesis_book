@@ -5,6 +5,7 @@ import 'package:su_thesis_book/modules/auth/auth.dart';
 import 'package:su_thesis_book/modules/bookmarks/bookmarks.dart';
 import 'package:su_thesis_book/modules/comments/comments.dart';
 import 'package:su_thesis_book/modules/home/home.dart';
+import 'package:su_thesis_book/modules/landing/landing.dart';
 import 'package:su_thesis_book/modules/notifications/notifications.dart';
 import 'package:su_thesis_book/modules/password_reset/password_reset.dart';
 import 'package:su_thesis_book/modules/profile/profile.dart';

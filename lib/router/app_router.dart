@@ -6,9 +6,10 @@ final class AppRouter {
           //-- Register routes
           routes: <RouteBase>[
             auth,
-            home,
             bookmarks,
             comments,
+            home,
+            landing,
             notifications,
             passwordReset,
             profile,
@@ -98,6 +99,15 @@ final class AppRouter {
         ],
         child: const BookmarksPage(),
       );
+    },
+  );
+
+  // Landing
+  static final landing = GoRoute(
+    name: 'landing',
+    path: '/landing',
+    builder: (context, state) {
+      return const LandingPage();
     },
   );
 

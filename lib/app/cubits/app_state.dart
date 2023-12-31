@@ -5,8 +5,6 @@ enum AppStatus {
   unauthenticated;
 
   bool get isAuthenticated => this == AppStatus.authenticated;
-  // bool get hasMessage =>
-  //     this == AppStatus.authenticated || this == AppStatus.unauthenticated;
 }
 
 class AppState extends Equatable {
@@ -22,9 +20,9 @@ class AppState extends Equatable {
   // const AppState.unauthenticated() : this._();
 
   factory AppState.fromJson(Map<String, dynamic> json) {
+    final userJson = Map<String, dynamic>.from(json['user'] as Map);
     return AppState(
-      // status: AppStatus.values.byName(json['status'] as String),
-      user: AppUser.fromJson(json['user'] as Map<String, dynamic>),
+      user: AppUser.fromJson(userJson),
       firstLaunch: json['firstLaunch'] as bool,
     );
   }
@@ -33,10 +31,8 @@ class AppState extends Equatable {
   final String? statusMsg;
   final AppUser user;
   final bool firstLaunch;
-  bool get hasMessage => statusMsg != null;
 
-  Json toJson() => <String, dynamic>{
-        // 'status': status.name,
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'user': user.toJson(),
         'firstLaunch': firstLaunch,
       };
@@ -49,7 +45,7 @@ class AppState extends Equatable {
   }) =>
       AppState(
         status: status ?? this.status,
-        statusMsg: statusMsg,
+        statusMsg: this.statusMsg,
         user: user ?? this.user,
         firstLaunch: firstLaunch ?? this.firstLaunch,
       );

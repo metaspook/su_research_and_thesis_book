@@ -5,7 +5,6 @@ import 'package:su_thesis_book/l10n/l10n.dart';
 import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/repositories/repositories.dart';
 import 'package:su_thesis_book/theme/theme.dart';
-import 'package:su_thesis_book/utils/extensions.dart';
 
 // Provide global blocs and repositories from here.
 class App extends StatelessWidget {
@@ -105,13 +104,17 @@ class AppView extends StatelessWidget {
     context
       ..read<DepartmentsCubit>()
       ..read<DesignationsCubit>();
+    final firstLaunch =
+        context.select((AppCubit cubit) => cubit.state.firstLaunch);
     final isAuthenticated =
         context.select((AppCubit cubit) => cubit.state.status.isAuthenticated);
-    isAuthenticated.doPrint('BIG PROBLEM: ');
     // NOTE: This 'initialLocation' approach is experimental instead of
     // redirection from router, need see which one is performant and stable.
-    final initialLocation =
-        isAuthenticated ? AppRouter.auth.path : AppRouter.auth.path;
+    final initialLocation = firstLaunch
+        ? AppRouter.auth.path
+        : isAuthenticated
+            ? AppRouter.auth.path
+            : AppRouter.auth.path;
     final router = AppRouter(initialLocation: initialLocation);
 
     return MaterialApp.router(
@@ -128,6 +131,8 @@ class AppView extends StatelessWidget {
 
 // Global bloc widgets typedef.
 typedef AppBlocSelector<T> = BlocSelector<AppCubit, AppState, T>;
+typedef AppBlocListener = BlocListener<AppCubit, AppState>;
+
 typedef CategoriesBlocSelector<T>
     = BlocSelector<CategoriesCubit, CategoriesState, T>;
 typedef DepartmentsBlocSelector<T>
