@@ -15,6 +15,8 @@ class HomeView extends StatelessWidget {
     // final theses = context.select((HomeCubit cubit) => cubit.state.theses);
     // final researches =
     //     context.select((HomeCubit cubit) => cubit.state.researches);
+    final isStudent = context
+        .select((AppCubit cubit) => cubit.state.user.designation == 'Student');
     final iconButtonRecords = <IconButtonRecord>[
       (
         label: 'Bookmarks',
@@ -41,9 +43,9 @@ class HomeView extends StatelessWidget {
         label: 'Thesis Entry',
         icon: Icons.upload_file_rounded,
         color: Colors.orange,
-        onPressed: AppRouter.thesisEntry.name == null
-            ? null
-            : () => context.pushNamed(AppRouter.thesisEntry.name!),
+        onPressed: () => isStudent
+            ? context.showNotAllowedDialog()
+            : context.pushNamed(AppRouter.thesisEntry.name!),
       ),
       (
         label: 'Profile',
@@ -57,9 +59,9 @@ class HomeView extends StatelessWidget {
         label: 'Research Entry',
         icon: Icons.upload_file_rounded,
         color: Colors.green,
-        onPressed: AppRouter.researchEntry.name == null
-            ? null
-            : () => context.pushNamed(AppRouter.researchEntry.name!),
+        onPressed: () => isStudent
+            ? context.showNotAllowedDialog()
+            : context.pushNamed(AppRouter.researchEntry.name!),
       ),
     ];
     final theses = context.select((ThesesCubit cubit) => cubit.state.theses);
@@ -102,8 +104,7 @@ class HomeView extends StatelessWidget {
                             right: 22.5,
                             child: BlocSelector<NotificationsCubit,
                                 NotificationsState, int>(
-                              selector: (state) =>
-                                  state.records.length,
+                              selector: (state) => state.records.length,
                               builder: (context, notificationsCount) {
                                 return Badge.count(
                                   count: notificationsCount,
