@@ -12,12 +12,18 @@ class ThesisCubit extends Cubit<ThesisState> {
   ThesisCubit({
     required BookmarkRepo bookmarkRepo,
     required ThesisRepo thesisRepo,
-    required Thesis thesis,
+    required String thesisId,
   })  : _thesisRepo = thesisRepo,
         _bookmarkRepo = bookmarkRepo,
-        super(ThesisState(thesis: thesis)) {
+        super(const ThesisState()) {
     //-- Increment Thesis views.
-    incrementViews(state.thesis);
+    // incrementViews(state.thesis);
+    emit(state.copyWith(status: ThesisStatus.loading));
+    thesisRepo.thesisById(thesisId).then((thesis) {
+      thesis == null
+          ? emit(state.copyWith(status: ThesisStatus.failure))
+          : emit(state.copyWith(status: ThesisStatus.success, thesis: thesis));
+    });
   }
 
   final ThesisRepo _thesisRepo;
@@ -44,7 +50,7 @@ class ThesisCubit extends Cubit<ThesisState> {
   }
 
   Future<void> onPressedBookmark() async {
-    final paper = (type: PaperType.thesis, id: state.thesis.id);
+    final paper = (type: PaperType.thesis, id: state.thesis!.id);
     final errorMsg = await _bookmarkRepo.addBookmark(paper);
 
     if (errorMsg == null) {

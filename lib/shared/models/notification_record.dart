@@ -10,5 +10,7 @@ enum NotificationType {
 typedef NotificationRecord = ({
   NotificationType type,
   String? paperName,
-  String? userName
+  String? paperId,
+  // userName instead of publisherName as its gonna use for comments also.
+  String? userName,
 });

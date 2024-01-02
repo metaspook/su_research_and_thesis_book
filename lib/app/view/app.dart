@@ -141,8 +141,6 @@ typedef DepartmentsBlocListener
 typedef DesignationsBlocListener
     = BlocListener<DesignationsCubit, DesignationsState>;
 
-typedef PaperTypesBlocSelector<T>
-    = BlocSelector<PaperTypesCubit, PaperTypesState, T>;
 typedef ResearchesBlocSelector<T>
     = BlocSelector<ResearchesCubit, ResearchesState, T>;
 typedef ThesesBlocSelector<T> = BlocSelector<ThesesCubit, ThesesState, T>;

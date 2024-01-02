@@ -8,21 +8,19 @@ enum ThesisStatus {
   failure;
 
   bool get isLoading => this == ThesisStatus.loading;
-  bool get hasMessage =>
-      this == ThesisStatus.success || this == ThesisStatus.failure;
 }
 
 class ThesisState extends Equatable {
   const ThesisState({
-    required this.thesis,
     this.status = ThesisStatus.initial,
-    this.statusMsg = '',
+    this.statusMsg,
+    this.thesis,
     this.filePath = '',
   });
 
   final ThesisStatus status;
-  final String statusMsg;
-  final Thesis thesis;
+  final String? statusMsg;
+  final Thesis? thesis;
   final String filePath;
 
   ThesisState copyWith({

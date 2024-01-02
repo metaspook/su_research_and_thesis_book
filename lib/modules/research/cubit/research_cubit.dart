@@ -12,12 +12,23 @@ class ResearchCubit extends Cubit<ResearchState> {
   ResearchCubit({
     required ResearchRepo researchRepo,
     required BookmarkRepo bookmarkRepo,
-    required Research research,
+    required String researchId,
   })  : _researchRepo = researchRepo,
         _bookmarkRepo = bookmarkRepo,
-        super(ResearchState(research: research)) {
+        super(const ResearchState()) {
     //-- Increment Researches views.
-    incrementViews(state.research);
+    // incrementViews(state.research);
+    emit(state.copyWith(status: ResearchStatus.loading));
+    researchRepo.researchById(researchId).then((research) {
+      research == null
+          ? emit(state.copyWith(status: ResearchStatus.failure))
+          : emit(
+              state.copyWith(
+                status: ResearchStatus.success,
+                research: research,
+              ),
+            );
+    });
   }
 
   final ResearchRepo _researchRepo;
@@ -47,7 +58,7 @@ class ResearchCubit extends Cubit<ResearchState> {
   }
 
   Future<void> onPressedBookmark() async {
-    final paper = (type: PaperType.research, id: state.research.id);
+    final paper = (type: PaperType.research, id: state.research!.id);
     final errorMsg = await _bookmarkRepo.addBookmark(paper);
 
     if (errorMsg == null) {

@@ -71,6 +71,15 @@ class ThesisRepo implements CRUD<Thesis> {
     return null;
   }
 
+  /// Get thesis by Id.
+  Future<Thesis?> thesisById(String id) async {
+    final theses = await stream.first;
+    for (final thesis in theses) {
+      if (thesis.id == id) return thesis;
+    }
+    return null;
+  }
+
   /// Convert database snapshot to model with logic specified.
   Future<Thesis?> snapshotToModel(DataSnapshot snapshot) async {
     final thesisMap = snapshot.value?.toJson();
@@ -96,14 +105,6 @@ class ThesisRepo implements CRUD<Thesis> {
         'department': departments?[departmentIndex],
       };
       return Thesis.fromJson(thesisJson);
-    }
-    return null;
-  }
-
-  Future<Thesis?> thesisById(String id) async {
-    final theses = await stream.first;
-    for (final thesis in theses) {
-      if (thesis.id == id) return thesis;
     }
     return null;
   }

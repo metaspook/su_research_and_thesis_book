@@ -10,88 +10,103 @@ import 'package:su_thesis_book/utils/extensions.dart';
 typedef ThesisBlocListener = BlocListener<ThesisCubit, ThesisState>;
 
 class ThesisPage extends StatelessWidget {
-  const ThesisPage({required this.thesis, super.key});
-  final Thesis thesis;
+  const ThesisPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<ThesisCubit>();
+    final thesis = context.select((ThesisCubit cubit) => cubit.state.thesis);
 
     return ThesisBlocListener(
-      listenWhen: (previous, current) => current.status.hasMessage,
+      listenWhen: (previous, current) =>
+          previous.statusMsg != current.statusMsg,
       listener: (context, state) {
         final snackBar = SnackBar(
           backgroundColor:
               context.theme.snackBarTheme.backgroundColor?.withOpacity(.25),
           behavior: SnackBarBehavior.floating,
-          content: Text(state.statusMsg),
+          content: Text(state.statusMsg.toStringParseNull()),
         );
         context.scaffoldMessenger.showSnackBar(snackBar);
       },
-      child: Scaffold(
-        appBar: AppBar(
-          leading: context.backButton(),
-          centerTitle: true,
-          title: Text(thesis.title.toStringParseNull()),
-          actions: [
-            // Bookmark button
-            IconButton(
-              padding: EdgeInsets.zero,
-              // alignment: Alignment.center,
-              onPressed: cubit.onPressedBookmark,
-              icon: const Icon(Icons.bookmark_add_rounded),
-            ),
-            // Download button
-            IconButton(
-              padding: const EdgeInsets.only(top: kToolbarHeight * 0.04),
-              // alignment: Alignment.center,
-              onPressed: cubit.onPressedDownload,
-              icon: const Icon(Icons.download_rounded),
-            ),
-          ],
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            children: [
-              Card(
-                elevation: 4,
-                clipBehavior: Clip.none,
+      child: thesis == null
+          ? Scaffold(
+              appBar: AppBar(title: const Text('Thesis Page')),
+              body: context.emptyListText(),
+            )
+          : Scaffold(
+              appBar: AppBar(
+                leading: context.backButton(),
+                centerTitle: true,
+                title: Text(thesis.title.toStringParseNull()),
+                actions: [
+                  // Bookmark button
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    // alignment: Alignment.center,
+                    onPressed: cubit.onPressedBookmark,
+                    icon: const Icon(Icons.bookmark_add_rounded),
+                  ),
+                  // Download button
+                  IconButton(
+                    padding: const EdgeInsets.only(top: kToolbarHeight * 0.04),
+                    // alignment: Alignment.center,
+                    onPressed: cubit.onPressedDownload,
+                    icon: const Icon(Icons.download_rounded),
+                  ),
+                ],
+              ),
+              body: Padding(
+                padding: const EdgeInsets.all(8),
                 child: Column(
                   children: [
-                    PdfViewer(thesis.fileUrl!, whenDone: cubit.whenDoneLoading),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CounterBadge(
-                          label: 'Views',
-                          count: thesis.views,
-                          largeSize: 27.5,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 9,
-                            vertical: 6,
+                    Card(
+                      elevation: 4,
+                      clipBehavior: Clip.none,
+                      child: Column(
+                        children: [
+                          PdfViewer(
+                            thesis.fileUrl!,
+                            whenDone: cubit.whenDoneLoading,
                           ),
-                        ),
-                        TextButton.icon(
-                          onPressed: () => Future.wait([
-                            cubit.incrementViews(thesis, firstView: false),
-                            context.pushNamed(
-                              AppRouter.comments.name!,
-                              extra: (type: PaperType.thesis, id: thesis.id),
-                            ),
-                          ]),
-                          icon: const Icon(Icons.comment_outlined),
-                          label: const Text('Comments'),
-                        ),
-                      ],
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              CounterBadge(
+                                label: 'Views',
+                                count: thesis.views,
+                                largeSize: 27.5,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 9,
+                                  vertical: 6,
+                                ),
+                              ),
+                              TextButton.icon(
+                                onPressed: () => Future.wait([
+                                  cubit.incrementViews(
+                                    thesis,
+                                    firstView: false,
+                                  ),
+                                  context.pushNamed(
+                                    AppRouter.comments.name!,
+                                    extra: (
+                                      type: PaperType.thesis,
+                                      id: thesis.id
+                                    ),
+                                  ),
+                                ]),
+                                icon: const Icon(Icons.comment_outlined),
+                                label: const Text('Comments'),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }

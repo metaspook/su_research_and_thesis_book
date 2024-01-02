@@ -17,7 +17,7 @@ class ResearchEntriesView extends StatelessWidget {
     );
     final userId = context.select((AppCubit cubit) => cubit.state.user.id);
     final researches = context.select(
-        (ResearchesCubit cubit) => cubit.state.researchesOfPublisher(userId));
+        (ResearchesCubit cubit) => cubit.state.researchesOfPublisher(userId),);
 
     final selectedResearches = context
         .select((ResearchEntriesCubit cubit) => cubit.state.selectedResearches);

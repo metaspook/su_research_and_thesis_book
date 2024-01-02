@@ -21,12 +21,14 @@ class NotificationsCubit extends HydratedCubit<NotificationsState> {
   late final StreamSubscription<List<NotificationRecord>>
       _notificationsSubscription;
 
-  void onDismissed(NotificationRecord record) {
-    final records = [...state.records]..remove(record);
+  Future<void> onDismissed(NotificationRecord record) async {
+    await _notificationRepo.remove(record);
+    final records = state.records..remove(record);
     emit(state.copyWith(records: records));
   }
 
   void onAllDismissed() {
+    _notificationRepo.removeAll();
     emit(state.copyWith(records: []));
   }
 

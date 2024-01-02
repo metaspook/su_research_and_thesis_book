@@ -31,9 +31,9 @@ class BookmarksThesesCubit extends Cubit<BookmarksThesesState> {
           thesisBookmarks.map((bookmark) => bookmark.paperId);
 
       final bookmarkedTheses = <Thesis>[];
-      for (final bookmarkedTHesisId in bookmarkedResearchIds) {
+      for (final bookmarkedThesisId in bookmarkedResearchIds) {
         final bookmarkedThesis =
-            await _thesisRepo.thesisById(bookmarkedTHesisId);
+            await _thesisRepo.thesisById(bookmarkedThesisId);
         if (bookmarkedThesis != null) {
           bookmarkedTheses.add(bookmarkedThesis);
         }

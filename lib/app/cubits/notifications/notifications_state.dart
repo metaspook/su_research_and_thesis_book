@@ -24,6 +24,7 @@ class NotificationsState extends Equatable {
           (
             type: NotificationType.values.byName(recordJson['type']! as String),
             paperName: recordJson['paperName'] as String?,
+            paperId: recordJson['paperId'] as String?,
             userName: recordJson['userName'] as String?
           ),
       ],
@@ -52,6 +53,7 @@ class NotificationsState extends Equatable {
             {
               'type': record.type.name,
               'paperName': record.paperName,
+              'paperId': record.paperId,
               'userName': record.userName,
             },
         ],

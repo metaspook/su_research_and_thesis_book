@@ -14,15 +14,15 @@ enum ResearchStatus {
 
 class ResearchState extends Equatable {
   const ResearchState({
-    required this.research,
     this.status = ResearchStatus.initial,
-    this.statusMsg = '',
+    this.statusMsg,
+    this.research,
     this.filePath = '',
   });
 
   final ResearchStatus status;
-  final String statusMsg;
-  final Research research;
+  final String? statusMsg;
+  final Research? research;
   final String filePath;
 
   ResearchState copyWith({

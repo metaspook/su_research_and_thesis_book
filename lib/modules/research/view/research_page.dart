@@ -10,106 +10,118 @@ import 'package:su_thesis_book/utils/utils.dart';
 typedef ResearchBlocListener = BlocListener<ResearchCubit, ResearchState>;
 
 class ResearchPage extends StatelessWidget {
-  const ResearchPage({required this.research, super.key});
-  final Research research;
+  const ResearchPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<ResearchCubit>();
+    final research =
+        context.select((ResearchCubit cubit) => cubit.state.research);
 
     return ResearchBlocListener(
-      listenWhen: (previous, current) => current.status.hasMessage,
+      listenWhen: (previous, current) =>
+          previous.statusMsg != current.statusMsg,
       listener: (context, state) {
         final snackBar = SnackBar(
           backgroundColor:
               context.theme.snackBarTheme.backgroundColor?.withOpacity(.25),
           behavior: SnackBarBehavior.floating,
-          content: Text(state.statusMsg),
+          content: Text(state.statusMsg.toStringParseNull()),
         );
         context.scaffoldMessenger.showSnackBar(snackBar);
       },
-      child: Scaffold(
-        appBar: AppBar(
-          leading: context.backButton(),
-          centerTitle: true,
-          title: Text(research.title.toStringParseNull()),
-          actions: [
-            // Bookmark button
-            IconButton(
-              padding: EdgeInsets.zero,
-              // alignment: Alignment.center,
-              onPressed: cubit.onPressedBookmark,
-              icon: const Icon(Icons.bookmark_add_rounded),
-            ),
-            // Download button
-            ResearchBlocListener(
-              listenWhen: (previous, current) => current.status.hasMessage,
-              listener: (context, state) {
-                final snackBar = SnackBar(
-                  backgroundColor: context.theme.snackBarTheme.backgroundColor
-                      ?.withOpacity(.25),
-                  behavior: SnackBarBehavior.floating,
-                  content: Text(state.statusMsg),
-                );
-                context.scaffoldMessenger.showSnackBar(snackBar);
-              },
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                // alignment: Alignment.center,
-                onPressed: cubit.onPressedDownload,
-                icon: const Icon(Icons.download_rounded),
+      child: research == null
+          ? Scaffold(
+              appBar: AppBar(title: const Text('Thesis Page')),
+              body: context.emptyListText(),
+            )
+          : Scaffold(
+              appBar: AppBar(
+                leading: context.backButton(),
+                centerTitle: true,
+                title: Text(research.title.toStringParseNull()),
+                actions: [
+                  // Bookmark button
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    // alignment: Alignment.center,
+                    onPressed: cubit.onPressedBookmark,
+                    icon: const Icon(Icons.bookmark_add_rounded),
+                  ),
+                  // Download button
+                  ResearchBlocListener(
+                    listenWhen: (previous, current) =>
+                        current.status.hasMessage,
+                    listener: (context, state) {
+                      final snackBar = SnackBar(
+                        backgroundColor: context
+                            .theme.snackBarTheme.backgroundColor
+                            ?.withOpacity(.25),
+                        behavior: SnackBarBehavior.floating,
+                        content: Text(state.statusMsg.toStringParseNull()),
+                      );
+                      context.scaffoldMessenger.showSnackBar(snackBar);
+                    },
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      // alignment: Alignment.center,
+                      onPressed: cubit.onPressedDownload,
+                      icon: const Icon(Icons.download_rounded),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            children: [
-              Card(
-                elevation: 4,
-                clipBehavior: Clip.none,
+              body: Padding(
+                padding: const EdgeInsets.all(8),
                 child: Column(
                   children: [
-                    PdfViewer(
-                      research.fileUrl!,
-                      whenDone: cubit.whenDoneLoading,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CounterBadge(
-                          label: 'Views',
-                          count: research.views,
-                          largeSize: 27.5,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 9,
-                            vertical: 6,
+                    Card(
+                      elevation: 4,
+                      clipBehavior: Clip.none,
+                      child: Column(
+                        children: [
+                          PdfViewer(
+                            research.fileUrl!,
+                            whenDone: cubit.whenDoneLoading,
                           ),
-                        ),
-                        TextButton.icon(
-                          onPressed: () => Future.wait([
-                            cubit.incrementViews(research, firstView: false),
-                            context.pushNamed(
-                              AppRouter.comments.name!,
-                              extra: (
-                                type: PaperType.research,
-                                id: research.id
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              CounterBadge(
+                                label: 'Views',
+                                count: research.views,
+                                largeSize: 27.5,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 9,
+                                  vertical: 6,
+                                ),
                               ),
-                            ),
-                          ]),
-                          icon: const Icon(Icons.comment_outlined),
-                          label: const Text('Comments'),
-                        ),
-                      ],
+                              TextButton.icon(
+                                onPressed: () => Future.wait([
+                                  cubit.incrementViews(
+                                    research,
+                                    firstView: false,
+                                  ),
+                                  context.pushNamed(
+                                    AppRouter.comments.name!,
+                                    extra: (
+                                      type: PaperType.research,
+                                      id: research.id
+                                    ),
+                                  ),
+                                ]),
+                                icon: const Icon(Icons.comment_outlined),
+                                label: const Text('Comments'),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }

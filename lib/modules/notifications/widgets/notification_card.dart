@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 import 'package:su_thesis_book/utils/utils.dart';
@@ -17,6 +18,7 @@ class NotificationCard extends StatelessWidget {
   // final bool selected;
   // final VoidCallback? onTap;
   // final VoidCallback? onLongPress;
+  // final GestureTapCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +53,7 @@ class NotificationCard extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: ListTile(
+        onTap: () => context.pushNamed(record.type.name, extra: record.paperId),
         dense: true,
         visualDensity: const VisualDensity(
           vertical: VisualDensity.minimumDensity,
@@ -65,14 +68,23 @@ class NotificationCard extends StatelessWidget {
                 Text(
                   record.userName.toStringParseNull(),
                   overflow: TextOverflow.ellipsis,
+                  style: context.theme.textTheme.labelLarge?.copyWith(
+                    color: context.theme.textTheme.labelLarge?.color
+                        ?.withOpacity(.5),
+                  ),
                 ),
                 Text(
                   record.type.data,
                   overflow: TextOverflow.ellipsis,
+                  style: context.theme.textTheme.labelLarge,
                 ),
                 Text(
                   record.paperName.toStringParseNull(),
                   overflow: TextOverflow.ellipsis,
+                  style: context.theme.textTheme.labelLarge?.copyWith(
+                    color: context.theme.textTheme.labelLarge?.color
+                        ?.withOpacity(.5),
+                  ),
                 ),
               ],
             ),

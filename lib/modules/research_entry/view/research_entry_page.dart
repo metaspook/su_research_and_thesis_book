@@ -22,7 +22,7 @@ class ResearchEntryPage extends StatelessWidget {
     final selectedResearchesIsEmpty = selectedResearches.isEmpty;
     final userId = context.select((AppCubit cubit) => cubit.state.user.id);
     final researches = context.select(
-        (ResearchesCubit cubit) => cubit.state.researchesOfPublisher(userId));
+        (ResearchesCubit cubit) => cubit.state.researchesOfPublisher(userId),);
 
     final researchesNullOrEmpty = researches == null || researches.isEmpty;
 
