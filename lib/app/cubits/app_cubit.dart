@@ -42,7 +42,7 @@ class AppCubit extends HydratedCubit<AppState> {
   late final StreamSubscription<User?> _userSubscription;
 
   void onGetStarted() {
-    // emit(state.copyWith(firstLaunch: false));
+    emit(state.copyWith(firstLaunch: false));
   }
 
   @override

@@ -33,17 +33,20 @@ class LandingDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
-          color: context.theme.colorScheme.inverseSurface.withOpacity(.75),
-        ),
+    final cubit = context.read<AppCubit>();
+
+    return PopScope(
+      onPopInvoked: (didPop) {
+        if (didPop) cubit.onGetStarted();
+      },
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(25, 110, 25, 150),
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+          filter: ImageFilter.blur(sigmaX: 7.5, sigmaY: 7.5),
           child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   children: [
@@ -57,33 +60,28 @@ class LandingDialog extends StatelessWidget {
                     ),
                     Text(
                       'SU Research & Thesis Book',
-                      style: context.theme.textTheme.headlineMedium?.copyWith(
+                      style: context.theme.textTheme.headlineSmall?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color:
-                            context.theme.colorScheme.surface.withOpacity(.5),
+                        color: context.theme.colorScheme.inverseSurface
+                            .withOpacity(.5),
                       ),
                     ),
                   ],
                 ),
                 // Get Started button
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: AppThemes.height * 10,
-                  ),
-                  child: SizedBox(
-                    height: kToolbarHeight,
-                    width: context.mediaQuery.size.width * .75,
-                    child: ElevatedButton(
-                      onPressed: () => context
-                        ..read<AppCubit>().onGetStarted()
-                        ..pop(),
-                      style: ButtonStyle(
-                        textStyle: MaterialStatePropertyAll(
-                          context.theme.textTheme.headlineSmall,
-                        ),
+                SizedBox(
+                  height: kToolbarHeight,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      cubit.onGetStarted();
+                      context.pop();
+                    },
+                    style: ButtonStyle(
+                      textStyle: MaterialStatePropertyAll(
+                        context.theme.textTheme.headlineSmall,
                       ),
-                      child: const Text('Get Started'),
                     ),
+                    child: const Text('Get Started'),
                   ),
                 ),
               ],
