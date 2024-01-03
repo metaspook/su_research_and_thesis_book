@@ -8,16 +8,16 @@ class NotificationRepo {
 
   //-- Public APIs
   /// Emit list of notification.
-  Stream<List<NotificationRecord>> get stream => _controller.stream;
+  Stream<List<NotificationRecord>> get stream =>
+      _controller.stream.asBroadcastStream();
 
   Future<void> add(NotificationRecord record) async {
-    final notificationRecords = await _controller.stream.first
-      ..add(record);
+    final notificationRecords = [...await _controller.stream.first, record];
     _controller.add(notificationRecords);
   }
 
   Future<void> remove(NotificationRecord record) async {
-    final notificationRecords = await _controller.stream.first
+    final notificationRecords = [...await _controller.stream.first]
       ..remove(record);
     _controller.add(notificationRecords);
   }
@@ -27,7 +27,7 @@ class NotificationRepo {
   }
 
   void removeAll() {
-    _controller.add([]);
+    _controller.add(const []);
   }
 
   void dispose() {

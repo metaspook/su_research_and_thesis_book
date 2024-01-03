@@ -46,6 +46,8 @@ extension CallableWidgetExt on BuildContext {
     List<Widget>? actions,
     Widget? leading,
     bool automaticallyImplyLeading = true,
+    double? expandedHeight,
+    Widget? flexibleSpace,
   }) {
     final backBtn = backButton();
     return SliverAppBar(
@@ -61,7 +63,8 @@ extension CallableWidgetExt on BuildContext {
                 if (leading != null) leading,
               ],
             ),
-      // expandedHeight: 220,
+      expandedHeight: expandedHeight,
+      flexibleSpace: flexibleSpace,
       // flexibleSpace: FlexibleSpaceBar(
       //   centerTitle: true,
       //   title: Text(title),

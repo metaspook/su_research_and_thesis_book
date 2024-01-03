@@ -26,13 +26,9 @@ class PublisherPage extends StatelessWidget {
       child: Scaffold(
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverAppBar(
-              title: const Text('Publisher'),
-              centerTitle: true,
-              floating: true,
-              pinned: true,
-              snap: true,
-              expandedHeight: 230,
+            context.sliverAppBar(
+              'Publisher',
+              expandedHeight: kToolbarHeight * 4.125,
               bottom: tabBar,
               flexibleSpace: FlexibleSpaceBar(
                 background: Column(
