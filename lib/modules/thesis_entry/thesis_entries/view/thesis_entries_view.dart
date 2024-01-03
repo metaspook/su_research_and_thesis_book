@@ -10,6 +10,7 @@ class ThesisEntriesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<ThesisEntryCubit>().setView(1);
     // context.read<BookmarksCubit>().getViewIndex(0);
     final cubit = context.read<ThesisEntriesCubit>();
     final isLoading = context.select(

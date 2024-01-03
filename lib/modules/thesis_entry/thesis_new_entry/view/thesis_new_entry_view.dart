@@ -16,6 +16,7 @@ class ThesisNewEntryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<ThesisEntryCubit>().setView(0);
     final departments =
         context.select((DepartmentsCubit cubit) => cubit.state.departments);
     final cubit = context.read<ThesisNewEntryCubit>();

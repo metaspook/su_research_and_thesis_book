@@ -53,47 +53,54 @@ class ThesisEntryPage extends StatelessWidget {
       child: Scaffold(
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            context.sliverAppBar(
-              context.l10n.thesisEntryAppBarTitle,
-              centerTitle: false,
-              bottom: tabBar,
-              actions: [
-                // Select All button.
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: thesesNullOrEmpty || theses == selectedTheses
-                      ? null
-                      : () => thesisEntriesCubit.onAllSelected(theses),
-                  iconSize: kToolbarHeight * .575,
-                  icon: const Icon(
-                    Icons.select_all_rounded,
-                  ),
-                ),
-                // Deselect All button.
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: selectedThesesIsEmpty
-                      ? null
-                      : thesisEntriesCubit.onAllDeselected,
-                  iconSize: kToolbarHeight * .575,
-                  icon: const Icon(
-                    Icons.deselect_rounded,
-                  ),
-                ),
-                // Remove button.
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: selectedThesesIsEmpty
-                      ? null
-                      : thesisEntriesCubit.onRemoved,
-                  iconSize: kToolbarHeight * .575,
-                  icon: Icon(
-                    selectedThesesIsEmpty
-                        ? Icons.remove_circle_outline_rounded
-                        : Icons.remove_circle_rounded,
-                  ),
-                ),
-              ],
+            BlocSelector<ThesisEntryCubit, int, bool>(
+              selector: (state) => state == 0,
+              builder: (context, isNewEntry) {
+                return context.sliverAppBar(
+                  context.l10n.thesisEntryAppBarTitle,
+                  centerTitle: false,
+                  bottom: tabBar,
+                  actions: [
+                    // Select All button.
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: isNewEntry ||
+                              thesesNullOrEmpty ||
+                              theses == selectedTheses
+                          ? null
+                          : () => thesisEntriesCubit.onAllSelected(theses),
+                      iconSize: kToolbarHeight * .575,
+                      icon: const Icon(
+                        Icons.select_all_rounded,
+                      ),
+                    ),
+                    // Deselect All button.
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: isNewEntry || selectedThesesIsEmpty
+                          ? null
+                          : thesisEntriesCubit.onAllDeselected,
+                      iconSize: kToolbarHeight * .575,
+                      icon: const Icon(
+                        Icons.deselect_rounded,
+                      ),
+                    ),
+                    // Remove button.
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: isNewEntry || selectedThesesIsEmpty
+                          ? null
+                          : thesisEntriesCubit.onRemoved,
+                      iconSize: kToolbarHeight * .575,
+                      icon: Icon(
+                        selectedThesesIsEmpty
+                            ? Icons.remove_circle_outline_rounded
+                            : Icons.remove_circle_rounded,
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ],
           body: const TabBarView(

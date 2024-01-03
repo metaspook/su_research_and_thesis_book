@@ -191,6 +191,9 @@ final class AppRouter {
     builder: (context, state) {
       return MultiBlocProvider(
         providers: [
+          BlocProvider<ResearchEntryCubit>(
+            create: (context) => ResearchEntryCubit(),
+          ),
           BlocProvider<ResearchNewEntryCubit>(
             create: (context) => ResearchNewEntryCubit(
               researchRepo: context.read<ResearchRepo>(),
@@ -231,6 +234,9 @@ final class AppRouter {
     builder: (context, state) {
       return MultiBlocProvider(
         providers: [
+          BlocProvider<ThesisEntryCubit>(
+            create: (context) => ThesisEntryCubit(),
+          ),
           BlocProvider<ThesisNewEntryCubit>(
             create: (context) => ThesisNewEntryCubit(
               thesisRepo: context.read<ThesisRepo>(),

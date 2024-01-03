@@ -10,14 +10,15 @@ class ResearchEntriesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // context.read<BookmarksCubit>().getViewIndex(0);
+    context.read<ResearchEntryCubit>().setView(1);
     final cubit = context.read<ResearchEntriesCubit>();
     final isLoading = context.select(
       (ResearchEntriesCubit cubit) => cubit.state.status.isLoading,
     );
     final userId = context.select((AppCubit cubit) => cubit.state.user.id);
     final researches = context.select(
-        (ResearchesCubit cubit) => cubit.state.researchesOfPublisher(userId),);
+      (ResearchesCubit cubit) => cubit.state.researchesOfPublisher(userId),
+    );
 
     final selectedResearches = context
         .select((ResearchEntriesCubit cubit) => cubit.state.selectedResearches);

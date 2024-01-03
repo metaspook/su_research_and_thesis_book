@@ -22,7 +22,8 @@ class ResearchEntryPage extends StatelessWidget {
     final selectedResearchesIsEmpty = selectedResearches.isEmpty;
     final userId = context.select((AppCubit cubit) => cubit.state.user.id);
     final researches = context.select(
-        (ResearchesCubit cubit) => cubit.state.researchesOfPublisher(userId),);
+      (ResearchesCubit cubit) => cubit.state.researchesOfPublisher(userId),
+    );
 
     final researchesNullOrEmpty = researches == null || researches.isEmpty;
 
@@ -53,48 +54,55 @@ class ResearchEntryPage extends StatelessWidget {
       child: Scaffold(
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            context.sliverAppBar(
-              context.l10n.researchEntryAppBarTitle,
-              centerTitle: false,
-              bottom: tabBar,
-              actions: [
-                // Select All button.
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: researchesNullOrEmpty ||
-                          researches == selectedResearches
-                      ? null
-                      : () => researchEntriesCubit.onAllSelected(researches),
-                  iconSize: kToolbarHeight * .575,
-                  icon: const Icon(
-                    Icons.select_all_rounded,
-                  ),
-                ),
-                // Deselect All button.
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: selectedResearchesIsEmpty
-                      ? null
-                      : researchEntriesCubit.onAllDeselected,
-                  iconSize: kToolbarHeight * .575,
-                  icon: const Icon(
-                    Icons.deselect_rounded,
-                  ),
-                ),
-                // Remove button.
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: selectedResearchesIsEmpty
-                      ? null
-                      : researchEntriesCubit.onRemoved,
-                  iconSize: kToolbarHeight * .575,
-                  icon: Icon(
-                    selectedResearchesIsEmpty
-                        ? Icons.remove_circle_outline_rounded
-                        : Icons.remove_circle_rounded,
-                  ),
-                ),
-              ],
+            BlocSelector<ResearchEntryCubit, int, bool>(
+              selector: (state) => state == 0,
+              builder: (context, isNewEntry) {
+                return context.sliverAppBar(
+                  context.l10n.researchEntryAppBarTitle,
+                  centerTitle: false,
+                  bottom: tabBar,
+                  actions: [
+                    // Select All button.
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: isNewEntry ||
+                              researchesNullOrEmpty ||
+                              researches == selectedResearches
+                          ? null
+                          : () =>
+                              researchEntriesCubit.onAllSelected(researches),
+                      iconSize: kToolbarHeight * .575,
+                      icon: const Icon(
+                        Icons.select_all_rounded,
+                      ),
+                    ),
+                    // Deselect All button.
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: isNewEntry || selectedResearchesIsEmpty
+                          ? null
+                          : researchEntriesCubit.onAllDeselected,
+                      iconSize: kToolbarHeight * .575,
+                      icon: const Icon(
+                        Icons.deselect_rounded,
+                      ),
+                    ),
+                    // Remove button.
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      onPressed: isNewEntry || selectedResearchesIsEmpty
+                          ? null
+                          : researchEntriesCubit.onRemoved,
+                      iconSize: kToolbarHeight * .575,
+                      icon: Icon(
+                        selectedResearchesIsEmpty
+                            ? Icons.remove_circle_outline_rounded
+                            : Icons.remove_circle_rounded,
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ],
           body: const TabBarView(
