@@ -6,8 +6,8 @@ import 'package:su_thesis_book/utils/utils.dart';
 part 'categories_state.dart';
 
 class CategoriesCubit extends HydratedCubit<CategoriesState> {
-  CategoriesCubit({required CategoryRepo categoryRepo})
-      : _categoryRepo = categoryRepo,
+  CategoriesCubit({required CategoriesRepo categoriesRepo})
+      : _categoryRepo = categoriesRepo,
         super(const CategoriesState()) {
     //--Initialize Categories data.
     _categoryRepo.categories.then((record) {
@@ -16,7 +16,7 @@ class CategoriesCubit extends HydratedCubit<CategoriesState> {
     });
   }
 
-  final CategoryRepo _categoryRepo;
+  final CategoriesRepo _categoryRepo;
 
   @override
   CategoriesState? fromJson(Map<String, dynamic> json) {

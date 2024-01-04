@@ -6,7 +6,7 @@ import 'package:su_thesis_book/utils/utils.dart';
 /// * Named `AppUser` instead of `User` to prevent the same name conflict with firebase's `User` class.
 /// * [AppUser.empty] represents an unauthenticated user.
 /// {@endtemplate}
-class AppUser extends Equatable {
+final class AppUser extends Equatable {
   const AppUser({
     required this.id,
     this.name,
@@ -38,11 +38,10 @@ class AppUser extends Equatable {
   final String? photoUrl;
 
   /// Empty user which represents an unauthenticated user.
-  static const empty = AppUser(id: '');
-  bool get isEmpty => this == AppUser.empty;
-  bool get isNotEmpty => this != AppUser.empty;
+  static const unauthenticated = AppUser(id: '');
+  bool get isAuthenticated => this != AppUser.unauthenticated;
 
-  Json toJson() {
+  Map<String, dynamic> toJson() {
     return <String, Object?>{
       'id': id,
       'name': name,
@@ -64,7 +63,4 @@ class AppUser extends Equatable {
         phone,
         photoUrl,
       ];
-
-  @override
-  bool get stringify => true;
 }

@@ -68,6 +68,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
         ? HydratedStorage.webStorageDirectory
         : await getTemporaryDirectory(),
   );
+  // final appUserRepo = AppUserRepo();
+  // await appUserRepo.stream.first;
 
   runApp(await builder());
 }

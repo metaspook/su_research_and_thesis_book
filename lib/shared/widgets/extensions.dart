@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:su_thesis_book/gen/assets.gen.dart';
 import 'package:su_thesis_book/theme/theme.dart';
+import 'package:su_thesis_book/utils/utils.dart';
 
 // Config
 SvgPicture? _authBanner;
@@ -78,6 +79,17 @@ extension CallableWidgetExt on BuildContext {
       bottom: bottom,
       actions: actions,
     );
+  }
+
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showAppSnackBar(
+    String? statusMsg,
+  ) {
+    final snackBar = SnackBar(
+      backgroundColor: theme.snackBarTheme.backgroundColor?.withOpacity(.25),
+      behavior: SnackBarBehavior.floating,
+      content: Text(statusMsg.toStringParseNull()),
+    );
+    return scaffoldMessenger.showSnackBar(snackBar);
   }
 }
 

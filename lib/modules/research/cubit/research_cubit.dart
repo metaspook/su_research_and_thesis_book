@@ -10,16 +10,16 @@ part 'research_state.dart';
 
 class ResearchCubit extends Cubit<ResearchState> {
   ResearchCubit({
-    required ResearchRepo researchRepo,
-    required BookmarkRepo bookmarkRepo,
+    required ResearchesRepo researchesRepo,
+    required BookmarksRepo bookmarksRepo,
     required String researchId,
-  })  : _researchRepo = researchRepo,
-        _bookmarkRepo = bookmarkRepo,
+  })  : _researchRepo = researchesRepo,
+        _bookmarkRepo = bookmarksRepo,
         super(const ResearchState()) {
     //-- Increment Researches views.
     // incrementViews(state.research);
     emit(state.copyWith(status: ResearchStatus.loading));
-    researchRepo.researchById(researchId).then((research) {
+    researchesRepo.researchById(researchId).then((research) {
       research == null
           ? emit(state.copyWith(status: ResearchStatus.failure))
           : emit(
@@ -31,8 +31,8 @@ class ResearchCubit extends Cubit<ResearchState> {
     });
   }
 
-  final ResearchRepo _researchRepo;
-  final BookmarkRepo _bookmarkRepo;
+  final ResearchesRepo _researchRepo;
+  final BookmarksRepo _bookmarkRepo;
   static bool _firstView = true;
 
   /// Increment Research view count.

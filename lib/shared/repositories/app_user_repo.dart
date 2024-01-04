@@ -3,15 +3,28 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:cache/cache.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
+export 'package:firebase_auth/firebase_auth.dart'
+    show AuthCredential, User, UserCredential;
+
+// extension UserExt on User? {
+//   Future<(String?, AppUser)> toAppUser() async => this == null
+//       ? (null, AppUser.unauthenticated)
+//       : await AppUserRepo().read(this!.uid);
+// }
+
 class AppUserRepo implements CRUD<AppUser> {
   //-- Config
+  // final _controller = StreamController<AppUser>.broadcast();
   final _cacheDesignations = const Cache<List<String>>('designations');
   final _cacheDepartments = const Cache<List<String>>('departments');
+  final _cache = const Cache<AppUser>('appUser');
+  final _auth = FirebaseAuth.instance;
   final _db = FirebaseDatabase.instance.ref('users');
   final _storage = FirebaseStorage.instance.ref('photos');
   final _errorMsgCreate = "Couldn't create the User!";
@@ -22,6 +35,18 @@ class AppUserRepo implements CRUD<AppUser> {
   final _errorMsgUserPhoto = "Couldn't upload the User photo!";
 
   //-- Public APIs
+  Stream<User?> get _userStream => _auth.userChanges();
+  AppUser get currentUser => _cache.value ?? AppUser.unauthenticated;
+
+  /// Emit list of notification.
+  Stream<(String?, AppUser)> get stream async* {
+    await _userStream.first;
+    yield* _userStream.asyncMap(
+      (user) async =>
+          user == null ? (null, AppUser.unauthenticated) : await read(user.uid),
+    );
+  }
+
   /// Upload user photo to Storage and get URL.
   Future<({String? errorMsg, String? photoUrl})> uploadPhoto(
     String path, {
@@ -53,8 +78,6 @@ class AppUserRepo implements CRUD<AppUser> {
       if (designationIndex != null && departmentIndex != null) {
         final designations = _cacheDesignations.value;
         final departments = _cacheDepartments.value;
-        designations.doPrint('APPUSR: ');
-        departments.doPrint('APPUSR: ');
 
         if (designations != null && departments != null) {
           final userJson = <String, Object?>{
@@ -88,11 +111,11 @@ class AppUserRepo implements CRUD<AppUser> {
     try {
       // Download user data from DB.
       final appUser = await _db.child(userId).get().then(snapshotToModel);
-      if (appUser == null) return (_errorMsgNotFound, AppUser.empty);
-      return (null, appUser);
+      if (appUser == null) return (_errorMsgNotFound, AppUser.unauthenticated);
+      return (null, _cache.value = appUser);
     } catch (e, s) {
       log(_errorMsgRead, error: e, stackTrace: s);
-      return (_errorMsgRead, AppUser.empty);
+      return (_errorMsgRead, AppUser.unauthenticated);
     }
   }
 

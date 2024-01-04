@@ -8,11 +8,11 @@ import 'package:su_thesis_book/shared/repositories/repositories.dart';
 part 'research_entries_state.dart';
 
 class ResearchEntriesCubit extends Cubit<ResearchEntriesState> {
-  ResearchEntriesCubit({required ResearchRepo researchRepo})
-      : _researchRepo = researchRepo,
+  ResearchEntriesCubit({required ResearchesRepo researchesRepo})
+      : _researchRepo = researchesRepo,
         super(const ResearchEntriesState());
 
-  final ResearchRepo _researchRepo;
+  final ResearchesRepo _researchRepo;
 
   void onSelectionToggled(Research research) {
     final selectedResearch = [...state.selectedResearches];

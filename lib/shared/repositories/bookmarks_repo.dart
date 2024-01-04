@@ -7,7 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
-class BookmarkRepo {
+class BookmarksRepo {
   //-- Config
   final _cacheThesisBookmarks = const Cache<List<Bookmark>>('thesis_bookmarks');
   final _cacheResearchBookmarks =

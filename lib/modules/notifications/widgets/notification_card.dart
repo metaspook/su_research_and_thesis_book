@@ -7,14 +7,14 @@ import 'package:su_thesis_book/utils/utils.dart';
 
 class NotificationCard extends StatelessWidget {
   const NotificationCard(
-    this.record, {
+    this.notification, {
 // this.selected = false,
     // this.onTap,
     // this.onLongPress,
     super.key,
   });
 
-  final NotificationRecord record;
+  final AppNotification notification;
   // final bool selected;
   // final VoidCallback? onTap;
   // final VoidCallback? onLongPress;
@@ -53,7 +53,8 @@ class NotificationCard extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: ListTile(
-        onTap: () => context.pushNamed(record.type.name, extra: record.paperId),
+        onTap: () => context.pushNamed(notification.type.name,
+            extra: notification.paperId),
         dense: true,
         visualDensity: const VisualDensity(
           vertical: VisualDensity.minimumDensity,
@@ -66,7 +67,7 @@ class NotificationCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  record.userName.toStringParseNull(),
+                  notification.userName.toStringParseNull(),
                   overflow: TextOverflow.ellipsis,
                   style: context.theme.textTheme.labelLarge?.copyWith(
                     color: context.theme.textTheme.labelLarge?.color
@@ -74,12 +75,12 @@ class NotificationCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  record.type.data,
+                  notification.type.data,
                   overflow: TextOverflow.ellipsis,
                   style: context.theme.textTheme.labelLarge,
                 ),
                 Text(
-                  record.paperName.toStringParseNull(),
+                  notification.paperName.toStringParseNull(),
                   overflow: TextOverflow.ellipsis,
                   style: context.theme.textTheme.labelLarge?.copyWith(
                     color: context.theme.textTheme.labelLarge?.color

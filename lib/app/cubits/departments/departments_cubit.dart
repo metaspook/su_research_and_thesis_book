@@ -6,8 +6,8 @@ import 'package:su_thesis_book/utils/utils.dart';
 part 'departments_state.dart';
 
 class DepartmentsCubit extends HydratedCubit<DepartmentsState> {
-  DepartmentsCubit({required DepartmentRepo departmentRepo})
-      : _departmentRepo = departmentRepo,
+  DepartmentsCubit({required DepartmentsRepo departmentsRepo})
+      : _departmentRepo = departmentsRepo,
         super(const DepartmentsState()) {
     //--Initialize Departments data.
     _departmentRepo.departments.then((record) {
@@ -16,7 +16,7 @@ class DepartmentsCubit extends HydratedCubit<DepartmentsState> {
     });
   }
 
-  final DepartmentRepo _departmentRepo;
+  final DepartmentsRepo _departmentRepo;
 
   @override
   DepartmentsState? fromJson(Map<String, dynamic> json) {

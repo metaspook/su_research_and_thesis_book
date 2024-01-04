@@ -46,9 +46,6 @@ final class Comment extends Equatable {
   }
 
   @override
-  bool get stringify => true;
-
-  @override
   List<Object?> get props {
     return [id, paperId, userId, author, authorPhotoUrl, createdAt, content];
   }

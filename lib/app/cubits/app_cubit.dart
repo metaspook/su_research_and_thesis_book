@@ -8,38 +8,23 @@ import 'package:su_thesis_book/shared/repositories/repositories.dart';
 part 'app_state.dart';
 
 class AppCubit extends HydratedCubit<AppState> {
-  AppCubit({required AuthRepo authRepo, required AppUserRepo appUserRepo})
-      : _authRepo = authRepo,
-        _appUserRepo = appUserRepo,
-        super(const AppState()) {
+  AppCubit({required AppUserRepo appUserRepo}) : super(const AppState()) {
     //-- Initialize Authentication.
-    _userSubscription = _authRepo.userStream.listen((user) async {
-      if (user != null) {
-        // Logic after User is authenticated.
-        final (errorMsg, appUser) = await _appUserRepo.read(user.uid);
-        if (appUser.isNotEmpty) {
-          // Logic after User is authenticated and data exists.
-          emit(AppState(status: AppStatus.authenticated, user: appUser));
-        } else {
-          // Logic after User is authenticated but data isn't exists.
-          await _authRepo.signOut();
-          emit(state.copyWith(statusMsg: errorMsg));
-        }
-      } else {
-        await clear();
-        emit(
-          state.copyWith(
-            status: AppStatus.unauthenticated,
-            user: AppUser.empty,
-          ),
-        );
-      }
+    _userSubscription = appUserRepo.stream.listen((record) async {
+      final (errorMsg, appUser) = record;
+      appUser.isAuthenticated
+          ? emit(state.copyWith(status: AppStatus.loggedIn, user: appUser))
+          : emit(
+              state.copyWith(
+                status: AppStatus.loggedOut,
+                user: AppUser.unauthenticated,
+                statusMsg: errorMsg,
+              ),
+            );
     });
   }
 
-  final AuthRepo _authRepo;
-  final AppUserRepo _appUserRepo;
-  late final StreamSubscription<User?> _userSubscription;
+  late final StreamSubscription<(String?, AppUser)> _userSubscription;
 
   void onGetStarted() {
     emit(state.copyWith(firstLaunch: false));

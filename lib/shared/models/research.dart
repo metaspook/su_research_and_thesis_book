@@ -38,7 +38,7 @@ final class Research extends Equatable {
   final String? category;
   final String? description;
 
-  Json toJson() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'id': id,
       'publisher': publisher?.toJson(),
@@ -65,10 +65,3 @@ final class Research extends Equatable {
     ];
   }
 }
-
-// extension PublishersExt on List<Research> {
-//   List<Publisher> get publishers => <Publisher>[
-//         for (final e in this)
-//           if (e.publisher != null) e.publisher!,
-//       ];
-// }

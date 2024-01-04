@@ -85,14 +85,14 @@ final class AppRouter {
           ),
           BlocProvider<BookmarksResearchesCubit>(
             create: (context) => BookmarksResearchesCubit(
-              bookmarkRepo: context.read<BookmarkRepo>(),
-              researchRepo: context.read<ResearchRepo>(),
+              bookmarksRepo: context.read<BookmarksRepo>(),
+              researchesRepo: context.read<ResearchesRepo>(),
             ),
           ),
           BlocProvider<BookmarksThesesCubit>(
             create: (context) => BookmarksThesesCubit(
-              bookmarkRepo: context.read<BookmarkRepo>(),
-              thesisRepo: context.read<ThesisRepo>(),
+              bookmarksRepo: context.read<BookmarksRepo>(),
+              thesesRepo: context.read<ThesesRepo>(),
             ),
           ),
         ],
@@ -175,11 +175,11 @@ final class AppRouter {
       final researchId = state.extra! as String;
       return BlocProvider<ResearchCubit>(
         create: (context) => ResearchCubit(
-          researchRepo: context.read<ResearchRepo>(),
-          bookmarkRepo: context.read<BookmarkRepo>(),
+          researchesRepo: context.read<ResearchesRepo>(),
+          bookmarksRepo: context.read<BookmarksRepo>(),
           researchId: researchId,
         ),
-        child: ResearchPage(),
+        child: const ResearchPage(),
       );
     },
   );
@@ -196,12 +196,12 @@ final class AppRouter {
           ),
           BlocProvider<ResearchNewEntryCubit>(
             create: (context) => ResearchNewEntryCubit(
-              researchRepo: context.read<ResearchRepo>(),
+              researchesRepo: context.read<ResearchesRepo>(),
             ),
           ),
           BlocProvider<ResearchEntriesCubit>(
             create: (context) => ResearchEntriesCubit(
-              researchRepo: context.read<ResearchRepo>(),
+              researchesRepo: context.read<ResearchesRepo>(),
             ),
           ),
         ],
@@ -218,8 +218,8 @@ final class AppRouter {
       final thesisId = state.extra! as String;
       return BlocProvider<ThesisCubit>(
         create: (context) => ThesisCubit(
-          thesisRepo: context.read<ThesisRepo>(),
-          bookmarkRepo: context.read<BookmarkRepo>(),
+          thesesRepo: context.read<ThesesRepo>(),
+          bookmarksRepo: context.read<BookmarksRepo>(),
           thesisId: thesisId,
         ),
         child: const ThesisPage(),
@@ -239,12 +239,12 @@ final class AppRouter {
           ),
           BlocProvider<ThesisNewEntryCubit>(
             create: (context) => ThesisNewEntryCubit(
-              thesisRepo: context.read<ThesisRepo>(),
+              thesesRepo: context.read<ThesesRepo>(),
             ),
           ),
           BlocProvider<ThesisEntriesCubit>(
             create: (context) => ThesisEntriesCubit(
-              thesisRepo: context.read<ThesisRepo>(),
+              thesesRepo: context.read<ThesesRepo>(),
             ),
           ),
         ],
@@ -259,12 +259,12 @@ final class AppRouter {
     path: '/comments',
     builder: (context, state) {
       final paper = state.extra! as Paper;
-      return RepositoryProvider<CommentRepo>(
-        create: (context) => CommentRepo(paper: paper),
+      return RepositoryProvider<CommentsRepo>(
+        create: (context) => CommentsRepo(paper: paper),
         child: BlocProvider<CommentsCubit>(
           create: (context) => CommentsCubit(
-            notificationRepo: context.read<NotificationRepo>(),
-            commentRepo: context.read<CommentRepo>(),
+            notificationsRepo: context.read<NotificationsRepo>(),
+            commentsRepo: context.read<CommentsRepo>(),
           ),
           child: CommentsPage(paper: paper),
         ),

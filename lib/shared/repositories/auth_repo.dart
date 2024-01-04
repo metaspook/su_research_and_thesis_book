@@ -3,9 +3,6 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
-export 'package:firebase_auth/firebase_auth.dart'
-    show AuthCredential, User, UserCredential;
-
 class AuthRepo {
   //-- Config
   final _errorMsgSignIn = "Couldn't sign-in the user!";
@@ -13,12 +10,9 @@ class AuthRepo {
   final _errorMsgSignOut = "Couldn't sign-out the user!";
   final _errorMsgUpdateEmail = "Couldn't update the user email!";
   final _errorMsgUpdatePassword = "Couldn't update the user password!";
-  FirebaseAuth get _auth => FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
 
   //-- Public APIs
-  Stream<User?> get userStream => _auth.userChanges();
-  User? get currentUser => _auth.currentUser;
-
   Future<String?> updateEmail(String newEmail) async {
     try {
       await _auth.currentUser?.updateEmail(newEmail);

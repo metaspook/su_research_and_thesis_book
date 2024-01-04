@@ -6,11 +6,11 @@ import 'package:su_thesis_book/utils/utils.dart';
 part 'thesis_new_entry_state.dart';
 
 class ThesisNewEntryCubit extends Cubit<ThesisNewEntryState> {
-  ThesisNewEntryCubit({required ThesisRepo thesisRepo})
-      : _thesisRepo = thesisRepo,
+  ThesisNewEntryCubit({required ThesesRepo thesesRepo})
+      : _thesisRepo = thesesRepo,
         super(const ThesisNewEntryState());
 
-  final ThesisRepo _thesisRepo;
+  final ThesesRepo _thesisRepo;
 
   void onChangedTitle(String value) {
     emit(state.copyWith(title: value));

@@ -4,32 +4,27 @@ import 'dart:typed_data';
 
 import 'package:cache/cache.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
-typedef ThesesRecord = (String?, List<Thesis>?);
-
-class ThesisRepo implements CRUD<Thesis> {
+class ResearchesRepo implements CRUD<Research> {
   //-- Config
   final _cacheDesignations = const Cache<List<String>>('designations');
+  final _cacheCategories = const Cache<List<String>>('categories');
   final _cacheDepartments = const Cache<List<String>>('departments');
-  final _dbBookmarks = FirebaseDatabase.instance.ref('bookmarks/thesis');
-  final _cache = const Cache<List<Thesis>>('theses');
-  final _db = FirebaseDatabase.instance.ref('theses');
+  final _cache = const Cache<List<Research>>('researches');
+  final _db = FirebaseDatabase.instance.ref('researches');
   final _dbUsers = FirebaseDatabase.instance.ref('users');
-  final _storage = FirebaseStorage.instance.ref('theses');
+  final _storage = FirebaseStorage.instance.ref('researches');
   final _filePicker = FilePicker.platform;
-  final _errorMsgThesesNotFound = 'Theses not found!';
-  final _errorMsgTheses = "Couldn't get the theses!";
-  final _errorMsgCreate = "Couldn't create the Thesis!";
-  final _errorMsgRead = "Couldn't read the Thesis data!";
-  final _errorMsgUpdate = "Couldn't update the Thesis!";
-  final _errorMsgDelete = "Couldn't delete the Thesis!";
-  // final _errorMsgNotFound = 'Thesis data not found!';
-  final _errorMsgUploadFile = "Couldn't upload the thesis file!";
+  final _errorMsgCreate = "Couldn't create the Research!";
+  final _errorMsgRead = "Couldn't read the Research data!";
+  final _errorMsgUpdate = "Couldn't update the Research!";
+  final _errorMsgDelete = "Couldn't delete the Research!";
+  // final _errorMsgNotFound = 'Research data not found!';
+  final _errorMsgUploadFile = "Couldn't upload the research file!";
   final _errorMsgFilePicker = "Couldn't pick the file!";
   final _errorMsgTempFiles = "Couldn't clear the temporary file!";
 
@@ -44,10 +39,8 @@ class ThesisRepo implements CRUD<Thesis> {
         : (errorMsg: null, result: result);
   }
 
-  String? get _currentUserId => FirebaseAuth.instance.currentUser?.uid;
-
   //-- Public APIs
-  /// Generates a new thesis id.
+  /// Generates a new research id.
   String get newId => _db.push().key ?? uuid;
 
   /// Get publisher by userId.
@@ -71,60 +64,50 @@ class ThesisRepo implements CRUD<Thesis> {
     return null;
   }
 
-  /// Get thesis by Id.
-  Future<Thesis?> thesisById(String id) async {
-    final theses = await stream.first;
-    for (final thesis in theses) {
-      if (thesis.id == id) return thesis;
-    }
-    return null;
-  }
-
   /// Convert database snapshot to model with logic specified.
-  Future<Thesis?> snapshotToModel(DataSnapshot snapshot) async {
-    final thesisMap = snapshot.value?.toJson();
-    final userId = thesisMap?['userId'] as String?;
-    final departmentIndex = thesisMap?['departmentIndex'] as int?;
-    // (await _dbBookmarks
-    //         .orderByChild('userId')
-    //         .equalTo(_currentUserId)
-    //         .orderByChild('parentId')
-    //         .equalTo(snapshot.key)
-    //         .once())
-    //     .snapshot
-    //     .value
-    //     .doPrint('HAYHAY: ');
+  Future<Research?> snapshotToModel(DataSnapshot snapshot) async {
+    final researchMap = snapshot.value?.toJson();
+    final userId = researchMap?['userId'] as String?;
+    final categoryIndex = researchMap?['categoryIndex'] as int?;
 
-    if (userId != null && departmentIndex != null) {
+    if (userId != null && categoryIndex != null) {
       final publisher = await publisherById(userId);
-      final departments = _cacheDepartments.value;
-      final thesisJson = <String, Object?>{
+      final categories = _cacheCategories.value;
+      final researchJson = <String, Object?>{
         'id': snapshot.key,
         'publisher': publisher?.toJson(),
-        ...?thesisMap,
-        'department': departments?[departmentIndex],
+        ...?researchMap,
+        'category': categories?[categoryIndex],
       };
-      return Thesis.fromJson(thesisJson);
+      return Research.fromJson(researchJson);
     }
     return null;
   }
 
-  /// Emits list of thesis.
-  Stream<List<Thesis>> get stream async* {
+  Future<Research?> researchById(String id) async {
+    final researches = await stream.first;
+    for (final research in researches) {
+      if (research.id == id) return research;
+    }
+    return null;
+  }
+
+  /// Emits list of research.
+  Stream<List<Research>> get stream async* {
     if (_cache.value != null) yield _cache.value!;
-    yield* _db.onValue.asyncMap<List<Thesis>>(
+    yield* _db.onValue.asyncMap<List<Research>>(
       (event) async {
-        final theses = <Thesis>[];
+        final researches = <Research>[];
         for (final snapshot in event.snapshot.children) {
-          final thesis = await snapshotToModel(snapshot);
-          if (thesis != null) theses.add(thesis);
+          final research = await snapshotToModel(snapshot);
+          if (research != null) researches.add(research);
         }
-        return _cache.value = theses;
+        return _cache.value = researches;
       },
     );
   }
 
-  /// Upload thesis file to Storage and get URL.
+  /// Upload research file to Storage and get URL.
   Future<({String? errorMsg, String? fileUrl})> uploadFile(String path) async {
     try {
       final file = File(path);
@@ -174,7 +157,7 @@ class ThesisRepo implements CRUD<Thesis> {
   }
 
   @override
-  Future<(String?, Thesis)> read(String id) {
+  Future<(String?, Research)> read(String id) {
     // TODO: implement read
     throw UnimplementedError();
   }
@@ -193,6 +176,9 @@ class ThesisRepo implements CRUD<Thesis> {
   @override
   Future<String?> delete(String id) async {
     try {
+      // Remove from cache and database.
+      final thesis = await researchById(id);
+      _cache.value?.remove(thesis);
       await _db.child(id).remove();
     } catch (e, s) {
       log(_errorMsgDelete, error: e, stackTrace: s);

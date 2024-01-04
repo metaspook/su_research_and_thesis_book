@@ -10,41 +10,27 @@ part 'researches_state.dart';
 
 class ResearchesCubit extends HydratedCubit<ResearchesState> {
   ResearchesCubit({
-    required AuthRepo authRepo,
-    required NotificationRepo notificationRepo,
-    required ResearchRepo researchRepo,
-  })  : _authRepo = authRepo,
-        _researchRepo = researchRepo,
-        _notificationRepo = notificationRepo,
+    required NotificationsRepo notificationsRepo,
+    required ResearchesRepo researchesRepo,
+  })  : _researchRepo = researchesRepo,
+        _notificationRepo = notificationsRepo,
         super(const ResearchesState()) {
-    //-- Initialize Authentication subscription.
-    _userSubscription = _authRepo.userStream.listen((user) async {
-      if (user != null) {
-        // Authenticated: Initialize Researches data.
-        _researchesSubscription = _researchRepo.stream.listen(_onResearches);
-      } else {
-        // Unauthenticated: Reset cached and current state.
-        await _researchesSubscription.cancel();
-        await clear();
-        emit(const ResearchesState());
-      }
-    });
+    //-- Initialize Researches subscription.
+    _researchesSubscription = _researchRepo.stream.listen(_onResearches);
   }
 
-  final AuthRepo _authRepo;
-  final ResearchRepo _researchRepo;
-  final NotificationRepo _notificationRepo;
-  late final StreamSubscription<User?> _userSubscription;
+  final ResearchesRepo _researchRepo;
+  final NotificationsRepo _notificationRepo;
   late final StreamSubscription<List<Research>> _researchesSubscription;
 
   Future<void> _onResearches(List<Research> researches) async {
     // process notification if new data.
     if (state.notify) {
-      final record = (
+      final record = AppNotification(
         type: NotificationType.research,
         paperName: researches.last.title,
         paperId: researches.last.id,
-        userName: researches.last.publisher?.name
+        userName: researches.last.publisher?.name,
       );
       await _notificationRepo.add(record);
     }
@@ -61,7 +47,7 @@ class ResearchesCubit extends HydratedCubit<ResearchesState> {
 
   @override
   Future<void> close() {
-    _userSubscription.cancel();
+    _researchesSubscription.cancel();
     return super.close();
   }
 }

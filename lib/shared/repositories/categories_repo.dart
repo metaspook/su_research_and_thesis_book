@@ -5,7 +5,7 @@ import 'package:cache/cache.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
-class CategoryRepo {
+class CategoriesRepo {
   //-- Config
   final _cache = const Cache<List<String>>('categories');
   final _db = FirebaseDatabase.instance.ref('categories');

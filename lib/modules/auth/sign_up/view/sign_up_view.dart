@@ -36,7 +36,7 @@ class _SignUpViewState extends State<SignUpView> {
 
   @override
   void initState() {
-    DesignationRepo().designations.then(print);
+    DesignationsRepo().designations.then(print);
     super.initState();
     imageCropicker = ImageCropicker(context);
     // Restore form state.
@@ -78,24 +78,18 @@ class _SignUpViewState extends State<SignUpView> {
         BlocListener<SignUpBloc, SignUpState>(
           listenWhen: (previous, current) =>
               previous.statusMsg != current.statusMsg,
-          listener: (context, state) {
-            final snackBar = SnackBar(content: Text(state.statusMsg!));
-            context.scaffoldMessenger.showSnackBar(snackBar);
-          },
+          listener: (context, state) =>
+              context.showAppSnackBar(state.statusMsg),
         ),
         DesignationsBlocListener(
           listenWhen: (previous, current) => current.hasMessage,
-          listener: (context, state) {
-            final snackBar = SnackBar(content: Text(state.statusMsg!));
-            context.scaffoldMessenger.showSnackBar(snackBar);
-          },
+          listener: (context, state) =>
+              context.showAppSnackBar(state.statusMsg),
         ),
         DepartmentsBlocListener(
           listenWhen: (previous, current) => current.hasMessage,
-          listener: (context, state) {
-            final snackBar = SnackBar(content: Text(state.statusMsg!));
-            context.scaffoldMessenger.showSnackBar(snackBar);
-          },
+          listener: (context, state) =>
+              context.showAppSnackBar(state.statusMsg),
         ),
       ],
       child: TranslucentLoader(

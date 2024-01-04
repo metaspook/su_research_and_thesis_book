@@ -104,7 +104,7 @@ class HomeView extends StatelessWidget {
                             right: 22.5,
                             child: BlocSelector<NotificationsCubit,
                                 NotificationsState, int>(
-                              selector: (state) => state.records.length,
+                              selector: (state) => state.notifications.length,
                               builder: (context, notificationsCount) {
                                 return Badge.count(
                                   count: notificationsCount,

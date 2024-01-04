@@ -22,26 +22,26 @@ class App extends StatelessWidget {
         RepositoryProvider<AuthRepo>(
           create: (context) => AuthRepo(),
         ),
-        RepositoryProvider<NotificationRepo>(
-          create: (context) => NotificationRepo(),
+        RepositoryProvider<NotificationsRepo>(
+          create: (context) => NotificationsRepo(),
         ),
-        RepositoryProvider<BookmarkRepo>(
-          create: (context) => BookmarkRepo(),
+        RepositoryProvider<BookmarksRepo>(
+          create: (context) => BookmarksRepo(),
         ),
-        RepositoryProvider<DepartmentRepo>(
-          create: (context) => DepartmentRepo(),
+        RepositoryProvider<DepartmentsRepo>(
+          create: (context) => DepartmentsRepo(),
         ),
-        RepositoryProvider<DesignationRepo>(
-          create: (context) => DesignationRepo(),
+        RepositoryProvider<DesignationsRepo>(
+          create: (context) => DesignationsRepo(),
         ),
-        RepositoryProvider<CategoryRepo>(
-          create: (context) => CategoryRepo(),
+        RepositoryProvider<CategoriesRepo>(
+          create: (context) => CategoriesRepo(),
         ),
-        RepositoryProvider<ResearchRepo>(
-          create: (context) => ResearchRepo(),
+        RepositoryProvider<ResearchesRepo>(
+          create: (context) => ResearchesRepo(),
         ),
-        RepositoryProvider<ThesisRepo>(
-          create: (context) => ThesisRepo(),
+        RepositoryProvider<ThesesRepo>(
+          create: (context) => ThesesRepo(),
         ),
       ],
       child: MultiBlocProvider(
@@ -50,42 +50,39 @@ class App extends StatelessWidget {
         providers: [
           BlocProvider<AppCubit>(
             create: (context) => AppCubit(
-              authRepo: context.read<AuthRepo>(),
               appUserRepo: context.read<AppUserRepo>(),
             ),
           ),
           BlocProvider<NotificationsCubit>(
             create: (context) => NotificationsCubit(
-              notificationRepo: context.read<NotificationRepo>(),
+              notificationsRepo: context.read<NotificationsRepo>(),
             ),
           ),
           BlocProvider<CategoriesCubit>(
             create: (context) => CategoriesCubit(
-              categoryRepo: context.read<CategoryRepo>(),
+              categoriesRepo: context.read<CategoriesRepo>(),
             ),
           ),
           BlocProvider<DepartmentsCubit>(
             create: (context) => DepartmentsCubit(
-              departmentRepo: context.read<DepartmentRepo>(),
+              departmentsRepo: context.read<DepartmentsRepo>(),
             ),
           ),
           BlocProvider<DesignationsCubit>(
             create: (context) => DesignationsCubit(
-              designationRepo: context.read<DesignationRepo>(),
+              designationsRepo: context.read<DesignationsRepo>(),
             ),
           ),
           BlocProvider<ResearchesCubit>(
             create: (context) => ResearchesCubit(
-              authRepo: context.read<AuthRepo>(),
-              notificationRepo: context.read<NotificationRepo>(),
-              researchRepo: context.read<ResearchRepo>(),
+              notificationsRepo: context.read<NotificationsRepo>(),
+              researchesRepo: context.read<ResearchesRepo>(),
             ),
           ),
           BlocProvider<ThesesCubit>(
             create: (context) => ThesesCubit(
-              authRepo: context.read<AuthRepo>(),
-              notificationRepo: context.read<NotificationRepo>(),
-              thesisRepo: context.read<ThesisRepo>(),
+              notificationsRepo: context.read<NotificationsRepo>(),
+              thesesRepo: context.read<ThesesRepo>(),
             ),
           ),
         ],
@@ -106,7 +103,7 @@ class AppView extends StatelessWidget {
       ..read<DesignationsCubit>();
 
     final isAuthenticated =
-        context.select((AppCubit cubit) => cubit.state.status.isAuthenticated);
+        context.select((AppCubit cubit) => cubit.state.user.isAuthenticated);
     // NOTE: This 'initialLocation' approach is experimental instead of
     // redirection from router, need see which one is performant and stable.
     final initialLocation =

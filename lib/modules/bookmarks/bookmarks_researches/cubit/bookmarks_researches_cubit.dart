@@ -9,10 +9,10 @@ part 'bookmarks_researches_state.dart';
 
 class BookmarksResearchesCubit extends Cubit<BookmarksResearchesState> {
   BookmarksResearchesCubit({
-    required ResearchRepo researchRepo,
-    required BookmarkRepo bookmarkRepo,
-  })  : _bookmarkRepo = bookmarkRepo,
-        _researchRepo = researchRepo,
+    required ResearchesRepo researchesRepo,
+    required BookmarksRepo bookmarksRepo,
+  })  : _bookmarkRepo = bookmarksRepo,
+        _researchRepo = researchesRepo,
         super(const BookmarksResearchesState()) {
     // Initialize Research Bookmark subscription.
     _researchBookmarksSubscription = _bookmarkRepo
@@ -39,9 +39,9 @@ class BookmarksResearchesCubit extends Cubit<BookmarksResearchesState> {
     });
   }
 
-  final BookmarkRepo _bookmarkRepo;
+  final BookmarksRepo _bookmarkRepo;
   late final StreamSubscription<List<Bookmark>> _researchBookmarksSubscription;
-  final ResearchRepo _researchRepo;
+  final ResearchesRepo _researchRepo;
 
   void onSelectionToggled(Research research) {
     final selectedResearch = [...state.selectedResearches];

@@ -21,8 +21,8 @@ class NotificationsPage extends StatelessWidget {
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           const NotificationsAppBar(),
         ],
-        body: NotificationsBlocSelector<List<NotificationRecord>>(
-          selector: (state) => state.records,
+        body: NotificationsBlocSelector<List<AppNotification>>(
+          selector: (state) => state.notifications,
           builder: (context, notificationRecords) {
             return notificationRecords.isEmpty
                 ? context.emptyListText()

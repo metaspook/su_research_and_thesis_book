@@ -9,22 +9,26 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
-class ResearchRepo implements CRUD<Research> {
+typedef ThesesRecord = (String?, List<Thesis>?);
+
+class ThesesRepo implements CRUD<Thesis> {
   //-- Config
   final _cacheDesignations = const Cache<List<String>>('designations');
-  final _cacheCategories = const Cache<List<String>>('categories');
   final _cacheDepartments = const Cache<List<String>>('departments');
-  final _cache = const Cache<List<Research>>('researches');
-  final _db = FirebaseDatabase.instance.ref('researches');
+  final _dbBookmarks = FirebaseDatabase.instance.ref('bookmarks/thesis');
+  final _cache = const Cache<List<Thesis>>('theses');
+  final _db = FirebaseDatabase.instance.ref('theses');
   final _dbUsers = FirebaseDatabase.instance.ref('users');
-  final _storage = FirebaseStorage.instance.ref('researches');
+  final _storage = FirebaseStorage.instance.ref('theses');
   final _filePicker = FilePicker.platform;
-  final _errorMsgCreate = "Couldn't create the Research!";
-  final _errorMsgRead = "Couldn't read the Research data!";
-  final _errorMsgUpdate = "Couldn't update the Research!";
-  final _errorMsgDelete = "Couldn't delete the Research!";
-  // final _errorMsgNotFound = 'Research data not found!';
-  final _errorMsgUploadFile = "Couldn't upload the research file!";
+  final _errorMsgThesesNotFound = 'Theses not found!';
+  final _errorMsgTheses = "Couldn't get the theses!";
+  final _errorMsgCreate = "Couldn't create the Thesis!";
+  final _errorMsgRead = "Couldn't read the Thesis data!";
+  final _errorMsgUpdate = "Couldn't update the Thesis!";
+  final _errorMsgDelete = "Couldn't delete the Thesis!";
+  // final _errorMsgNotFound = 'Thesis data not found!';
+  final _errorMsgUploadFile = "Couldn't upload the thesis file!";
   final _errorMsgFilePicker = "Couldn't pick the file!";
   final _errorMsgTempFiles = "Couldn't clear the temporary file!";
 
@@ -40,7 +44,7 @@ class ResearchRepo implements CRUD<Research> {
   }
 
   //-- Public APIs
-  /// Generates a new research id.
+  /// Generates a new thesis id.
   String get newId => _db.push().key ?? uuid;
 
   /// Get publisher by userId.
@@ -64,50 +68,51 @@ class ResearchRepo implements CRUD<Research> {
     return null;
   }
 
-  /// Convert database snapshot to model with logic specified.
-  Future<Research?> snapshotToModel(DataSnapshot snapshot) async {
-    final researchMap = snapshot.value?.toJson();
-    final userId = researchMap?['userId'] as String?;
-    final categoryIndex = researchMap?['categoryIndex'] as int?;
+  /// Get thesis by Id.
+  Future<Thesis?> thesisById(String id) async {
+    final theses = await stream.first;
+    for (final thesis in theses) {
+      if (thesis.id == id) return thesis;
+    }
+    return null;
+  }
 
-    if (userId != null && categoryIndex != null) {
+  /// Convert database snapshot to model with logic specified.
+  Future<Thesis?> snapshotToModel(DataSnapshot snapshot) async {
+    final thesisMap = snapshot.value?.toJson();
+    final userId = thesisMap?['userId'] as String?;
+    final departmentIndex = thesisMap?['departmentIndex'] as int?;
+
+    if (userId != null && departmentIndex != null) {
       final publisher = await publisherById(userId);
-      final categories = _cacheCategories.value;
-      final researchJson = <String, Object?>{
+      final departments = _cacheDepartments.value;
+      final thesisJson = <String, Object?>{
         'id': snapshot.key,
         'publisher': publisher?.toJson(),
-        ...?researchMap,
-        'category': categories?[categoryIndex],
+        ...?thesisMap,
+        'department': departments?[departmentIndex],
       };
-      return Research.fromJson(researchJson);
+      return Thesis.fromJson(thesisJson);
     }
     return null;
   }
 
-  Future<Research?> researchById(String id) async {
-    final researches = await stream.first;
-    for (final research in researches) {
-      if (research.id == id) return research;
-    }
-    return null;
-  }
-
-  /// Emits list of research.
-  Stream<List<Research>> get stream async* {
+  /// Emits list of thesis.
+  Stream<List<Thesis>> get stream async* {
     if (_cache.value != null) yield _cache.value!;
-    yield* _db.onValue.asyncMap<List<Research>>(
+    yield* _db.onValue.asyncMap<List<Thesis>>(
       (event) async {
-        final researches = <Research>[];
+        final theses = <Thesis>[];
         for (final snapshot in event.snapshot.children) {
-          final research = await snapshotToModel(snapshot);
-          if (research != null) researches.add(research);
+          final thesis = await snapshotToModel(snapshot);
+          if (thesis != null) theses.add(thesis);
         }
-        return _cache.value = researches;
+        return _cache.value = theses;
       },
     );
   }
 
-  /// Upload research file to Storage and get URL.
+  /// Upload thesis file to Storage and get URL.
   Future<({String? errorMsg, String? fileUrl})> uploadFile(String path) async {
     try {
       final file = File(path);
@@ -157,7 +162,7 @@ class ResearchRepo implements CRUD<Research> {
   }
 
   @override
-  Future<(String?, Research)> read(String id) {
+  Future<(String?, Thesis)> read(String id) {
     // TODO: implement read
     throw UnimplementedError();
   }
@@ -176,6 +181,9 @@ class ResearchRepo implements CRUD<Research> {
   @override
   Future<String?> delete(String id) async {
     try {
+      // Remove from cache and database.
+      final thesis = await thesisById(id);
+      _cache.value?.remove(thesis);
       await _db.child(id).remove();
     } catch (e, s) {
       log(_errorMsgDelete, error: e, stackTrace: s);

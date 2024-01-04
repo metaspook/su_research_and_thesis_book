@@ -10,24 +10,24 @@ part 'thesis_state.dart';
 
 class ThesisCubit extends Cubit<ThesisState> {
   ThesisCubit({
-    required BookmarkRepo bookmarkRepo,
-    required ThesisRepo thesisRepo,
+    required BookmarksRepo bookmarksRepo,
+    required ThesesRepo thesesRepo,
     required String thesisId,
-  })  : _thesisRepo = thesisRepo,
-        _bookmarkRepo = bookmarkRepo,
+  })  : _thesisRepo = thesesRepo,
+        _bookmarkRepo = bookmarksRepo,
         super(const ThesisState()) {
     //-- Increment Thesis views.
     // incrementViews(state.thesis);
     emit(state.copyWith(status: ThesisStatus.loading));
-    thesisRepo.thesisById(thesisId).then((thesis) {
+    thesesRepo.thesisById(thesisId).then((thesis) {
       thesis == null
           ? emit(state.copyWith(status: ThesisStatus.failure))
           : emit(state.copyWith(status: ThesisStatus.success, thesis: thesis));
     });
   }
 
-  final ThesisRepo _thesisRepo;
-  final BookmarkRepo _bookmarkRepo;
+  final ThesesRepo _thesisRepo;
+  final BookmarksRepo _bookmarkRepo;
   static bool _firstView = true;
 
   /// Increment Thesis view count.

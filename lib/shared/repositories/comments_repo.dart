@@ -4,8 +4,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
-class CommentRepo implements CRUD<Comment> {
-  CommentRepo({required this.paper});
+class CommentsRepo implements CRUD<Comment> {
+  CommentsRepo({required this.paper});
   final Paper paper;
   //-- Config
   final _cacheAuthor = cacheService<String?>();

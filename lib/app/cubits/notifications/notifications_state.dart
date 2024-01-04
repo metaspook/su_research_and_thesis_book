@@ -13,52 +13,38 @@ class NotificationsState extends Equatable {
   const NotificationsState({
     this.status = NotificationsStatus.initial,
     this.statusMsg,
-    this.records = const [],
+    this.notifications = const [],
   });
 
   factory NotificationsState.fromJson(Map<String, dynamic> json) {
     return NotificationsState(
-      records: [
-        for (final recordJson
-            in List<Map<String, dynamic>>.from(json['records'] as List))
-          (
-            type: NotificationType.values.byName(recordJson['type']! as String),
-            paperName: recordJson['paperName'] as String?,
-            paperId: recordJson['paperId'] as String?,
-            userName: recordJson['userName'] as String?
-          ),
+      notifications: [
+        ...List<Map<String, dynamic>>.from(json['records'] as List)
+            .map(AppNotification.fromJson),
       ],
     );
   }
 
   final NotificationsStatus status;
   final String? statusMsg;
-  final List<NotificationRecord> records;
+  final List<AppNotification> notifications;
 
   NotificationsState copyWith({
     NotificationsStatus? status,
     String? statusMsg,
-    List<NotificationRecord>? records,
+    List<AppNotification>? notifications,
   }) {
     return NotificationsState(
       status: status ?? this.status,
       statusMsg: statusMsg ?? this.statusMsg,
-      records: records ?? this.records,
+      notifications: notifications ?? this.notifications,
     );
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'records': [
-          for (final record in records)
-            {
-              'type': record.type.name,
-              'paperName': record.paperName,
-              'paperId': record.paperId,
-              'userName': record.userName,
-            },
-        ],
+        'records': [...notifications.map((e) => e.toJson())],
       };
 
   @override
-  List<Object?> get props => [status, statusMsg, records];
+  List<Object?> get props => [status, statusMsg, notifications];
 }

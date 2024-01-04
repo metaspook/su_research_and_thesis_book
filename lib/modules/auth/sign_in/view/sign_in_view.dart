@@ -151,15 +151,8 @@ class _SignInViewState extends State<SignInView> {
             // Proceed button
             SignInBlocConsumer(
               listenWhen: (previous, current) => current.status.hasMessage,
-              listener: (context, state) {
-                final snackBar = SnackBar(
-                  backgroundColor: context.theme.snackBarTheme.backgroundColor
-                      ?.withOpacity(.25),
-                  behavior: SnackBarBehavior.floating,
-                  content: Text(state.statusMsg),
-                );
-                context.scaffoldMessenger.showSnackBar(snackBar);
-              },
+              listener: (context, state) =>
+                  context.showAppSnackBar(state.statusMsg),
               builder: (context, state) {
                 final enabled =
                     state.email.isNotEmpty || state.password.isNotEmpty;

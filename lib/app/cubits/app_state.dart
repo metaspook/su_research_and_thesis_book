@@ -1,17 +1,20 @@
 part of 'app_cubit.dart';
 
 enum AppStatus {
-  authenticated,
-  unauthenticated;
+  initial,
+  loggedIn,
+  loggedOut;
+  // authenticated,
+  // unauthenticated;
 
-  bool get isAuthenticated => this == AppStatus.authenticated;
+  bool get isLoggedIn => this == AppStatus.loggedIn;
 }
 
 class AppState extends Equatable {
   const AppState({
-    this.status = AppStatus.unauthenticated,
+    this.status = AppStatus.initial,
     this.statusMsg,
-    this.user = AppUser.empty,
+    this.user = AppUser.unauthenticated,
     this.firstLaunch = true,
   });
 

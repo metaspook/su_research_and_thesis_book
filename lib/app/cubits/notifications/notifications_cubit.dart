@@ -8,28 +8,29 @@ import 'package:su_thesis_book/shared/repositories/repositories.dart';
 part 'notifications_state.dart';
 
 class NotificationsCubit extends HydratedCubit<NotificationsState> {
-  NotificationsCubit({required NotificationRepo notificationRepo})
-      : _notificationRepo = notificationRepo,
+  NotificationsCubit({required NotificationsRepo notificationsRepo})
+      : _notificationRepo = notificationsRepo,
         super(const NotificationsState()) {
     //-- Initialize Notifications subscription.
-    _notificationsSubscription = _notificationRepo.stream.listen((records) {
-      emit(state.copyWith(records: records));
+    _notificationsSubscription =
+        _notificationRepo.stream.listen((notifications) {
+      emit(state.copyWith(notifications: notifications));
     });
   }
 
-  final NotificationRepo _notificationRepo;
-  late final StreamSubscription<List<NotificationRecord>>
+  final NotificationsRepo _notificationRepo;
+  late final StreamSubscription<List<AppNotification>>
       _notificationsSubscription;
 
-  Future<void> onDismissed(NotificationRecord record) async {
-    await _notificationRepo.remove(record);
-    final records = state.records..remove(record);
-    emit(state.copyWith(records: records));
+  Future<void> onDismissed(AppNotification notification) async {
+    await _notificationRepo.remove(notification);
+    final notifications = state.notifications..remove(notification);
+    emit(state.copyWith(notifications: notifications));
   }
 
   void onAllDismissed() {
     _notificationRepo.removeAll();
-    emit(state.copyWith(records: []));
+    emit(state.copyWith(notifications: []));
   }
 
   @override

@@ -6,8 +6,8 @@ import 'package:su_thesis_book/utils/utils.dart';
 part 'designations_state.dart';
 
 class DesignationsCubit extends HydratedCubit<DesignationsState> {
-  DesignationsCubit({required DesignationRepo designationRepo})
-      : _designationRepo = designationRepo,
+  DesignationsCubit({required DesignationsRepo designationsRepo})
+      : _designationRepo = designationsRepo,
         super(const DesignationsState()) {
     //-- Initialize Designations data.
     _designationRepo.designations.then((record) {
@@ -16,7 +16,7 @@ class DesignationsCubit extends HydratedCubit<DesignationsState> {
     });
   }
 
-  final DesignationRepo _designationRepo;
+  final DesignationsRepo _designationRepo;
 
   @override
   DesignationsState? fromJson(Map<String, dynamic> json) {
