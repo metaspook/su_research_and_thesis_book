@@ -2,58 +2,55 @@
 // Use of this source code is governed by a MIT-style license that can be
 // found in the LICENSE file.
 
-import 'dart:developer' show log;
-
 import 'package:connectivity_plus/connectivity_plus.dart'
     show Connectivity, ConnectivityResult;
-import 'package:flutter/services.dart' show PlatformException;
 
 /// {@template connectivator}
 /// Network connectivity checker.
 /// {@endtemplate}
 class Connectivator {
   /// {@macro connectivator}
-  const Connectivator();
+  // Connectivator();
 
   //-- Config
-  static final _connectivity = Connectivity();
-  static String? _statusMsg;
-  static const _errorMsg = "Couldn't fetch the connectivity result!";
+  final _connectivity = Connectivity();
+  // final _errorMsg = "Couldn't fetch the connectivity result!";
+  // String? _statusMsg;
 
   //-- Parse connectivity result.
-  bool _parseConnectivityResult(ConnectivityResult connectivityResult) {
-    if (connectivityResult
-        case ConnectivityResult.wifi ||
-            ConnectivityResult.mobile ||
-            ConnectivityResult.vpn) {
-      _statusMsg = 'Connected to the internet!';
-      return true;
-    }
-    _statusMsg = 'Not connected to the internet!';
-    return false;
-  }
+  (String?, bool) _parseConnectivityResult(
+    ConnectivityResult connectivityResult,
+  ) =>
+      [
+        ConnectivityResult.wifi,
+        ConnectivityResult.mobile,
+        ConnectivityResult.vpn,
+      ].contains(connectivityResult)
+          ? ('Connected to the internet!', true)
+          : ('Not connected to the internet!', false);
 
   //-- Public APIs
   /// Status message of connectivity results and errors.
   /// * Value `null` indicates successful operation.
-  String? get statusMsg => _statusMsg;
+  // String? get statusMsg => _statusMsg;
 
   /// Get connectivity result snapshot.
   /// {@template false_indication}
   /// * Value `false`  indicates error or negative result, you can call
   /// [statusMsg] method in this case.
   /// {@endtemplate}
-  Future<bool> isNetConnected() => _connectivity
-          .checkConnectivity()
-          .then(_parseConnectivityResult)
-          .onError<PlatformException>((e, s) {
-        _statusMsg = _errorMsg;
-        log(_errorMsg, error: e, stackTrace: s);
-        return false;
-      });
+  // Future<bool> isNetConnected() => _connectivity
+  //         .checkConnectivity()
+  //         .then(_parseConnectivityResult)
+  //         .onError<PlatformException>((e, s) {
+  //       _statusMsg = _errorMsg;
+  //       log(_errorMsg, error: e, stackTrace: s);
+  //       return false;
+  //     });
 
   /// Get real-time connectivity result.
   /// {@macro false_indication}
-  Stream<bool> onNetConnected() =>
-      _connectivity.onConnectivityChanged.map<bool>(_parseConnectivityResult);
+  Stream<(String?, bool)> onConnected() => _connectivity.onConnectivityChanged
+      .map<(String?, bool)>(_parseConnectivityResult);
+  Future<(String?, bool)> isConnected() => onConnected().first;
 }

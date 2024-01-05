@@ -290,17 +290,26 @@ class _SignUpViewState extends State<SignUpView> {
                       state.phone.isNotEmpty ||
                       state.password.isNotEmpty ||
                       state.photoPath.isNotEmpty;
-                  return ElevatedButton.icon(
-                    icon: const Icon(Icons.forward_rounded),
-                    label: const Text('Proceed'),
-                    onPressed: enabled
-                        ? () {
-                            final valid =
-                                _signUpFormKey.currentState?.validate() ??
-                                    false;
-                            if (valid) bloc.add(const SignUpProceeded());
-                          }
-                        : null,
+                  return AppBlocSelector<bool>(
+                    selector: (state) => state.online,
+                    builder: (context, online) {
+                      return online
+                          ? ElevatedButton.icon(
+                              icon: const Icon(Icons.forward_rounded),
+                              label: const Text('Proceed'),
+                              onPressed: enabled
+                                  ? () {
+                                      final valid = _signUpFormKey.currentState
+                                              ?.validate() ??
+                                          false;
+                                      if (valid) {
+                                        bloc.add(const SignUpProceeded());
+                                      }
+                                    }
+                                  : null,
+                            )
+                          : const OfflineButton();
+                    },
                   );
                 },
               ),

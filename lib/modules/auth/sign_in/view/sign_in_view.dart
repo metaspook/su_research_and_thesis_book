@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:su_thesis_book/app/app.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
 import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
@@ -156,16 +157,26 @@ class _SignInViewState extends State<SignInView> {
               builder: (context, state) {
                 final enabled =
                     state.email.isNotEmpty || state.password.isNotEmpty;
-                return ElevatedButton.icon(
-                  icon: const Icon(Icons.forward_rounded),
-                  label: const Text('Proceed'),
-                  onPressed: enabled
-                      ? () {
-                          final valid =
-                              _signInFormKey.currentState?.validate() ?? false;
-                          if (valid) bloc.add(const SignInProceeded());
-                        }
-                      : null,
+                return AppBlocSelector<bool>(
+                  selector: (state) => state.online,
+                  builder: (context, online) {
+                    return online
+                        ? ElevatedButton.icon(
+                            icon: const Icon(Icons.forward_rounded),
+                            label: const Text('Proceed'),
+                            onPressed: enabled
+                                ? () {
+                                    final valid = _signInFormKey.currentState
+                                            ?.validate() ??
+                                        false;
+                                    if (valid) {
+                                      bloc.add(const SignInProceeded());
+                                    }
+                                  }
+                                : null,
+                          )
+                        : const OfflineButton();
+                  },
                 );
               },
             ),

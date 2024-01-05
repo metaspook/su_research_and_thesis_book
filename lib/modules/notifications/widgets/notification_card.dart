@@ -54,7 +54,7 @@ class NotificationCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: ListTile(
         onTap: () => context.pushNamed(notification.type.name,
-            extra: notification.paperId),
+            extra: notification.paperId,),
         dense: true,
         visualDensity: const VisualDensity(
           vertical: VisualDensity.minimumDensity,

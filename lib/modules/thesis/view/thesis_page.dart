@@ -4,7 +4,6 @@ import 'package:su_thesis_book/modules/thesis/cubit/thesis_cubit.dart';
 import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
-import 'package:su_thesis_book/theme/theme.dart';
 import 'package:su_thesis_book/utils/extensions.dart';
 
 typedef ThesisBlocListener = BlocListener<ThesisCubit, ThesisState>;
@@ -20,15 +19,7 @@ class ThesisPage extends StatelessWidget {
     return ThesisBlocListener(
       listenWhen: (previous, current) =>
           previous.statusMsg != current.statusMsg,
-      listener: (context, state) {
-        final snackBar = SnackBar(
-          backgroundColor:
-              context.theme.snackBarTheme.backgroundColor?.withOpacity(.25),
-          behavior: SnackBarBehavior.floating,
-          content: Text(state.statusMsg.toStringParseNull()),
-        );
-        context.scaffoldMessenger.showSnackBar(snackBar);
-      },
+      listener: (context, state) => context.showAppSnackBar(state.statusMsg),
       child: thesis == null
           ? Scaffold(
               appBar: AppBar(title: const Text('Thesis Page')),

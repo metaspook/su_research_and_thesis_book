@@ -8,8 +8,6 @@ enum ResearchStatus {
   failure;
 
   bool get isLoading => this == ResearchStatus.loading;
-  bool get hasMessage =>
-      this == ResearchStatus.success || this == ResearchStatus.failure;
 }
 
 class ResearchState extends Equatable {

@@ -22,7 +22,6 @@ class ThesisCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final dateStr = thesis.createdAt == null
         ? 'N/A'
         : DateFormat('EEE, y/M/d').format(thesis.createdAt!);
@@ -39,7 +38,7 @@ class ThesisCard extends StatelessWidget {
         // shape: selected ? AppThemes.outlineInputBorder : null,
         onLongPress: onLongPress,
         onTap: onTap ??
-            () => context.pushNamed(AppRouter.thesis.name!, extra: thesis),
+            () => context.pushNamed(AppRouter.thesis.name!, extra: thesis.id),
         // onTap: onTap ??
         //     () => context.push(AppRouter.thesis.pathUnderRoot, extra: thesis),
         leading: HaloAvatar(thesis.publisher?.photoUrl),

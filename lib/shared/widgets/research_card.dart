@@ -22,7 +22,6 @@ class ResearchCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final dateStr = research.createdAt == null
         ? 'N/A'
         : DateFormat('EEE, y/M/d').format(research.createdAt!);
@@ -39,7 +38,8 @@ class ResearchCard extends StatelessWidget {
         // shape: selected ? AppThemes.outlineInputBorder : null,
         onLongPress: onLongPress,
         onTap: onTap ??
-            () => context.pushNamed(AppRouter.research.name!, extra: research),
+            () =>
+                context.pushNamed(AppRouter.research.name!, extra: research.id),
         // onTap: onTap ??
         //     () =>
         //         context.push(AppRouter.research.pathUnderRoot, extra: research),

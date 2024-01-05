@@ -4,7 +4,6 @@ import 'package:su_thesis_book/modules/research/research.dart';
 import 'package:su_thesis_book/router/router.dart';
 import 'package:su_thesis_book/shared/models/models.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
-import 'package:su_thesis_book/theme/extensions.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
 typedef ResearchBlocListener = BlocListener<ResearchCubit, ResearchState>;
@@ -21,15 +20,7 @@ class ResearchPage extends StatelessWidget {
     return ResearchBlocListener(
       listenWhen: (previous, current) =>
           previous.statusMsg != current.statusMsg,
-      listener: (context, state) {
-        final snackBar = SnackBar(
-          backgroundColor:
-              context.theme.snackBarTheme.backgroundColor?.withOpacity(.25),
-          behavior: SnackBarBehavior.floating,
-          content: Text(state.statusMsg.toStringParseNull()),
-        );
-        context.scaffoldMessenger.showSnackBar(snackBar);
-      },
+      listener: (context, state) => context.showAppSnackBar(state.statusMsg),
       child: research == null
           ? Scaffold(
               appBar: AppBar(title: const Text('Thesis Page')),
@@ -49,25 +40,11 @@ class ResearchPage extends StatelessWidget {
                     icon: const Icon(Icons.bookmark_add_rounded),
                   ),
                   // Download button
-                  ResearchBlocListener(
-                    listenWhen: (previous, current) =>
-                        current.status.hasMessage,
-                    listener: (context, state) {
-                      final snackBar = SnackBar(
-                        backgroundColor: context
-                            .theme.snackBarTheme.backgroundColor
-                            ?.withOpacity(.25),
-                        behavior: SnackBarBehavior.floating,
-                        content: Text(state.statusMsg.toStringParseNull()),
-                      );
-                      context.scaffoldMessenger.showSnackBar(snackBar);
-                    },
-                    child: IconButton(
-                      padding: EdgeInsets.zero,
-                      // alignment: Alignment.center,
-                      onPressed: cubit.onPressedDownload,
-                      icon: const Icon(Icons.download_rounded),
-                    ),
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    // alignment: Alignment.center,
+                    onPressed: cubit.onPressedDownload,
+                    icon: const Icon(Icons.download_rounded),
                   ),
                 ],
               ),

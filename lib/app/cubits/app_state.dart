@@ -15,6 +15,7 @@ class AppState extends Equatable {
     this.status = AppStatus.initial,
     this.statusMsg,
     this.user = AppUser.unauthenticated,
+    this.online = false,
     this.firstLaunch = true,
   });
 
@@ -34,6 +35,7 @@ class AppState extends Equatable {
   final AppStatus status;
   final String? statusMsg;
   final AppUser user;
+  final bool online;
   final bool firstLaunch;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -45,15 +47,17 @@ class AppState extends Equatable {
     AppStatus? status,
     String? statusMsg,
     AppUser? user,
+    bool? online,
     bool? firstLaunch,
   }) =>
       AppState(
         status: status ?? this.status,
         statusMsg: this.statusMsg,
         user: user ?? this.user,
+        online: online ?? this.online,
         firstLaunch: firstLaunch ?? this.firstLaunch,
       );
 
   @override
-  List<Object?> get props => [status, statusMsg, user, firstLaunch];
+  List<Object?> get props => [status, statusMsg, user, online, firstLaunch];
 }
