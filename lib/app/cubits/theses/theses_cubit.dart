@@ -47,7 +47,7 @@ class ThesesCubit extends HydratedCubit<ThesesState> {
 
   @override
   Future<void> close() {
-    // _thesesSubscription.cancel();
+    _thesesSubscription.cancel();
     return super.close();
   }
 }

@@ -34,7 +34,6 @@ class ThesisEntriesCubit extends Cubit<ThesisEntriesState> {
     String? errorMsg;
     for (final thesis in state.selectedTheses) {
       errorMsg = await _thesisRepo.delete(thesis.id);
-      if (errorMsg != null) break;
       selectedTheses.remove(thesis);
     }
     // checking length if removed any item.

@@ -10,6 +10,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:su_thesis_book/firebase_options.dart';
+import 'package:su_thesis_book/shared/repositories/repositories.dart';
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -68,8 +69,9 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
         ? HydratedStorage.webStorageDirectory
         : await getTemporaryDirectory(),
   );
-  // final appUserRepo = AppUserRepo();
-  // await appUserRepo.stream.first;
+  //-- Initialize AppUserRepo
+  // await AppUserRepo.;
+  await AppUserRepo().stream.first;
 
   runApp(await builder());
 }

@@ -8,25 +8,20 @@ enum ThesisEntriesStatus {
   failure;
 
   bool get isLoading => this == ThesisEntriesStatus.loading;
-  bool get hasMessage =>
-      this == ThesisEntriesStatus.success ||
-      this == ThesisEntriesStatus.failure;
 }
 
 class ThesisEntriesState extends Equatable {
   const ThesisEntriesState({
     this.status = ThesisEntriesStatus.initial,
-    this.statusMsg = '',
+    this.statusMsg,
     this.removeMode = false,
-    // this.theses,
     this.selectedTheses = const [],
     this.thesisBookmarks,
   });
 
   final ThesisEntriesStatus status;
-  final String statusMsg;
+  final String? statusMsg;
   final bool removeMode;
-  // final List<Thesis>? theses;
   final List<Thesis> selectedTheses;
   final List<Bookmark>? thesisBookmarks;
 
@@ -34,7 +29,6 @@ class ThesisEntriesState extends Equatable {
     ThesisEntriesStatus? status,
     String? statusMsg,
     bool? removeMode,
-    // List<Thesis>? theses,
     List<Thesis>? selectedTheses,
     List<Bookmark>? thesisBookmarks,
   }) {
@@ -42,7 +36,6 @@ class ThesisEntriesState extends Equatable {
       status: status ?? this.status,
       statusMsg: statusMsg ?? this.statusMsg,
       removeMode: removeMode ?? this.removeMode,
-      // theses: theses ?? this.theses,
       selectedTheses: selectedTheses ?? this.selectedTheses,
       thesisBookmarks: thesisBookmarks ?? this.thesisBookmarks,
     );
@@ -53,7 +46,6 @@ class ThesisEntriesState extends Equatable {
         status,
         statusMsg,
         removeMode,
-        // theses,
         selectedTheses,
         thesisBookmarks,
       ];

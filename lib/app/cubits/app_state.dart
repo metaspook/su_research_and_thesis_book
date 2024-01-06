@@ -1,7 +1,7 @@
 part of 'app_cubit.dart';
 
 enum AppStatus {
-  initial,
+  // initial,
   loggedIn,
   loggedOut;
   // authenticated,
@@ -12,7 +12,7 @@ enum AppStatus {
 
 class AppState extends Equatable {
   const AppState({
-    this.status = AppStatus.initial,
+    this.status = AppStatus.loggedOut,
     this.statusMsg,
     this.user = AppUser.unauthenticated,
     this.online = false,

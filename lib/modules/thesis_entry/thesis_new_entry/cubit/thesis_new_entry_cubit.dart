@@ -57,7 +57,7 @@ class ThesisNewEntryCubit extends Cubit<ThesisNewEntryState> {
       final errorMsg = await _thesisRepo.create(thesisId, value: thesisObj);
       if (errorMsg == null) {
         emit(
-          state.copyWith(
+          const ThesisNewEntryState().copyWith(
             status: ThesisNewEntryStatus.success,
             statusMsg: 'Success! Thesis uploaded.',
           ),

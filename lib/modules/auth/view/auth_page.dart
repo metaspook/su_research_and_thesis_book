@@ -22,11 +22,12 @@ class AuthPage extends StatelessWidget {
       tabs: [Tab(text: 'Sign in'), Tab(text: 'Sign up')],
     );
 
-    return AppBlocListener(
-      listenWhen: (previous, current) => current.firstLaunch,
-      listener: (context, state) => context.showLandingDialog(),
-      child: DefaultTabController(
-        length: tabBar.tabs.length,
+    return DefaultTabController(
+      length: tabBar.tabs.length,
+      child: AppBlocListener(
+        listenWhen: (previous, current) =>
+            previous.firstLaunch && current.firstLaunch,
+        listener: (context, state) => context.showLandingDialog(),
         child: Scaffold(
           body: NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) => [

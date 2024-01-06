@@ -15,7 +15,7 @@ final class ResearchNewEntryState extends Equatable {
     this.status = ResearchNewEntryStatus.initial,
     this.statusMsg,
     this.title = '',
-    this.departmentIndex = 0,
+    this.categoryIndex = 0,
     this.description = '',
     this.pdfPath = '',
   });
@@ -23,7 +23,7 @@ final class ResearchNewEntryState extends Equatable {
   final ResearchNewEntryStatus status;
   final String? statusMsg;
   final String title;
-  final int departmentIndex;
+  final int categoryIndex;
   final String description;
   final String pdfPath;
 
@@ -31,7 +31,7 @@ final class ResearchNewEntryState extends Equatable {
     ResearchNewEntryStatus? status,
     String? statusMsg,
     String? title,
-    int? departmentIndex,
+    int? categoryIndex,
     String? description,
     String? pdfPath,
   }) {
@@ -39,7 +39,7 @@ final class ResearchNewEntryState extends Equatable {
       status: status ?? this.status,
       statusMsg: statusMsg ?? this.statusMsg,
       title: title ?? this.title,
-      departmentIndex: departmentIndex ?? this.departmentIndex,
+      categoryIndex: categoryIndex ?? this.categoryIndex,
       description: description ?? this.description,
       pdfPath: pdfPath ?? this.pdfPath,
     );
@@ -47,5 +47,5 @@ final class ResearchNewEntryState extends Equatable {
 
   @override
   List<Object?> get props =>
-      [status, statusMsg, title, departmentIndex, description, pdfPath];
+      [status, statusMsg, title, categoryIndex, description, pdfPath];
 }

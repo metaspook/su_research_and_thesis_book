@@ -34,7 +34,6 @@ class ResearchEntriesCubit extends Cubit<ResearchEntriesState> {
     String? errorMsg;
     for (final research in state.selectedResearches) {
       errorMsg = await _researchRepo.delete(research.id);
-      if (errorMsg != null) break;
       selectedResearches.remove(research);
     }
     // checking length if removed any item.

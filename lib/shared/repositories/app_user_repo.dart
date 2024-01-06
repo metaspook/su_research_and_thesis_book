@@ -19,6 +19,9 @@ export 'package:firebase_auth/firebase_auth.dart'
 // }
 
 class AppUserRepo implements CRUD<AppUser> {
+  // AppUserRepo() {
+  //   stream.first.then((_) => null);
+  // }
   //-- Config
   // final _controller = StreamController<AppUser>.broadcast();
   final _cacheDesignations = const Cache<List<String>>('designations');
@@ -39,13 +42,15 @@ class AppUserRepo implements CRUD<AppUser> {
   AppUser get currentUser => _cache.value ?? AppUser.unauthenticated;
 
   /// Emit list of notification.
-  Stream<(String?, AppUser)> get stream async* {
-    await _userStream.first;
-    yield* _userStream.asyncMap(
-      (user) async =>
-          user == null ? (null, AppUser.unauthenticated) : await read(user.uid),
-    );
-  }
+  Stream<(String?, AppUser)> get stream => _userStream.asyncMap(
+        (user) async => user == null
+            ? (null, AppUser.unauthenticated)
+            : await read(user.uid),
+      );
+
+  // facto
+
+  // static void get initialize => stream.first;
 
   /// Upload user photo to Storage and get URL.
   Future<({String? errorMsg, String? photoUrl})> uploadPhoto(

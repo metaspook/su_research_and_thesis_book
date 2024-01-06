@@ -19,7 +19,6 @@ class ResearchEntriesView extends StatelessWidget {
     final researches = context.select(
       (ResearchesCubit cubit) => cubit.state.researchesOfPublisher(userId),
     );
-
     final selectedResearches = context
         .select((ResearchEntriesCubit cubit) => cubit.state.selectedResearches);
     final selectedResearchesIsEmpty = selectedResearches.isEmpty;
@@ -33,7 +32,7 @@ class ResearchEntriesView extends StatelessWidget {
                 padding: AppThemes.viewPadding,
                 itemCount: researches.length,
                 itemBuilder: (context, index) {
-                  final research = researches[index];
+                  final research = researches[(researches.length - 1) - index];
                   return ResearchCard(
                     research,
                     selected: selectedResearches.contains(research),

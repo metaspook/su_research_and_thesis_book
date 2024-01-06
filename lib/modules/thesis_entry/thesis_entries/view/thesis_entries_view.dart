@@ -10,8 +10,6 @@ class ThesisEntriesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<ThesisEntryCubit>().setView(1);
-    // context.read<BookmarksCubit>().getViewIndex(0);
     final cubit = context.read<ThesisEntriesCubit>();
     final isLoading = context.select(
       (ThesisEntriesCubit cubit) => cubit.state.status.isLoading,
@@ -19,7 +17,6 @@ class ThesisEntriesView extends StatelessWidget {
     final userId = context.select((AppCubit cubit) => cubit.state.user.id);
     final theses = context
         .select((ThesesCubit cubit) => cubit.state.thesesOfPublisher(userId));
-
     final selectedTheses = context
         .select((ThesisEntriesCubit cubit) => cubit.state.selectedTheses);
     final selectedThesesIsEmpty = selectedTheses.isEmpty;
@@ -33,7 +30,7 @@ class ThesisEntriesView extends StatelessWidget {
                 padding: AppThemes.viewPadding,
                 itemCount: theses.length,
                 itemBuilder: (context, index) {
-                  final thesis = theses[index];
+                  final thesis = theses[(theses.length - 1) - index];
                   return ThesisCard(
                     thesis,
                     selected: selectedTheses.contains(thesis),

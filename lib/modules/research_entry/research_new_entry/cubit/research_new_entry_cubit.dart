@@ -17,7 +17,7 @@ class ResearchNewEntryCubit extends Cubit<ResearchNewEntryState> {
   }
 
   void onChangedDepartment(int? value) {
-    emit(state.copyWith(departmentIndex: value));
+    emit(state.copyWith(categoryIndex: value));
   }
 
   void onChangedDescription(String? value) {
@@ -47,7 +47,7 @@ class ResearchNewEntryCubit extends Cubit<ResearchNewEntryState> {
       final researchObj = {
         'userId': userId,
         'createdAt': timestamp,
-        'departmentIndex': state.departmentIndex,
+        'categoryIndex': state.categoryIndex,
         'description': state.description,
         'title': state.title,
         'views': 0,
