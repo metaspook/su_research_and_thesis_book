@@ -13,7 +13,8 @@ class ResearcherListView extends StatelessWidget {
       physics: const BouncingScrollPhysics(),
       padding: AppThemes.viewPadding,
       itemCount: researches.length,
-      itemBuilder: (context, index) => ResearchCard(researches[index]),
+      itemBuilder: (context, index) =>
+          ResearchCard(researches[(researches.length - 1) - index]),
     );
   }
 }

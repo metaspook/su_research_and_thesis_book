@@ -115,11 +115,12 @@ final class AppRouter {
     name: 'passwordReset',
     path: '/password_reset',
     builder: (context, state) {
+      final email = state.extra as String?;
       return BlocProvider<PasswordResetBloc>(
         create: (context) => PasswordResetBloc(
           authRepo: context.read<AuthRepo>(),
         ),
-        child: const PasswordResetPage(),
+        child: PasswordResetPage(email: email),
       );
     },
   );

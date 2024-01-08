@@ -13,7 +13,8 @@ class ThesesListView extends StatelessWidget {
       physics: const BouncingScrollPhysics(),
       padding: AppThemes.viewPadding,
       itemCount: theses.length,
-      itemBuilder: (context, index) => ThesisCard(theses[index]),
+      itemBuilder: (context, index) =>
+          ThesisCard(theses[(theses.length - 1) - index]),
     );
   }
 }

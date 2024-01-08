@@ -7,6 +7,10 @@ import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
 import 'package:su_thesis_book/utils/utils.dart';
 
+typedef SignInBlocSelector<T> = BlocSelector<SignInBloc, SignInState, T>;
+typedef SignInBlocListener = BlocListener<SignInBloc, SignInState>;
+typedef SignInBlocConsumer = BlocConsumer<SignInBloc, SignInState>;
+
 class SignInView extends StatefulWidget {
   const SignInView({super.key});
 
@@ -133,18 +137,13 @@ class _SignInViewState extends State<SignInView> {
                   },
                 ),
                 // Forget Password button
-                SignInBlocSelector<String>(
-                  selector: (state) => state.email,
-                  builder: (context, email) {
-                    return TextButton.icon(
-                      icon: const Icon(Icons.help_center_rounded),
-                      label: const Text('Forget Password'),
-                      onPressed: email.isEmpty
-                          ? null
-                          : () =>
-                              context.pushNamed(AppRouter.passwordReset.name!),
-                    );
-                  },
+                TextButton.icon(
+                  icon: const Icon(Icons.help_center_rounded),
+                  label: const Text('Forget Password'),
+                  onPressed: () => context.pushNamed(
+                    AppRouter.passwordReset.name!,
+                    extra: _emailController.text,
+                  ),
                 ),
               ],
             ),

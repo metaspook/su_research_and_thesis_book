@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:su_thesis_book/app/app.dart';
 import 'package:su_thesis_book/modules/auth/auth.dart';
 import 'package:su_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_thesis_book/theme/theme.dart';
-
-typedef SignInBlocSelector<T> = BlocSelector<SignInBloc, SignInState, T>;
-typedef SignInBlocListener = BlocListener<SignInBloc, SignInState>;
-typedef SignInBlocConsumer = BlocConsumer<SignInBloc, SignInState>;
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});

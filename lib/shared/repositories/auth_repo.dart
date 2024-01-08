@@ -53,9 +53,8 @@ class AuthRepo {
       await _auth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
       final errorMsg = const <String, String>{
-        'weak-password': "Password isn't strong enough!",
-        'requires-recent-login':
-            'Recent Sign-in required! Please sign out then in again.',
+        'invalid-email': 'Invalid email!',
+        'user-not-found': "This email's user is not found!",
       }[e.code];
       return errorMsg;
     } catch (e, s) {
