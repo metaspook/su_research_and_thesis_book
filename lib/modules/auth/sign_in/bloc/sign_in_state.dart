@@ -8,14 +8,12 @@ enum SignInStatus {
   failure;
 
   bool get isLoading => this == SignInStatus.loading;
-  bool get hasMessage =>
-      this == SignInStatus.success || this == SignInStatus.failure;
 }
 
 final class SignInState extends Equatable {
   const SignInState({
     this.status = SignInStatus.initial,
-    this.statusMsg = '',
+    this.statusMsg,
     this.email = '',
     this.password = '',
     this.obscurePassword = true,
@@ -23,7 +21,7 @@ final class SignInState extends Equatable {
   });
 
   final SignInStatus status;
-  final String statusMsg;
+  final String? statusMsg;
   final String email;
   final String password;
   final bool obscurePassword;
@@ -48,7 +46,7 @@ final class SignInState extends Equatable {
   }
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [status, statusMsg, email, password, obscurePassword, rememberMe];
   }
 }

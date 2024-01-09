@@ -53,5 +53,21 @@ class PasswordResetBloc extends Bloc<PasswordResetEvent, PasswordResetState> {
     Emitter<PasswordResetState> emit,
   ) async {
     emit(state.copyWith(status: PasswordResetStatus.loading));
+    final errorMsg = await _authRepo.forgotPassword(state.email);
+    if (errorMsg == null) {
+      emit(
+        state.copyWith(
+          status: PasswordResetStatus.success,
+          statusMsg: 'Success! User password reset.',
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          status: PasswordResetStatus.failure,
+          statusMsg: errorMsg,
+        ),
+      );
+    }
   }
 }

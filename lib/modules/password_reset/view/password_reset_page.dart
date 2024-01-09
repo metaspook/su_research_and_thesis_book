@@ -146,12 +146,23 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
                     ),
                     const SizedBox(height: AppThemes.height * 4),
                     // Proceed button
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.forward_rounded),
-                      label: const Text('Proceed'),
-                      onPressed: () {
-                        _passwordResetFormKey.currentState?.validate();
-                      },
+                    BlocListener<PasswordResetBloc, PasswordResetState>(
+                      listenWhen: (previous, current) =>
+                          previous.statusMsg != current.statusMsg,
+                      listener: (context, state) =>
+                          context.showAppSnackBar(state.statusMsg),
+                      child: ElevatedButton.icon(
+                        icon: const Icon(Icons.forward_rounded),
+                        label: const Text('Proceed'),
+                        onPressed: () {
+                          final valid =
+                              _passwordResetFormKey.currentState?.validate() ??
+                                  false;
+                          if (valid) {
+                            bloc.add(const PasswordResetProceeded());
+                          }
+                        },
+                      ),
                     ),
                   ],
                 ),

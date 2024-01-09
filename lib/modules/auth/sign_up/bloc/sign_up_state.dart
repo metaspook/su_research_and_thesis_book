@@ -38,7 +38,6 @@ final class SignUpState extends Equatable {
   final int departmentIndex;
   final String photoPath;
   final bool obscurePassword;
-  // bool get hasMessage => statusMsg != null;
 
   SignUpState copyWith({
     SignUpStatus? status,

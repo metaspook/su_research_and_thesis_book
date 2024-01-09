@@ -150,7 +150,8 @@ class _SignInViewState extends State<SignInView> {
             const SizedBox(height: AppThemes.height * 2),
             // Proceed button
             SignInBlocConsumer(
-              listenWhen: (previous, current) => current.status.hasMessage,
+              listenWhen: (previous, current) =>
+                  previous.status != current.status,
               listener: (context, state) =>
                   context.showAppSnackBar(state.statusMsg),
               builder: (context, state) {

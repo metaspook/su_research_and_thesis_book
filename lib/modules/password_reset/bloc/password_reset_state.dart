@@ -8,15 +8,12 @@ enum PasswordResetStatus {
   failure;
 
   bool get isLoading => this == PasswordResetStatus.loading;
-  bool get hasMessage =>
-      this == PasswordResetStatus.success ||
-      this == PasswordResetStatus.failure;
 }
 
 final class PasswordResetState extends Equatable {
   const PasswordResetState({
     this.status = PasswordResetStatus.initial,
-    this.statusMsg = '',
+    this.statusMsg,
     this.email = '',
     this.currentPassword = '',
     this.newPassword = '',
@@ -25,7 +22,7 @@ final class PasswordResetState extends Equatable {
   });
 
   final PasswordResetStatus status;
-  final String statusMsg;
+  final String? statusMsg;
   final String email;
   final String currentPassword;
   final String newPassword;
@@ -54,7 +51,7 @@ final class PasswordResetState extends Equatable {
   }
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [
       status,
       statusMsg,
