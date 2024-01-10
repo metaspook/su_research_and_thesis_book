@@ -45,8 +45,6 @@ class _ProfileCarouselState extends State<ProfileCarousel> {
             child: Padding(
               padding: const EdgeInsets.all(8),
               child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                // mainAxisSize: MainAxisSize.min,
                 children: [
                   const HaloAvatar(),
                   const SizedBox(height: AppThemes.height),

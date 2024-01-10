@@ -5,7 +5,6 @@ import 'package:su_research_and_thesis_book/l10n/l10n.dart';
 import 'package:su_research_and_thesis_book/modules/publishers/publishers.dart';
 import 'package:su_research_and_thesis_book/shared/widgets/widgets.dart';
 import 'package:su_research_and_thesis_book/theme/theme.dart';
-import 'package:su_research_and_thesis_book/utils/extensions.dart';
 
 class PublishersPage extends StatelessWidget {
   const PublishersPage({super.key});
@@ -23,21 +22,26 @@ class PublishersPage extends StatelessWidget {
                 context.select((ThesesCubit cubit) => cubit.state.publishers);
             final researchPublishers = context
                 .select((ResearchesCubit cubit) => cubit.state.publishers);
-            final publishers = [
-              if (thesisPublishers != null) ...thesisPublishers,
-              if (researchPublishers != null) ...researchPublishers,
-            ].unique;
+            final publishers =
+                thesisPublishers == null && researchPublishers == null
+                    ? null
+                    : {
+                        ...?thesisPublishers,
+                        ...?researchPublishers,
+                      };
 
-            return publishers.isEmpty
+            return publishers == null
                 ? const TranslucentLoader()
-                : ListView.builder(
-                    padding: AppThemes.viewPadding,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: publishers.length,
-                    itemBuilder: (context, index) {
-                      return PublisherCard(publishers[index]);
-                    },
-                  );
+                : publishers.isEmpty
+                    ? context.emptyListText()
+                    : ListView.builder(
+                        padding: AppThemes.viewPadding,
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: publishers.length,
+                        itemBuilder: (context, index) {
+                          return PublisherCard(publishers.elementAt(index));
+                        },
+                      );
           },
         ),
       ),
