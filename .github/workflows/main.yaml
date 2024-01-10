@@ -1,4 +1,4 @@
-name: su_thesis_book
+name: su_research_and_thesis_book
 
 concurrency:
   group: $-$

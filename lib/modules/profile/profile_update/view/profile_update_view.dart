@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropicker/image_cropicker.dart';
-import 'package:su_thesis_book/app/app.dart';
-import 'package:su_thesis_book/modules/profile/profile.dart';
-import 'package:su_thesis_book/shared/widgets/widgets.dart';
-import 'package:su_thesis_book/theme/theme.dart';
-import 'package:su_thesis_book/utils/utils.dart';
+import 'package:su_research_and_thesis_book/app/app.dart';
+import 'package:su_research_and_thesis_book/modules/profile/profile.dart';
+import 'package:su_research_and_thesis_book/shared/widgets/widgets.dart';
+import 'package:su_research_and_thesis_book/theme/theme.dart';
+import 'package:su_research_and_thesis_book/utils/utils.dart';
 
 class ProfileUpdateView extends StatefulWidget {
   const ProfileUpdateView({super.key});
@@ -74,7 +74,7 @@ class _ProfileUpdateViewState extends State<ProfileUpdateView> {
               ProfileUpdateBlocSelector<String>(
                 selector: (state) => state.photoPath,
                 builder: (context, photoPath) {
-                  return HaloAvatar.local(photoPath, size: 4);
+                  return HaloAvatar.local(path: photoPath, size: 4);
                 },
               ),
               const SizedBox(width: AppThemes.height * 4),

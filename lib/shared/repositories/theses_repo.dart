@@ -6,8 +6,8 @@ import 'package:cache/cache.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:su_thesis_book/shared/models/models.dart';
-import 'package:su_thesis_book/utils/utils.dart';
+import 'package:su_research_and_thesis_book/shared/models/models.dart';
+import 'package:su_research_and_thesis_book/utils/utils.dart';
 
 typedef ThesesRecord = (String?, List<Thesis>?);
 

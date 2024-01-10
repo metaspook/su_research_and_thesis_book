@@ -3,13 +3,13 @@ import 'dart:io' show File;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_cropicker/image_cropicker.dart';
-import 'package:su_thesis_book/app/app.dart';
-import 'package:su_thesis_book/gen/assets.gen.dart';
-import 'package:su_thesis_book/modules/auth/auth.dart';
-import 'package:su_thesis_book/shared/repositories/repositories.dart';
-import 'package:su_thesis_book/shared/widgets/widgets.dart';
-import 'package:su_thesis_book/theme/theme.dart';
-import 'package:su_thesis_book/utils/utils.dart';
+import 'package:su_research_and_thesis_book/app/app.dart';
+import 'package:su_research_and_thesis_book/gen/assets.gen.dart';
+import 'package:su_research_and_thesis_book/modules/auth/auth.dart';
+import 'package:su_research_and_thesis_book/shared/repositories/repositories.dart';
+import 'package:su_research_and_thesis_book/shared/widgets/widgets.dart';
+import 'package:su_research_and_thesis_book/theme/theme.dart';
+import 'package:su_research_and_thesis_book/utils/utils.dart';
 
 typedef SignUpBlocSelector<T> = BlocSelector<SignUpBloc, SignUpState, T>;
 

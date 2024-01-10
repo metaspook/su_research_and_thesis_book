@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:su_thesis_book/modules/bookmarks/bookmarks.dart';
-import 'package:su_thesis_book/shared/widgets/widgets.dart';
-import 'package:su_thesis_book/theme/theme.dart';
+import 'package:su_research_and_thesis_book/modules/bookmarks/bookmarks.dart';
+import 'package:su_research_and_thesis_book/shared/widgets/widgets.dart';
+import 'package:su_research_and_thesis_book/theme/theme.dart';
 
 class BookmarksResearchesView extends StatelessWidget {
   const BookmarksResearchesView({super.key});
@@ -12,7 +12,8 @@ class BookmarksResearchesView extends StatelessWidget {
     context.read<BookmarksCubit>().getViewIndex(1);
     final cubit = context.read<BookmarksResearchesCubit>();
     final isLoading = context.select(
-        (BookmarksResearchesCubit cubit) => cubit.state.status.isLoading,);
+      (BookmarksResearchesCubit cubit) => cubit.state.status.isLoading,
+    );
     final researches = context
         .select((BookmarksResearchesCubit cubit) => cubit.state.researches);
     final researchBookmarks = context.select(

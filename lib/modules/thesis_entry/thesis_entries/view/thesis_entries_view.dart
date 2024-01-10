@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:su_thesis_book/app/app.dart';
-import 'package:su_thesis_book/modules/thesis_entry/thesis_entry.dart';
-import 'package:su_thesis_book/shared/widgets/widgets.dart';
-import 'package:su_thesis_book/theme/theme.dart';
+import 'package:su_research_and_thesis_book/app/app.dart';
+import 'package:su_research_and_thesis_book/modules/thesis_entry/thesis_entry.dart';
+import 'package:su_research_and_thesis_book/shared/widgets/widgets.dart';
+import 'package:su_research_and_thesis_book/theme/theme.dart';
 
 class ThesisEntriesView extends StatelessWidget {
   const ThesisEntriesView({super.key});

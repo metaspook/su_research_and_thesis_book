@@ -6,6 +6,5 @@ export 'comments_repo.dart';
 export 'departments_repo.dart';
 export 'designations_repo.dart';
 export 'notifications_repo.dart';
-export 'paper_type.dart';
 export 'researches_repo.dart';
 export 'theses_repo.dart';

@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:su_thesis_book/shared/models/models.dart';
-import 'package:su_thesis_book/shared/repositories/repositories.dart';
-import 'package:su_thesis_book/utils/utils.dart';
+import 'package:su_research_and_thesis_book/shared/models/models.dart';
+import 'package:su_research_and_thesis_book/shared/repositories/repositories.dart';
+import 'package:su_research_and_thesis_book/utils/utils.dart';
 
 part 'researches_state.dart';
 

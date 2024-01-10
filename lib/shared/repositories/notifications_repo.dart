@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:cache/cache.dart';
-import 'package:su_thesis_book/shared/models/models.dart';
+import 'package:su_research_and_thesis_book/shared/models/models.dart';
 
 class NotificationsRepo {
   //-- Config

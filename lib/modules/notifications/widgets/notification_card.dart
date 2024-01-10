@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:su_thesis_book/router/router.dart';
-import 'package:su_thesis_book/shared/models/models.dart';
-import 'package:su_thesis_book/theme/theme.dart';
-import 'package:su_thesis_book/utils/utils.dart';
+import 'package:su_research_and_thesis_book/router/router.dart';
+import 'package:su_research_and_thesis_book/shared/models/models.dart';
+import 'package:su_research_and_thesis_book/theme/theme.dart';
+import 'package:su_research_and_thesis_book/utils/utils.dart';
 
 class NotificationCard extends StatelessWidget {
   const NotificationCard(
@@ -53,8 +53,10 @@ class NotificationCard extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: ListTile(
-        onTap: () => context.pushNamed(notification.type.name,
-            extra: notification.paperId,),
+        onTap: () => context.pushNamed(
+          notification.type.name,
+          extra: notification.paperId,
+        ),
         dense: true,
         visualDensity: const VisualDensity(
           vertical: VisualDensity.minimumDensity,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:su_thesis_book/shared/models/models.dart';
+import 'package:su_research_and_thesis_book/shared/models/models.dart';
 
 typedef Json = Map<String, Object?>;
 typedef Papers = ({List<Research>? researches, List<Thesis>? theses});

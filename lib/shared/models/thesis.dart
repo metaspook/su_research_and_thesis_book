@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:su_thesis_book/shared/models/models.dart';
-import 'package:su_thesis_book/utils/utils.dart';
+import 'package:su_research_and_thesis_book/shared/models/models.dart';
+import 'package:su_research_and_thesis_book/utils/utils.dart';
 
 final class Thesis extends Equatable {
   const Thesis({

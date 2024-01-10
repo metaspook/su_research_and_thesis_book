@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:su_thesis_book/app/app.dart';
-import 'package:su_thesis_book/modules/home/home.dart';
-import 'package:su_thesis_book/router/router.dart';
-import 'package:su_thesis_book/shared/widgets/widgets.dart';
-import 'package:su_thesis_book/theme/theme.dart';
-import 'package:su_thesis_book/utils/utils.dart';
+import 'package:su_research_and_thesis_book/app/app.dart';
+import 'package:su_research_and_thesis_book/modules/home/home.dart';
+import 'package:su_research_and_thesis_book/router/router.dart';
+import 'package:su_research_and_thesis_book/shared/widgets/widgets.dart';
+import 'package:su_research_and_thesis_book/theme/theme.dart';
+import 'package:su_research_and_thesis_book/utils/utils.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});

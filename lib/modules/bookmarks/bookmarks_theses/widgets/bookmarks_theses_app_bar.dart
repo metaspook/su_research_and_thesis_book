@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:su_thesis_book/l10n/l10n.dart';
-import 'package:su_thesis_book/modules/bookmarks/bookmarks.dart';
-import 'package:su_thesis_book/shared/models/models.dart';
-import 'package:su_thesis_book/shared/widgets/widgets.dart';
+import 'package:su_research_and_thesis_book/l10n/l10n.dart';
+import 'package:su_research_and_thesis_book/modules/bookmarks/bookmarks.dart';
+import 'package:su_research_and_thesis_book/shared/models/models.dart';
+import 'package:su_research_and_thesis_book/shared/widgets/widgets.dart';
 
 class BookmarksThesesAppBar extends StatelessWidget {
   const BookmarksThesesAppBar({

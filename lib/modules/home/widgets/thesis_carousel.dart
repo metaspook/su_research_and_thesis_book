@@ -1,9 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:su_thesis_book/router/router.dart';
-import 'package:su_thesis_book/shared/models/models.dart';
-import 'package:su_thesis_book/theme/theme.dart';
-import 'package:su_thesis_book/utils/extensions.dart';
+import 'package:su_research_and_thesis_book/router/router.dart';
+import 'package:su_research_and_thesis_book/shared/models/models.dart';
+import 'package:su_research_and_thesis_book/theme/theme.dart';
+import 'package:su_research_and_thesis_book/utils/extensions.dart';
 
 class ThesisCarousel extends StatefulWidget {
   const ThesisCarousel({
@@ -36,34 +36,24 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
   void initState() {
     super.initState();
     records = [
-      for (var i = 0; i < 3; i++)
+      for (final thesis in widget.theses.take(6))
         (
-          title: widget.theses[i].title.toStringParseNull(),
-          publisherName: widget.theses[i].publisher!.name.toStringParseNull(),
-          designation:
-              widget.theses[i].publisher!.designation.toStringParseNull(),
-          department:
-              widget.theses[i].publisher!.department.toStringParseNull(),
-          description: widget.theses[i].description.toStringParseNull(),
-          onTap: () => context.pushNamed(
-                AppRouter.thesis.name!,
-                extra: widget.theses[i],
-              ),
+          title: thesis.title.toStringParseNull(),
+          publisherName: thesis.publisher!.name.toStringParseNull(),
+          designation: thesis.publisher!.designation.toStringParseNull(),
+          department: thesis.publisher!.department.toStringParseNull(),
+          description: thesis.description.toStringParseNull(),
+          onTap: () => context.pushNamed(AppRouter.thesis.name!, extra: thesis),
         ),
-      for (var i = 0; i < 3; i++)
+      for (final research in widget.researches.take(6))
         (
-          title: widget.researches[i].title.toStringParseNull(),
-          publisherName:
-              widget.researches[i].publisher!.name.toStringParseNull(),
-          designation:
-              widget.researches[i].publisher!.designation.toStringParseNull(),
-          department:
-              widget.researches[i].publisher!.department.toStringParseNull(),
-          description: widget.researches[i].description.toStringParseNull(),
-          onTap: () => context.pushNamed(
-                AppRouter.research.name!,
-                extra: widget.researches[i],
-              ),
+          title: research.title.toStringParseNull(),
+          publisherName: research.publisher!.name.toStringParseNull(),
+          designation: research.publisher!.designation.toStringParseNull(),
+          department: research.publisher!.department.toStringParseNull(),
+          description: research.description.toStringParseNull(),
+          onTap: () =>
+              context.pushNamed(AppRouter.research.name!, extra: research),
         ),
     ];
   }
@@ -119,31 +109,24 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
   }
 
   List<Widget> get _imageSliders => [
-        for (var i = 0; i < 6; i++)
+        for (var i = 0; i < 6 - records.length; i++)
+          ColoredContainer(
+            index: i,
+            child: Center(
+              child: Text(
+                'Empty',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: context.mediaQuery.size.longestSide * .04,
+                ),
+              ),
+            ),
+          ),
+        for (var i = 0; i < records.length; i++)
           GestureDetector(
             onTap: records[i].onTap,
-            child: Container(
-              width: double.infinity,
-              margin: const EdgeInsets.symmetric(
-                horizontal: AppThemes.width,
-                vertical: AppThemes.height,
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: AppThemes.selectedColorsRandomized[i],
-                  width: 2,
-                ),
-                borderRadius: AppThemes.borderRadius,
-                boxShadow: [
-                  BoxShadow(
-                    color:
-                        AppThemes.selectedColorsRandomized[i].withOpacity(0.5),
-                    blurRadius: 5,
-                    spreadRadius: 1.75,
-                  ),
-                ],
-              ),
+            child: ColoredContainer(
+              index: i,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -186,6 +169,40 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
             ),
           ),
       ];
+}
+
+class ColoredContainer extends StatelessWidget {
+  const ColoredContainer({required this.index, super.key, this.child});
+
+  final int index;
+  final Widget? child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppThemes.width,
+        vertical: AppThemes.height,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: AppThemes.selectedColorsRandomized[index],
+          width: 2,
+        ),
+        borderRadius: AppThemes.borderRadius,
+        boxShadow: [
+          BoxShadow(
+            color: AppThemes.selectedColorsRandomized[index].withOpacity(0.5),
+            blurRadius: 5,
+            spreadRadius: 1.75,
+          ),
+        ],
+      ),
+      child: child,
+    );
+  }
 }
 
 

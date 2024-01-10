@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:su_thesis_book/modules/profile/profile.dart';
-import 'package:su_thesis_book/shared/models/models.dart';
-import 'package:su_thesis_book/shared/widgets/widgets.dart';
-import 'package:su_thesis_book/theme/theme.dart';
-import 'package:su_thesis_book/utils/utils.dart';
+import 'package:su_research_and_thesis_book/modules/profile/profile.dart';
+import 'package:su_research_and_thesis_book/shared/models/models.dart';
+import 'package:su_research_and_thesis_book/shared/widgets/widgets.dart';
+import 'package:su_research_and_thesis_book/theme/theme.dart';
+import 'package:su_research_and_thesis_book/utils/utils.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -28,7 +28,7 @@ class ProfileView extends StatelessWidget {
             return Column(
               children: [
                 // Profile photo
-                HaloAvatar(user?.photoUrl, size: 4),
+                HaloAvatar(url: user?.photoUrl, size: 4),
                 const SizedBox(height: height),
                 Column(
                   children: [

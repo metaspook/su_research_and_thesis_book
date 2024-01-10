@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:su_thesis_book/modules/counter/counter.dart';
+import 'package:su_research_and_thesis_book/modules/counter/counter.dart';
 
 import '../../helpers/helpers.dart';
 

@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:su_thesis_book/shared/models/models.dart';
-import 'package:su_thesis_book/shared/repositories/repositories.dart';
+import 'package:su_research_and_thesis_book/shared/models/models.dart';
+import 'package:su_research_and_thesis_book/shared/repositories/repositories.dart';
 
 part 'thesis_state.dart';
 

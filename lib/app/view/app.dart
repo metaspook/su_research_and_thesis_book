@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:su_thesis_book/app/app.dart';
-import 'package:su_thesis_book/l10n/l10n.dart';
-import 'package:su_thesis_book/router/router.dart';
-import 'package:su_thesis_book/shared/repositories/repositories.dart';
-import 'package:su_thesis_book/theme/theme.dart';
+import 'package:su_research_and_thesis_book/app/app.dart';
+import 'package:su_research_and_thesis_book/l10n/l10n.dart';
+import 'package:su_research_and_thesis_book/router/router.dart';
+import 'package:su_research_and_thesis_book/shared/repositories/repositories.dart';
+import 'package:su_research_and_thesis_book/theme/theme.dart';
 
 // Provide global blocs and repositories from here.
 class App extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:su_thesis_book/utils/utils.dart';
+import 'package:su_research_and_thesis_book/utils/utils.dart';
 
 abstract class BaseRepo<T> {
   // Future<String?> create(String id, {required Json value});

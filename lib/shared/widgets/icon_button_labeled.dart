@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:su_thesis_book/utils/utils.dart';
+import 'package:su_research_and_thesis_book/utils/utils.dart';
 
 class IconButtonLabeled extends StatelessWidget {
   const IconButtonLabeled(this.record, {super.key, this.size});

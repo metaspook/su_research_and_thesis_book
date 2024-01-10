@@ -3,10 +3,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:su_thesis_book/app/app.dart';
-import 'package:su_thesis_book/gen/assets.gen.dart';
-import 'package:su_thesis_book/router/router.dart';
-import 'package:su_thesis_book/theme/theme.dart';
+import 'package:su_research_and_thesis_book/app/app.dart';
+import 'package:su_research_and_thesis_book/gen/assets.gen.dart';
+import 'package:su_research_and_thesis_book/router/router.dart';
+import 'package:su_research_and_thesis_book/theme/theme.dart';
 
 extension LandingDialogExt on BuildContext {
   /// {@macro show}

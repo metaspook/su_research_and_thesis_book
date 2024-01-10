@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:su_thesis_book/router/router.dart';
-import 'package:su_thesis_book/shared/models/models.dart';
-import 'package:su_thesis_book/shared/widgets/widgets.dart';
-import 'package:su_thesis_book/theme/extensions.dart';
-import 'package:su_thesis_book/utils/extensions.dart';
+import 'package:su_research_and_thesis_book/router/router.dart';
+import 'package:su_research_and_thesis_book/shared/models/models.dart';
+import 'package:su_research_and_thesis_book/shared/widgets/widgets.dart';
+import 'package:su_research_and_thesis_book/theme/extensions.dart';
+import 'package:su_research_and_thesis_book/utils/extensions.dart';
 
 class ThesisCard extends StatelessWidget {
   const ThesisCard(
@@ -41,7 +41,7 @@ class ThesisCard extends StatelessWidget {
             () => context.pushNamed(AppRouter.thesis.name!, extra: thesis.id),
         // onTap: onTap ??
         //     () => context.push(AppRouter.thesis.pathUnderRoot, extra: thesis),
-        leading: HaloAvatar(thesis.publisher?.photoUrl),
+        leading: HaloAvatar(url: thesis.publisher?.photoUrl),
         title: Text(
           thesis.title.toStringParseNull(),
           overflow: TextOverflow.ellipsis,

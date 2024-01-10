@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
-import 'package:su_thesis_book/theme/theme.dart';
+import 'package:su_research_and_thesis_book/theme/theme.dart';
 
 enum PdfSourceType { asset, url, path }
 

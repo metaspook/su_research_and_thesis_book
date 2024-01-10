@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:su_thesis_book/shared/repositories/repositories.dart';
-import 'package:su_thesis_book/utils/utils.dart';
+import 'package:su_research_and_thesis_book/shared/repositories/repositories.dart';
+import 'package:su_research_and_thesis_book/utils/utils.dart';
 
 part 'profile_update_event.dart';
 part 'profile_update_state.dart';

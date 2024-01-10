@@ -9,8 +9,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:su_thesis_book/firebase_options.dart';
-import 'package:su_thesis_book/shared/repositories/repositories.dart';
+import 'package:su_research_and_thesis_book/firebase_options.dart';
+import 'package:su_research_and_thesis_book/shared/repositories/repositories.dart';
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();

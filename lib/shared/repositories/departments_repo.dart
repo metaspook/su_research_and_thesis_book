@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:cache/cache.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:su_thesis_book/utils/utils.dart';
+import 'package:su_research_and_thesis_book/utils/utils.dart';
 
 class DepartmentsRepo {
   //-- Config

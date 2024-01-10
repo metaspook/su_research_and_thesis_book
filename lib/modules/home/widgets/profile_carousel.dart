@@ -1,9 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:su_thesis_book/shared/models/models.dart';
-import 'package:su_thesis_book/shared/widgets/halo_avatar.dart';
-import 'package:su_thesis_book/theme/theme.dart';
-import 'package:su_thesis_book/utils/utils.dart';
+import 'package:su_research_and_thesis_book/shared/models/models.dart';
+import 'package:su_research_and_thesis_book/shared/widgets/halo_avatar.dart';
+import 'package:su_research_and_thesis_book/theme/theme.dart';
+import 'package:su_research_and_thesis_book/utils/utils.dart';
 
 class ProfileCarousel extends StatefulWidget {
   const ProfileCarousel({required this.publishers, super.key});
@@ -39,6 +39,41 @@ class _ProfileCarouselState extends State<ProfileCarousel> {
   }
 
   List<Widget> get _imageSliders => [
+        for (var i = 0; i < 6 - widget.publishers.length; i++)
+          // Placeholders if publishers less then 6
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisSize: MainAxisSize.min,
+                children: [
+                  const HaloAvatar(),
+                  const SizedBox(height: AppThemes.height),
+                  Text(
+                    'Designation',
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.theme.textTheme.labelMedium
+                        ?.copyWith(fontStyle: FontStyle.italic),
+                  ),
+                  Text(
+                    'Publisher Name',
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.theme.textTheme.labelLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'Department',
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.theme.textTheme.labelMedium,
+                  ),
+                ],
+              ),
+            ),
+          ),
         for (final publisher in widget.publishers)
           Card(
             child: Padding(
@@ -47,7 +82,7 @@ class _ProfileCarouselState extends State<ProfileCarousel> {
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 // mainAxisSize: MainAxisSize.min,
                 children: [
-                  HaloAvatar(publisher.photoUrl),
+                  HaloAvatar(url: publisher.photoUrl),
                   const SizedBox(height: AppThemes.height),
                   Text(
                     publisher.designation.toStringParseNull(),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:su_thesis_book/modules/bookmarks/bookmarks.dart';
-import 'package:su_thesis_book/theme/theme.dart';
+import 'package:su_research_and_thesis_book/modules/bookmarks/bookmarks.dart';
+import 'package:su_research_and_thesis_book/theme/theme.dart';
 
 // typedef BookmarksBlocSelector<T>
 //     = BlocSelector<BookmarksResearchesCubit, BookmarksResearchesState, T>;

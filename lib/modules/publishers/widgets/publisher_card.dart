@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:su_thesis_book/router/router.dart';
-import 'package:su_thesis_book/shared/models/models.dart';
-import 'package:su_thesis_book/shared/widgets/widgets.dart';
-import 'package:su_thesis_book/theme/extensions.dart';
-import 'package:su_thesis_book/utils/utils.dart';
+import 'package:su_research_and_thesis_book/router/router.dart';
+import 'package:su_research_and_thesis_book/shared/models/models.dart';
+import 'package:su_research_and_thesis_book/shared/widgets/widgets.dart';
+import 'package:su_research_and_thesis_book/theme/extensions.dart';
+import 'package:su_research_and_thesis_book/utils/utils.dart';
 
 class PublisherCard extends StatelessWidget {
   const PublisherCard(
@@ -36,7 +36,7 @@ class PublisherCard extends StatelessWidget {
             context.pushNamed(AppRouter.publisher.name!, extra: publisher),
         // onTap: onTap ??
         //     () => context.push(AppRouter.thesis.pathUnderRoot, extra: thesis),
-        leading: HaloAvatar(publisher.photoUrl),
+        leading: HaloAvatar(url: publisher.photoUrl),
         title: Text(
           publisher.name.toStringParseNull(),
           overflow: TextOverflow.ellipsis,

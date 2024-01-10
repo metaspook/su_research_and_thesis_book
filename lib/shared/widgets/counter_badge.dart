@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:su_thesis_book/theme/theme.dart';
-import 'package:su_thesis_book/utils/extensions.dart';
+import 'package:su_research_and_thesis_book/theme/theme.dart';
+import 'package:su_research_and_thesis_book/utils/extensions.dart';
 
 class CounterBadge extends StatelessWidget {
   const CounterBadge({

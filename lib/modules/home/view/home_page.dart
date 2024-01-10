@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:su_thesis_book/l10n/l10n.dart';
-import 'package:su_thesis_book/modules/home/home.dart';
-import 'package:su_thesis_book/shared/widgets/widgets.dart';
-import 'package:su_thesis_book/theme/theme.dart';
+import 'package:su_research_and_thesis_book/l10n/l10n.dart';
+import 'package:su_research_and_thesis_book/modules/home/home.dart';
+import 'package:su_research_and_thesis_book/shared/widgets/widgets.dart';
+import 'package:su_research_and_thesis_book/theme/theme.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
