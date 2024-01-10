@@ -1,18 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:su_research_and_thesis_book/app/app.dart';
 import 'package:su_research_and_thesis_book/router/router.dart';
-import 'package:su_research_and_thesis_book/shared/models/models.dart';
 import 'package:su_research_and_thesis_book/theme/theme.dart';
 import 'package:su_research_and_thesis_book/utils/extensions.dart';
 
 class ThesisCarousel extends StatefulWidget {
-  const ThesisCarousel({
-    required this.theses,
-    required this.researches,
-    super.key,
-  });
-  final List<Thesis> theses;
-  final List<Research> researches;
+  const ThesisCarousel({super.key});
 
   @override
   State<StatefulWidget> createState() => _ThesisCarouselState();
@@ -28,15 +23,17 @@ typedef PaperCarouselRecord = ({
 });
 
 class _ThesisCarouselState extends State<ThesisCarousel> {
-  final CarouselController _controller = CarouselController();
-  late final List<PaperCarouselRecord> records;
+  final _controller = CarouselController();
+  final _records = <PaperCarouselRecord>[];
   int _current = 0;
 
   @override
-  void initState() {
-    super.initState();
-    records = [
-      for (final thesis in widget.theses.take(6))
+  Widget build(BuildContext context) {
+    final theses = context.select((ThesesCubit cubit) => cubit.state.theses);
+    final researches =
+        context.select((ResearchesCubit cubit) => cubit.state.researches);
+    theses?.forEach((thesis) {
+      _records.add(
         (
           title: thesis.title.toStringParseNull(),
           publisherName: thesis.publisher!.name.toStringParseNull(),
@@ -45,7 +42,10 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
           description: thesis.description.toStringParseNull(),
           onTap: () => context.pushNamed(AppRouter.thesis.name!, extra: thesis),
         ),
-      for (final research in widget.researches.take(6))
+      );
+    });
+    researches?.forEach((research) {
+      _records.add(
         (
           title: research.title.toStringParseNull(),
           publisherName: research.publisher!.name.toStringParseNull(),
@@ -55,11 +55,9 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
           onTap: () =>
               context.pushNamed(AppRouter.research.name!, extra: research),
         ),
-    ];
-  }
+      );
+    });
 
-  @override
-  Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -109,7 +107,7 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
   }
 
   List<Widget> get _imageSliders => [
-        for (var i = 0; i < 6 - records.length; i++)
+        for (var i = 0; i < 6 - _records.length; i++)
           ColoredContainer(
             index: i,
             child: Center(
@@ -122,16 +120,16 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
               ),
             ),
           ),
-        for (var i = 0; i < records.length; i++)
+        for (var i = 0; i < _records.length; i++)
           GestureDetector(
-            onTap: records[i].onTap,
+            onTap: _records[i].onTap,
             child: ColoredContainer(
               index: i,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    records[i].title,
+                    _records[i].title,
                     overflow: TextOverflow.ellipsis,
                     style: context.theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
@@ -140,7 +138,7 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
                     ),
                   ),
                   Text(
-                    records[i].publisherName,
+                    _records[i].publisherName,
                     overflow: TextOverflow.ellipsis,
                     style: context.theme.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.bold,
@@ -149,7 +147,7 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
                     ),
                   ),
                   Text(
-                    '${records[i].designation} | ${records[i].department}',
+                    '${_records[i].designation} | ${_records[i].department}',
                     overflow: TextOverflow.ellipsis,
                     style: context.theme.textTheme.titleSmall?.copyWith(
                       color: context.theme.textTheme.titleSmall?.color
@@ -157,7 +155,7 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
                     ),
                   ),
                   Text(
-                    records[i].description,
+                    _records[i].description,
                     overflow: TextOverflow.ellipsis,
                     style: context.theme.textTheme.titleSmall?.copyWith(
                       color: context.theme.textTheme.titleSmall?.color

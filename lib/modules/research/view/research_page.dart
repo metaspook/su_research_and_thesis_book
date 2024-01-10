@@ -23,8 +23,12 @@ class ResearchPage extends StatelessWidget {
       listener: (context, state) => context.showAppSnackBar(state.statusMsg),
       child: research == null
           ? Scaffold(
-              appBar: AppBar(title: const Text('Thesis Page')),
-              body: context.emptyListText(),
+              appBar: AppBar(
+                leading: context.backButton(),
+                title: const Text('Research Page'),
+                centerTitle: true,
+              ),
+              body: Center(child: context.emptyListText()),
             )
           : Scaffold(
               appBar: AppBar(
