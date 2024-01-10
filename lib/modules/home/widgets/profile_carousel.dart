@@ -16,7 +16,7 @@ class ProfileCarousel extends StatefulWidget {
 
 class _ProfileCarouselState extends State<ProfileCarousel> {
   final CarouselController _controller = CarouselController();
-  final _publishers = <Publisher>[];
+  List<Publisher> _publishers = [];
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +24,9 @@ class _ProfileCarouselState extends State<ProfileCarousel> {
         context.select((ThesesCubit cubit) => cubit.state.publishers);
     final researchPublishers =
         context.select((ResearchesCubit cubit) => cubit.state.publishers);
-    thesisPublishers?.forEach(_publishers.add);
-    researchPublishers?.forEach(_publishers.add);
+    _publishers = [
+      ...{...?thesisPublishers, ...?researchPublishers},
+    ];
 
     return Column(
       mainAxisSize: MainAxisSize.min,

@@ -24,7 +24,7 @@ typedef PaperCarouselRecord = ({
 
 class _ThesisCarouselState extends State<ThesisCarousel> {
   final _controller = CarouselController();
-  final _records = <PaperCarouselRecord>[];
+  List<PaperCarouselRecord> _records = [];
   int _current = 0;
 
   @override
@@ -32,9 +32,9 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
     final theses = context.select((ThesesCubit cubit) => cubit.state.theses);
     final researches =
         context.select((ResearchesCubit cubit) => cubit.state.researches);
-    theses?.forEach((thesis) {
-      _records.add(
-        (
+    _records = [
+      ...?theses?.map(
+        (thesis) => (
           title: thesis.title.toStringParseNull(),
           publisherName: thesis.publisher!.name.toStringParseNull(),
           designation: thesis.publisher!.designation.toStringParseNull(),
@@ -42,11 +42,9 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
           description: thesis.description.toStringParseNull(),
           onTap: () => context.pushNamed(AppRouter.thesis.name!, extra: thesis),
         ),
-      );
-    });
-    researches?.forEach((research) {
-      _records.add(
-        (
+      ),
+      ...?researches?.map(
+        (research) => (
           title: research.title.toStringParseNull(),
           publisherName: research.publisher!.name.toStringParseNull(),
           designation: research.publisher!.designation.toStringParseNull(),
@@ -55,8 +53,8 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
           onTap: () =>
               context.pushNamed(AppRouter.research.name!, extra: research),
         ),
-      );
-    });
+      ),
+    ];
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -202,7 +200,6 @@ class ColoredContainer extends StatelessWidget {
     );
   }
 }
-
 
 // Container(
 //               decoration: const BoxDecoration(
