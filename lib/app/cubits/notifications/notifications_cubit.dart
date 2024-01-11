@@ -14,13 +14,24 @@ class NotificationsCubit extends HydratedCubit<NotificationsState> {
     //-- Initialize Notifications subscription.
     _notificationsSubscription =
         _notificationRepo.stream.listen((notifications) {
-      emit(state.copyWith(notifications: notifications));
+      emit(
+        state.copyWith(
+          notifications: notifications,
+          unseenCount: state.unseenCount + 1,
+        ),
+      );
     });
   }
 
   final NotificationsRepo _notificationRepo;
   late final StreamSubscription<List<AppNotification>>
       _notificationsSubscription;
+
+  void onDecrementUnseenCount() {
+    if (state.unseenCount > 0) {
+      emit(state.copyWith(unseenCount: state.unseenCount - 1));
+    }
+  }
 
   Future<void> onDismissed(AppNotification notification) async {
     await _notificationRepo.remove(notification);

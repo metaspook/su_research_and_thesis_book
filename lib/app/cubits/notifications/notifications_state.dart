@@ -14,12 +14,13 @@ class NotificationsState extends Equatable {
     this.status = NotificationsStatus.initial,
     this.statusMsg,
     this.notifications = const [],
+    this.unseenCount = 0,
   });
 
   factory NotificationsState.fromJson(Map<String, dynamic> json) {
     return NotificationsState(
       notifications: [
-        ...List<Map<String, dynamic>>.from(json['records'] as List)
+        ...List<Map<String, dynamic>>.from(json['notifications'] as List)
             .map(AppNotification.fromJson),
       ],
     );
@@ -28,23 +29,26 @@ class NotificationsState extends Equatable {
   final NotificationsStatus status;
   final String? statusMsg;
   final List<AppNotification> notifications;
+  final int unseenCount;
 
   NotificationsState copyWith({
     NotificationsStatus? status,
     String? statusMsg,
     List<AppNotification>? notifications,
+    int? unseenCount,
   }) {
     return NotificationsState(
       status: status ?? this.status,
       statusMsg: statusMsg ?? this.statusMsg,
       notifications: notifications ?? this.notifications,
+      unseenCount: unseenCount ?? this.unseenCount,
     );
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'records': [...notifications.map((e) => e.toJson())],
+        'notifications': [...notifications.map((e) => e.toJson())],
       };
 
   @override
-  List<Object?> get props => [status, statusMsg, notifications];
+  List<Object?> get props => [status, statusMsg, notifications, unseenCount];
 }

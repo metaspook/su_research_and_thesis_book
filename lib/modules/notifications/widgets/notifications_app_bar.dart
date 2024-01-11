@@ -23,8 +23,9 @@ class NotificationsAppBar extends StatelessWidget {
           width: double.infinity,
           color: context.theme.colorScheme.primaryContainer,
           child: Text(
-            '💡 Swipe cards left or right to dismiss 💡',
+            '💡 Swipe left or right to dismiss | Tap to view 💡',
             style: context.theme.textTheme.labelSmall,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ).toPreferredSize(const Size.fromHeight(kToolbarHeight * .5)),
