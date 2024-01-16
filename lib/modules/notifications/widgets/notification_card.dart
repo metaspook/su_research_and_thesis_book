@@ -16,12 +16,19 @@ class NotificationCard extends StatelessWidget {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: ListTile(
-        onTap: () => context
-          ..read<NotificationsCubit>().onDecrementUnseenCount()
-          ..pushNamed(
+        onTap: () {
+          context.read<NotificationsCubit>().onDecrementUnseenCount();
+          if (notification.type == NotificationType.comments) {
+            context.pushNamed(
+              notification.paper.type.name,
+              extra: notification.paper,
+            );
+          }
+          context.pushNamed(
             notification.type.name,
-            extra: notification.paperId,
-          ),
+            extra: notification.paper,
+          );
+        },
         dense: true,
         visualDensity: const VisualDensity(
           vertical: VisualDensity.minimumDensity,
@@ -47,7 +54,7 @@ class NotificationCard extends StatelessWidget {
                   style: context.theme.textTheme.labelLarge,
                 ),
                 Text(
-                  notification.paperName.toStringParseNull(),
+                  notification.paper.title.toStringParseNull(),
                   overflow: TextOverflow.ellipsis,
                   style: context.theme.textTheme.labelLarge?.copyWith(
                     color: context.theme.textTheme.labelLarge?.color

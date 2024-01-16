@@ -38,6 +38,9 @@ final class Thesis extends Equatable {
   final String? department;
   final String? description;
 
+  /// [Paper] representation of [Thesis].
+  Paper get paper => Paper(id: id, type: PaperType.thesis, title: title);
+
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'id': id,

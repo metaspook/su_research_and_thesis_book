@@ -38,7 +38,8 @@ class ThesisCard extends StatelessWidget {
         // shape: selected ? AppThemes.outlineInputBorder : null,
         onLongPress: onLongPress,
         onTap: onTap ??
-            () => context.pushNamed(AppRouter.thesis.name!, extra: thesis.id),
+            () =>
+                context.pushNamed(AppRouter.thesis.name!, extra: thesis.paper),
         // onTap: onTap ??
         //     () => context.push(AppRouter.thesis.pathUnderRoot, extra: thesis),
         leading: HaloAvatar(url: thesis.publisher?.photoUrl),

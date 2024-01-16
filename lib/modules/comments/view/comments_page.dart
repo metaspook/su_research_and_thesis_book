@@ -37,15 +37,10 @@ class _CommentsPageState extends State<CommentsPage> {
         body: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            Builder(
-              builder: (context) {
-                final isLoading = context.select(
-                  (CommentsCubit cubit) => cubit.state.status.isLoading,
-                );
-                final comments = context
-                    .select((CommentsCubit cubit) => cubit.state.comments);
-
-                return isLoading || comments == null
+            BlocSelector<CommentsCubit, CommentsState, List<Comment>?>(
+              selector: (state) => state.comments,
+              builder: (context, comments) {
+                return comments == null
                     ? const TranslucentLoader()
                     : comments.isEmpty
                         ? context.emptyListText()
@@ -56,7 +51,9 @@ class _CommentsPageState extends State<CommentsPage> {
                             //     ScrollViewKeyboardDismissBehavior.onDrag,
                             itemCount: comments.length,
                             itemBuilder: (context, index) {
-                              return CommentCard(comments[index]);
+                              return CommentCard(
+                                comments[(comments.length - 1) - index],
+                              );
                             },
                           );
               },

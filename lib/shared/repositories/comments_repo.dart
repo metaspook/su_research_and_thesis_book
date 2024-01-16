@@ -44,6 +44,7 @@ class CommentsRepo implements CRUD<Comment> {
     final commentJson = <String, Object?>{
       'id': snapshot.key,
       ...commentMap,
+      'paper': paper.toJson(),
       'author': author,
       'authorPhotoUrl': authorPhotoUrl,
     };

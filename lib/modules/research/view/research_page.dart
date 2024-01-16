@@ -85,9 +85,10 @@ class ResearchPage extends StatelessWidget {
                                   ),
                                   context.pushNamed(
                                     AppRouter.comments.name!,
-                                    extra: (
+                                    extra: Paper(
                                       type: PaperType.research,
-                                      id: research.id
+                                      id: research.id,
+                                      title: research.title,
                                     ),
                                   ),
                                 ]),

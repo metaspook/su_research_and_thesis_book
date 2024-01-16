@@ -1,10 +1,11 @@
 import 'package:equatable/equatable.dart';
+import 'package:su_research_and_thesis_book/shared/models/models.dart';
 
 final class Comment extends Equatable {
   const Comment({
     required this.id,
     required this.userId,
-    required this.paperId,
+    required this.paper,
     this.author,
     this.authorPhotoUrl,
     this.createdAt,
@@ -14,7 +15,7 @@ final class Comment extends Equatable {
   factory Comment.fromJson(Map<String, dynamic> json) {
     return Comment(
       id: json['id'] as String,
-      paperId: json['parentId'] as String,
+      paper: Paper.fromJson(json['paper'] as Map<String, dynamic>),
       userId: json['userId'] as String,
       author: json['author'] as String?,
       authorPhotoUrl: json['authorPhotoUrl'] as String?,
@@ -26,7 +27,7 @@ final class Comment extends Equatable {
   }
 
   final String id;
-  final String paperId;
+  final Paper paper;
   final String userId;
   final String? author;
   final String? authorPhotoUrl;
@@ -36,7 +37,7 @@ final class Comment extends Equatable {
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'id': id,
-      'thesisId': paperId,
+      'paper': paper.toJson(),
       'userId': userId,
       'author': author,
       'authorPhotoUrl': authorPhotoUrl,
@@ -47,6 +48,14 @@ final class Comment extends Equatable {
 
   @override
   List<Object?> get props {
-    return [id, paperId, userId, author, authorPhotoUrl, createdAt, content];
+    return [
+      id,
+      paper,
+      userId,
+      author,
+      authorPhotoUrl,
+      createdAt,
+      content,
+    ];
   }
 }

@@ -12,6 +12,7 @@ extension StringExt on String {
   String get last => this[length - 1];
   String get reversed => String.fromCharCodes(codeUnits.reversed);
   int get length => toString().length;
+  String toCapitalize() => '${this[0].toUpperCase()}${substring(1)}';
 }
 
 /// Number Extensions.

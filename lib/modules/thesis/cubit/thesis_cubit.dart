@@ -50,7 +50,11 @@ class ThesisCubit extends Cubit<ThesisState> {
   }
 
   Future<void> onPressedBookmark() async {
-    final paper = (type: PaperType.thesis, id: state.thesis!.id);
+    final paper = Paper(
+      type: PaperType.thesis,
+      id: state.thesis!.id,
+      title: state.thesis?.title,
+    );
     final errorMsg = await _bookmarkRepo.addBookmark(paper);
 
     if (errorMsg == null) {

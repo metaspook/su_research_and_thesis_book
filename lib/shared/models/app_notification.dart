@@ -1,9 +1,10 @@
 import 'package:equatable/equatable.dart';
+import 'package:su_research_and_thesis_book/shared/models/models.dart';
 
 enum NotificationType {
   research('published research paper '),
   thesis('published thesis paper '),
-  comment('commented on ');
+  comments('commented on ');
 
   const NotificationType(this.data);
   final String data;
@@ -12,36 +13,31 @@ enum NotificationType {
 final class AppNotification extends Equatable {
   const AppNotification({
     required this.type,
-    required this.paperId,
-    required this.paperName,
+    required this.paper,
     required this.userName,
   });
 
   factory AppNotification.fromJson(Map<String, dynamic> json) {
     return AppNotification(
       type: NotificationType.values.byName(json['type'] as String),
-      paperId: json['paperId'] as String,
-      paperName: json['paperName'] as String?,
+      paper: Paper.fromJson(json['paper'] as Map<String, dynamic>),
       userName: json['userName'] as String?,
     );
   }
 
   final NotificationType type;
-  final String paperId;
-  final String? paperName;
+  final Paper paper;
   // userName instead of publisherName as its gonna use for comments also.
   final String? userName;
 
   AppNotification copyWith({
     NotificationType? type,
-    String? paperId,
-    String? paperName,
+    Paper? paper,
     String? userName,
   }) {
     return AppNotification(
       type: type ?? this.type,
-      paperId: paperId ?? this.paperId,
-      paperName: paperName ?? this.paperName,
+      paper: paper ?? this.paper,
       userName: userName ?? this.userName,
     );
   }
@@ -49,12 +45,11 @@ final class AppNotification extends Equatable {
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'type': type.name,
-      'paperId': paperId,
-      'paperName': paperName,
+      'paper': paper.toJson(),
       'userName': userName,
     };
   }
 
   @override
-  List<Object?> get props => [type, paperId, paperName, userName];
+  List<Object?> get props => [type, paper, userName];
 }

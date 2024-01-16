@@ -173,12 +173,12 @@ final class AppRouter {
     name: 'research',
     path: '/research',
     builder: (context, state) {
-      final researchId = state.extra! as String;
+      final paper = state.extra! as Paper;
       return BlocProvider<ResearchCubit>(
         create: (context) => ResearchCubit(
           researchesRepo: context.read<ResearchesRepo>(),
           bookmarksRepo: context.read<BookmarksRepo>(),
-          researchId: researchId,
+          researchId: paper.id,
         ),
         child: const ResearchPage(),
       );
@@ -216,12 +216,12 @@ final class AppRouter {
     name: 'thesis',
     path: '/thesis',
     builder: (context, state) {
-      final thesisId = state.extra! as String;
+      final paper = state.extra! as Paper;
       return BlocProvider<ThesisCubit>(
         create: (context) => ThesisCubit(
           thesesRepo: context.read<ThesesRepo>(),
           bookmarksRepo: context.read<BookmarksRepo>(),
-          thesisId: thesisId,
+          thesisId: paper.id,
         ),
         child: const ThesisPage(),
       );

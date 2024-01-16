@@ -15,20 +15,33 @@ class CommentsCubit extends Cubit<CommentsState> {
   })  : _notificationRepo = notificationsRepo,
         _commentRepo = commentsRepo,
         super(const CommentsState()) {
-    //-- Comments data subscription.
-    emit(state.copyWith(status: CommentsStatus.loading));
-    _commentsSubscription = _commentRepo.stream.listen((comments) async {
-      if (comments.isNotEmpty) {
-        emit(
-          state.copyWith(status: CommentsStatus.success, comments: comments),
-        );
-      }
-    });
+    //-- Initialize Comments subscription.
+    _commentsSubscription = _commentRepo.stream.listen(_onComments);
   }
 
   final NotificationsRepo _notificationRepo;
   final CommentsRepo _commentRepo;
   late final StreamSubscription<List<Comment>> _commentsSubscription;
+
+  Future<void> _onComments(List<Comment> comments) async {
+    // process notification if new data.
+    if (state.notify) {
+      final record = AppNotification(
+        type: NotificationType.comments,
+        paper: comments.last.paper,
+        userName: comments.last.author,
+      );
+      await _notificationRepo.add(record);
+    }
+    final notify = state.notify ? null : true;
+    emit(
+      state.copyWith(
+        notify: notify,
+        status: CommentsStatus.success,
+        comments: comments,
+      ),
+    );
+  }
 
   Future<void> send({
     required String userId,
@@ -50,7 +63,7 @@ class CommentsCubit extends Cubit<CommentsState> {
       emit(
         state.copyWith(
           status: CommentsStatus.success,
-          statusMsg: 'Success! Comment sended.',
+          statusMsg: 'Success! Send comment.',
         ),
       );
     } else {

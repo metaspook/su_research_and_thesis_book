@@ -28,8 +28,7 @@ class ThesesCubit extends HydratedCubit<ThesesState> {
     if (state.notify) {
       final record = AppNotification(
         type: NotificationType.thesis,
-        paperName: theses.last.title,
-        paperId: theses.last.id,
+        paper: theses.last.paper,
         userName: theses.last.publisher?.name,
       );
       await _notificationRepo.add(record);

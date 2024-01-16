@@ -28,8 +28,7 @@ class ResearchesCubit extends HydratedCubit<ResearchesState> {
     if (state.notify) {
       final record = AppNotification(
         type: NotificationType.research,
-        paperName: researches.last.title,
-        paperId: researches.last.id,
+        paper: researches.last.paper,
         userName: researches.last.publisher?.name,
       );
       await _notificationRepo.add(record);

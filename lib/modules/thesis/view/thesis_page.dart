@@ -84,9 +84,10 @@ class ThesisPage extends StatelessWidget {
                                   ),
                                   context.pushNamed(
                                     AppRouter.comments.name!,
-                                    extra: (
+                                    extra: Paper(
                                       type: PaperType.thesis,
-                                      id: thesis.id
+                                      id: thesis.id,
+                                      title: thesis.title,
                                     ),
                                   ),
                                 ]),

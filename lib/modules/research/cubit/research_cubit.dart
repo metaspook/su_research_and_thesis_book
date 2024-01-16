@@ -58,7 +58,11 @@ class ResearchCubit extends Cubit<ResearchState> {
   }
 
   Future<void> onPressedBookmark() async {
-    final paper = (type: PaperType.research, id: state.research!.id);
+    final paper = Paper(
+      type: PaperType.research,
+      id: state.research!.id,
+      title: state.research?.title,
+    );
     final errorMsg = await _bookmarkRepo.addBookmark(paper);
 
     if (errorMsg == null) {

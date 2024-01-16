@@ -69,7 +69,8 @@ class BookmarksThesesCubit extends Cubit<BookmarksThesesState> {
     emit(state.copyWith(status: BookmarksThesesStatus.loading));
     final selectedTheses = [...state.selectedTheses];
     for (final thesis in state.selectedTheses) {
-      final paper = (type: PaperType.thesis, id: thesis.id);
+      final paper =
+          Paper(type: PaperType.thesis, id: thesis.id, title: thesis.title);
       await _bookmarkRepo.removeBookmark(paper).then((value) {
         selectedTheses.remove(thesis);
       });

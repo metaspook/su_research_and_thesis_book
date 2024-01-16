@@ -38,6 +38,9 @@ final class Research extends Equatable {
   final String? category;
   final String? description;
 
+  /// [Paper] representation of [Research].
+  Paper get paper => Paper(id: id, type: PaperType.research, title: title);
+
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'id': id,
