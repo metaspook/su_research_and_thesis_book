@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:su_research_and_thesis_book/app/app.dart';
 import 'package:su_research_and_thesis_book/modules/auth/auth.dart';
@@ -20,9 +21,10 @@ class AuthPage extends StatelessWidget {
     return DefaultTabController(
       length: tabBar.tabs.length,
       child: AppBlocListener(
-        listenWhen: (previous, current) =>
-            previous.firstLaunch && current.firstLaunch,
-        listener: (context, state) => context.showLandingDialog(),
+        listenWhen: (previous, current) => current.firstLaunch,
+        listener: (context, state) => context
+          ..showLandingDialog()
+          ..read<AppCubit>().onGetStarted(),
         child: Scaffold(
           body: NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) => [

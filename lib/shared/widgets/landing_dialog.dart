@@ -1,9 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:su_research_and_thesis_book/app/app.dart';
 import 'package:su_research_and_thesis_book/gen/assets.gen.dart';
 import 'package:su_research_and_thesis_book/router/router.dart';
 import 'package:su_research_and_thesis_book/theme/theme.dart';
@@ -33,59 +31,49 @@ class LandingDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AppCubit>();
-
-    return PopScope(
-      onPopInvoked: (didPop) {
-        if (didPop) cubit.onGetStarted();
-      },
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(25, 110, 25, 150),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 7.5, sigmaY: 7.5),
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    // App Logo
-                    SvgPicture.asset(
-                      Assets.images.logo01Transparent,
-                      placeholderBuilder: (context) =>
-                          const Center(child: CircularProgressIndicator()),
-                      semanticsLabel: 'App Logo',
-                      width: context.mediaQuery.size.aspectRatio * 725,
-                    ),
-                    Text(
-                      'SU Research & Thesis Book',
-                      style: context.theme.textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: context.theme.colorScheme.inverseSurface
-                            .withOpacity(.5),
-                      ),
-                    ),
-                  ],
-                ),
-                // Get Started button
-                SizedBox(
-                  height: kToolbarHeight,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      cubit.onGetStarted();
-                      context.pop();
-                    },
-                    style: ButtonStyle(
-                      textStyle: MaterialStatePropertyAll(
-                        context.theme.textTheme.headlineSmall,
-                      ),
-                    ),
-                    child: const Text('Get Started'),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(25, 110, 25, 150),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 7.5, sigmaY: 7.5),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  // App Logo
+                  SvgPicture.asset(
+                    Assets.images.logo01Transparent,
+                    placeholderBuilder: (context) =>
+                        const Center(child: CircularProgressIndicator()),
+                    semanticsLabel: 'App Logo',
+                    width: context.mediaQuery.size.aspectRatio * 725,
                   ),
+                  Text(
+                    'SU Research & Thesis Book',
+                    style: context.theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: context.theme.colorScheme.inverseSurface
+                          .withOpacity(.5),
+                    ),
+                  ),
+                ],
+              ),
+              // Get Started button
+              SizedBox(
+                height: kToolbarHeight,
+                child: ElevatedButton(
+                  onPressed: context.pop,
+                  style: ButtonStyle(
+                    textStyle: MaterialStatePropertyAll(
+                      context.theme.textTheme.headlineSmall,
+                    ),
+                  ),
+                  child: const Text('Get Started'),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

@@ -151,7 +151,7 @@ class _SignInViewState extends State<SignInView> {
             // Proceed button
             SignInBlocConsumer(
               listenWhen: (previous, current) =>
-                  previous.status != current.status,
+                  previous.statusMsg != current.statusMsg,
               listener: (context, state) =>
                   context.showAppSnackBar(state.statusMsg),
               builder: (context, state) {
