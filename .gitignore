@@ -41,14 +41,11 @@ version
 .packages.generated
 
 # FlutterFire related
-# Generate your own by following command.
-# flutterfire configure --project=<firebase-project-name>
+# Generated files by: flutterfire configure --project=<firebase-project-name>
 lib/firebase_options.dart
-ios/Runner/GoogleService-Info.plist
-ios/firebase_app_id_file.json
-macos/Runner/GoogleService-Info.plist
-macos/firebase_app_id_file.json
-android/app/google-services.json
+**/android/app/**/google-services.json
+**/firebase_app_id_file.json
+**/Runner/GoogleService-Info.plist
 
 # Flutter/Dart/Pub related
 **/doc/api/
@@ -131,6 +128,7 @@ app.*.map.json
 !/dev/ci/**/Gemfile.lock
 !.vscode/extensions.json
 !.vscode/launch.json
+!.vscode/tasks.json
 !.idea/codeStyles/
 !.idea/dictionaries/
 !.idea/runConfigurations/

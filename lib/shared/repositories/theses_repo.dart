@@ -85,14 +85,16 @@ class ThesesRepo implements CRUD<Thesis> {
 
     if (userId != null && departmentIndex != null) {
       final publisher = await publisherById(userId);
-      final departments = _cacheDepartments.value;
-      final thesisJson = <String, Object?>{
-        'id': snapshot.key,
-        'publisher': publisher?.toJson(),
-        ...?thesisMap,
-        'department': departments?[departmentIndex],
-      };
-      return Thesis.fromJson(thesisJson);
+      if (publisher != null) {
+        final departments = _cacheDepartments.value;
+        final thesisJson = <String, Object?>{
+          'id': snapshot.key,
+          'publisher': publisher.toJson(),
+          ...?thesisMap,
+          'department': departments?[departmentIndex],
+        };
+        return Thesis.fromJson(thesisJson);
+      }
     }
     return null;
   }

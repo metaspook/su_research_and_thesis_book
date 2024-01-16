@@ -72,14 +72,16 @@ class ResearchesRepo implements CRUD<Research> {
 
     if (userId != null && categoryIndex != null) {
       final publisher = await publisherById(userId);
-      final categories = _cacheCategories.value;
-      final researchJson = <String, Object?>{
-        'id': snapshot.key,
-        'publisher': publisher?.toJson(),
-        ...?researchMap,
-        'category': categories?[categoryIndex],
-      };
-      return Research.fromJson(researchJson);
+      if (publisher != null) {
+        final categories = _cacheCategories.value;
+        final researchJson = <String, Object?>{
+          'id': snapshot.key,
+          'publisher': publisher.toJson(),
+          ...?researchMap,
+          'category': categories?[categoryIndex],
+        };
+        return Research.fromJson(researchJson);
+      }
     }
     return null;
   }
