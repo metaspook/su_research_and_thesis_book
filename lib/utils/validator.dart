@@ -60,12 +60,12 @@ class Validator {
       required
           ? (value == null || value.isEmpty || !value.isPassword)
               ? errorText ??
-                  'At least a special character, small and capital letter!'
+                  'Minimum 8 of special character, small and capital letter!'
               : null
           : (value == null || value.isEmpty || value.isPassword)
               ? null
               : errorText ??
-                  'At least a special character, small and capital letter!';
+                  'Minimum 8 of special character, small and capital letter!';
 
   static String? phone(
     String? value, {

@@ -77,7 +77,8 @@ class _SignUpViewState extends State<SignUpView> {
       listeners: [
         BlocListener<SignUpBloc, SignUpState>(
           listenWhen: (previous, current) =>
-              previous.statusMsg != current.statusMsg,
+              previous.statusMsg != current.statusMsg ||
+              current.status == SignInStatus.failure,
           listener: (context, state) =>
               context.showAppSnackBar(state.statusMsg),
         ),

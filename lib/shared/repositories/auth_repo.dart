@@ -18,11 +18,12 @@ class AuthRepo {
       await _auth.currentUser?.updateEmail(newEmail);
     } on FirebaseAuthException catch (e) {
       final errorMsg = const <String, String>{
-        'invalid-email': 'Invalid email!',
-        'email-already-in-use': "This email's user already exists!",
-        'requires-recent-login':
-            'Recent Sign-in required! Please sign out then in again.',
-      }[e.code];
+            'invalid-email': 'Invalid email!',
+            'email-already-in-use': "This email's user already exists!",
+            'requires-recent-login':
+                'Recent Sign-in required! Please sign out then in again.',
+          }[e.code] ??
+          'Unknown error!';
       return errorMsg;
     } catch (e, s) {
       log(_errorMsgUpdateEmail, error: e, stackTrace: s);
@@ -36,10 +37,11 @@ class AuthRepo {
       await _auth.currentUser?.updatePassword(newPassword);
     } on FirebaseAuthException catch (e) {
       final errorMsg = const <String, String>{
-        'weak-password': "Password isn't strong enough!",
-        'requires-recent-login':
-            'Recent Sign-in required! Please sign out then in again.',
-      }[e.code];
+            'weak-password': "Password isn't strong enough!",
+            'requires-recent-login':
+                'Recent Sign-in required! Please sign out then in again.',
+          }[e.code] ??
+          'Unknown error!';
       return errorMsg;
     } catch (e, s) {
       log(_errorMsgUpdatePassword, error: e, stackTrace: s);
@@ -53,9 +55,10 @@ class AuthRepo {
       await _auth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
       final errorMsg = const <String, String>{
-        'invalid-email': 'Invalid email!',
-        'user-not-found': "This email's user is not found!",
-      }[e.code];
+            'invalid-email': 'Invalid email!',
+            'user-not-found': "This email's user is not found!",
+          }[e.code] ??
+          'Unknown error!';
       return errorMsg;
     } catch (e, s) {
       log(_errorMsgUpdatePassword, error: e, stackTrace: s);
@@ -75,11 +78,13 @@ class AuthRepo {
       );
     } on FirebaseAuthException catch (e) {
       final errorMsg = const <String, String>{
-        'invalid-email': 'Invalid email!',
-        'user-disabled': "This email's user is disabled!",
-        'user-not-found': "This email's user is not found!",
-        'wrong-password': 'Invalid password or unassociated with email!',
-      }[e.code];
+            'invalid-email': 'Invalid email!',
+            'user-disabled': "This email's user is disabled!",
+            'user-not-found': "This email's user is not found!",
+            'wrong-password': 'Invalid password or unassociated with email!',
+            'invalid-credential': 'Incorrect, malformed or expired credential!',
+          }[e.code] ??
+          'Unknown error!';
       return errorMsg;
     } catch (e, s) {
       log(_errorMsgSignIn, error: e, stackTrace: s);
@@ -113,11 +118,12 @@ class AuthRepo {
       return (errorMsg: null, userId: userId);
     } on FirebaseAuthException catch (e) {
       final errorMsg = const <String, String>{
-        'email-already-in-use': "This email's user already exists!",
-        'invalid-email': 'Invalid email!',
-        'operation-not-allowed': "Email/password accounts aren't enabled!",
-        'weak-password': "Password isn't strong enough!",
-      }[e.code];
+            'email-already-in-use': "This email's user already exists!",
+            'invalid-email': 'Invalid email!',
+            'operation-not-allowed': "Email/password accounts aren't enabled!",
+            'weak-password': "Password isn't strong enough!",
+          }[e.code] ??
+          'Unknown error!';
       return (errorMsg: errorMsg, userId: null);
     } catch (e, s) {
       log(_errorMsgSignUp, error: e, stackTrace: s);
