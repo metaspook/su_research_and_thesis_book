@@ -41,7 +41,7 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
           department: thesis.publisher!.department.toStringParseNull(),
           description: thesis.description.toStringParseNull(),
           onTap: () =>
-              context.pushNamed(AppRouter.thesis.name!, extra: thesis.id),
+              context.pushNamed(AppRouter.thesis.name!, extra: thesis.paper),
         ),
       ),
       ...?researches?.map(
@@ -51,8 +51,10 @@ class _ThesisCarouselState extends State<ThesisCarousel> {
           designation: research.publisher!.designation.toStringParseNull(),
           department: research.publisher!.department.toStringParseNull(),
           description: research.description.toStringParseNull(),
-          onTap: () =>
-              context.pushNamed(AppRouter.research.name!, extra: research.id),
+          onTap: () => context.pushNamed(
+                AppRouter.research.name!,
+                extra: research.paper,
+              ),
         ),
       ),
     ];

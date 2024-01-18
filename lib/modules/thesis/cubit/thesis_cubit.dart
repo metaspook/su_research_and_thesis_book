@@ -55,22 +55,29 @@ class ThesisCubit extends Cubit<ThesisState> {
       id: state.thesis!.id,
       title: state.thesis?.title,
     );
-    final errorMsg = await _bookmarkRepo.addBookmark(paper);
+    final bookmarksPaperIds =
+        (await _bookmarkRepo.streamByType(PaperType.thesis).first)
+            .map((e) => e.paperId);
+    if (!bookmarksPaperIds.contains(paper.id)) {
+      final errorMsg = await _bookmarkRepo.addBookmark(paper);
 
-    if (errorMsg == null) {
-      emit(
-        state.copyWith(
-          status: ThesisStatus.success,
-          statusMsg: 'Bookmarked successfully!',
-        ),
-      );
+      if (errorMsg == null) {
+        emit(
+          state.copyWith(
+            status: ThesisStatus.success,
+            statusMsg: 'Bookmarked successfully!',
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            status: ThesisStatus.failure,
+            statusMsg: errorMsg,
+          ),
+        );
+      }
     } else {
-      emit(
-        state.copyWith(
-          status: ThesisStatus.failure,
-          statusMsg: errorMsg,
-        ),
-      );
+      emit(state.copyWith(statusMsg: 'Already bookmarked!'));
     }
   }
 

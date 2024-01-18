@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:su_research_and_thesis_book/app/app.dart';
 import 'package:su_research_and_thesis_book/modules/publisher/publisher.dart';
 import 'package:su_research_and_thesis_book/shared/models/models.dart';
 import 'package:su_research_and_thesis_book/shared/widgets/widgets.dart';
@@ -13,9 +11,6 @@ class PublisherPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theses = context.select((ThesesCubit cubit) => cubit.state.theses);
-    final researches =
-        context.select((ResearchesCubit cubit) => cubit.state.researches);
     const tabBar = TabBar(
       splashBorderRadius: AppThemes.borderRadius,
       tabs: [Tab(text: 'Thesis'), Tab(text: 'Researches')],
@@ -57,8 +52,8 @@ class PublisherPage extends StatelessWidget {
           ],
           body: TabBarView(
             children: [
-              PublisherThesesView(theses: theses ?? []),
-              PublisherResearchesView(researches: researches ?? []),
+              PublisherThesesView(publisher: publisher),
+              PublisherResearchesView(publisher: publisher),
             ],
           ),
         ),
